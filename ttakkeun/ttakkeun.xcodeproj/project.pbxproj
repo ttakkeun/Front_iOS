@@ -28,6 +28,8 @@
 			membershipExceptions = (
 				Assets.xcassets,
 				Icon.swift,
+				KeyBoardHide.swift,
+				ShadowReuse.swift,
 				ttakkeunApp.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -55,6 +57,26 @@
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
+		4863B2AA2C3D166000BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				KeyChain/KeyChainManager.swift,
+				KeyChain/UserInfo.swift,
+				TokenRefresh/AccessTokenRefresher.swift,
+				TokenRefresh/APIManager.swift,
+				TokenRefresh/TokenProvider.swift,
+				TokenRefresh/TokenProviding.swift,
+				TokenRefresh/TokenResponse.swift,
+			);
+			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
+		};
+		4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AuthAPITarget.swift,
+			);
+			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -64,6 +86,8 @@
 		483558872C3D0856006AB282 /* DataModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = DataModelGroup; sourceTree = "<group>"; };
 		483558892C3D08C7006AB282 /* Componenets */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Componenets; sourceTree = "<group>"; };
 		4835588B2C3D0928006AB282 /* Fonts */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4835589E2C3D0A35006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Fonts; sourceTree = "<group>"; };
+		4863B2A62C3D163C00BDA2B4 /* File */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2AA2C3D166000BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = File; sourceTree = "<group>"; };
+		4863B2AF2C3D16AD00BDA2B4 /* APITarget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = APITarget; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +126,8 @@
 		481C77BB2C3A6C70005D60EB /* ttakkeun */ = {
 			isa = PBXGroup;
 			children = (
+				4863B2AF2C3D16AD00BDA2B4 /* APITarget */,
+				4863B2A62C3D163C00BDA2B4 /* File */,
 				4835589F2C3D0A6B006AB282 /* Info.plist */,
 				483558892C3D08C7006AB282 /* Componenets */,
 				483558872C3D0856006AB282 /* DataModelGroup */,
