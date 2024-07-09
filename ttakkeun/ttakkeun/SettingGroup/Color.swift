@@ -28,10 +28,9 @@ extension Color {
     static let afterEar_Color = Color("afterEar")
     static let afterEye_Color = Color("afterEye")
     static let afterHair_Color = Color("afterHair")
-    static let primaryColor_Color = Color("primaryColor")
+    static let primaryColor_Color = Color("primaryColor01")
     static let BorderColor_Color = Color("BorderColor")
     static let fontColor_Color = Color("fontColor")
     static let backColor_Color = Color("backColor")
-    
 }
 
