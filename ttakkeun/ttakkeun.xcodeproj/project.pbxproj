@@ -3,13 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		481C77BD2C3A6C70005D60EB /* ttakkeunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481C77BC2C3A6C70005D60EB /* ttakkeunApp.swift */; };
 		481C77BF2C3A6C70005D60EB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481C77BE2C3A6C70005D60EB /* ContentView.swift */; };
-		481C77C12C3A6C71005D60EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 481C77C02C3A6C71005D60EB /* Assets.xcassets */; };
 		481C77C42C3A6C71005D60EB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 481C77C32C3A6C71005D60EB /* Preview Assets.xcassets */; };
 		488158122C3C3CB6002A9CB4 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 488158112C3C3CB6002A9CB4 /* Kingfisher */; };
 		488158152C3C3CCC002A9CB4 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 488158142C3C3CCC002A9CB4 /* CombineMoya */; };
@@ -21,11 +19,47 @@
 
 /* Begin PBXFileReference section */
 		481C77B92C3A6C70005D60EB /* ttakkeun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ttakkeun.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		481C77BC2C3A6C70005D60EB /* ttakkeunApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ttakkeunApp.swift; sourceTree = "<group>"; };
 		481C77BE2C3A6C70005D60EB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		481C77C02C3A6C71005D60EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		481C77C32C3A6C71005D60EB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		4835589F2C3D0A6B006AB282 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4835588A2C3D08E1006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+				ttakkeunApp.swift,
+			);
+			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
+		};
+		4835589E2C3D0A35006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Font.swift,
+				"SUIT-Bold.otf",
+				"SUIT-ExtraBold.otf",
+				"SUIT-ExtraLight.otf",
+				"SUIT-Heavy.otf",
+				"SUIT-Light.otf",
+				"SUIT-Medium.otf",
+				"SUIT-Regular.otf",
+				"SUIT-SemiBold.otf",
+				"SUIT-Thin.otf",
+			);
+			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		483558842C3D083F006AB282 /* SettingGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4835588A2C3D08E1006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = SettingGroup; sourceTree = "<group>"; };
+		483558852C3D084C006AB282 /* ViewModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModelGroup; sourceTree = "<group>"; };
+		483558862C3D084F006AB282 /* ViewGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewGroup; sourceTree = "<group>"; };
+		483558872C3D0856006AB282 /* DataModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = DataModelGroup; sourceTree = "<group>"; };
+		483558882C3D085B006AB282 /* New Folder */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "New Folder"; sourceTree = "<group>"; };
+		483558892C3D08C7006AB282 /* Componenets */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Componenets; sourceTree = "<group>"; };
+		4835588B2C3D0928006AB282 /* Fonts */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4835589E2C3D0A35006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Fonts; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		481C77B62C3A6C70005D60EB /* Frameworks */ = {
@@ -63,9 +97,15 @@
 		481C77BB2C3A6C70005D60EB /* ttakkeun */ = {
 			isa = PBXGroup;
 			children = (
-				481C77BC2C3A6C70005D60EB /* ttakkeunApp.swift */,
+				4835589F2C3D0A6B006AB282 /* Info.plist */,
+				483558892C3D08C7006AB282 /* Componenets */,
+				483558882C3D085B006AB282 /* New Folder */,
+				483558872C3D0856006AB282 /* DataModelGroup */,
+				483558862C3D084F006AB282 /* ViewGroup */,
+				483558852C3D084C006AB282 /* ViewModelGroup */,
+				4835588B2C3D0928006AB282 /* Fonts */,
+				483558842C3D083F006AB282 /* SettingGroup */,
 				481C77BE2C3A6C70005D60EB /* ContentView.swift */,
-				481C77C02C3A6C71005D60EB /* Assets.xcassets */,
 				481C77C22C3A6C71005D60EB /* Preview Content */,
 			);
 			path = ttakkeun;
@@ -151,7 +191,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				481C77C42C3A6C71005D60EB /* Preview Assets.xcassets in Resources */,
-				481C77C12C3A6C71005D60EB /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,7 +202,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				481C77BF2C3A6C70005D60EB /* ContentView.swift in Sources */,
-				481C77BD2C3A6C70005D60EB /* ttakkeunApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +338,7 @@
 				DEVELOPMENT_TEAM = 8B8B4462NV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ttakkeun/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -313,7 +352,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.ttakkeun;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -329,6 +368,7 @@
 				DEVELOPMENT_TEAM = 8B8B4462NV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ttakkeun/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -342,7 +382,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.app.ttakkeun;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
