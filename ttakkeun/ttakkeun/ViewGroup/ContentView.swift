@@ -14,15 +14,7 @@ struct ContentView: View {
                 .imageScale(.large)
                 .foregroundStyle(.tint)
             Text("Hello, world!")
-                .onAppear {
-                    UIFont.familyNames.sorted().forEach { familyName in
-                        print("*** \(familyName) ***")
-                        UIFont.fontNames(forFamilyName: familyName).forEach { fontName in
-                            print("\(fontName)")
-                        }
-                        print("---------------------")
-                    }
-                }
+                .foregroundStyle(Color.card001_Color)
         }
         .padding()
     }

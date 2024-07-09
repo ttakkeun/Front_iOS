@@ -27,6 +27,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets.xcassets,
+				Color.swift,
+				Color.xcassets,
 				Icon.swift,
 				KeyBoardHide.swift,
 				ShadowReuse.swift,
