@@ -14,7 +14,7 @@ struct ContentView: View {
                 .imageScale(.large)
                 .foregroundStyle(.tint)
             Text("Hello, world!")
-                .foregroundStyle(Color.card001_Color)
+                .foregroundStyle(Color.BorderColor_Color)
         }
         .padding()
     }
