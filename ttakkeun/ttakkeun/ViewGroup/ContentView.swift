@@ -8,13 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @StateObject var viewModel = LoginViewModel()
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            Text("Hello, world!")
-                .foregroundStyle(Color.BorderColor_Color)
+            Button(action: {
+                viewModel.kakaoButton()
+            }, label: {
+                Text("테스트")
+            })
         }
         .padding()
     }

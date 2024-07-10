@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 73;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,7 +13,6 @@
 		488158172C3C3CCC002A9CB4 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 488158162C3C3CCC002A9CB4 /* Moya */; };
 		488158192C3C3CCC002A9CB4 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 488158182C3C3CCC002A9CB4 /* ReactiveMoya */; };
 		4881581B2C3C3CCC002A9CB4 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 4881581A2C3C3CCC002A9CB4 /* RxMoya */; };
-		4881581E2C3C3CD8002A9CB4 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 4881581D2C3C3CD8002A9CB4 /* KakaoSDKAuth */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +22,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4802F5DF2C3E2E2300EE4224 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				LoginViewModel.swift,
+			);
+			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
+		};
 		4835588A2C3D08E1006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -82,8 +88,8 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		4802F5DB2C3E2E1B00EE4224 /* ViewModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4802F5DF2C3E2E2300EE4224 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewModelGroup; sourceTree = "<group>"; };
 		483558842C3D083F006AB282 /* SettingGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4835588A2C3D08E1006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = SettingGroup; sourceTree = "<group>"; };
-		483558852C3D084C006AB282 /* ViewModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModelGroup; sourceTree = "<group>"; };
 		483558862C3D084F006AB282 /* ViewGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (483558A32C3D0F13006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewGroup; sourceTree = "<group>"; };
 		483558872C3D0856006AB282 /* DataModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = DataModelGroup; sourceTree = "<group>"; };
 		483558892C3D08C7006AB282 /* Componenets */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Componenets; sourceTree = "<group>"; };
@@ -102,7 +108,6 @@
 				488158192C3C3CCC002A9CB4 /* ReactiveMoya in Frameworks */,
 				488158122C3C3CB6002A9CB4 /* Kingfisher in Frameworks */,
 				488158172C3C3CCC002A9CB4 /* Moya in Frameworks */,
-				4881581E2C3C3CD8002A9CB4 /* KakaoSDKAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,13 +133,13 @@
 		481C77BB2C3A6C70005D60EB /* ttakkeun */ = {
 			isa = PBXGroup;
 			children = (
+				4802F5DB2C3E2E1B00EE4224 /* ViewModelGroup */,
 				4863B2AF2C3D16AD00BDA2B4 /* APITarget */,
 				4863B2A62C3D163C00BDA2B4 /* File */,
 				4835589F2C3D0A6B006AB282 /* Info.plist */,
 				483558892C3D08C7006AB282 /* Componenets */,
 				483558872C3D0856006AB282 /* DataModelGroup */,
 				483558862C3D084F006AB282 /* ViewGroup */,
-				483558852C3D084C006AB282 /* ViewModelGroup */,
 				4835588B2C3D0928006AB282 /* Fonts */,
 				483558842C3D083F006AB282 /* SettingGroup */,
 				481C77C22C3A6C71005D60EB /* Preview Content */,
@@ -172,7 +177,6 @@
 				488158162C3C3CCC002A9CB4 /* Moya */,
 				488158182C3C3CCC002A9CB4 /* ReactiveMoya */,
 				4881581A2C3C3CCC002A9CB4 /* RxMoya */,
-				4881581D2C3C3CD8002A9CB4 /* KakaoSDKAuth */,
 			);
 			productName = ttakkeun;
 			productReference = 481C77B92C3A6C70005D60EB /* ttakkeun.app */;
@@ -194,7 +198,6 @@
 				};
 			};
 			buildConfigurationList = 481C77B42C3A6C70005D60EB /* Build configuration list for PBXProject "ttakkeun" */;
-			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -205,8 +208,8 @@
 			packageReferences = (
 				488158102C3C3CB6002A9CB4 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				488158132C3C3CCC002A9CB4 /* XCRemoteSwiftPackageReference "Moya" */,
-				4881581C2C3C3CD8002A9CB4 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
+			preferredProjectObjectVersion = 73;
 			productRefGroup = 481C77BA2C3A6C70005D60EB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -298,6 +301,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = "";
 			};
 			name = Debug;
 		};
@@ -353,6 +357,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -457,14 +462,6 @@
 				minimumVersion = 15.0.3;
 			};
 		};
-		4881581C2C3C3CD8002A9CB4 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.22.3;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -492,11 +489,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 488158132C3C3CCC002A9CB4 /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = RxMoya;
-		};
-		4881581D2C3C3CD8002A9CB4 /* KakaoSDKAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4881581C2C3C3CD8002A9CB4 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDKAuth;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
