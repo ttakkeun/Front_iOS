@@ -8,8 +8,7 @@
 import Foundation
 import Moya
 
-@MainActor
-class APIManager {
+class APIManager: @unchecked Sendable {
     static let shared = APIManager()
     
     private let tokenProvider: TokenProviding

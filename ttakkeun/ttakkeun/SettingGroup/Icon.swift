@@ -15,28 +15,14 @@ enum Icon: String {
     case sugeestion = "sugeestion"
     case qna = "qna"
     
+    // MARK: - Login
+    case appleLogin = "appleLogin"
+    case kakaoLogin = "kakaoLogin"
+    case loginBackground = "loginBackground"
+    case petFriends = "petFriends"
+    
     
     var image: Image {
         return Image(self.rawValue)
-    }
-    
-    func tabItem(for isSelected: Bool) -> Image {
-        let iconName = isSelected ? self.clickedIconName : self.rawValue
-        return Image(iconName)
-    }
-    
-    private var clickedIconName: String {
-        switch self {
-        case .home:
-            return "clickedHome"
-        case .diagnosis:
-            return "clickedDiagnosis"
-        case .schedule:
-            return "clickedSchedule"
-        case .sugeestion:
-            return "clickedSugeestion"
-        case .qna:
-            return "clickedQna"
-        }
     }
 }

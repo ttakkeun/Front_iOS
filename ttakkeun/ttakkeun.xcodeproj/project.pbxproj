@@ -22,13 +22,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		4802F5DF2C3E2E2300EE4224 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				LoginViewModel.swift,
-			);
-			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
-		};
 		4835588A2C3D08E1006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -46,6 +39,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Font.swift,
+				HSSanTokki.ttf,
 				"SUIT-Bold.otf",
 				"SUIT-ExtraBold.otf",
 				"SUIT-ExtraLight.otf",
@@ -70,6 +64,8 @@
 			membershipExceptions = (
 				KeyChain/KeyChainManager.swift,
 				KeyChain/UserInfo.swift,
+				LoginManager/AppleLoginManager.swift,
+				LoginManager/AppleUserData.swift,
 				TokenRefresh/AccessTokenRefresher.swift,
 				TokenRefresh/APIManager.swift,
 				TokenRefresh/TokenProvider.swift,
@@ -85,17 +81,31 @@
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
+		48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				LoginViewModel.swift,
+			);
+			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
+		};
+		48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				LoginData.swift,
+			);
+			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		4802F5DB2C3E2E1B00EE4224 /* ViewModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4802F5DF2C3E2E2300EE4224 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewModelGroup; sourceTree = "<group>"; };
 		483558842C3D083F006AB282 /* SettingGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4835588A2C3D08E1006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = SettingGroup; sourceTree = "<group>"; };
 		483558862C3D084F006AB282 /* ViewGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (483558A32C3D0F13006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewGroup; sourceTree = "<group>"; };
-		483558872C3D0856006AB282 /* DataModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = DataModelGroup; sourceTree = "<group>"; };
 		483558892C3D08C7006AB282 /* Componenets */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Componenets; sourceTree = "<group>"; };
 		4835588B2C3D0928006AB282 /* Fonts */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4835589E2C3D0A35006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Fonts; sourceTree = "<group>"; };
 		4863B2A62C3D163C00BDA2B4 /* File */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2AA2C3D166000BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = File; sourceTree = "<group>"; };
 		4863B2AF2C3D16AD00BDA2B4 /* APITarget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = APITarget; sourceTree = "<group>"; };
+		48D5D12B2C3E825500B2E6D5 /* ViewModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewModelGroup; sourceTree = "<group>"; };
+		48D5D12E2C3E827800B2E6D5 /* DataModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = DataModelGroup; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,12 +143,12 @@
 		481C77BB2C3A6C70005D60EB /* ttakkeun */ = {
 			isa = PBXGroup;
 			children = (
-				4802F5DB2C3E2E1B00EE4224 /* ViewModelGroup */,
+				4835589F2C3D0A6B006AB282 /* Info.plist */,
 				4863B2AF2C3D16AD00BDA2B4 /* APITarget */,
 				4863B2A62C3D163C00BDA2B4 /* File */,
-				4835589F2C3D0A6B006AB282 /* Info.plist */,
 				483558892C3D08C7006AB282 /* Componenets */,
-				483558872C3D0856006AB282 /* DataModelGroup */,
+				48D5D12E2C3E827800B2E6D5 /* DataModelGroup */,
+				48D5D12B2C3E825500B2E6D5 /* ViewModelGroup */,
 				483558862C3D084F006AB282 /* ViewGroup */,
 				4835588B2C3D0928006AB282 /* Fonts */,
 				483558842C3D083F006AB282 /* SettingGroup */,

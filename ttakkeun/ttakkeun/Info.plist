@@ -13,6 +13,7 @@
 		<string>SUIT-Regular.otf</string>
 		<string>SUIT-SemiBold.otf</string>
 		<string>SUIT-Thin.otf</string>
+		<string>HSSanTokki.ttf</string>
 	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
