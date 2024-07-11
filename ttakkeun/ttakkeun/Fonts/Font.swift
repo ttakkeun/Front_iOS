@@ -44,7 +44,22 @@ extension Font {
         }
     }
     
+    enum HSSanTokki2 {
+        case regular
+        
+        var value: String {
+            switch self {
+            case .regular:
+                return "HSSanTokki2.0-Regular"
+            }
+        }
+    }
+    
     static func suit(type: Suit, size: CGFloat) -> Font {
+        return .custom(type.value, size: size)
+    }
+    
+    static func santokki(type: HSSanTokki2, size: CGFloat) -> Font {
         return .custom(type.value, size: size)
     }
 }

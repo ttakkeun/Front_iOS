@@ -55,7 +55,7 @@
 		483558A32C3D0F13006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				ContentView.swift,
+				LoginView.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};

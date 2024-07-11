@@ -27,7 +27,13 @@ class LoginViewModel: ObservableObject {
     
     // MARK: - ViewFunction
     
-    public func appleLoginBtn() {
+    
+    //TODO: - 추후 마지막에 개발할 것!! 프리뷰 문제로 인함
+    public func kakaoLoginBtn() async {
+        print("카카오 로그인 버튼 액션")
+    }
+    
+    public func appleLoginBtn() async {
         appleLoginManager.signWithApple()
     }
     
