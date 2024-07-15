@@ -11,6 +11,18 @@ struct CustomDiary: View {
     @StateObject var viewModel: CustomDiaryViewModel
     @State private var isPickerPresented = false
     
+    //MARK: - 변수
+    /// 년월 dateFormatter
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        return formatter
+    }()
+        
+    ///요일 심볼(S,M,T,W,T,F,S)
+    private let weekdaySymbols = Calendar.current.veryShortWeekdaySymbols
+    
+    //MARK: - 컴포넌트
     var body: some View {
         VStack {
             Spacer().frame(height: 10)
@@ -25,7 +37,8 @@ struct CustomDiary: View {
         .frame(width: 350, height: 319)
     }
     
-    //MARK: - 헤더
+    
+    /// 헤더 -> 년월 + 화살표
     private var headerView: some View {
         HStack {
             Spacer().frame(width: 5)
@@ -33,7 +46,7 @@ struct CustomDiary: View {
                 isPickerPresented.toggle()
             }) {
                 HStack {
-                    Text(viewModel.month, formatter: CustomDiary.dateFormatter)
+                    Text(viewModel.month, formatter: dateFormatter)
                         .font(.system(size: 16))
                         .fontWeight(.semibold)
                         .foregroundStyle(.black)
@@ -66,6 +79,7 @@ struct CustomDiary: View {
         }
     }
     
+    ///화살표
     private var changeMonthArrow: some View {
         HStack(alignment: .center, spacing: 10, content: {
             Button(action: {
@@ -86,14 +100,14 @@ struct CustomDiary: View {
         })
     }
     
-    //MARK: - 달력 일자 표시
+    ///달력 일자 표시
     private var calendarGridView: some View {
         let dates = viewModel.generateMonthDates()
         let currentWeek = viewModel.getCurrentWeek()
         
         return VStack(alignment: .center, spacing: 3, content: {
             HStack {
-                ForEach(CustomDiary.weekdaySymbols, id: \.self) { symbol in
+                ForEach(weekdaySymbols, id: \.self) { symbol in
                     Text(symbol)
                         .font(.system(size: 11))
                         .frame(maxWidth: .infinity)
@@ -133,7 +147,7 @@ struct CustomDiary: View {
     }
 }
 
-//MARK: - 달력 하나(하루)의 셀
+/// 달력 하나(하루)의 셀
 private struct CellView: View {
     var day: Int
     var isSelected: Bool
@@ -162,18 +176,6 @@ private struct CellView: View {
     }
 }
 
-//MARK: - dateFormatter
-extension CustomDiary {
-    static let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM yyyy"
-        return formatter
-    }()
-
-    static let weekdaySymbols = Calendar.current.veryShortWeekdaySymbols
-    
-}
-
 //MARK: - Preview
 struct CustomDiaryComponent_Previews: PreviewProvider {
     static var previews: some View {
@@ -183,7 +185,8 @@ struct CustomDiaryComponent_Previews: PreviewProvider {
     }
 }
 
-/// 누르면 해당 날짜 출력
+//MARK: - Test
+///누르면 해당 날짜 출력
 private func printDate(_ date: Date) {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd"
