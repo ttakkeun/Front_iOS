@@ -33,8 +33,7 @@ struct Shadow03: ViewModifier {
 struct Shadow04: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .shadow(color: Color.black.opacity(0.7), radius: 5, x: 0, y: 0)
-            .blur(radius: 8)
+            .shadow(color: Color.black.opacity(0.15), radius: 5, x: 10, y: 20)
     }
 }
 

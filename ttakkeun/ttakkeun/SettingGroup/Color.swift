@@ -18,7 +18,7 @@ extension Color {
     static let profileFront_Color = Color("profileFront")
     static let mainTextColor_Color = Color("mainTextColor")
     static let subTextColor_Color = Color("subTextColor")
-    static let unClickedTab_Color = Color("unClickedTab")
+    static let unClickedTab_Color = Color("unclikedTab")
     static let beforeClaw_Color = Color("beforeClaw")
     static let beforeTeeth_Color = Color("beforeTeeth")
     static let beforeEar_Color = Color("beforeEar")
@@ -33,6 +33,7 @@ extension Color {
     static let BorderColor_Color = Color("BorderColor")
     static let fontColor_Color = Color("fontColor")
     static let backColor_Color = Color("backColor")
+    static let subProfileColor_Color = Color("subProfileColor")
     
 }
 
