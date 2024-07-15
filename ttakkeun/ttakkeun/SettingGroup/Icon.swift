@@ -22,6 +22,11 @@ enum Icon: String {
     case petFriends = "petFriends"
     
     
+    // MARK: - Profile
+    case ProfileCreate = "ProfileCreate"
+    case ProfileCat = "ProfileCat"
+    case ProfileDog = "ProfileDog"
+    
     var image: Image {
         return Image(self.rawValue)
     }
