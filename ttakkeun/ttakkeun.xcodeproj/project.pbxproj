@@ -96,6 +96,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CustomDiaryViewModel.swift,
+				HomeProfileCardViewModel.swift,
 				LoginViewModel.swift,
 				ProfileCardViewModel.swift,
 			);

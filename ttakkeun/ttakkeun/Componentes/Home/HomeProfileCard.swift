@@ -10,37 +10,69 @@ import Kingfisher
 
 struct HomeProfileCard: View {
     
-    let data: HomeProfileData
+    @StateObject var viewModel: HomeProfileCardViewModel
     
-    init(data: HomeProfileData) {
-        self.data = data
+    init() {
+        self._viewModel = StateObject(wrappedValue: HomeProfileCardViewModel())
     }
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        contents
     }
     
     // MARK: - Components
     
-    
-    /// 프로필
-    private var profileInfor: some View {
-        VStack(alignment: .center, spacing: 2, content: {
-            Text(data.name)
-                .frame(maxWidth: 190)
-                .font(.suit(type: .medium, size: 14))
-                .foregroundStyle(Color.black)
+    private var contents: some View {
+        VStack(alignment: .center, spacing: 5, content: {
             
-            Text(data.date)
-                .font(.suit(type: .bold, size: 10))
-                .foregroundStyle(Color.subProfileColor_Color)
+            HStack(content: {
+                Text("PET CARD")
+                    .font(.suit(type: .extraBold, size: 12))
+                    .foregroundStyle(Color.subTextColor_Color)
+                
+                Spacer()
+            })
+            .padding(.horizontal, 24)
+            .padding(.top, 13)
+           
+            
+            profileImageGroup
+            
+            profileInfor
+            
+            HStack(content: {
+                
+                Spacer()
+                
+                Button(action: {
+                    print("새로고침 액션")
+                }, label: {
+                    Icon.changeCard.image
+                        .fixedSize()
+                })
+            })
+            .padding(.horizontal, 20)
+            .padding(.bottom, 10)
+        })
+        .frame(width: 354, height: 240)
+        .background(Color.white.opacity(0.5))
+        .clipShape(.rect(cornerRadius: 20))
+    }
+    
+    // MARK: - ProfileImage
+    
+    /// 프로필 이미지
+    private var profileImageGroup: some View {
+        ZStack(alignment: .bottomTrailing, content: {
+            profileImage
+            editProfileImage
         })
     }
     
     /// 프로필 이미지 뷰 빌더
     @ViewBuilder
     private var profileImage: some View {
-        if let url = URL(string: data.imageUrl) {
+        if let url = URL(string: viewModel.profileData?.imageUrl ?? "") {
             KFImage(url)
                 .placeholder {
                     ProgressView()
@@ -57,13 +89,36 @@ struct HomeProfileCard: View {
     
     /// 프로필 사진 편집 버튼
     private var editProfileImage: some View {
-        ZStack(alignment: .center, content: {
-            Circle()
-                .background(Color.editColor_Color)
-                .frame(width: 30, height: 30)
-            Icon.editProfile.image
-                .resizable()
-                .frame(width: 14, height: 14)
+        Button(action: {
+            print("hello")
+        }, label: {
+            ZStack(alignment: .center, content: {
+                Circle()
+                    .fill(Color.editColor_Color)
+                    .frame(width: 30, height: 30)
+                Icon.editProfile.image
+                    .resizable()
+                    .frame(width: 14, height: 14)
+            })
+            .padding([.vertical, .horizontal], 5)
         })
+    }
+    
+    
+    // MARK: - ProfileInfo
+    
+    /// 프로필 정보
+    private var profileInfor: some View {
+        VStack(alignment: .center, spacing: 2, content: {
+            Text(viewModel.profileData?.name ?? "")
+                .frame(maxWidth: 190)
+                .font(.suit(type: .medium, size: 14))
+                .foregroundStyle(Color.black)
+            
+            Text(viewModel.profileData?.date ?? "")
+                .font(.suit(type: .bold, size: 10))
+                .foregroundStyle(Color.subProfileColor_Color)
+        })
+        .padding(.top, 10)
     }
 }
