@@ -35,6 +35,7 @@ extension Color {
     static let backColor_Color = Color("backColor")
     static let subProfileColor_Color = Color("subProfileColor")
     static let editColor_Color = Color("editColor")
+    static let weekBar_Color = Color("weekBar")
     
 }
 

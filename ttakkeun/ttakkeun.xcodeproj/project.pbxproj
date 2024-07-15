@@ -105,6 +105,7 @@
 			membershipExceptions = (
 				Home/HomeProfileCard.swift,
 				ProfileSelect.swift,
+				WeekBar.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
