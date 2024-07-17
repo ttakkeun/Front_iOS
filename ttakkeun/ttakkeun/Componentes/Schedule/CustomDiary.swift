@@ -18,16 +18,16 @@ struct CustomDiary: View {
         formatter.dateFormat = "MMMM yyyy"
         return formatter
     }()
-        
+    
     ///요일 심볼(S,M,T,W,T,F,S)
-    private let weekdaySymbols = Calendar.current.veryShortWeekdaySymbols
+    private let weekdaySymbols = Calendar.current.shortStandaloneWeekdaySymbols
     
     //MARK: - 컴포넌트
     var body: some View {
         VStack {
             Spacer().frame(height: 10)
             headerView
-            Spacer().frame(height: 6)
+            Spacer().frame(height: 10)
             calendarGridView
             Spacer().frame(height: 15)
         }
@@ -35,8 +35,8 @@ struct CustomDiary: View {
         .cornerRadius(20)
         .padding()
         .frame(width: 350, height: 319)
+            
     }
-    
     
     /// 헤더 -> 년월 + 화살표
     private var headerView: some View {
@@ -60,22 +60,8 @@ struct CustomDiary: View {
         }
         .padding(.horizontal)
         .sheet(isPresented: $isPickerPresented) {
-            VStack {
-                DatePicker(
-                    "Select Date",
-                    selection: $viewModel.month,
-                    displayedComponents: [.date]
-                )
-                .datePickerStyle(WheelDatePickerStyle())
-                .labelsHidden()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .clipped()
-                
-                Button("Select") {
-                    isPickerPresented = false
-                }
-                .padding()
-            }
+            DiarySelectSheet(selectedDate: $viewModel.month, isPresented: $isPickerPresented)
+                .presentationDetents([.fraction(0.4)])
         }
     }
     
@@ -103,33 +89,30 @@ struct CustomDiary: View {
     ///달력 일자 표시
     private var calendarGridView: some View {
         let dates = viewModel.generateMonthDates()
+        /* 주차 막대 표시하기 위해 필요한 변수, 주차막대 코드 안 넣어서 경고 뜸*/
         let currentWeek = viewModel.getCurrentWeek()
-        
-        return VStack(alignment: .center, spacing: 3, content: {
-            HStack {
-                ForEach(weekdaySymbols, id: \.self) { symbol in
-                    Text(symbol)
-                        .font(.system(size: 11))
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 5)
-                }
+        let cellWidth: CGFloat = 41
+        let cellHeight: CGFloat = 36
+
+        return LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 100)), count: 7), spacing: 3) {
+            /* Grid로 요일과 날짜 모두 출력 */
+            /* 요일 출력 */
+            ForEach(weekdaySymbols, id: \.self) { symbol in
+                Text(symbol)
+                    .font(.suit(type: .bold, size: 12))
+                    .foregroundColor(Color.black)
             }
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 2) {
-                ForEach(0..<dates.count, id: \.self) { index in
-                    if let date = dates[index] {
+            /* 일자 출력 */
+            ForEach(dates.indices, id: \.self) { index in
+                let date = dates[index]
+                Group {
+                    if let date = date {
                         let day = Calendar.current.component(.day, from: date)
                         let isSelected = Calendar.current.isDate(date, inSameDayAs: viewModel.selectedDate)
                         
-                        if viewModel.showCurrentWeekBar, currentWeek.contains(date) {
+                        ZStack {
                             CellView(day: day, isSelected: isSelected)
-                                .background(Color.white.opacity(0.5))
-                                .cornerRadius(5)
-                                .onTapGesture {
-                                    viewModel.toggleDate(date)
-                                    printDate(date)
-                                }
-                        } else {
-                            CellView(day: day, isSelected: isSelected)
+                                .frame(width: cellWidth, height: cellHeight)
                                 .onTapGesture {
                                     viewModel.toggleDate(date)
                                     printDate(date)
@@ -138,13 +121,14 @@ struct CustomDiary: View {
                     } else {
                         RoundedRectangle(cornerRadius: 5)
                             .foregroundColor(Color.clear)
-                            .frame(height: 40)
+                            .frame(width: cellWidth, height: cellHeight)
                     }
                 }
             }
-        })
+        }
         .padding(.horizontal)
     }
+
 }
 
 /// 달력 하나(하루)의 셀

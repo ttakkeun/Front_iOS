@@ -27,7 +27,8 @@ class CustomDiaryViewModel: ObservableObject {
     init(month: Date, calendar: Calendar) {
         self.month = month
         self.calendar = calendar
-        self.selectedDate = Date() // 현재 날짜로 초기화
+        /*현재 날짜로 초기화!!*/
+        self.selectedDate = Date()
         
         let components = calendar.dateComponents([.year, .month], from: month)
         self.selectedYear = components.year ?? 0
@@ -90,7 +91,6 @@ class CustomDiaryViewModel: ObservableObject {
         
         return currentWeek
     }
-
 
     /// 월별 날짜 배열 반환
     public func generateMonthDates() -> [Date?] {
