@@ -8,7 +8,8 @@
 import SwiftUI
 import Kingfisher
 
-struct HomeProfileCard: View {
+/// 홈 프론트 카드
+struct HomeFrontCard: View {
     
     @StateObject var viewModel: HomeProfileCardViewModel
     
@@ -40,12 +41,13 @@ struct HomeProfileCard: View {
             
             profileInfor
             
+            /* 프로필 카드 체인지 */
             HStack(content: {
                 
                 Spacer()
                 
                 Button(action: {
-                    print("새로고침 액션")
+                    viewModel.isChangeCard = true
                 }, label: {
                     Icon.changeCard.image
                         .fixedSize()

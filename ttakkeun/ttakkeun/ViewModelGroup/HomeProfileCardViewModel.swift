@@ -7,6 +7,8 @@
 
 import Foundation
 
+@MainActor
 class HomeProfileCardViewModel: ObservableObject {
     @Published var profileData: HomeProfileData?
+    @Published var isChangeCard:  Bool = true
 }

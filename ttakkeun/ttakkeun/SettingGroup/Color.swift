@@ -19,16 +19,19 @@ extension Color {
     static let mainTextColor_Color = Color("mainTextColor")
     static let subTextColor_Color = Color("subTextColor")
     static let unClickedTab_Color = Color("unclikedTab")
+    
     static let beforeClaw_Color = Color("beforeClaw")
     static let beforeTeeth_Color = Color("beforeTeeth")
     static let beforeEar_Color = Color("beforeEar")
     static let beforeEye_Color = Color("beforeEye")
     static let beforeHair_COlor = Color("beforeHair")
+    
     static let afterClaw_Color = Color("afterClaw")
     static let afterTeeth_Color = Color("afterTeeth")
     static let afterEar_Color = Color("afterEar")
     static let afterEye_Color = Color("afterEye")
     static let afterHair_Color = Color("afterHair")
+    
     static let primaryColor_Color = Color("primaryColor01")
     static let BorderColor_Color = Color("BorderColor")
     static let fontColor_Color = Color("fontColor")
