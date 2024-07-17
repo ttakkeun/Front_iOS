@@ -86,8 +86,10 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Home/HomeBackCard.swift,
+				Home/HomeDragView.swift,
 				Home/HomeFrontCard.swift,
 				Home/ProfileImageCard.swift,
+				Home/TestDragView.swift,
 				Profile/ProfileSelect.swift,
 				Schedule/CustomDiary.swift,
 				Schedule/WeekBar.swift,
