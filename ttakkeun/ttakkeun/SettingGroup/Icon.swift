@@ -29,6 +29,7 @@ enum Icon: String {
     
     // MARK: - Home
     case editProfile = "editProfile"
+    case changeCard = "changeCard"
     
     var image: Image {
         return Image(self.rawValue)
