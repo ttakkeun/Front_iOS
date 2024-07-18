@@ -30,8 +30,7 @@ struct HomeNotTodo: View {
     
     //MARK: - Components
     
-    
-    
+    /// 5개 항목 그룹
     private var topCircleComponents: some View {
         ZStack(alignment: .top, content: {
             firstCircle
@@ -43,8 +42,8 @@ struct HomeNotTodo: View {
     }
     
     
+    /// 끝에서 두번째 원
     private var secondCircle: some View {
-        
         HStack(content: {
             HomeNotTodoCircle(color: .beforeTeeth_Color, icon: Icon.homeTeeth.image)
             
@@ -59,7 +58,7 @@ struct HomeNotTodo: View {
     }
     
     
-    /// 양끝 동그라미
+    /// 끝에서 첫번째 원
     private var firstCircle: some View {
         HStack(content: {
             HomeNotTodoCircle(color: .beforeClaw_Color, icon: Icon.homeClaw.image)
@@ -74,7 +73,7 @@ struct HomeNotTodo: View {
     
 }
 
-
+// MARK: - 프리뷰
 struct HomeNotTodo_PreView: PreviewProvider {
     
     static let devices = ["iPhone 11", "iPhone 15 Pro"]

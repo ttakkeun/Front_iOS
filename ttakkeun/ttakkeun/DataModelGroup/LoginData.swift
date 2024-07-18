@@ -8,6 +8,7 @@
 import Foundation
 
 
+/// 로그인 ResponseData
 struct LoginResponseData: Codable {
     var accessToken: String
     var refreshToken: String

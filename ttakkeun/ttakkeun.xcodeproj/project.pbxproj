@@ -90,6 +90,7 @@
 				Home/HomeFrontCard.swift,
 				Home/HomeNotTodo.swift,
 				Home/HomeNotTodoCircle.swift,
+				Home/HomeRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
 				Home/TestDragView.swift,
 				Profile/ProfileSelect.swift,
@@ -114,6 +115,7 @@
 				HomeProfileData.swift,
 				LoginData.swift,
 				PetProfileData.swift,
+				RecommendProductData.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};

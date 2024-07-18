@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// 홈탭 - 프로필 카드 데이터
 struct HomeProfileData: Codable {
     var imageUrl: String
     var name: String
