@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct RecommendProductData: Codable {
-    let data: [RecommendProductResponseData]
+struct AIRecommendProductData: Codable {
+    let data: [AIRecommendProductResponseData]
 }
 
-struct RecommendProductResponseData: Codable, Hashable {
+struct AIRecommendProductResponseData: Codable, Hashable {
     let imageUrl: String
     let name: String
     let price: Int

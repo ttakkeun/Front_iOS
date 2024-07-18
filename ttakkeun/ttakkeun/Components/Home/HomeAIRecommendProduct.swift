@@ -8,13 +8,14 @@
 import SwiftUI
 import Kingfisher
 
-struct HomeRecommendProduct: View {
+/// AI 추천 제품 카드
+struct HomeAIRecommendProduct: View {
     
-    let productData: RecommendProductResponseData
+    let productData: AIRecommendProductResponseData
     
     // MARK: - Init
     
-    init(productData: RecommendProductResponseData) {
+    init(productData: AIRecommendProductResponseData) {
         self.productData = productData
     }
     
@@ -54,6 +55,7 @@ struct HomeRecommendProduct: View {
         }
     }
     
+    /// 추천 상품 가격과 제목 정보
     @ViewBuilder
     private var productInfo: some View {
         /* 가격 쉼표 표시 */
@@ -83,7 +85,7 @@ struct HomeRecommendProduct: View {
 
 struct HomeRecommendProduct_Preview: PreviewProvider {
     static var previews: some View {
-        HomeRecommendProduct(productData: RecommendProductResponseData(imageUrl: "https://image.sivillage.com/upload/C00001/goods/org/226/220831003041226.jpg?RS=750&SP=1", name: "아껴주다 저자극 천연 고양이 샴푸 500ml", price: 12000))
+        HomeAIRecommendProduct(productData: AIRecommendProductResponseData(imageUrl: "https://image.sivillage.com/upload/C00001/goods/org/226/220831003041226.jpg?RS=750&SP=1", name: "아껴주다 저자극 천연 고양이 샴푸 500ml", price: 12000))
             .previewLayout(.sizeThatFits)
     }
 }
