@@ -38,6 +38,10 @@ enum Icon: String {
     case topRank = "topRank"
     case bottomRank = "bottomRank"
     
+    // MARK: - ETC
+    case alarm = "alarm"
+    case setting = "setting"
+    
     var image: Image {
         return Image(self.rawValue)
     }
