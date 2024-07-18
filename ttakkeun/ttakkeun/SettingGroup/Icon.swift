@@ -34,6 +34,7 @@ enum Icon: String {
     case homeEye = "homeEye"
     case homeHair = "homeHair"
     case homeTeeth = "homeTeeth"
+    case changeCard = "changeCard"
     
     var image: Image {
         return Image(self.rawValue)

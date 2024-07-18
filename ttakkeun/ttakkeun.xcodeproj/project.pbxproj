@@ -88,6 +88,9 @@
 				Home/HomeNotTodo.swift,
 				Home/HomeNotTodoCircle.swift,
 				Home/HomeProfileCard.swift,
+				Home/HomeBackCard.swift,
+				Home/HomeFrontCard.swift,
+				Home/ProfileImageCard.swift,
 				Profile/ProfileSelect.swift,
 				Schedule/CustomDiary.swift,
 				Schedule/WeekBar.swift,
@@ -98,6 +101,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CustomDiaryViewModel.swift,
+				HomeProfileCardViewModel.swift,
 				LoginViewModel.swift,
 				ProfileCardViewModel.swift,
 			);
@@ -127,7 +131,7 @@
 		4835588B2C3D0928006AB282 /* Fonts */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4835589E2C3D0A35006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Fonts; sourceTree = "<group>"; };
 		4863B2A62C3D163C00BDA2B4 /* File */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2AA2C3D166000BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = File; sourceTree = "<group>"; };
 		4863B2AF2C3D16AD00BDA2B4 /* APITarget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = APITarget; sourceTree = "<group>"; };
-		48B249BD2C45048E00AF1F87 /* Componentes */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48B249C22C45048E00AF1F87 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Componentes; sourceTree = "<group>"; };
+		48B249BD2C45048E00AF1F87 /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48B249C22C45048E00AF1F87 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
 		48D5D12B2C3E825500B2E6D5 /* ViewModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewModelGroup; sourceTree = "<group>"; };
 		48D5D12E2C3E827800B2E6D5 /* DataModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = DataModelGroup; sourceTree = "<group>"; };
 		48DDC3232C43D1CF0058EBFF /* EnumFile */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = EnumFile; sourceTree = "<group>"; };
@@ -172,7 +176,7 @@
 				4835589F2C3D0A6B006AB282 /* Info.plist */,
 				4863B2AF2C3D16AD00BDA2B4 /* APITarget */,
 				4863B2A62C3D163C00BDA2B4 /* File */,
-				48B249BD2C45048E00AF1F87 /* Componentes */,
+				48B249BD2C45048E00AF1F87 /* Components */,
 				48D5D12E2C3E827800B2E6D5 /* DataModelGroup */,
 				48D5D12B2C3E825500B2E6D5 /* ViewModelGroup */,
 				483558862C3D084F006AB282 /* ViewGroup */,
