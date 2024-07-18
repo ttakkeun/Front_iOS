@@ -40,5 +40,7 @@ extension Color {
     static let editColor_Color = Color("editColor")
     static let weekBar_Color = Color("weekBar")
     
+    static let sheetIndicator_Color = Color("sheetIndicator")
+    
 }
 
