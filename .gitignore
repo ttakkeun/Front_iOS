@@ -1,4 +1,3 @@
-# Created by https://www.toptal.com/developers/gitignore/api/macos,swift,cocoapods
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,swift,cocoapods
 
 ### CocoaPods ###
@@ -127,4 +126,5 @@ fastlane/test_output
 iOSInjectionProject/
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,swift,cocoapods
+
 
