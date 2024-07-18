@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 73;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,12 +13,15 @@
 		488158172C3C3CCC002A9CB4 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 488158162C3C3CCC002A9CB4 /* Moya */; };
 		488158192C3C3CCC002A9CB4 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 488158182C3C3CCC002A9CB4 /* ReactiveMoya */; };
 		4881581B2C3C3CCC002A9CB4 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 4881581A2C3C3CCC002A9CB4 /* RxMoya */; };
+		4881581E2C3C3CD8002A9CB4 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 4881581D2C3C3CD8002A9CB4 /* KakaoSDKAuth */; };
+		5518CED22C3D5319007753F6 /* LoginData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5518CED12C3D5315007753F6 /* LoginData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		481C77B92C3A6C70005D60EB /* ttakkeun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ttakkeun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		481C77C32C3A6C71005D60EB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4835589F2C3D0A6B006AB282 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		5518CED12C3D5315007753F6 /* LoginData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -39,7 +42,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Font.swift,
-				HSSanTokki.ttf,
 				"SUIT-Bold.otf",
 				"SUIT-ExtraBold.otf",
 				"SUIT-ExtraLight.otf",
@@ -56,7 +58,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				LoginView.swift,
-				ProfileView.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -65,8 +66,6 @@
 			membershipExceptions = (
 				KeyChain/KeyChainManager.swift,
 				KeyChain/UserInfo.swift,
-				LoginManager/AppleLoginManager.swift,
-				LoginManager/AppleUserData.swift,
 				TokenRefresh/AccessTokenRefresher.swift,
 				TokenRefresh/APIManager.swift,
 				TokenRefresh/TokenProvider.swift,
@@ -79,47 +78,14 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AuthAPITarget.swift,
+				LoginAPITarget.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
-		48B249C22C45048E00AF1F87 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		5518CECA2C3D4E9B007753F6 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Home/HomeNotTodo.swift,
-				Home/HomeNotTodoCircle.swift,
-				Home/HomeProfileCard.swift,
-				Home/HomeBackCard.swift,
-				Home/HomeFrontCard.swift,
-				Home/ProfileImageCard.swift,
-				Profile/ProfileSelect.swift,
-				Schedule/CustomDiary.swift,
-				Schedule/WeekBar.swift,
-			);
-			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
-		};
-		48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				CustomDiaryViewModel.swift,
-				HomeProfileCardViewModel.swift,
 				LoginViewModel.swift,
-				ProfileCardViewModel.swift,
-			);
-			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
-		};
-		48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				HomeProfileData.swift,
-				LoginData.swift,
-				PetProfileData.swift,
-			);
-			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
-		};
-		48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				ProfileType.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -128,13 +94,11 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		483558842C3D083F006AB282 /* SettingGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4835588A2C3D08E1006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = SettingGroup; sourceTree = "<group>"; };
 		483558862C3D084F006AB282 /* ViewGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (483558A32C3D0F13006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewGroup; sourceTree = "<group>"; };
+		483558892C3D08C7006AB282 /* Componenets */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Componenets; sourceTree = "<group>"; };
 		4835588B2C3D0928006AB282 /* Fonts */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4835589E2C3D0A35006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Fonts; sourceTree = "<group>"; };
 		4863B2A62C3D163C00BDA2B4 /* File */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2AA2C3D166000BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = File; sourceTree = "<group>"; };
 		4863B2AF2C3D16AD00BDA2B4 /* APITarget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = APITarget; sourceTree = "<group>"; };
-		48B249BD2C45048E00AF1F87 /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48B249C22C45048E00AF1F87 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
-		48D5D12B2C3E825500B2E6D5 /* ViewModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewModelGroup; sourceTree = "<group>"; };
-		48D5D12E2C3E827800B2E6D5 /* DataModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = DataModelGroup; sourceTree = "<group>"; };
-		48DDC3232C43D1CF0058EBFF /* EnumFile */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = EnumFile; sourceTree = "<group>"; };
+		5518CEC62C3D4E8C007753F6 /* ViewModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (5518CECA2C3D4E9B007753F6 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewModelGroup; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +111,7 @@
 				488158192C3C3CCC002A9CB4 /* ReactiveMoya in Frameworks */,
 				488158122C3C3CB6002A9CB4 /* Kingfisher in Frameworks */,
 				488158172C3C3CCC002A9CB4 /* Moya in Frameworks */,
+				4881581E2C3C3CD8002A9CB4 /* KakaoSDKAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,13 +137,12 @@
 		481C77BB2C3A6C70005D60EB /* ttakkeun */ = {
 			isa = PBXGroup;
 			children = (
-				48DDC3232C43D1CF0058EBFF /* EnumFile */,
-				4835589F2C3D0A6B006AB282 /* Info.plist */,
+				5518CECF2C3D5308007753F6 /* DataModelGroup */,
+				5518CEC62C3D4E8C007753F6 /* ViewModelGroup */,
 				4863B2AF2C3D16AD00BDA2B4 /* APITarget */,
 				4863B2A62C3D163C00BDA2B4 /* File */,
-				48B249BD2C45048E00AF1F87 /* Components */,
-				48D5D12E2C3E827800B2E6D5 /* DataModelGroup */,
-				48D5D12B2C3E825500B2E6D5 /* ViewModelGroup */,
+				4835589F2C3D0A6B006AB282 /* Info.plist */,
+				483558892C3D08C7006AB282 /* Componenets */,
 				483558862C3D084F006AB282 /* ViewGroup */,
 				4835588B2C3D0928006AB282 /* Fonts */,
 				483558842C3D083F006AB282 /* SettingGroup */,
@@ -193,6 +157,14 @@
 				481C77C32C3A6C71005D60EB /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		5518CECF2C3D5308007753F6 /* DataModelGroup */ = {
+			isa = PBXGroup;
+			children = (
+				5518CED12C3D5315007753F6 /* LoginData.swift */,
+			);
+			path = DataModelGroup;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -217,6 +189,7 @@
 				488158162C3C3CCC002A9CB4 /* Moya */,
 				488158182C3C3CCC002A9CB4 /* ReactiveMoya */,
 				4881581A2C3C3CCC002A9CB4 /* RxMoya */,
+				4881581D2C3C3CD8002A9CB4 /* KakaoSDKAuth */,
 			);
 			productName = ttakkeun;
 			productReference = 481C77B92C3A6C70005D60EB /* ttakkeun.app */;
@@ -238,6 +211,7 @@
 				};
 			};
 			buildConfigurationList = 481C77B42C3A6C70005D60EB /* Build configuration list for PBXProject "ttakkeun" */;
+			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -248,8 +222,8 @@
 			packageReferences = (
 				488158102C3C3CB6002A9CB4 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				488158132C3C3CCC002A9CB4 /* XCRemoteSwiftPackageReference "Moya" */,
+				4881581C2C3C3CD8002A9CB4 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
-			preferredProjectObjectVersion = 73;
 			productRefGroup = 481C77BA2C3A6C70005D60EB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -275,6 +249,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5518CED22C3D5319007753F6 /* LoginData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,7 +316,6 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = "";
 			};
 			name = Debug;
 		};
@@ -397,7 +371,6 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_VERSION = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -502,6 +475,14 @@
 				minimumVersion = 15.0.3;
 			};
 		};
+		4881581C2C3C3CD8002A9CB4 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.22.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -529,6 +510,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 488158132C3C3CCC002A9CB4 /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = RxMoya;
+		};
+		4881581D2C3C3CD8002A9CB4 /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4881581C2C3C3CD8002A9CB4 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

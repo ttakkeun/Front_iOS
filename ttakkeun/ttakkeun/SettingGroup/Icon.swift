@@ -29,6 +29,11 @@ enum Icon: String {
     
     // MARK: - Home
     case editProfile = "editProfile"
+    case homeClaw = "homeClaw"
+    case homeEar = "homeEar"
+    case homeEye = "homeEye"
+    case homeHair = "homeHair"
+    case homeTeeth = "homeTeeth"
     case changeCard = "changeCard"
     
     var image: Image {
