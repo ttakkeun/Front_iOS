@@ -33,7 +33,10 @@ extension Color {
     static let afterHair_Color = Color("afterHair")
     
     static let primaryColor_Color = Color("primaryColor01")
+    
     static let BorderColor_Color = Color("BorderColor")
+    static let borderGray_Color = Color("borderGray")
+    
     static let fontColor_Color = Color("fontColor")
     static let backColor_Color = Color("backColor")
     static let subProfileColor_Color = Color("subProfileColor")
@@ -41,6 +44,7 @@ extension Color {
     static let weekBar_Color = Color("weekBar")
     
     static let sheetIndicator_Color = Color("sheetIndicator")
+    
     
 }
 
