@@ -89,8 +89,8 @@ struct CustomDiary: View {
     ///달력 일자 표시
     private var calendarGridView: some View {
         let dates = viewModel.generateMonthDates()
-        /* 주차 막대 표시하기 위해 필요한 변수, 주차막대 코드 안 넣어서 경고 뜸*/
-        let currentWeek = viewModel.getCurrentWeek()
+        //TODO: - 주차 막대 표시하기 위해 필요한 변수, 추가 필요
+//        let currentWeek = viewModel.getCurrentWeek()
         let cellWidth: CGFloat = 41
         let cellHeight: CGFloat = 36
 
@@ -111,6 +111,8 @@ struct CustomDiary: View {
                         let isSelected = Calendar.current.isDate(date, inSameDayAs: viewModel.selectedDate)
                         
                         ZStack {
+                            //TODO: - 주차막대 추가 필요
+                            /* 주차 막대 컴포넌트(WeekBar)로 주차막대 만들어서 그 주에 표시해야 함 */
                             CellView(day: day, isSelected: isSelected)
                                 .frame(width: cellWidth, height: cellHeight)
                                 .onTapGesture {

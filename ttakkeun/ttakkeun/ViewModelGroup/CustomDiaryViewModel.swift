@@ -77,20 +77,29 @@ class CustomDiaryViewModel: ObservableObject {
         }
     }
     
-    /// 현재 주에 해당하는 날짜들을 반환 -> 주차 막대
-    public func getCurrentWeek() -> [Date?] {
-        var currentWeek: [Date?] = []
-        let today = Date()
-        guard let startOfWeek = calendar.dateInterval(of: .weekOfMonth, for: today)?.start else { return currentWeek }
-        
-        for i in 0..<7 {
-            if let date = calendar.date(byAdding: .day, value: i, to: startOfWeek) {
-                currentWeek.append(date)
-            }
-        }
-        
-        return currentWeek
-    }
+    //TODO: - 주차 막대 표시를 위한 현재 주 해당 날짜 반환
+//    /// 현재 주에 해당하는 날짜들을 반환 -> 주차 막대
+//    public func getCurrentWeek() -> [Date?] {
+//        var currentWeek: [Date?] = []
+//        let today = Date()
+//        guard let startOfWeek = calendar.dateInterval(of: .weekOfMonth, for: today)?.start else { return currentWeek }
+//        
+//        for i in 0..<7 {
+//            if let date = calendar.date(byAdding: .day, value: i, to: startOfWeek) {
+//                currentWeek.append(date)
+//            }
+//        }
+//        
+//        return currentWeek
+//    }
+    
+    //TODO: - 주차 막대 표시를 위한 현재 주차 시작과 끝 날짜 반환 함
+//    /// 주차 막대 표시를 위한 현재 주차의 시작과 끝 날짜 반환
+//    public func getWeekRange(for date: Date) -> (start: Date, end: Date)? {
+//        guard let startOfWeek = calendar.dateInterval(of: .weekOfMonth, for: date)?.start else { return nil }
+//        guard let endOfWeek = calendar.date(byAdding: .day, value: 6, to: startOfWeek) else { return nil }
+//        return (start: startOfWeek, end: endOfWeek)
+//    }
 
     /// 월별 날짜 배열 반환
     public func generateMonthDates() -> [Date?] {
