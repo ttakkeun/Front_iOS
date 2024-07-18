@@ -85,12 +85,11 @@
 		48B249C22C45048E00AF1F87 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Home/HomeNotTodo.swift,
-				Home/HomeNotTodoCircle.swift,
-				Home/HomeProfileCard.swift,
 				Home/HomeBackCard.swift,
 				Home/HomeDragView.swift,
 				Home/HomeFrontCard.swift,
+				Home/HomeNotTodo.swift,
+				Home/HomeNotTodoCircle.swift,
 				Home/ProfileImageCard.swift,
 				Home/TestDragView.swift,
 				Profile/ProfileSelect.swift,
