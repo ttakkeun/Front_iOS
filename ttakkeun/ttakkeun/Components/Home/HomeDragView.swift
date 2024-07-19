@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+/// 홈화면 드래그 뷰
 struct HomeDragView: View {
     
     @State private var offset: CGFloat
@@ -28,6 +29,7 @@ struct HomeDragView: View {
             let minOffset: CGFloat = screenHeight * 0.67
             let maxOffset: CGFloat = screenHeight * 0.3
             
+            /* 임계값을 두어 드래그뷰를 위 아래로 조절한다. */
             VStack {
                 Capsule()
                     .fill(Color.sheetIndicator_Color)
