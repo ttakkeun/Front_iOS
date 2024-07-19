@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import PhotosUI
 
-struct RegistImagePicker: UIViewControllerRepresentable {
+struct PetImagePicker: UIViewControllerRepresentable {
     @Environment(\.dismiss) var dismiss
     var imageHandler: ImageHandling
     
@@ -30,10 +30,10 @@ struct RegistImagePicker: UIViewControllerRepresentable {
     }
     
     class Coordinator: NSObject, PHPickerViewControllerDelegate {
-        var parent: RegistImagePicker
+        var parent: PetImagePicker
         var imageHandler: ImageHandling
         
-        init(_ parent: RegistImagePicker, imageHandler: ImageHandling) {
+        init(_ parent: PetImagePicker, imageHandler: ImageHandling) {
             self.parent = parent
             self.imageHandler = imageHandler
         }

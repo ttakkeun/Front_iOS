@@ -64,7 +64,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				ImagePicker/ImageHandling.swift,
-				ImagePicker/RegistImagePicker.swift,
+				ImagePicker/PetImagePicker.swift,
+				ImagePicker/ProfileImageRegistPicker.swift,
 				KeyChain/KeyChainManager.swift,
 				KeyChain/UserInfo.swift,
 				LoginManager/AppleLoginManager.swift,
