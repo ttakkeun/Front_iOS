@@ -97,7 +97,7 @@ struct ProfileSelect: View {
                         .font(.suit(type: .medium, size: 12))
                         .foregroundStyle(Color.subProfileColor_Color)
                 })
-                
+
                 petProfileImage
             })
             .frame(width: 213, height: 286)
