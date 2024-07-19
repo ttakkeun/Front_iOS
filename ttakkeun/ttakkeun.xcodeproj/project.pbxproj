@@ -96,6 +96,7 @@
 				Home/TestDragView.swift,
 				Profile/ProfileSelect.swift,
 				Schedule/CustomDiary.swift,
+				Schedule/TodoCompleteEach.swift,
 				Schedule/WeekBar.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -117,6 +118,7 @@
 				HomeProfileData.swift,
 				LoginData.swift,
 				PetProfileData.swift,
+				TodoCompleteData.swift,
 				UserRecommendProductData.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
