@@ -63,6 +63,8 @@
 		4863B2AA2C3D166000BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				ImagePicker/ImageHandling.swift,
+				ImagePicker/RegistImagePicker.swift,
 				KeyChain/KeyChainManager.swift,
 				KeyChain/UserInfo.swift,
 				LoginManager/AppleLoginManager.swift,
@@ -179,8 +181,8 @@
 		481C77BB2C3A6C70005D60EB /* ttakkeun */ = {
 			isa = PBXGroup;
 			children = (
-				48DDC3232C43D1CF0058EBFF /* EnumFile */,
 				4835589F2C3D0A6B006AB282 /* Info.plist */,
+				48DDC3232C43D1CF0058EBFF /* EnumFile */,
 				4863B2AF2C3D16AD00BDA2B4 /* APITarget */,
 				4863B2A62C3D163C00BDA2B4 /* File */,
 				48B249BD2C45048E00AF1F87 /* Components */,
