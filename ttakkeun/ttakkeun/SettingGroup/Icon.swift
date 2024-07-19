@@ -29,6 +29,19 @@ enum Icon: String {
     
     // MARK: - Home
     case editProfile = "editProfile"
+    case homeClaw = "homeClaw"
+    case homeEar = "homeEar"
+    case homeEye = "homeEye"
+    case homeHair = "homeHair"
+    case homeTeeth = "homeTeeth"
+    case changeCard = "changeCard"
+    case topRank = "topRank"
+    case bottomRank = "bottomRank"
+    
+    // MARK: - ETC
+    case alarm = "alarm"
+    case setting = "setting"
+    case glass = "glass"
     
     var image: Image {
         return Image(self.rawValue)

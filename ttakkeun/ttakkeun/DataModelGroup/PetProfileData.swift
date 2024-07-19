@@ -7,6 +7,7 @@
 
 import Foundation
 
+///  프로필 선택 뷰의 데이터
 struct PetProfileData {
     var name: String
     var date: String
