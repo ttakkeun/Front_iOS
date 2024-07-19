@@ -25,7 +25,6 @@ struct WeekBar: View {
             .fill(Color.weekBar_Color)
             .frame(width: width, height: height)
     }
-    
 }
 
 #Preview {
