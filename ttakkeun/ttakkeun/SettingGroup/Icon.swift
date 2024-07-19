@@ -41,6 +41,7 @@ enum Icon: String {
     // MARK: - ETC
     case alarm = "alarm"
     case setting = "setting"
+    case glass = "glass"
     
     var image: Image {
         return Image(self.rawValue)
