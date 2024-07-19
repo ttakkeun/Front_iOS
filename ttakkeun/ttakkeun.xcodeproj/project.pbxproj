@@ -87,7 +87,6 @@
 			membershipExceptions = (
 				Home/HomeProfileCard.swift,
 				Profile/ProfileSelect.swift,
-				Schedule/CustomDatePickerView.swift,
 				Schedule/CustomDiary.swift,
 				Schedule/DiarySelectSheet.swift,
 				Schedule/WeekBar.swift,

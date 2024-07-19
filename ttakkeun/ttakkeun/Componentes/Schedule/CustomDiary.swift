@@ -24,65 +24,49 @@ struct CustomDiary: View {
     
     //MARK: - 컴포넌트
     var body: some View {
-        VStack {
-            Spacer().frame(height: 10)
+        VStack(alignment: .leading, spacing: 8) {
             headerView
-            Spacer().frame(height: 10)
+                .padding(.horizontal,23)
             calendarGridView
-            Spacer().frame(height: 15)
+                .padding(.horizontal,23)
         }
-        .background(Color.primaryColor_Color)
-        .cornerRadius(20)
-        .padding()
-        .frame(width: 350, height: 319)
-            
+        .frame(maxWidth: 350, maxHeight: 296)
+        .background(Color.calendar_Color)
+        .clipShape(.rect(cornerRadius:20))
     }
     
     /// 헤더 -> 년월 + 화살표
     private var headerView: some View {
-        HStack {
-            Spacer().frame(width: 5)
+        HStack(spacing: 45) {
             Button(action: {
                 isPickerPresented.toggle()
             }) {
                 HStack {
                     Text(viewModel.month, formatter: dateFormatter)
-                        .font(.system(size: 16))
+                        .font(.suit(type: .semibold, size: 16))
                         .fontWeight(.semibold)
                         .foregroundStyle(.black)
                     Image("downArrow")
                         .resizable()
                         .frame(width: 16, height: 16)
                 }
+                .frame(maxWidth: 160, alignment: .leading)
             }
-            Spacer()
+            
             changeMonthArrow
         }
-        .padding(.horizontal)
+        .frame(width: 306, height: 34)
         .sheet(isPresented: $isPickerPresented) {
-            DiarySelectSheet(selectedDate: $viewModel.month, isPresented: $isPickerPresented)
-                .presentationDetents([.fraction(0.4)])
+            DiarySelectSheet(selectedDate: $viewModel.month)
+                .presentationDetents([.fraction(0.3)])
         }
     }
     
     ///화살표
     private var changeMonthArrow: some View {
-        HStack(alignment: .center, spacing: 10, content: {
-            Button(action: {
-                viewModel.changeMonth(by: -1)
-            }) {
-                Image(systemName: "chevron.left")
-                    .padding()
-                    .foregroundStyle(Color.black)
-            }
-            
-            Button(action: {
-                viewModel.changeMonth(by: 1)
-            }) {
-                Image(systemName: "chevron.right")
-                    .padding()
-                    .foregroundStyle(Color.black)
-            }
+        HStack(alignment: .center, spacing: 24, content: {
+            changeMonthArrow(monthBy: -1, name: "chevron.left")
+            changeMonthArrow(monthBy: 1, name: "chevron.right")
         })
     }
     
@@ -91,17 +75,21 @@ struct CustomDiary: View {
         let dates = viewModel.generateMonthDates()
         //TODO: - 주차 막대 표시하기 위해 필요한 변수, 추가 필요
 //        let currentWeek = viewModel.getCurrentWeek()
-        let cellWidth: CGFloat = 41
+        let cellWidth: CGFloat = 36
         let cellHeight: CGFloat = 36
 
-        return LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 100)), count: 7), spacing: 3) {
+        return LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 36)), count: 7), spacing: 3) {
             /* Grid로 요일과 날짜 모두 출력 */
             /* 요일 출력 */
             ForEach(weekdaySymbols, id: \.self) { symbol in
                 Text(symbol)
-                    .font(.suit(type: .bold, size: 12))
-                    .foregroundColor(Color.black)
+                    .font(.suit(type: .medium, size: 14))
+                    .foregroundStyle(Color.mainTextColor_Color)
             }
+            .padding(.top, 5)
+            
+            
+            
             /* 일자 출력 */
             ForEach(dates.indices, id: \.self) { index in
                 let date = dates[index]
@@ -122,19 +110,36 @@ struct CustomDiary: View {
                         }
                     } else {
                         RoundedRectangle(cornerRadius: 5)
-                            .foregroundColor(Color.clear)
+                            .foregroundStyle(Color.clear)
                             .frame(width: cellWidth, height: cellHeight)
                     }
                 }
             }
         }
-        .padding(.horizontal)
+        .frame(maxWidth: 307)
+        
+    }
+    // MARK: - Function
+    private func changeMonthArrow(monthBy: Int, name: String) -> some View {
+        Button(action: {
+            viewModel.changeMonth(by: monthBy)
+        }) {
+            Image(systemName: name)
+                .resizable()
+                .frame(width: 7, height: 12)
+                .padding(.vertical, 11)
+                .padding(.horizontal, 13)
+                .foregroundStyle(Color.black)
+        }
     }
 
 }
 
+
+// MARK: - Cell Struct
+
 /// 달력 하나(하루)의 셀
-private struct CellView: View {
+fileprivate struct CellView: View {
     var day: Int
     var isSelected: Bool
 
@@ -150,11 +155,11 @@ private struct CellView: View {
                     .fill(Color.BorderColor_Color)
                     .frame(width: 36, height: 36)
                     .overlay(Text(String(day))
-                                .foregroundColor(.black))
-                                .font(.system(size: 11))
+                        .foregroundColor(Color.mainTextColor_Color))
+                    .font(.suit(type: .medium, size: 14))
             } else {
                 Text(String(day))
-                    .font(.system(size: 11))
+                    .font(.suit(type: .medium, size: 14))
                     .background(Color.clear)
             }
         }
@@ -167,7 +172,6 @@ struct CustomDiaryComponent_Previews: PreviewProvider {
     static var previews: some View {
         CustomDiary(viewModel: CustomDiaryViewModel(month: Date(), calendar: Calendar.current))
             .previewLayout(.sizeThatFits)
-            .padding()
     }
 }
 
