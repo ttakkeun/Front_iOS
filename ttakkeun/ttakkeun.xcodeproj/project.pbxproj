@@ -85,6 +85,7 @@
 		48B249C22C45048E00AF1F87 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				ETC/CustomAlert.swift,
 				ETC/CustomTextField.swift,
 				ETC/topStatusBar.swift,
 				Home/HomeAIRecommendProduct.swift,

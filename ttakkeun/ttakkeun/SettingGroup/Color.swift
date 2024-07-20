@@ -45,6 +45,7 @@ extension Color {
     
     static let sheetIndicator_Color = Color("sheetIndicator")
     
-    
+    static let yesBtn_Color = Color("yesBtn")
+    static let noBtn_Color = Color("noBtn")
 }
 
