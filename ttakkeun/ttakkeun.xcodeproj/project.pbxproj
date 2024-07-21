@@ -22,6 +22,28 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		482855322C4A5FE300A2DC80 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ETC/CustomAlert.swift,
+				ETC/CustomTextField.swift,
+				ETC/topStatusBar.swift,
+				Home/HomeAIRecommendProduct.swift,
+				Home/HomeBackCard.swift,
+				Home/HomeDragView.swift,
+				Home/HomeFrontCard.swift,
+				Home/HomeNotTodo.swift,
+				Home/HomeNotTodoCircle.swift,
+				"Home/HomeUserRecommendProduct 2.swift",
+				Home/ProfileImageCard.swift,
+				Profile/ProfileSelect.swift,
+				Schedule/CustomDiary.swift,
+				Schedule/DiarySelectSheet.swift,
+				Schedule/TodoCompleteEach.swift,
+				Schedule/WeekBar.swift,
+			);
+			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
+		};
 		4835588A2C3D08E1006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -63,6 +85,9 @@
 		4863B2AA2C3D166000BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				ImagePicker/ImageHandling.swift,
+				ImagePicker/PetImagePicker.swift,
+				ImagePicker/ProfileImageRegistPicker.swift,
 				KeyChain/KeyChainManager.swift,
 				KeyChain/UserInfo.swift,
 				LoginManager/AppleLoginManager.swift,
@@ -79,27 +104,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AuthAPITarget.swift,
-			);
-			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
-		};
-		48B249C22C45048E00AF1F87 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				ETC/CustomAlert.swift,
-				ETC/CustomTextField.swift,
-				ETC/topStatusBar.swift,
-				Home/HomeAIRecommendProduct.swift,
-				Home/HomeBackCard.swift,
-				Home/HomeDragView.swift,
-				Home/HomeFrontCard.swift,
-				Home/HomeNotTodo.swift,
-				Home/HomeNotTodoCircle.swift,
-				Home/HomeUserRecommendProduct.swift,
-				Home/ProfileImageCard.swift,
-				Home/TestDragView.swift,
-				Profile/ProfileSelect.swift,
-				Schedule/CustomDiary.swift,
-				Schedule/WeekBar.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -120,6 +124,7 @@
 				HomeProfileData.swift,
 				LoginData.swift,
 				PetProfileData.swift,
+				TodoCompleteData.swift,
 				UserRecommendProductData.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -134,12 +139,12 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		4828552E2C4A5FD000A2DC80 /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (482855322C4A5FE300A2DC80 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
 		483558842C3D083F006AB282 /* SettingGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4835588A2C3D08E1006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = SettingGroup; sourceTree = "<group>"; };
 		483558862C3D084F006AB282 /* ViewGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (483558A32C3D0F13006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewGroup; sourceTree = "<group>"; };
 		4835588B2C3D0928006AB282 /* Fonts */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4835589E2C3D0A35006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Fonts; sourceTree = "<group>"; };
 		4863B2A62C3D163C00BDA2B4 /* File */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2AA2C3D166000BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = File; sourceTree = "<group>"; };
 		4863B2AF2C3D16AD00BDA2B4 /* APITarget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = APITarget; sourceTree = "<group>"; };
-		48B249BD2C45048E00AF1F87 /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48B249C22C45048E00AF1F87 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
 		48D5D12B2C3E825500B2E6D5 /* ViewModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewModelGroup; sourceTree = "<group>"; };
 		48D5D12E2C3E827800B2E6D5 /* DataModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = DataModelGroup; sourceTree = "<group>"; };
 		48DDC3232C43D1CF0058EBFF /* EnumFile */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = EnumFile; sourceTree = "<group>"; };
@@ -180,11 +185,11 @@
 		481C77BB2C3A6C70005D60EB /* ttakkeun */ = {
 			isa = PBXGroup;
 			children = (
-				48DDC3232C43D1CF0058EBFF /* EnumFile */,
 				4835589F2C3D0A6B006AB282 /* Info.plist */,
+				4828552E2C4A5FD000A2DC80 /* Components */,
+				48DDC3232C43D1CF0058EBFF /* EnumFile */,
 				4863B2AF2C3D16AD00BDA2B4 /* APITarget */,
 				4863B2A62C3D163C00BDA2B4 /* File */,
-				48B249BD2C45048E00AF1F87 /* Components */,
 				48D5D12E2C3E827800B2E6D5 /* DataModelGroup */,
 				48D5D12B2C3E825500B2E6D5 /* ViewModelGroup */,
 				483558862C3D084F006AB282 /* ViewGroup */,

@@ -42,6 +42,8 @@ extension Color {
     static let subProfileColor_Color = Color("subProfileColor")
     static let editColor_Color = Color("editColor")
     static let weekBar_Color = Color("weekBar")
+    static let planCard_Color = Color("planCard")
+    static let calendar_Color = Color("calendar")
     
     static let sheetIndicator_Color = Color("sheetIndicator")
     

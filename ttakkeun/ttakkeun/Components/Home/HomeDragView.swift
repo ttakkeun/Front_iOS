@@ -2,9 +2,8 @@
 //  HomeDragView.swift
 //  ttakkeun
 //
-//  Created by 정의찬 on 7/17/24.
+//  Created by 정의찬 on 7/19/24.
 //
-
 
 import SwiftUI
 
