@@ -46,5 +46,8 @@ extension Color {
     static let calendar_Color = Color("calendar")
     
     static let sheetIndicator_Color = Color("sheetIndicator")
+    
+    static let yesBtn_Color = Color("yesBtn")
+    static let noBtn_Color = Color("noBtn")
 }
 
