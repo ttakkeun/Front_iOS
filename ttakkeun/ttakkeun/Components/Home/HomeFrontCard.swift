@@ -29,7 +29,7 @@ struct HomeFrontCard: View {
             HStack(content: {
                 Text("PET CARD")
                     .font(.suit(type: .extraBold, size: 12))
-                    .foregroundStyle(Color.subTextColor_Color)
+                    .foregroundStyle(Color.gray_400)
                 
                 Spacer()
             })
@@ -75,7 +75,7 @@ struct HomeFrontCard: View {
             
             Text(viewModel.profileData?.date ?? "")
                 .font(.suit(type: .bold, size: 10))
-                .foregroundStyle(Color.subProfileColor_Color)
+                .foregroundStyle(Color.gray_400)
         })
         .padding(.top, 10)
     }

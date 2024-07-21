@@ -31,7 +31,7 @@ struct HomeAIRecommendProduct: View {
         .overlay(
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color.clear)
-                .stroke(Color.borderGray_Color, lineWidth: 1)
+                .stroke(Color.gray_200, lineWidth: 1)
         )
         .padding([.vertical, .horizontal], 14)
     }
@@ -69,12 +69,12 @@ struct HomeAIRecommendProduct: View {
         VStack(alignment: .leading, spacing: 6) {
             Text(productData.name.split(separator: "").joined(separator: "\u{200B}"))
                 .font(.suit(type: .semibold, size: 14))
-                .foregroundStyle(Color.mainTextColor_Color)
+                .foregroundStyle(Color.gray_900)
                 .lineLimit(nil)
                 .lineSpacing(1.5)
             Text("\(formattedPrice)원")
                 .font(.suit(type: .bold, size: 16))
-                .foregroundStyle(Color.mainTextColor_Color)
+                .foregroundStyle(Color.gray_900)
         }
         .frame(maxWidth: 137)
     }

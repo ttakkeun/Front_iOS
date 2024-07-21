@@ -93,17 +93,17 @@ struct HomeUserRecommendProduct: View {
         VStack(alignment: .leading, spacing: 4, content: {
             Text(productData.productTitle.split(separator: "").joined(separator: "\u{200B}"))
                 .font(.suit(type: .medium, size: 10))
-                .foregroundStyle(Color.mainTextColor_Color)
+                .foregroundStyle(Color.gray_900)
                 .lineLimit(nil)
                 .lineSpacing(1.5)
             
             Text("\(formattedPrice)원")
                 .font(.suit(type: .medium, size: 12))
-                .foregroundStyle(Color.mainTextColor_Color)
+                .foregroundStyle(Color.gray_900)
             
             Text(productData.productCompany)
                 .font(.suit(type: .regular, size: 8))
-                .foregroundStyle(Color.subTextColor_Color)
+                .foregroundStyle(Color.gray_400)
         })
         
     }

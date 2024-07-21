@@ -42,7 +42,7 @@ struct TodoCompleteEach: View {
     private var upperView: some View {
         UnevenRoundedRectangle()
             .clipShape(.rect(topLeadingRadius: 30, bottomLeadingRadius: 10, bottomTrailingRadius: 10, topTrailingRadius: 30))
-            .foregroundStyle(Color.planCard_Color)
+            .foregroundStyle(Color.scheduleCard_Color)
             .frame(width: 60, height: 81)
     }
     
@@ -54,11 +54,11 @@ struct TodoCompleteEach: View {
             
             partName
                 .font(.suit(type: .semibold, size: 14))
-                .foregroundStyle(Color.mainTextColor_Color)
+                .foregroundStyle(Color.gray_900)
             
             Text("\(Int((data.currentInt / data.totalInt) * 100))%")
                 .font(.suit(type: .regular, size: 12))
-                .foregroundStyle(Color.subTextColor_Color)
+                .foregroundStyle(Color.gray_400)
         })
         .frame(maxWidth: 37, maxHeight: 69)
     }

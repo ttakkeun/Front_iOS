@@ -67,7 +67,7 @@ struct ProfileSelect: View {
             VStack(alignment: .center, spacing: 18, content: {
                 Text("새로운 가족 추가하기")
                     .font(.suit(type: .bold, size: 16))
-                    .foregroundStyle(Color.mainTextColor_Color)
+                    .foregroundStyle(Color.gray_900)
                 Image(systemName: "plus")
                     .resizable()
                     .foregroundStyle(Color.black)
@@ -92,10 +92,10 @@ struct ProfileSelect: View {
                 VStack(spacing: 10, content: {
                     Text(data.name)
                         .font(.suit(type: .bold, size: 18))
-                        .foregroundStyle(Color.mainTextColor_Color)
+                        .foregroundStyle(Color.gray_900)
                     Text(data.date)
                         .font(.suit(type: .medium, size: 12))
-                        .foregroundStyle(Color.subProfileColor_Color)
+                        .foregroundStyle(Color.subProfileColor)
                 })
 
                 petProfileImage
