@@ -18,7 +18,7 @@ struct ProfileView: View {
         VStack(alignment: .center, spacing: 20, content: {
             Text("따끈")
                 .font(.santokki(type: .regular, size: 40))
-                .foregroundStyle(Color.mainTextColor_Color)
+                .foregroundStyle(Color.gray_900)
                 .frame(maxHeight: 80)
             Text("새로운 가족을 등록해주세요!")
                 .font(.suit(type: .bold, size: 20))

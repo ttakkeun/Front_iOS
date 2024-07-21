@@ -85,7 +85,7 @@ struct CustomTextField: View {
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .inset(by: 0.5)
-                    .stroke(Color.borderGray_Color, lineWidth: 1)
+                    .stroke(Color.gray_200, lineWidth: 1)
             )
             .onTapGesture {
                 if !isTextFocused {
@@ -106,7 +106,7 @@ struct CustomTextField: View {
             if text.isEmpty && !isTextFocused {
                 Text(placeHolder)
                     .font(.suit(type: .medium, size: fontSize))
-                    .foregroundStyle(Color.borderGray_Color)
+                    .foregroundStyle(Color.gray_200)
                     .allowsHitTesting(false)
             }
         })

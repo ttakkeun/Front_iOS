@@ -9,45 +9,72 @@ import Foundation
 import SwiftUI
 
 extension Color {
-    static let card001_Color = Color("card001")
-    static let card002_Color = Color("card002")
-    static let card003_Color = Color("card003")
-    static let card004_Color = Color("card004")
-    static let card005_Color = Color("card005")
     
-    static let profileFront_Color = Color("profileFront")
-    static let mainTextColor_Color = Color("mainTextColor")
-    static let subTextColor_Color = Color("subTextColor")
-    static let unClickedTab_Color = Color("unclikedTab")
+    // MARK: - PrimaryColor
+    static let primarycolor_100 = Color("Primarycolor_100") /* #FAFBDA 78% */
+    static let primarycolor_200 = Color("Primarycolor_200") /* #F3F6AC 78% */
+    static let primarycolor_300 = Color("Primarycolor_300") /* #EDF17E 78% */
+    static let primarycolor_400 = Color("Primarycolor_400") /* #E6EC50 78% */
+    static let primarycolor_500 = Color("Primarycolor_500") /* #DFE722 78% */
+    static let primarycolor_600 = Color("Primarycolor_600") /* #BBC115 78% */
+    static let primarycolor_700 = Color("Primarycolor_700") /* #8E9310 78% */
     
-    static let beforeClaw_Color = Color("beforeClaw")
-    static let beforeTeeth_Color = Color("beforeTeeth")
-    static let beforeEar_Color = Color("beforeEar")
-    static let beforeEye_Color = Color("beforeEye")
-    static let beforeHair_COlor = Color("beforeHair")
+    // MARK: - Gray
+    static let gray_200 = Color("Gray_200") /* #D1D1D1 100% */
+    static let gray_300 = Color("Gray_300") /* #B8B8B8 100% */
+    static let gray_400 = Color("Gray_400") /* #9E9E9E 100% */
+    static let gray_500 = Color("Gray_500") /* #858585 100% */
+    static let gray_600 = Color("Gray_600") /* #6B6B6B 100% */
+    static let gray_700 = Color("Gray_700") /* #525252 100% */
+    static let gray_800 = Color("Gray_800") /* #383838 100% */
+    static let gray_900 = Color("Gray_900") /* #1F1F1F 100% */
     
-    static let afterClaw_Color = Color("afterClaw")
-    static let afterTeeth_Color = Color("afterTeeth")
-    static let afterEar_Color = Color("afterEar")
-    static let afterEye_Color = Color("afterEye")
-    static let afterHair_Color = Color("afterHair")
+    // MARK: - Profile
+    static let card001_Color = Color("Card001") /* #FFAE90 100% */
+    static let card002_Color = Color("Card002") /* #9EBFFF 100% */
+    static let card003_Color = Color("Card003") /* #F6FC47 100% */
+    static let card004_Color = Color("Card004") /* #FFB84F 100% */
+    static let card005_Color = Color("Card005") /* #CCB4FF 100% */
+    static let subProfileColor = Color("SubProfileColor") /* #8F8F8F 100% */
     
-    static let primaryColor_Color = Color("primaryColor01")
+    // MARK: - Border
+    static let fabPencil_Color = Color("FabPencil") /* #444444 100% */
     
-    static let BorderColor_Color = Color("BorderColor")
-    static let borderGray_Color = Color("borderGray")
+    // MARK: - HomeTodo
+    static let beforeTeeth_Color = Color("BeforeTeeth") /* #CCB4FF 40% */
+    static let beforeClaw_Color = Color("BeforeClaw") /* #FFAE90 40% */
+    static let beforeEar_Color = Color("BeforeEar") /* #F5FC47 40% */
+    static let beforeEye_Color = Color("BeforeEye") /* #FFB84F 40% */
+    static let beforeHair_COlor = Color("BeforeHair") /* #9EBFFF 40% */
     
-    static let fontColor_Color = Color("fontColor")
-    static let backColor_Color = Color("backColor")
-    static let subProfileColor_Color = Color("subProfileColor")
-    static let editColor_Color = Color("editColor")
-    static let weekBar_Color = Color("weekBar")
-    static let planCard_Color = Color("planCard")
-    static let calendar_Color = Color("calendar")
+    static let afterTeeth_Color = Color("AfterTeeth") /* #E3D8FB 100% */
+    static let afterClaw_Color = Color("AfterClaw") /* #FBD8CC 100% */
+    static let afterEar_Color = Color("AfterEar") /* #F3F6A8 100% */
+    static let afterEye_Color = Color("AfterEye") /* #F9E0BB 100% */
+    static let afterHair_Color = Color("AfterHair") /* #B2CAFA 100% */
     
-    static let sheetIndicator_Color = Color("sheetIndicator")
+    // MARK: - Tab
+    static let unClickedTab_Color = Color("unclikedTab") /* #FFFFFF 50% */
     
-    static let yesBtn_Color = Color("yesBtn")
-    static let noBtn_Color = Color("noBtn")
+    // MARK: - MainTheme
+    static let primaryColor_Main = Color("PrimaryColor_Main") /* #E2EA22 78% */
+    
+    
+    // MARK: - Background/Home
+    static let productCard_Color = Color("ProductCard") /* #EBEBEB 100% */
+    static let offTodo_COlor = Color("OffTodo") /* #D6D6D6 100% */
+    
+    // MARK: - Diagnosis
+    static let modalBg_Color = Color("ModalBg") /* #FAFBDA 100% */
+    static let cardclip_Color = Color("Cardclip") /* #C8C7C7 100% */
+    static let mainBg_Color = Color("MainBg") /* #ECF083 100% */
+    static let checkBg_Color = Color("CheckBg") /* #EEEEEE 100% */
+    static let postBg_Color = Color("PostBg") /* #F8F8F8 100% */
+    
+    // MARK: - Schedule
+    static let scheduleCard_Color = Color("ScheduleCard") /* #F6F6F6 100% */
+    
+    // MARK: - ProfileBtn
+    static let btnBackground_Color = Color("BtnBackground") /* #D9D9D9 100% */
 }
 

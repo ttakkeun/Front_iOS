@@ -50,7 +50,7 @@ struct LoginView: View {
             
             Text("'따끈'하게 '닦은', AI 반려동물 스킨케어 서비스")
                 .font(.suit(type: .medium, size: 14))
-                .foregroundStyle(Color.mainTextColor_Color)
+                .foregroundStyle(Color.black)
             
         }
     }
@@ -62,7 +62,7 @@ struct LoginView: View {
                 .fixedSize()
             Text("따끈")
                 .font(.santokki(type: .regular, size: 60))
-                .foregroundStyle(Color.mainTextColor_Color)
+                .foregroundStyle(Color.black)
                 .frame(width: 116, height: 50)
         })
     }

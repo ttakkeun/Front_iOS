@@ -31,7 +31,7 @@ struct CustomDiary: View {
                 .padding(.horizontal,23)
         }
         .frame(maxWidth: 350, maxHeight: 296)
-        .background(Color.calendar_Color)
+        .background(Color.primarycolor_400)
         .clipShape(.rect(cornerRadius:20))
     }
     
@@ -84,7 +84,7 @@ struct CustomDiary: View {
             ForEach(weekdaySymbols, id: \.self) { symbol in
                 Text(symbol)
                     .font(.suit(type: .medium, size: 14))
-                    .foregroundStyle(Color.mainTextColor_Color)
+                    .foregroundStyle(Color.gray_900)
             }
             .padding(.top, 5)
             
@@ -152,10 +152,10 @@ fileprivate struct CellView: View {
         VStack {
             if isSelected {
                 Circle()
-                    .fill(Color.BorderColor_Color)
+                    .fill(Color.primarycolor_700)
                     .frame(width: 36, height: 36)
                     .overlay(Text(String(day))
-                        .foregroundColor(Color.mainTextColor_Color))
+                        .foregroundColor(Color.gray_900))
                     .font(.suit(type: .medium, size: 14))
             } else {
                 Text(String(day))
