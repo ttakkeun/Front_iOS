@@ -10,7 +10,7 @@ import Moya
 
 /// 토큰 Refresh 초기화 API 호출
 enum AuthAPITarget {
-    case refreshToken
+    case refreshToken(refreshToken: String)
 }
 
 extension AuthAPITarget: TargetType {

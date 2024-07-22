@@ -34,7 +34,7 @@ class TokenProvider: TokenProviding {
     func refreshToken(completion: @escaping (String?, Error?) -> Void) {
         guard let userInfo = keyChain.loadSession(for: "userSession") else { return }
         
-        provider.request(.refreshToken) { result in
+        provider.request(.refreshToken(refreshToken: userInfo.refreshToken ?? "")) { result in
             switch result {
             case .success(let response):
                 do {

@@ -32,7 +32,7 @@ extension Color {
     // MARK: - Profile
     static let card001_Color = Color("Card001") /* #FFAE90 100% */
     static let card002_Color = Color("Card002") /* #9EBFFF 100% */
-    static let card003_Color = Color("Card003") /* #F6FC47 100% */
+    static let card003_Color = Color("Card003") /* #FFEE52 100% */
     static let card004_Color = Color("Card004") /* #FFB84F 100% */
     static let card005_Color = Color("Card005") /* #CCB4FF 100% */
     static let subProfileColor = Color("SubProfileColor") /* #8F8F8F 100% */
