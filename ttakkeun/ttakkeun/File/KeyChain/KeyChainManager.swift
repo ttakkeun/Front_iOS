@@ -95,12 +95,12 @@ class KeyChainManager: @unchecked Sendable {
     /// - Parameters:
     ///   - nickName: 업데이트 하고자 하는 닉네임 업데이트
     ///   - key: 유저 정보 키
-    public func updateName(_ name: String, for key: String) {
+    public func updateEmail(_ email: String, for key: String) {
         if var userInfo = KeyChainManager.standard.loadSession(for: key) {
-            userInfo.name = name
+            userInfo.email = email
             
             let updated = KeyChainManager.standard.saveSession(userInfo, for: key)
-            print("닉네임 업데이트 완료 : \(updated)")
+            print("이메일 업데이트 완료 : \(updated)")
         } else {
             print("닉네임 업데이트 불가")
         }
