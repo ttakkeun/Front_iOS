@@ -22,7 +22,7 @@ struct HomeNotTodo: View {
         .frame(width: 273, height: 147)
         .background(
             RoundedRectangle(cornerRadius: 20)
-                .stroke(Color.subProfileColor_Color)
+                .stroke(Color.gray_900)
         )
     }
     

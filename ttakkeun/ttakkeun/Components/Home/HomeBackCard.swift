@@ -25,7 +25,7 @@ struct HomeBackCard: View {
             HStack(content: {
                 Text("저는 이런 고양이에요!")
                     .font(.suit(type: .medium, size: 12))
-                    .foregroundStyle(Color.subTextColor_Color)
+                    .foregroundStyle(Color.gray_400)
                 
                 Spacer()
             })
@@ -81,7 +81,7 @@ struct HomeBackCard: View {
                 
                 Text(viewModel.profileData?.date ?? "2024.07.17")
                     .font(.suit(type: .bold, size: 10))
-                    .foregroundStyle(Color.subProfileColor_Color)
+                    .foregroundStyle(Color.gray_400)
             })
             .padding(.top, 10)
     }
@@ -117,10 +117,10 @@ struct HomeBackCard: View {
             .frame(maxWidth: 90, maxHeight: 24)
             .clipShape(.rect(cornerRadius: 25))
             .font(.suit(type: .semibold, size: 10))
-            .foregroundStyle(Color.mainTextColor_Color)
+            .foregroundStyle(Color.gray_900)
             .overlay(
                 RoundedRectangle(cornerRadius: 25)
-                    .stroke(Color.BorderColor_Color)
+                    .stroke(Color.primarycolor_700)
             )
     }
     
@@ -129,7 +129,7 @@ struct HomeBackCard: View {
     private func makeInfo(text: String) -> some View {
         Text(text)
             .font(.suit(type: .medium, size: 12))
-            .foregroundStyle(Color.mainTextColor_Color)
+            .foregroundStyle(Color.gray_900)
     }
 }
 

@@ -11,13 +11,13 @@ import Moya
 @MainActor
 class LoginViewModel: ObservableObject {
     
-    let provider: MoyaProvider<AuthAPITarget>
+    let provider: MoyaProvider<UserLoginAPITarget>
     let keychain = KeyChainManager.standard
     let appleLoginManager =  AppleLoginManager()
     var userInfo = UserInfo()
     
     init(
-        provider: MoyaProvider<AuthAPITarget> = APIManager.shared.testProvider(for: AuthAPITarget.self)
+        provider: MoyaProvider<UserLoginAPITarget> = APIManager.shared.testProvider(for: UserLoginAPITarget.self)
     ) {
         self.provider = provider
         self.appleLoginManager.onAuthorizationCompleted = { [weak self] authorizationCode in
@@ -42,7 +42,7 @@ class LoginViewModel: ObservableObject {
     /// 로그인 데이터 전송
     /// - Parameter token: 인가 코드
     private func sendUserIdentyCode(token: String) {
-        provider.request(.refreshToken(currentToken: token)) { [weak self] result in
+        provider.request(.appleLogin(token: token)) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.handlerInvalidToken(response: response)
@@ -55,7 +55,7 @@ class LoginViewModel: ObservableObject {
     private func handlerInvalidToken(response: Response) {
         do {
             let decodedData = try JSONDecoder().decode(LoginResponseData.self, from: response.data)
-            self.userInfo = UserInfo(accessToken: decodedData.accessToken, refreshToken: decodedData.refreshToken)
+            self.userInfo = UserInfo(accessToken: decodedData.result.accessToken, refreshToken: decodedData.result.refreshToken)
             let saveData =  keychain.saveSession(self.userInfo, for: "userSession")
             print("키 체인 저장 완료 :\(saveData)")
         } catch {

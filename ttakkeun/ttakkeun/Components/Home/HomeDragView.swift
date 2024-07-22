@@ -31,7 +31,7 @@ struct HomeDragView: View {
             /* 임계값을 두어 드래그뷰를 위 아래로 조절한다. */
             VStack {
                 Capsule()
-                    .fill(Color.sheetIndicator_Color)
+                    .fill(Color.gray_300)
                     .frame(width: 36, height: 5)
                     .padding(.top, 10)
                     .padding(.bottom, 5)

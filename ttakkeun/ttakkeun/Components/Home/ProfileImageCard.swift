@@ -70,7 +70,7 @@ struct ProfileImageCard: View {
         }, label: {
             ZStack(alignment: .center, content: {
                 Circle()
-                    .fill(Color.editColor_Color)
+                    .fill(Color.productCard_Color)
                     .frame(width: 30, height: 30)
                 Icon.editProfile.image
                     .resizable()

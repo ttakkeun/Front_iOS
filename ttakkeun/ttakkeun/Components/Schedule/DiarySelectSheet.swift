@@ -69,10 +69,10 @@ struct DiarySelectSheet: View {
             }) {
                 Text("확인")
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color.mainTextColor_Color)
+                    .foregroundColor(Color.gray_900)
                     .padding()
                     .frame(width:208, height: 39)
-                    .background(Color.primaryColor_Color)
+                    .background(Color.primaryColor_Main)
                     .clipShape(.rect(cornerRadius:10))
             }
         }

@@ -106,6 +106,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AuthAPITarget.swift,
+				UserLoginAPITarget.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -124,7 +125,7 @@
 			membershipExceptions = (
 				AIRecommendProductData.swift,
 				HomeProfileData.swift,
-				LoginData.swift,
+				LoginResponseData.swift,
 				PetProfileData.swift,
 				RecommendProductData.swift,
 				TodoCompleteData.swift,

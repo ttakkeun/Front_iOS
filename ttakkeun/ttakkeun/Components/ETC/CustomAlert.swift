@@ -65,8 +65,8 @@ struct CustomAlert: View {
             Text("예")
                 .font(.suit(type: .semibold, size: 14))
                 .frame(width: 108, height: 36)
-                .foregroundStyle(Color.mainTextColor_Color)
-                .background(Color.yesBtn_Color)
+                .foregroundStyle(Color.gray_900)
+                .background(Color.primarycolor_200)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
@@ -87,8 +87,8 @@ struct CustomAlert: View {
             Text("아니오")
                 .font(.suit(type: .semibold, size: 14))
                 .frame(width: 108, height: 36)
-                .foregroundStyle(Color.mainTextColor_Color)
-                .background(Color.noBtn_Color)
+                .foregroundStyle(Color.gray_900)
+                .background(Color.productCard_Color)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
