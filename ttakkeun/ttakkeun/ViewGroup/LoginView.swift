@@ -81,7 +81,7 @@ struct LoginView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 330, height: 44)
             })
-            
+            /* Apple 로그인 */
             Button(action: {
                 Task {
                     await viewModel.appleLoginBtn()

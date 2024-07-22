@@ -2,7 +2,7 @@
 //  AuthAPITarget.swift
 //  ttakkeun
 //
-//  Created by 정의찬 on 7/9/24.
+//  Created by 정의찬 on 7/22/24.
 //
 
 import Foundation
@@ -10,7 +10,7 @@ import Moya
 
 /// 토큰 Refresh 초기화 API 호출
 enum AuthAPITarget {
-    case refreshToken(currentToken: String)
+    case refreshToken
 }
 
 extension AuthAPITarget: TargetType {
@@ -21,7 +21,7 @@ extension AuthAPITarget: TargetType {
     var path: String {
         switch self {
         case .refreshToken:
-            return "/refresh"
+            return "/auth/regenerate-token"
         }
     }
     
@@ -34,8 +34,8 @@ extension AuthAPITarget: TargetType {
     
     var task: Task {
         switch self {
-        case .refreshToken(let token):
-            return .requestParameters(parameters: ["currentToken": token], encoding: JSONEncoding.default)
+        case .refreshToken:
+            return .requestPlain
         }
     }
     
