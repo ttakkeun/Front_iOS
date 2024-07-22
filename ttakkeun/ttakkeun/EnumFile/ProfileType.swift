@@ -8,9 +8,7 @@
 import Foundation
 
 
-enum ProfileType: String {
+enum ProfileType: String, Codable {
     case cat = "CAT"
     case dog = "DOG"
-    case create = "CREATE"
-    
 }

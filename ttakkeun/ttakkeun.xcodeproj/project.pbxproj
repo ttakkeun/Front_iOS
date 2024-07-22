@@ -92,6 +92,7 @@
 				KeyChain/UserInfo.swift,
 				LoginManager/AppleLoginManager.swift,
 				LoginManager/AppleUserData.swift,
+				PetState.swift,
 				TokenRefresh/AccessTokenRefresher.swift,
 				TokenRefresh/APIManager.swift,
 				TokenRefresh/TokenProvider.swift,
@@ -104,6 +105,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AuthAPITarget.swift,
+				PetProfileAPITarget.swift,
 				UserLoginAPITarget.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
