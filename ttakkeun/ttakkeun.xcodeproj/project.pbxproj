@@ -92,6 +92,7 @@
 				KeyChain/UserInfo.swift,
 				LoginManager/AppleLoginManager.swift,
 				LoginManager/AppleUserData.swift,
+				PetState.swift,
 				TokenRefresh/AccessTokenRefresher.swift,
 				TokenRefresh/APIManager.swift,
 				TokenRefresh/TokenProvider.swift,

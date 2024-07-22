@@ -12,6 +12,7 @@ import Kingfisher
 struct ProfileSelect: View {
     
     let data: PetProfileResponseData
+    @EnvironmentObject var petState: PetState
     
     init(
         data: PetProfileResponseData
@@ -80,7 +81,10 @@ struct ProfileSelect: View {
     /// 펫 프로필 카드 정보
     private var havePet: some View {
         Button(action: {
-            print("어떤 펫 클릭")
+            petState.petId = data.pet_id
+            petState.petName = data.name
+            print("펫 아이디 : \(petState.petId ?? 0)")
+            print("펫 이름 : \(petState.petName ?? "")")
         }, label: {
             VStack(alignment: .center, spacing: 28, content: {
                 

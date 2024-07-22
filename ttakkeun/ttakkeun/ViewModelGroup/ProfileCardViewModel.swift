@@ -18,6 +18,7 @@ class ProfileCardViewModel: ObservableObject {
     
     @Published var petProfileData: PetProfileData?
     @Published var backgroundColor: Color = .white
+    
     private var usedColors: [Color] = []
     
     // MARK: - Init
@@ -56,17 +57,20 @@ class ProfileCardViewModel: ObservableObject {
         }
     }
     
-    public func updateBackgroundColor() {
+    public func updateBackgroundColor() async {
         if usedColors.count == colors.count {
             usedColors.removeAll()
         }
         
         var newColor: Color
+        
         repeat {
             newColor = colors.randomElement()!
         } while usedColors.contains(newColor)
-                    
-                    usedColors.append(newColor)
-                    backgroundColor = newColor
+        
+        usedColors.append(newColor)
+        withAnimation(.easeInOut(duration: 0.5)) {
+            self.backgroundColor = newColor
+        }
     }
 }
