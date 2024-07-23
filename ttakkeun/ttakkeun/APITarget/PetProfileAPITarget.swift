@@ -12,7 +12,7 @@ import SwiftUI
 enum PetProfileAPITarget {
     case getHomeProfile(petId: Int)
     case getPetProfile
-    case createProfile(data: CreatePetProfileData)
+    case createProfile(data: CreatePetProfileRequestData)
     case sendProfileImage(petId: Int, images: [UIImage])
     case editProfileImage(petId: Int, images: [UIImage])
 }
