@@ -40,6 +40,13 @@ extension AuthAPITarget: TargetType {
     }
     
     var headers: [String : String]? {
-        return ["Content-Type": "application/json"]
+        var headers = ["Content-Type": "application/json"]
+        
+        switch self {
+        case .refreshToken(let refresh):
+            headers["Authorization"] = "Bearer \(refresh)"
+        }
+        
+        return headers
     }
 }

@@ -36,34 +36,43 @@ struct ProfileView: View {
         GeometryReader { geometry in
             ScrollView(.horizontal) {
                 HStack(spacing: 1, content: {
-                    ForEach(viewModel.petProfileData?.result ?? [], id: \.self) { data in
-                        GeometryReader { item in
-                            ProfileSelect(data: data)
-                                .scaleEffect(self.scaleValue(geometry: geometry, itemGeometry: item))
-                                .animation(.easeOut, value: scaleValue(geometry: geometry, itemGeometry: item))
-                                .environmentObject(petState)
-                                .onAppear {
-                                    self.titleName = data.name
-                                    Task {
-                                        await viewModel.updateBackgroundColor()
-                                    }
-                                }
-                                .onChange(of: self.isCentered(geometry: geometry, itemGeometry: item)) {
-                                    if self.isCentered(geometry: geometry, itemGeometry: item) {
+                    if let results = viewModel.petProfileData?.result {
+                        ForEach(results, id: \.self) { data in
+                            GeometryReader { item in
+                                ProfileSelect(data: data)
+                                    .scaleEffect(self.scaleValue(geometry: geometry, itemGeometry: item))
+                                    .animation(.easeOut, value: scaleValue(geometry: geometry, itemGeometry: item))
+                                    .environmentObject(petState)
+                                    .onAppear {
                                         self.titleName = data.name
-                                        self.isLastedCard = false
                                         Task {
                                             await viewModel.updateBackgroundColor()
                                         }
                                     }
-                                }
+                                    .onChange(of: self.isCentered(geometry: geometry, itemGeometry: item)) {
+                                        if self.isCentered(geometry: geometry, itemGeometry: item) {
+                                            self.titleName = data.name
+                                            self.isLastedCard = false
+                                            Task {
+                                                await viewModel.updateBackgroundColor()
+                                            }
+                                        }
+                                    }
+                            }
+                            .frame(width: 200)
                         }
-                        .frame(width: 200)
                     }
+                    
                     GeometryReader { item in
                         ProfileCreateView()
                             .scaleEffect(self.scaleValue(geometry: geometry, itemGeometry: item))
                             .animation(.easeOut, value: self.scaleValue(geometry: geometry, itemGeometry: item))
+                            .onAppear {
+                                self.isLastedCard = true
+                                Task {
+                                    await viewModel.updateBackgroundColor()
+                                }
+                            }
                             .onChange(of: self.isCentered(geometry: geometry, itemGeometry: item)) {
                                 if self.isCentered(geometry: geometry, itemGeometry: item) {
                                     self.isLastedCard = true
@@ -73,7 +82,7 @@ struct ProfileView: View {
                                 }
                             }
                     }
-                    .frame(width: 200)
+                    .frame(width: 210)
                 })
                 .padding(.top, 30)
                 .padding(.horizontal, (geometry.size.width - 200) / 2)
@@ -118,16 +127,17 @@ fileprivate struct ProfileCreateView: View {
     var body: some View {
         ZStack(alignment: .top, content: {
             createProfilie
-                .padding(.top, 53)
+                .padding(.top, 70)
             topImage
         })
+        .padding(.top, 28)
     }
     
     private var topImage: some View {
         Icon.togetherPet.image
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(width: 134, height: 56)
+            .frame(width: 134, height: 90)
     }
     /// 카드 생성하기
     private var createProfilie: some View {
@@ -161,6 +171,8 @@ struct ProfielView_Preview: PreviewProvider {
     static var previews: some View {
         ForEach(devices , id: \.self) { device in
             ProfileView()
+                .previewDevice(PreviewDevice(rawValue: device))
+                .previewDisplayName(device)
                 .environmentObject(PetState())
         }
     }
