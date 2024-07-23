@@ -54,7 +54,7 @@ extension PetProfileAPITarget: TargetType {
             return .requestPlain
         case .createProfile(let data):
             return .requestJSONEncodable(data)
-        case .sendProfileImage(let id, let images), .editProfileImage(let id, let images):
+        case .sendProfileImage(_, let images), .editProfileImage(_, let images):
             var multipartData = [MultipartFormData]()
             
             for(index, image) in images.enumerated() {

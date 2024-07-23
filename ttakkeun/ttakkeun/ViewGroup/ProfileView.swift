@@ -12,12 +12,11 @@ struct ProfileView: View {
     @StateObject var viewModel: ProfileCardViewModel
     @EnvironmentObject var petState: PetState
     
-    @State var titleName: String = ""
-    @State var isLastedCard: Bool = false
-    
     init() {
         self._viewModel = StateObject(wrappedValue: ProfileCardViewModel())
     }
+    
+    // MARK: - Contents
     
     var body: some View {
         VStack(alignment: .center, spacing: 32, content: {
@@ -28,7 +27,10 @@ struct ProfileView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity).ignoresSafeArea(.all)
         .background(viewModel.backgroundColor)
         .onAppear {
-            viewModel.getPetProfile()
+            Task {
+                await viewModel.getPetProfile()
+                await viewModel.updateBackgroundColor()
+            }
         }
     }
     
@@ -38,51 +40,13 @@ struct ProfileView: View {
                 HStack(spacing: 1, content: {
                     if let results = viewModel.petProfileData?.result {
                         ForEach(results, id: \.self) { data in
-                            GeometryReader { item in
-                                ProfileSelect(data: data)
-                                    .scaleEffect(self.scaleValue(geometry: geometry, itemGeometry: item))
-                                    .animation(.easeOut, value: scaleValue(geometry: geometry, itemGeometry: item))
-                                    .environmentObject(petState)
-                                    .onAppear {
-                                        self.titleName = data.name
-                                        Task {
-                                            await viewModel.updateBackgroundColor()
-                                        }
-                                    }
-                                    .onChange(of: self.isCentered(geometry: geometry, itemGeometry: item)) {
-                                        if self.isCentered(geometry: geometry, itemGeometry: item) {
-                                            self.titleName = data.name
-                                            self.isLastedCard = false
-                                            Task {
-                                                await viewModel.updateBackgroundColor()
-                                            }
-                                        }
-                                    }
-                            }
-                            .frame(width: 200)
+                           // TODO: - 저장된 프로필 생성
+                            profileReadView(geometry: geometry, data: data)
                         }
+                        profileCreateView(geometry: geometry)
+                    } else {
+                        profileCreateView(geometry: geometry)
                     }
-                    
-                    GeometryReader { item in
-                        ProfileCreateView()
-                            .scaleEffect(self.scaleValue(geometry: geometry, itemGeometry: item))
-                            .animation(.easeOut, value: self.scaleValue(geometry: geometry, itemGeometry: item))
-                            .onAppear {
-                                self.isLastedCard = true
-                                Task {
-                                    await viewModel.updateBackgroundColor()
-                                }
-                            }
-                            .onChange(of: self.isCentered(geometry: geometry, itemGeometry: item)) {
-                                if self.isCentered(geometry: geometry, itemGeometry: item) {
-                                    self.isLastedCard = true
-                                    Task {
-                                        await viewModel.updateBackgroundColor()
-                                    }
-                                }
-                            }
-                    }
-                    .frame(width: 210)
                 })
                 .padding(.top, 30)
                 .padding(.horizontal, (geometry.size.width - 200) / 2)
@@ -92,19 +56,27 @@ struct ProfileView: View {
         .frame(maxWidth: .infinity, maxHeight: 446)
     }
     
+    /// 프로필 뷰 상단 제목
     private var topTitle: some View {
         VStack(alignment: .center, spacing: 20, content: {
             Text("따끈")
                 .font(.santokki(type: .regular, size: 40))
                 .foregroundStyle(Color.gray_900)
                 .frame(maxHeight: 80)
-            Text(isLastedCard ? "새로운 가족을 등록해주세요" : "안녕허세요! \n저는 \(titleName)에요!")
+            Text(viewModel.isLastedCard ? "새로운 가족을 등록해주세요" : "안녕허세요! \n저는 \(viewModel.titleName)에요!")
                 .font(.suit(type: .bold, size: 20))
                 .foregroundStyle(Color.black)
                 .multilineTextAlignment(.center)
         })
     }
     
+    // MARK: - Function
+    
+    /// 커스텀 스크롤의 중심의 사이즈 조절
+    /// - Parameters:
+    ///   - geometry: 현재 화면의 사이즈
+    ///   - itemGeometry: 스크롤 내부 사이즈
+    /// - Returns: 중심 위치에 있을 경우 사이즈 업
     private func scaleValue(geometry: GeometryProxy, itemGeometry: GeometryProxy) -> CGFloat {
         let itemCenter = itemGeometry.frame(in: .global).midX
         let screenCenter = geometry.size.width / 2
@@ -113,11 +85,61 @@ struct ProfileView: View {
         return max(0.6, scale)
     }
     
+    /// 커스텀 스크롤 중심 측정
+    /// - Parameters:
+    ///   - geometry: 현재 화면 사이즈
+    ///   - itemGeometry: 스크롤 내부 사이즈
+    /// - Returns: 중심 위치 자리
     private func isCentered(geometry: GeometryProxy, itemGeometry: GeometryProxy) -> Bool {
         let itermCenter = itemGeometry.frame(in: .global).midX
         let screenCenter = geometry.size.width / 2
         return abs(itermCenter - screenCenter) < 50
     }
+    
+    /// 저장된 동물 프로필 리드
+    /// - Parameters:
+    ///   - geometry: 현재 화면 사이즈
+    ///   - data: 카드에 입력되는 반려 동물 데이터
+    /// - Returns: 커스텀 스크롤 뷰
+    private func profileReadView(geometry: GeometryProxy, data: PetProfileResponseData) -> some View {
+        GeometryReader { item in
+            ProfileSelect(data: data)
+                .scaleEffect(self.scaleValue(geometry: geometry, itemGeometry: item))
+                .animation(.easeOut, value: scaleValue(geometry: geometry, itemGeometry: item))
+                .environmentObject(petState)
+                .onChange(of: self.isCentered(geometry: geometry, itemGeometry: item)) {
+                    if self.isCentered(geometry: geometry, itemGeometry: item) {
+                        viewModel.titleName = data.name
+                        viewModel.isLastedCard = false
+                        Task {
+                            await viewModel.updateBackgroundColor()
+                        }
+                    }
+                }
+        }
+        .frame(width: 200)
+    }
+    
+    /// 프로필 생성
+    /// - Parameter geometry: 현재 화면 사이즈
+    /// - Returns: 스크롤 내부 사이즈
+    private func profileCreateView(geometry: GeometryProxy) -> some View {
+        GeometryReader { item in
+            ProfileCreateView()
+                .scaleEffect(self.scaleValue(geometry: geometry, itemGeometry: item))
+                .animation(.easeOut, value: self.scaleValue(geometry: geometry, itemGeometry: item))
+                .onChange(of: self.isCentered(geometry: geometry, itemGeometry: item)) {
+                    if self.isCentered(geometry: geometry, itemGeometry: item) {
+                        viewModel.isLastedCard = true
+                        Task {
+                            await viewModel.updateBackgroundColor()
+                        }
+                    }
+                }
+        }
+        .frame(width: 210)
+    }
+    
 }
 
 // MARK: - CreateProfileCardView
@@ -166,14 +188,13 @@ fileprivate struct ProfileCreateView: View {
 
 struct ProfielView_Preview: PreviewProvider {
     
-    static let devices: [String] = ["iPhone 11", "iPhone 15 Pro"]
+//    static let devices: [String] = ["iPhone 11", "iPhone 15 Pro"]
     
     static var previews: some View {
-        ForEach(devices , id: \.self) { device in
+//        ForEach(devices , id: \.self) { device in
             ProfileView()
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewDisplayName(device)
+//                .previewDevice(PreviewDevice(rawValue: device))
+//                .previewDisplayName(device)
                 .environmentObject(PetState())
         }
     }
-}

@@ -12,7 +12,7 @@ struct PetProfileData: Codable {
     let isSuccess: Bool
     let code: String
     let message: String
-    var result: [PetProfileResponseData]
+    var result: [PetProfileResponseData]?
 }
 
 struct PetProfileResponseData: Codable, Hashable {
