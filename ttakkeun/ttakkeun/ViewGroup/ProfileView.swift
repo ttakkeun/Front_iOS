@@ -188,13 +188,14 @@ fileprivate struct ProfileCreateView: View {
 
 struct ProfielView_Preview: PreviewProvider {
     
-//    static let devices: [String] = ["iPhone 11", "iPhone 15 Pro"]
+    static let devices: [String] = ["iPhone 11", "iPhone 15 Pro"]
     
     static var previews: some View {
-//        ForEach(devices , id: \.self) { device in
+        ForEach(devices , id: \.self) { device in
             ProfileView()
-//                .previewDevice(PreviewDevice(rawValue: device))
-//                .previewDisplayName(device)
+                .previewDevice(PreviewDevice(rawValue: device))
+                .previewDisplayName(device)
                 .environmentObject(PetState())
         }
     }
+}
