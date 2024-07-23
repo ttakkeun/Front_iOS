@@ -102,6 +102,7 @@ struct ProfileSelect: View {
             .frame(width: 213, height: 286)
             .background(Color.white)
             .clipShape(.rect(cornerRadius: 20))
+            .shadow04()
         })
     }
     

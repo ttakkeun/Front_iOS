@@ -18,6 +18,8 @@ class ProfileCardViewModel: ObservableObject {
     
     @Published var petProfileData: PetProfileData?
     @Published var backgroundColor: Color = .white
+    @Published var isLastedCard: Bool = false
+    @Published var titleName: String = ""
     
     private var usedColors: [Color] = []
     
@@ -32,7 +34,7 @@ class ProfileCardViewModel: ObservableObject {
     // MARK: - Init
     
     /// 유저에게 등록된 프로필 데이터 받아오기 API
-    public func getPetProfile() {
+    public func getPetProfile() async {
         provider.request(.getPetProfile) { [weak self] result in
             switch result {
             case .success(let response):
@@ -50,10 +52,21 @@ class ProfileCardViewModel: ObservableObject {
             let decodedData = try JSONDecoder().decode(PetProfileData.self, from: response.data)
             DispatchQueue.main.async {
                 self.petProfileData = decodedData
+                self.checkResultData(data: self.petProfileData)
                 print("펫 프로필 받아오기 성공")
             }
         } catch {
             print("펫 프로필 받아오기 디코더 에러: \(error)")
+        }
+    }
+    
+    private func checkResultData(data: PetProfileData?) {
+        if let data = data?.result, !data.isEmpty {
+            self.isLastedCard = false
+            self.titleName = data.first?.name ?? ""
+            print(data)
+        } else {
+            self.isLastedCard = true
         }
     }
     
