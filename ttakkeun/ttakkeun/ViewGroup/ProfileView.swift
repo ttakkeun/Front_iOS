@@ -40,7 +40,6 @@ struct ProfileView: View {
                 HStack(spacing: 1, content: {
                     if let results = viewModel.petProfileData?.result {
                         ForEach(results, id: \.self) { data in
-                           // TODO: - 저장된 프로필 생성
                             profileReadView(geometry: geometry, data: data)
                         }
                         profileCreateView(geometry: geometry)
@@ -68,6 +67,7 @@ struct ProfileView: View {
                 .foregroundStyle(Color.black)
                 .multilineTextAlignment(.center)
         })
+        .frame(height: 145)
     }
     
     // MARK: - Function
