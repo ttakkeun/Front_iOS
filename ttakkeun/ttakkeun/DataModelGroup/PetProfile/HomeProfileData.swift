@@ -7,10 +7,20 @@
 
 import Foundation
 
-// TODO: - 수정 필요
 /// 홈탭 - 프로필 카드 데이터
 struct HomeProfileData: Codable {
-    var imageUrl: String
-    var name: String
-    var date: String
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let result: HomeProfileResponseData
+}
+
+/// 홈탭 - 프로필 카드 전면부, 후면부 사용 데이터
+struct HomeProfileResponseData: Codable {
+    let name: String
+    let image: String
+    let type: ProfileType
+    let variety: String
+    let birth: String
+    let neutralization: Bool
 }

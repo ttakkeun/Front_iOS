@@ -8,14 +8,15 @@
 import SwiftUI
 import Kingfisher
 
+/// 홈탭 프로필 전면 혹은 후면 사진
 struct ProfileImageCard: View {
     
-    let profileImageUrl: String
+    let profileImageUrl: String?
     let imageSize: CGFloat
     let canEdit: Bool
     
     init(
-        imageUrl: String,
+        imageUrl: String?,
         imageSize: CGFloat = 140,
         canEdit: Bool = true
     ) {
@@ -47,7 +48,8 @@ struct ProfileImageCard: View {
     /// 프로필 이미지 뷰 빌더
     @ViewBuilder
     private var profileImage: some View {
-        if let url = URL(string: profileImageUrl) {
+        if let imageUrl = profileImageUrl,
+           let url = URL(string: imageUrl) {
             KFImage(url)
                 .placeholder {
                     ProgressView()

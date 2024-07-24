@@ -144,6 +144,7 @@ struct ProfileView: View {
 
 // MARK: - CreateProfileCardView
 
+/// 프로필 생성 카드 뷰
 fileprivate struct ProfileCreateView: View {
     
     var body: some View {
