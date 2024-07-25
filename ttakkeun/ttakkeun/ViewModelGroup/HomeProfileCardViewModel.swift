@@ -23,6 +23,7 @@ class HomeProfileCardViewModel: ObservableObject {
     
     
     // MARK: - Function
+
     /// 날짜 형식 변환
     /// - Parameter dateString: 입력 받은 날짜 넣기
     /// - Returns: xxx.xxx.xxx 형식으로 넣어서 변환

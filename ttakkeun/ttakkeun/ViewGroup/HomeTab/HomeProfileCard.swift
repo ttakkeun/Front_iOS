@@ -52,3 +52,4 @@ struct HomeProfileCard_Preview: PreviewProvider {
         HomeProfileCard(viewModel: HomeProfileCardViewModel(), petId: 1)
     }
 }
+
