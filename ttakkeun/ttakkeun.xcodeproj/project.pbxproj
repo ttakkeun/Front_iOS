@@ -27,6 +27,7 @@
 			membershipExceptions = (
 				ETC/CustomAlert.swift,
 				ETC/CustomTextField.swift,
+				ETC/MainButton.swift,
 				ETC/topStatusBar.swift,
 				Home/HomeAIRecommendProduct.swift,
 				Home/HomeBackCard.swift,
@@ -37,6 +38,7 @@
 				"Home/HomeUserRecommendProduct 2.swift",
 				Home/ProfileImageCard.swift,
 				Profile/ProfileSelect.swift,
+				Recommend/ProductSheetView.swift,
 				Schedule/CustomDiary.swift,
 				Schedule/DiarySelectSheet.swift,
 				Schedule/TodoCompleteEach.swift,
@@ -129,6 +131,7 @@
 				PetProfile/HomeProfileData.swift,
 				PetProfile/PetProfileData.swift,
 				PetProfile/PetProfileImageData.swift,
+				RecommendProductData.swift,
 				TodoCompleteData.swift,
 				UserRecommendProductData.swift,
 			);
