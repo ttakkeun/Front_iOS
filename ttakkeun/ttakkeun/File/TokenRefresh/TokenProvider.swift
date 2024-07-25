@@ -34,13 +34,13 @@ class TokenProvider: TokenProviding {
     func refreshToken(completion: @escaping (String?, Error?) -> Void) {
         guard let userInfo = keyChain.loadSession(for: "userSession") else { return }
         
-        provider.request(.refreshToken) { result in
+        provider.request(.refreshToken(refreshToken: userInfo.refreshToken ?? "")) { result in
             switch result {
             case .success(let response):
                 do {
                     let tokenData = try JSONDecoder().decode(TokenResponse.self, from: response.data)
-                    self.accessToken = tokenData.accessToken
-                    completion(tokenData.accessToken, nil)
+                    self.accessToken = tokenData.result.accessToken
+                    completion(self.accessToken, nil)
                 } catch {
                     completion(nil, error)
                 }

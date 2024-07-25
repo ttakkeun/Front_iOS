@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: - 수정 필요
 /// 홈탭 - 프로필 카드 데이터
 struct HomeProfileData: Codable {
     var imageUrl: String

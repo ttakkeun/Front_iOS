@@ -11,51 +11,47 @@ import Kingfisher
 /// 프로필 스크롤 만드는데 있어 필요한 카드
 struct ProfileSelect: View {
     
-    let viewType: ProfileType
-    let data: PetProfileData
+    let data: PetProfileResponseData
+    @EnvironmentObject var petState: PetState
     
     init(
-        viewType: ProfileType,
-        data: PetProfileData
+        data: PetProfileResponseData
     ) {
-        self.viewType = viewType
         self.data = data
     }
     
     var body: some View {
-        VStack(alignment: .center, spacing: 0, content: {
-            topImage
+        ZStack(alignment: .top, content: {
             bottomCard
+                .padding(.top, 86)
+            topImage
         })
     }
-    
-    
     
     /// 상단 애니멀
     @ViewBuilder
     private var topImage: some View {
-        switch viewType {
+        switch data.type {
         case .cat:
             Icon.ProfileCat.image
-                .fixedSize()
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 113, height: 95)
         case .dog:
             Icon.ProfileDog.image
-                .fixedSize()
-        case .create:
-            Icon.ProfileCreate.image
-                .fixedSize()
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 113, height: 95)
         }
     }
     
     @ViewBuilder
     private var bottomCard: some View {
-        switch viewType {
+        switch data.type {
         case .cat:
             havePet
         case .dog:
             havePet
-        case .create:
-            createProfilie
         }
     }
     
@@ -85,7 +81,10 @@ struct ProfileSelect: View {
     /// 펫 프로필 카드 정보
     private var havePet: some View {
         Button(action: {
-            print("어떤 펫 클릭")
+            petState.petId = data.pet_id
+            petState.petName = data.name
+            print("펫 아이디 : \(petState.petId ?? 0)")
+            print("펫 이름 : \(petState.petName ?? "")")
         }, label: {
             VStack(alignment: .center, spacing: 28, content: {
                 
@@ -93,15 +92,15 @@ struct ProfileSelect: View {
                     Text(data.name)
                         .font(.suit(type: .bold, size: 18))
                         .foregroundStyle(Color.gray_900)
-                    Text(data.date)
+                    Text(formattedData(from: data.birth))
                         .font(.suit(type: .medium, size: 12))
                         .foregroundStyle(Color.subProfileColor)
                 })
-
+                
                 petProfileImage
             })
             .frame(width: 213, height: 286)
-            .background(Color.green)
+            .background(Color.white)
             .clipShape(.rect(cornerRadius: 20))
             .shadow04()
         })
@@ -110,7 +109,7 @@ struct ProfileSelect: View {
     /// 펫 프로필 이미지
     @ViewBuilder
     private var petProfileImage: some View {
-        if let url = URL(string: data.imageUrl) {
+        if let url = URL(string: data.image) {
             KFImage(url)
                 .placeholder {
                     ProgressView()
@@ -125,11 +124,28 @@ struct ProfileSelect: View {
                 .shadow01()
         }
     }
+    
+    // MARK: Function
+    
+    /// 날짜 형식 변환
+    /// - Parameter dateString: 입력 받은 날짜 넣기
+    /// - Returns: xxx.xxx.xxx 형식으로 넣어서 변환
+    private func formattedData(from dateString: String) -> String {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyy-MM-dd"
+        
+        if let date = inputFormatter.date(from: dateString) {
+            let outputFormatter = DateFormatter()
+            outputFormatter.dateFormat = "yyyy.MM.dd"
+            return outputFormatter.string(from: date)
+        } else {
+            return dateString
+        }
+    }
 }
 
 struct ProfileSelect_Preview: PreviewProvider {
     static var previews: some View {
-        ProfileSelect(viewType: .dog, data: PetProfileData(name: "애우", date: "2023", imageUrl: "https://i.namu.wiki/i/styQt4UHIdH8AWkdwEpz3miGu120evQmfhE7vs3nQP94qwpJsN3_UfCOfJ_AbrAuJJ6fV3rOHwTBW-tH7Fg0hU9KN7dx7t9U2sv7bn0KTXyx4s-iDZohchSfr13IFHe0ved9mU-nOIh1J8aT-kk6WQ.webp"))
-            .previewLayout(.sizeThatFits)
+        ProfileSelect(data: PetProfileResponseData(pet_id: 1, name: "zbzb", image: "https://i.namu.wiki/i/lSIXWXTbk5GRjQRov2qaIaOR7HzJMGN08i2RIwc9bJhIycmGF3UG4Jw0S6_BSu95y90-o5iOXK98R3p1G1ih9ggdJiGJ84dY2j8kYnsg2nznFmLI3BibM-q_dEhabV8YgMQYTxZTMS55AgyNIcrGqQ.webp", type: .cat, birth: "2021-02-01"))
     }
 }

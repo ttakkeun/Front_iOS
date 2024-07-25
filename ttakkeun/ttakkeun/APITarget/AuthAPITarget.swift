@@ -10,7 +10,7 @@ import Moya
 
 /// 토큰 Refresh 초기화 API 호출
 enum AuthAPITarget {
-    case refreshToken
+    case refreshToken(refreshToken: String)
 }
 
 extension AuthAPITarget: TargetType {
@@ -40,6 +40,13 @@ extension AuthAPITarget: TargetType {
     }
     
     var headers: [String : String]? {
-        return ["Content-Type": "application/json"]
+        var headers = ["Content-Type": "application/json"]
+        
+        switch self {
+        case .refreshToken(let refresh):
+            headers["Authorization"] = "Bearer \(refresh)"
+        }
+        
+        return headers
     }
 }
