@@ -15,11 +15,13 @@ struct CustomAlert: View {
     
     var body: some View {
         if showPopover {
+            ZStack {
                 backgroundOpacity
                 
                 alertWindow
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                     .zIndex(1)
+            }
         }
     }
     

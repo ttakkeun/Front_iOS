@@ -11,13 +11,13 @@ import SwiftUI
 extension Color {
     
     // MARK: - PrimaryColor
-    static let primarycolor_100 = Color("Primarycolor_100") /* #FAFBDA 78% */
-    static let primarycolor_200 = Color("Primarycolor_200") /* #F3F6AC 78% */
-    static let primarycolor_300 = Color("Primarycolor_300") /* #EDF17E 78% */
-    static let primarycolor_400 = Color("Primarycolor_400") /* #E6EC50 78% */
-    static let primarycolor_500 = Color("Primarycolor_500") /* #DFE722 78% */
-    static let primarycolor_600 = Color("Primarycolor_600") /* #BBC115 78% */
-    static let primarycolor_700 = Color("Primarycolor_700") /* #8E9310 78% */
+    static let primarycolor_100 = Color("primarycolor100") /* #FAFBDA 78% */
+    static let primarycolor_200 = Color("primarycolor200") /* #F3F6AC 78% */
+    static let primarycolor_300 = Color("primarycolor300") /* #EDF17E 78% */
+    static let primarycolor_400 = Color("primarycolor400") /* #E6EC50 78% */
+    static let primarycolor_500 = Color("primarycolor500") /* #DFE722 78% */
+    static let primarycolor_600 = Color("primarycolor600") /* #BBC115 78% */
+    static let primarycolor_700 = Color("primarycolor700") /* #8E9310 78% */
     
     // MARK: - Gray
     static let gray_200 = Color("Gray_200") /* #D1D1D1 100% */

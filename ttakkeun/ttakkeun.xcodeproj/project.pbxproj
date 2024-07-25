@@ -35,7 +35,7 @@
 				Home/HomeFrontCard.swift,
 				Home/HomeNotTodo.swift,
 				Home/HomeNotTodoCircle.swift,
-				"Home/HomeUserRecommendProduct 2.swift",
+				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
 				Profile/ProfileSelect.swift,
 				Recommend/ProductSheetView.swift,

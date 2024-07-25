@@ -22,7 +22,7 @@ struct WeekBar: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 100)
-            .fill(Color.primarycolor_100)
+            .fill(Color.primarycolor100)
             .frame(width: width, height: height)
     }
 }

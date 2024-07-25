@@ -10,10 +10,15 @@ import Moya
 import SwiftUI
 
 enum PetProfileAPITarget {
+    /// 홈탭뷰에서 사용되는 프로필 카드 뷰
     case getHomeProfile(petId: Int)
+    /// 프로필 선택뷰에서 전체 펫 프로필 받아오기
     case getPetProfile
+    /// 프로필 선택뷰에서 사용하는 프로필 생성
     case createProfile(data: CreatePetProfileRequestData)
+    /// 프로필 생성 시 지정된 사진 전송
     case sendProfileImage(petId: Int, images: [UIImage])
+    /// 홈탭뷰에서 사용되는 프로필 이미지 변경
     case editProfileImage(petId: Int, images: [UIImage])
 }
 
@@ -85,17 +90,13 @@ extension PetProfileAPITarget: TargetType {
                    "message": "Success",
                    "result": {
                        "name": "초코",
-                       "image": "https://cdn.imweb.me/upload/S2021010101.jpg",
+                       "image": "https://i.namu.wiki/i/Uq_tzk1Z2rPj2Nl0E_yP2swC7LFIKY7nikeUKmsgrHCBgL9kH3DYTOVLh4-ZAjZBZyyfItOmTBWYgbsgL2R6nvm2AuQNAyrdcW5xFb6GeaRv3PjHg2QZMUcPVCYnuZXcYDMinLQE7dLlwGgkx0nRUg.webp",
                        "type": "DOG",
                        "variety": "푸들",
                        "birth": "2021-04-22",
-                       "neutralization": true,
-                       "created_at": "2024-07-20 13:21:00",
-                       "updated_at": "2024-07-22 18:57:00"
+                       "neutralization": true
                    }
                }
-               
-               
                """
             return Data(json.utf8)
         case .getPetProfile:

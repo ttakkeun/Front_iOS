@@ -23,6 +23,7 @@ struct HomeFrontCard: View {
         contents
     }
     
+    
     // MARK: - Components
     
     private var contents: some View {
@@ -35,8 +36,6 @@ struct HomeFrontCard: View {
                 
                 Spacer()
             })
-            .padding(.horizontal, 24)
-            .padding(.top, 13)
             
             ProfileImageCard(imageUrl: viewModel.profileData?.result.image)
             
@@ -48,19 +47,23 @@ struct HomeFrontCard: View {
                 Spacer()
                 
                 Button(action: {
-                    viewModel.isChangeCard = true
+                    viewModel.isShowFront.toggle()
                 }, label: {
                     Icon.changeCard.image
                         .fixedSize()
                 })
             })
-            .padding(.horizontal, 20)
-            .padding(.bottom, 10)
         })
-        .frame(width: 354, height: 240)
+        
+        .padding(.top, 13)
+        .padding(.leading, 25)
+        .padding(.trailing, 23)
+        .padding(.bottom, 20)
+        .frame(width: 354, height: 260)
         .background(Color.white.opacity(0.5))
-        .clipShape(.rect(cornerRadius: 20))
+        .clipShape(RoundedRectangle(cornerRadius: 20))
         .shadow02()
+        .transition(.blurReplace)
     }
     
     
@@ -96,5 +99,13 @@ struct HomeFrontCard: View {
                 .foregroundStyle(Color.gray_400)
         })
         .padding(.top, 10)
+    }
+}
+
+
+struct HomeFrontCard_PreView: PreviewProvider {
+    static var previews: some View {
+        HomeProfileCard(viewModel: HomeProfileCardViewModel(), petId: 1)
+            .previewLayout(.sizeThatFits)
     }
 }

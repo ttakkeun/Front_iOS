@@ -59,6 +59,7 @@ struct ProfileImageCard: View {
                     print("프로필 이미지 캐시 오류")
                 }
                 .resizable()
+                .aspectRatio(contentMode: .fill)
                 .frame(width: imageSize, height: imageSize)
                 .clipShape(Circle())
                 .shadow01()
