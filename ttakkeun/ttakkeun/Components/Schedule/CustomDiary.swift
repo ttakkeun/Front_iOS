@@ -31,7 +31,7 @@ struct CustomDiary: View {
                 .padding(.horizontal,23)
         }
         .frame(maxWidth: 350, maxHeight: 296)
-        .background(Color.primarycolor400)
+        .background(Color.primarycolor_400)
         .clipShape(.rect(cornerRadius:20))
     }
     
@@ -152,7 +152,7 @@ fileprivate struct CellView: View {
         VStack {
             if isSelected {
                 Circle()
-                    .fill(Color.primarycolor700)
+                    .fill(Color.primarycolor_700)
                     .frame(width: 36, height: 36)
                     .overlay(Text(String(day))
                         .foregroundColor(Color.gray_900))
