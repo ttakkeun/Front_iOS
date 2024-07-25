@@ -39,7 +39,6 @@
 				Home/ProfileImageCard.swift,
 				Profile/ProfileSelect.swift,
 				Recommend/ProductSheetView.swift,
-				Recommend/TestSheetView.swift,
 				Schedule/CustomDiary.swift,
 				Schedule/DiarySelectSheet.swift,
 				Schedule/TodoCompleteEach.swift,
@@ -128,12 +127,11 @@
 			membershipExceptions = (
 				AIRecommendProductData.swift,
 				LoginResponseData.swift,
-				PetProfileData.swift,
-				RecommendProductData.swift,
 				PetProfile/CreatePetProfileRequestData.swift,
 				PetProfile/HomeProfileData.swift,
 				PetProfile/PetProfileData.swift,
 				PetProfile/PetProfileImageData.swift,
+				RecommendProductData.swift,
 				TodoCompleteData.swift,
 				UserRecommendProductData.swift,
 			);

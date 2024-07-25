@@ -15,7 +15,6 @@ struct MainButton: View {
     var action: Void
     var color: Color
     
-    
     //MARK: - Init
     
     /// Description
@@ -38,9 +37,6 @@ struct MainButton: View {
         self.color = color
     }
     
-    
-
-    
     //MARK: - Contents
     /// 버튼 기본적인 구조
     var body: some View {
@@ -59,9 +55,6 @@ struct MainButton: View {
         })
     }
 }
-
-
-
 
 //MARK: - Preiview
 struct MainButton_Preview: PreviewProvider {
