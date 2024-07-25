@@ -8,13 +8,15 @@
 import SwiftUI
 import Kingfisher
 
-/// 홈 프론트 카드
+/// 홈 프로필 프론트 카드
 struct HomeFrontCard: View {
     
-    @StateObject var viewModel: HomeProfileCardViewModel
+    @ObservedObject var viewModel: HomeProfileCardViewModel
     
-    init() {
-        self._viewModel = StateObject(wrappedValue: HomeProfileCardViewModel())
+    // MARK: - Init
+    
+    init(viewModel: HomeProfileCardViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -28,7 +30,7 @@ struct HomeFrontCard: View {
             
             HStack(content: {
                 Text("PET CARD")
-                    .font(.suit(type: .extraBold, size: 12))
+                    .font(.Body4_extrabold)
                     .foregroundStyle(Color.gray_400)
                 
                 Spacer()
@@ -36,8 +38,7 @@ struct HomeFrontCard: View {
             .padding(.horizontal, 24)
             .padding(.top, 13)
             
-            
-            ProfileImageCard(imageUrl: viewModel.profileData?.imageUrl ?? "")
+            ProfileImageCard(imageUrl: viewModel.profileData?.result.image)
             
             profileInfor
             
@@ -65,16 +66,33 @@ struct HomeFrontCard: View {
     
     // MARK: - ProfileInfo
     
-    /// 프로필 정보
+    /// 프로필 전면부 정보
+    @ViewBuilder
     private var profileInfor: some View {
+        if let data = viewModel.profileData?.result {
+            makeInfor(name: data.name, birth: data.birth)
+        } else {
+            makeInfor(name: "저장된 이름 불러오기 실패", birth: "저장된 생일 데이터 불러오기 실패")
+        }
+    }
+    
+    // MARK: - Function
+    
+    /// 프로필 정보에 사용되는 뷰 생성 함수
+    /// - Parameters:
+    ///   - name: 반려동물 이름
+    ///   - birth: 반려동물 생일
+    /// - Returns: Vstack 뷰
+    @ViewBuilder
+    private func makeInfor(name: String, birth: String) -> some View {
         VStack(alignment: .center, spacing: 2, content: {
-            Text(viewModel.profileData?.name ?? "")
+            Text(name)
                 .frame(maxWidth: 190)
-                .font(.suit(type: .medium, size: 14))
-                .foregroundStyle(Color.black)
+                .font(.Body3_medium)
+                .foregroundStyle(Color.gray_900)
             
-            Text(viewModel.profileData?.date ?? "")
-                .font(.suit(type: .bold, size: 10))
+                Text(viewModel.formattedData(from: birth))
+                .font(.Detail1_bold)
                 .foregroundStyle(Color.gray_400)
         })
         .padding(.top, 10)

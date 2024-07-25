@@ -12,41 +12,47 @@ struct HomeBackCard: View {
     
     @ObservedObject var viewModel: HomeProfileCardViewModel
     
+    init(viewModel: HomeProfileCardViewModel) {
+        self.viewModel = viewModel
+    }
+    
     
     var body: some View {
         contents
     }
     
     // MARK: - Contents
-    
+    @ViewBuilder
     private var contents: some View {
         VStack(alignment: .center, spacing: 29, content: {
-            
-            HStack(content: {
-                Text("저는 이런 고양이에요!")
-                    .font(.suit(type: .medium, size: 12))
-                    .foregroundStyle(Color.gray_400)
-                
-                Spacer()
-            })
-            .padding(.horizontal, 24)
-            .padding(.top, 13)
-            
-            petInfoGroup
-            
-            HStack(content: {
-                
-                Spacer()
-                
-                Button(action: {
-                    viewModel.isChangeCard = true
-                }, label: {
-                    Icon.changeCard.image
-                        .fixedSize()
+            if let data = viewModel.profileData?.result {
+                HStack(content: {
+                    Text("저는 이런 \(data.type.toKorean())에요!")
+                        .font(.Body4_medium)
+                        .foregroundStyle(Color.gray_400)
+                    Spacer()
                 })
-            })
-            .padding(.horizontal, 20)
-            .padding(.bottom, 10)
+                .padding(.horizontal, 24)
+                .padding(.top, 13)
+                
+                petInfoGroup
+                
+                HStack(content: {
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        viewModel.isChangeCard = true
+                    }, label: {
+                        Icon.changeCard.image
+                            .fixedSize()
+                    })
+                })
+                .padding(.horizontal, 20)
+                .padding(.bottom, 10)
+            } else {
+                ProgressView()
+            }
         })
         .frame(width: 354, height: 240)
         .background(Color.white.opacity(0.5))
@@ -54,6 +60,7 @@ struct HomeBackCard: View {
         .shadow02()
     }
     
+    /// 펫 정보
     private var petInfoGroup: some View {
         HStack(alignment: .center, spacing: 32, content: {
             leftPetInfo
@@ -63,27 +70,20 @@ struct HomeBackCard: View {
     }
     
     // MARK: - LeftPetContents
+    /// 왼쪽 프로필과 펫 이름, 생일 정보
     private var leftPetInfo: some View {
         VStack(alignment: .center, spacing: 17, content: {
-            ProfileImageCard(imageUrl: viewModel.profileData?.imageUrl ?? "https://i.namu.wiki/i/bhqkJhfV1K2tE5mkPZ2XqlFKy0UDZhMlU77WitL24TX-VEGWZJ4MYctbK91UhM8K27Hzsg3do52gQ_IL5IKGFF5rN1wZaSua966ChAmukooR783zUxG-qiLrEZzBIPgbwjJ_UUh9XBppDzDFLi1l4A.webp", imageSize: 86, canEdit: false)
+            ProfileImageCard(imageUrl: viewModel.profileData?.result.image, imageSize: 86, canEdit: false)
             petName
-            
         })
     }
     
+    /// 펫 이름과 생일 정보
+    @ViewBuilder
     private var petName: some View {
-            VStack(alignment: .center, spacing: 2, content: {
-                
-                Text(viewModel.profileData?.name ?? "도라에몽")
-                    .frame(maxWidth: 190)
-                    .font(.suit(type: .medium, size: 14))
-                    .foregroundStyle(Color.black)
-                
-                Text(viewModel.profileData?.date ?? "2024.07.17")
-                    .font(.suit(type: .bold, size: 10))
-                    .foregroundStyle(Color.gray_400)
-            })
-            .padding(.top, 10)
+        if let data = viewModel.profileData?.result {
+            makeLeftInfor(name: data.name, birth: data.birth)
+        }
     }
     
     
@@ -105,32 +105,52 @@ struct HomeBackCard: View {
     /// 카드 뒷면 펫 정보
     private var myPetInfo: some View {
         VStack(alignment: .leading, spacing: 5, content: {
-            makeInfo(text: "특징: 단모종")
-            makeInfo(text: "상태: 중성화 완료")
-            makeInfo(text: "품종: 코리안쇼트헤어")
+            if let data = viewModel.profileData?.result {
+                makeRightInfo(text: "상태: \(data.neutralization ? "중성화 완료" : "중성화 미완료")")
+                makeRightInfo(text: "품종: \(data.variety)")
+            }
         })
     }
     
     /// 상단 펫 태그
+    @ViewBuilder
     private var myPetTag: some View {
-        Text("내 고양이 정보")
-            .frame(maxWidth: 90, maxHeight: 24)
-            .clipShape(.rect(cornerRadius: 25))
-            .font(.suit(type: .semibold, size: 10))
-            .foregroundStyle(Color.gray_900)
-            .overlay(
-                RoundedRectangle(cornerRadius: 25)
-                    .stroke(Color.primarycolor_700)
-            )
+        if let data = viewModel.profileData?.result {
+            Text("내 \(data.type.toKorean()) 정보")
+                .frame(maxWidth: 90, maxHeight: 24)
+                .clipShape(.rect(cornerRadius: 25))
+                .font(.suit(type: .semibold, size: 10))
+                .foregroundStyle(Color.gray_900)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 25)
+                        .stroke(Color.primarycolor_700)
+                )
+        }
     }
     
     
     // MARK: - Function
-    private func makeInfo(text: String) -> some View {
+    private func makeRightInfo(text: String) -> some View {
         Text(text)
             .font(.suit(type: .medium, size: 12))
             .foregroundStyle(Color.gray_900)
     }
+    
+    private func makeLeftInfor(name: String, birth: String) -> some View {
+        VStack(alignment: .center, spacing: 2, content: {
+            Text(name)
+                .frame(maxWidth: 190)
+                .font(.Body3_medium)
+                .foregroundStyle(Color.gray_900)
+            
+            Text(viewModel.formattedData(from: birth))
+                .font(.Detail1_bold)
+                .foregroundStyle(Color.gray_400)
+        })
+        .padding(.top, 10)
+    }
+    
+    
 }
 
 struct HomeBackCard_PreView: PreviewProvider {
