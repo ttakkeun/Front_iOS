@@ -15,11 +15,13 @@ struct CustomAlert: View {
     
     var body: some View {
         if showPopover {
+            ZStack {
                 backgroundOpacity
                 
                 alertWindow
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                     .zIndex(1)
+            }
         }
     }
     
@@ -66,7 +68,7 @@ struct CustomAlert: View {
                 .font(.suit(type: .semibold, size: 14))
                 .frame(width: 108, height: 36)
                 .foregroundStyle(Color.gray_900)
-                .background(Color.primarycolor200)
+                .background(Color.primarycolor_200)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)

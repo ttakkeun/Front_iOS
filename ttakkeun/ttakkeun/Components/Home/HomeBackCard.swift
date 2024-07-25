@@ -127,7 +127,7 @@ struct HomeBackCard: View {
                 .overlay(
                     RoundedRectangle(cornerRadius: 25)
                         .fill(Color.clear)
-                        .stroke(Color.primarycolor700)
+                        .stroke(Color.primarycolor_700)
                 )
         }
     }
