@@ -39,6 +39,7 @@
 				Home/ProfileImageCard.swift,
 				Profile/ProfileSelect.swift,
 				Recommend/ProductSheetView.swift,
+				Recommend/TestSheetView.swift,
 				Schedule/CustomDiary.swift,
 				Schedule/DiarySelectSheet.swift,
 				Schedule/TodoCompleteEach.swift,
