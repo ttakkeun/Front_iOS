@@ -26,14 +26,13 @@ struct HomeBackCard: View {
     private var contents: some View {
         VStack(alignment: .center, spacing: 29, content: {
             if let data = viewModel.profileData?.result {
+                
                 HStack(content: {
                     Text("저는 이런 \(data.type.toKorean())에요!")
-                        .font(.Body4_medium)
+                        .font(.Body4_extrabold)
                         .foregroundStyle(Color.gray_400)
                     Spacer()
                 })
-                .padding(.horizontal, 24)
-                .padding(.top, 13)
                 
                 petInfoGroup
                 
@@ -42,22 +41,25 @@ struct HomeBackCard: View {
                     Spacer()
                     
                     Button(action: {
-                        viewModel.isChangeCard = true
+                        viewModel.isShowFront.toggle()
                     }, label: {
                         Icon.changeCard.image
                             .fixedSize()
                     })
                 })
-                .padding(.horizontal, 20)
-                .padding(.bottom, 10)
             } else {
                 ProgressView()
             }
         })
-        .frame(width: 354, height: 240)
+        .padding(.top, 15)
+        .padding(.leading, 16)
+        .padding(.bottom, 20)
+        .padding(.trailing, 18)
+        .frame(width: 354, height: 260)
         .background(Color.white.opacity(0.5))
         .clipShape(.rect(cornerRadius: 20))
         .shadow02()
+        .transition(.blurReplace)
     }
     
     /// 펫 정보
@@ -66,7 +68,7 @@ struct HomeBackCard: View {
             leftPetInfo
             rightPetInfo
         })
-        .frame(maxWidth: 223, maxHeight: 129)
+        .frame(height: 132)
     }
     
     // MARK: - LeftPetContents
@@ -76,6 +78,7 @@ struct HomeBackCard: View {
             ProfileImageCard(imageUrl: viewModel.profileData?.result.image, imageSize: 86, canEdit: false)
             petName
         })
+        .frame(width: 86)
     }
     
     /// 펫 이름과 생일 정보
@@ -123,7 +126,8 @@ struct HomeBackCard: View {
                 .foregroundStyle(Color.gray_900)
                 .overlay(
                     RoundedRectangle(cornerRadius: 25)
-                        .stroke(Color.primarycolor_700)
+                        .fill(Color.clear)
+                        .stroke(Color.primarycolor700)
                 )
         }
     }
@@ -155,6 +159,7 @@ struct HomeBackCard: View {
 
 struct HomeBackCard_PreView: PreviewProvider {
     static var previews: some View {
-        HomeBackCard(viewModel: HomeProfileCardViewModel())
+        HomeProfileCard(viewModel: HomeProfileCardViewModel(), petId: 1)
+            .previewLayout(.sizeThatFits)
     }
 }

@@ -10,20 +10,45 @@ import SwiftUI
 struct HomeProfileCard: View {
     
     @ObservedObject var viewModel: HomeProfileCardViewModel
+    let petId: Int
     
     // MARK: - Init
     
-    init(viewModel: HomeProfileCardViewModel) {
+    init(
+        viewModel: HomeProfileCardViewModel,
+        petId: Int
+    ) {
         self.viewModel = viewModel
+        self.petId = petId
     }
     
     
     // MARK: - Components
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        homeProfileCard
+            .onAppear {
+                Task {
+                    await viewModel.getPetProfileInfo(petId: petId)
+                }
+            }
     }
+    
+    @ViewBuilder
+    private var homeProfileCard: some View {
+        ZStack {
+            if viewModel.isShowFront {
+                HomeFrontCard(viewModel: viewModel)
+            } else {
+                HomeBackCard(viewModel: viewModel)
+            }
+        }
+        .animation(.easeInOut, value: viewModel.isShowFront)
+    }
+        
 }
 
-#Preview {
-    HomeProfileCard(viewModel: HomeProfileCardViewModel())
+struct HomeProfileCard_Preview: PreviewProvider {
+    static var previews: some View {
+        HomeProfileCard(viewModel: HomeProfileCardViewModel(), petId: 1)
+    }
 }
