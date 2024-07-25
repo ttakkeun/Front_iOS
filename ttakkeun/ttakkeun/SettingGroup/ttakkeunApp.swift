@@ -11,7 +11,7 @@ import SwiftUI
 struct ttakkeunApp: App {
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            HomeProfileCard(viewModel: HomeProfileCardViewModel(), petId: 1)
         }
     }
 }

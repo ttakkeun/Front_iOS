@@ -42,7 +42,7 @@ struct HomeProfileCard: View {
                 HomeBackCard(viewModel: viewModel)
             }
         }
-        .animation(.easeInOut, value: viewModel.isShowFront)
+        .animation(.bouncy(duration: 1.2), value: viewModel.isShowFront)
     }
         
 }
