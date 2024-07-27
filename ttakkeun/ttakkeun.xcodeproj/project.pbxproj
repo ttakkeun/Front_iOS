@@ -80,8 +80,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				HomeTab/HomeProfileCard.swift,
+				HomeTab/ProfileView.swift,
 				LoginView.swift,
-				ProfileView.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};

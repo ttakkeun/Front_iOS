@@ -67,7 +67,7 @@ struct ProfileView: View {
                 .foregroundStyle(Color.black)
                 .multilineTextAlignment(.center)
         })
-        .frame(height: 145)
+        .frame(height: 145, alignment: .top)
     }
     
     // MARK: - Function
