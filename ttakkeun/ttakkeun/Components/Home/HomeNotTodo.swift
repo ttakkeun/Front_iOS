@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// 5개의 동그라미, Text, 테두리
+/// 투두가 없을 경우 보여지는 빈 뷰
 struct HomeNotTodo: View {
     var body: some View {
         
@@ -16,13 +16,15 @@ struct HomeNotTodo: View {
             topCircleComponents
             
             Text("Todo list를 만들어볼까요?")
-                .font(.suit(type: .semibold, size: 14))
+                .font(.Body3_medium)
+                .foregroundStyle(Color.gray_900)
             
         })
         .frame(width: 273, height: 147)
-        .background(
+        .overlay(
             RoundedRectangle(cornerRadius: 20)
-                .stroke(Color.gray_900)
+                .fill(Color.clear)
+                .stroke(Color.gray_200, lineWidth: 1)
         )
     }
     
@@ -82,7 +84,6 @@ struct HomeNotTodo_PreView: PreviewProvider {
             HomeNotTodo()
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
-            
                 .previewLayout(.sizeThatFits)
         }
     }
