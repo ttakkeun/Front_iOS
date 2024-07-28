@@ -11,7 +11,7 @@ import SwiftUI
 struct ttakkeunApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeProfileCard(viewModel: HomeProfileCardViewModel(), petId: 1)
+            ToDoCheckList(viewModel: HomeSceduleViewModel(), data: TodoList(todoID: 1, todoName: "이빨닦기 및 청소", todoStatus: false))
         }
     }
 }

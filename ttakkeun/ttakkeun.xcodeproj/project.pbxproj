@@ -37,6 +37,7 @@
 				Home/HomeTodoCircle.swift,
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
+				Home/ToDoCheckList.swift,
 				Profile/ProfileSelect.swift,
 				Recommend/ProductSheetView.swift,
 				Schedule/CustomDiary.swift,
@@ -80,8 +81,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				HomeTab/HomeProfileCard.swift,
-				HomeTab/ProfileView.swift,
 				LoginView.swift,
+				ProfileView.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -119,7 +120,7 @@
 			membershipExceptions = (
 				CustomDiaryViewModel.swift,
 				Home/HomeProfileCardViewModel.swift,
-				Home/HomeSceduleManagement.swift,
+				Home/HomeSceduleViewModel.swift,
 				LoginViewModel.swift,
 				ProfileCardViewModel.swift,
 			);
