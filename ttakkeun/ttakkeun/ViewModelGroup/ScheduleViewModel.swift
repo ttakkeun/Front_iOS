@@ -9,11 +9,13 @@ import Foundation
 import Moya
 
 @MainActor
-class HomeSceduleViewModel: ObservableObject {
+class ScheduleViewModel: ObservableObject {
     @Published var scheduleData: ScheduleInquiry?
     @Published var inputDate: DateRequestData
     
     private let provider: MoyaProvider<ScheduleAPITarget>
+    
+    @Published var data = [TodoList(todoID: 1, todoName: "면봉 사기", todoStatus: false), TodoList(todoID: 2, todoName: "귀 확인하기", todoStatus: false), TodoList(todoID: 3, todoName: "귀청소 해주기", todoStatus: false)]
     
     // MARK: - Init
     
@@ -55,6 +57,11 @@ class HomeSceduleViewModel: ObservableObject {
         } catch {
             print("ToDo 캘린더 조회 디코더 에러: \(error)")
         }
+    }
+    
+    // ScheduleViewModel 클래스 내에 추가
+    func filterUncheckedTodos() -> [TodoList] {
+        data.filter { !$0.todoStatus }
     }
 
     

@@ -10,21 +10,18 @@ import SwiftUI
 /// 투두 항목의 체크 리스트
 struct ToDoCheckList: View {
     
-    @ObservedObject var viewModel: HomeSceduleViewModel
-    @State var data: TodoList
+    @Binding var data: TodoList
     let isCompact: Bool
     
     
     // MARK: - Init
     
     init(
-        viewModel: HomeSceduleViewModel,
-        data: TodoList,
+        data: Binding<TodoList>,
         isCompact: Bool = true
     ) {
-        self.viewModel = viewModel
+        self._data = data
         self.isCompact = isCompact
-        self.data = data
     }
     
     var body: some View {
@@ -65,13 +62,5 @@ struct ToDoCheckList: View {
                 .foregroundStyle(Color.gray_900)
         })
         .frame(maxWidth: 203, alignment: .leading)
-    }
-}
-
-// MARK: - Contents
-
-struct TodoCheckList_Preview: PreviewProvider {
-    static var previews: some View {
-        ToDoCheckList(viewModel: HomeSceduleViewModel(), data: TodoList(todoID: 1, todoName: "이빨닦기 및 청소", todoStatus: false))
     }
 }

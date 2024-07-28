@@ -37,7 +37,8 @@ struct ScheduleInquiryResponseData: Codable {
 }
 
 /// 각 부위별 갖게 되는 리스트 항목
-struct TodoList: Codable, Hashable {
+struct TodoList: Codable, Hashable, Identifiable {
+    var id = UUID()
     var todoID: Int
     var todoName: String
     var todoStatus: Bool

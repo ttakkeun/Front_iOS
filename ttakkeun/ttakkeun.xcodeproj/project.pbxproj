@@ -121,10 +121,10 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CustomDiaryViewModel.swift,
-				Home/HomeProfileCardViewModel.swift,
-				Home/HomeSceduleViewModel.swift,
+				HomeProfileCardViewModel.swift,
 				LoginViewModel.swift,
 				ProfileCardViewModel.swift,
+				ScheduleViewModel.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
