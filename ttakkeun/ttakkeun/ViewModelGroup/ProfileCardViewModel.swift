@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Moya
 
-/// 프로필 카드 뷰 뷰모델
+/// 프로필 선택 뷰 - 카드 뷰 뷰모델
 @MainActor
 class ProfileCardViewModel: ObservableObject {
     

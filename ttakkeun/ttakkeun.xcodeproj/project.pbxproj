@@ -34,7 +34,7 @@
 				Home/HomeDragView.swift,
 				Home/HomeFrontCard.swift,
 				Home/HomeNotTodo.swift,
-				Home/HomeNotTodoCircle.swift,
+				Home/HomeTodoCircle.swift,
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
 				Profile/ProfileSelect.swift,
@@ -98,6 +98,7 @@
 				PetState.swift,
 				TokenRefresh/AccessTokenRefresher.swift,
 				TokenRefresh/APIManager.swift,
+				TokenRefresh/AuthAPITarget.swift,
 				TokenRefresh/TokenProvider.swift,
 				TokenRefresh/TokenProviding.swift,
 				TokenRefresh/TokenResponse.swift,
@@ -107,8 +108,8 @@
 		4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				AuthAPITarget.swift,
 				PetProfileAPITarget.swift,
+				ScheduleAPITarget.swift,
 				UserLoginAPITarget.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -117,7 +118,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CustomDiaryViewModel.swift,
-				HomeProfileCardViewModel.swift,
+				Home/HomeProfileCardViewModel.swift,
+				Home/HomeSceduleManagement.swift,
 				LoginViewModel.swift,
 				ProfileCardViewModel.swift,
 			);

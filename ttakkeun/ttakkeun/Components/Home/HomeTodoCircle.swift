@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// Init으로 원에 사진과 색 넣을 수 있도록 함
-struct HomeNotTodoCircle: View {
+struct HomeTodoCircle: View {
     var color: Color
     var icon: Image
     

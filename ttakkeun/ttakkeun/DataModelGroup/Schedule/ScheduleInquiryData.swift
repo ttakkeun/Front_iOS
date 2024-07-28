@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - Response
+
 /// 일정 - 캘린더 조회 데이터
 struct ScheduleInquiry: Codable {
     let isSuccess: Bool
@@ -45,4 +47,13 @@ struct TodoList: Codable, Hashable {
         case todoName = "todo_name"
         case todoStatus = "todo_status"
     }
+}
+
+// MARK: - Request
+
+/// 날짜 조회 리퀘스트 바디
+struct DateRequestData: Codable {
+    var year: Int /* 년 */
+    var month: Int /* 월 */
+    var date: Int /* 일 */
 }
