@@ -37,7 +37,7 @@ struct HomeNotTodo: View {
             firstCircle
             secondCircle
             
-            HomeTodoCircle(color: .beforeEar_Color, icon: Icon.homeEar.image)
+            HomeTodoCircle(partItem: .ear, isBefore: true)
                 .padding(.top, 13)
         })
     }
@@ -46,11 +46,11 @@ struct HomeNotTodo: View {
     /// 끝에서 두번째 원
     private var secondCircle: some View {
         HStack(content: {
-            HomeTodoCircle(color: .beforeTeeth_Color, icon: Icon.homeTeeth.image)
+            HomeTodoCircle(partItem: .tooth, isBefore: true)
             
             Spacer()
             
-            HomeTodoCircle(color: .beforeEye_Color, icon: Icon.homeEye.image)
+            HomeTodoCircle(partItem: .eye, isBefore: true)
             
         })
         .frame(maxWidth: 117)
@@ -62,11 +62,11 @@ struct HomeNotTodo: View {
     /// 끝에서 첫번째 원
     private var firstCircle: some View {
         HStack(content: {
-            HomeTodoCircle(color: .beforeClaw_Color, icon: Icon.homeClaw.image)
+            HomeTodoCircle(partItem: .claw, isBefore: true)
             
             Spacer()
             
-            HomeTodoCircle(color: .beforeHair_COlor, icon: Icon.homeHair.image)
+            HomeTodoCircle(partItem: .hair, isBefore: true)
         })
         .frame(maxWidth: 184)
     }
