@@ -38,6 +38,7 @@
 				Home/HomeTodoCircle.swift,
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
+				Profile/MakeProfileNameTag.swift,
 				Home/ToDoCheckList.swift,
 				Profile/ProfileSelect.swift,
 				Recommend/ProductSheetView.swift,
