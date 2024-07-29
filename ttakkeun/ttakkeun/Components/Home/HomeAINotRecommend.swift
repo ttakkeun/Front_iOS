@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// AI 상품 없을 시 사용하는 컴포넌트
 struct HomeAINotRecommend: View {
     var body: some View {
         notRecommendedView
