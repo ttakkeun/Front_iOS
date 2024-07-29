@@ -36,6 +36,7 @@ extension Color {
     static let card004_Color = Color("Card004") /* #FFB84F 100% */
     static let card005_Color = Color("Card005") /* #CCB4FF 100% */
     static let subProfileColor = Color("SubProfileColor") /* #8F8F8F 100% */
+    static let redStarColor = Color("RedStar") /* #F85B5B */
     
     // MARK: - Border
     static let fabPencil_Color = Color("FabPencil") /* #444444 100% */
