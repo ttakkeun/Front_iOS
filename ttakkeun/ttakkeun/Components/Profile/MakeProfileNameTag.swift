@@ -1,5 +1,5 @@
 //
-//  MakeProfileTitle.swift
+//  MakeProfileNameTag.swift
 //  ttakkeun
 //
 //  Created by 황유빈 on 7/29/24.
