@@ -37,6 +37,7 @@
 				Home/HomeNotTodoCircle.swift,
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
+				Profile/MakeProfileTitle.swift,
 				Profile/ProfileSelect.swift,
 				Recommend/ProductSheetView.swift,
 				Schedule/CustomDiary.swift,
