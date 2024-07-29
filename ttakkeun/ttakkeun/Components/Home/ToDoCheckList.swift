@@ -11,17 +11,20 @@ import SwiftUI
 struct ToDoCheckList: View {
     
     @Binding var data: TodoList
-    let isCompact: Bool
+    @ObservedObject var viewModel: ScheduleViewModel
+    let parItem: PartItem
     
     
     // MARK: - Init
     
     init(
         data: Binding<TodoList>,
-        isCompact: Bool = true
+        viewModel: ScheduleViewModel,
+        partItem: PartItem
     ) {
         self._data = data
-        self.isCompact = isCompact
+        self.viewModel = viewModel
+        self.parItem = partItem
     }
     
     var body: some View {
@@ -35,6 +38,9 @@ struct ToDoCheckList: View {
             Button(action: {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     data.todoStatus.toggle()
+                    Task {
+                        viewModel.toggleTodoStatus(for: parItem, todoID: data.id)
+                    }
                 }
             }, label: {
                 if !data.todoStatus {

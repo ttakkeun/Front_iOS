@@ -64,6 +64,11 @@ extension ScheduleAPITarget: TargetType {
                   "todo_id": 2,
                   "todo_name": "귀 닦기",
                   "todo_status": false
+                },
+                {
+                  "todo_id": 10,
+                  "todo_name": "귀 털정리",
+                  "todo_status": false
                 }
               ],
               "hair_todos": [
