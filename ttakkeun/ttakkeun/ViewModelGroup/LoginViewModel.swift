@@ -8,6 +8,7 @@
 import Foundation
 import Moya
 
+/// 로그인 뷰 사용되는 뷰모델
 @MainActor
 class LoginViewModel: ObservableObject {
     
@@ -52,6 +53,8 @@ class LoginViewModel: ObservableObject {
         }
     }
     
+    /// 애플 로그인 성공 시 받게 되는 Response 데이터
+    /// - Parameter response: response 데이터
     private func handlerInvalidToken(response: Response) {
         do {
             let decodedData = try JSONDecoder().decode(LoginResponseData.self, from: response.data)

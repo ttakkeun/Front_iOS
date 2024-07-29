@@ -77,7 +77,7 @@ struct TodoCompleteEach: View {
             Text("털")
         case .claw:
             Text("발톱")
-        case .teeth:
+        case .tooth:
             Text("이빨")
         }
     }
@@ -92,7 +92,7 @@ struct TodoCompleteEach: View {
             Color.afterHair_Color
         case .claw:
             Color.afterClaw_Color
-        case .teeth:
+        case .tooth:
             Color.afterTeeth_Color
         }
     }

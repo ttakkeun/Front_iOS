@@ -28,16 +28,18 @@
 				ETC/CustomAlert.swift,
 				ETC/CustomTextField.swift,
 				ETC/MainButton.swift,
-				ETC/topStatusBar.swift,
+				ETC/TopStatusBar.swift,
+				Home/HomeAINotRecommend.swift,
 				Home/HomeAIRecommendProduct.swift,
 				Home/HomeBackCard.swift,
 				Home/HomeDragView.swift,
 				Home/HomeFrontCard.swift,
 				Home/HomeNotTodo.swift,
-				Home/HomeNotTodoCircle.swift,
+				Home/HomeTodoCircle.swift,
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
 				Profile/MakeProfileNameTag.swift,
+				Home/ToDoCheckList.swift,
 				Profile/ProfileSelect.swift,
 				Recommend/ProductSheetView.swift,
 				Schedule/CustomDiary.swift,
@@ -80,9 +82,11 @@
 		483558A32C3D0F13006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				HomeTab/CompactTodo.swift,
+				HomeTab/ExpandTodo.swift,
 				HomeTab/HomeProfileCard.swift,
-				HomeTab/ProfileView.swift,
 				LoginView.swift,
+				ProfileView.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -99,6 +103,7 @@
 				PetState.swift,
 				TokenRefresh/AccessTokenRefresher.swift,
 				TokenRefresh/APIManager.swift,
+				TokenRefresh/AuthAPITarget.swift,
 				TokenRefresh/TokenProvider.swift,
 				TokenRefresh/TokenProviding.swift,
 				TokenRefresh/TokenResponse.swift,
@@ -108,8 +113,8 @@
 		4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				AuthAPITarget.swift,
 				PetProfileAPITarget.swift,
+				ScheduleAPITarget.swift,
 				UserLoginAPITarget.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -121,6 +126,7 @@
 				HomeProfileCardViewModel.swift,
 				LoginViewModel.swift,
 				ProfileCardViewModel.swift,
+				ScheduleViewModel.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -134,7 +140,8 @@
 				PetProfile/PetProfileData.swift,
 				PetProfile/PetProfileImageData.swift,
 				RecommendProductData.swift,
-				TodoCompleteData.swift,
+				Schedule/ScheduleInquiryData.swift,
+				Schedule/TodoCompleteData.swift,
 				UserRecommendProductData.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -142,6 +149,7 @@
 		48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				PartItem.swift,
 				ProfileType.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
