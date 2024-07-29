@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MakeProfileTitle: View {
+struct MakeProfileNameTag: View {
     
     var titleText: String
     var mustMark: Bool
@@ -20,23 +20,23 @@ struct MakeProfileTitle: View {
     var body: some View {
         HStack(alignment: .top, spacing: 2, content: {
             Text(titleText)
-                .font(.suit(type: .bold, size: 16))
+                .font(.H4_bold)
                 .foregroundStyle(Color.gray_900)
             
             Text("*")
-                .font(.suit(type: .bold, size: 16))
+                .font(.H4_bold)
                 //TODO: - ColorSet 추가해서 색상 변경해야함!!!
                 .foregroundStyle(Color.red)
-                
+                .padding(.top, -6)
         })
         .frame(width: 331, height: 20, alignment: .leading)
     }
 }
 
 //MARK: - Preiview
-struct MakeProfileTitle_Preview: PreviewProvider {
+struct MakeProfileNameTag_Preview: PreviewProvider {
     static var previews: some View {
-        MakeProfileTitle(titleText: "이름", mustMark: true)
+        MakeProfileNameTag(titleText: "이름", mustMark: true)
     }
 }
 
