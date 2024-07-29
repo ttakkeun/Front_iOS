@@ -67,6 +67,6 @@ struct ToDoCheckList: View {
                 .font(.Body4_medium)
                 .foregroundStyle(Color.gray_900)
         })
-        .frame(maxWidth: 203, alignment: .leading)
+        .frame(maxWidth: 203, maxHeight: 16, alignment: .leading)
     }
 }

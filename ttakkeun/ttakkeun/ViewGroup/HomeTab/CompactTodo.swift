@@ -32,7 +32,7 @@ struct CompactTodo: View {
                 .fill(Color.clear)
                 .stroke(Color.gray_200, lineWidth: 1)
         )
-        .frame(maxWidth: 230)
+        .frame(width: 230, height: 147)
         .onAppear {
             Task {
                 await viewModel.getScheduleData(currentDate: viewModel.inputDate)
@@ -58,24 +58,23 @@ struct CompactTodo: View {
         case .tooth:
             todos = viewModel.incompleteToothTodos
         }
-        
-        return Group {
-            if todos.isEmpty {
+        return VStack(alignment: .leading, spacing: 10) {
+            if !todos.isEmpty {
+                ForEach(todos.prefix(2), id: \.id) { todo in
+                    HStack {
+                        ToDoCheckList(data: .constant(todo), viewModel: viewModel, partItem: partItem)
+                        Spacer()
+                    }
+                }
+            } else {
                 Text("오늘의 \(partItem.toKorean()) 투두를 전부 끝냈어요!")
                     .font(.Body4_medium)
                     .foregroundColor(Color.gray400)
                     .padding()
-            } else {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 110), spacing: 10), count: 2), spacing: 10) {
-                    ForEach(todos, id: \.id) { todo in
-                        ToDoCheckList(data: .constant(todo), viewModel: viewModel, partItem: partItem)
-                    }
-                }
-                .frame(alignment: .leading)
-                .padding(.vertical, 10)
-                .padding(.leading, 5)
             }
         }
+        .frame(width: 190, height: 42)
+        .padding(.leading, 10)
     }
 }
 
