@@ -11,16 +11,15 @@ import Kingfisher
 /// 유저 추천 제품 Top8
 struct HomeUserRecommendProduct: View {
     
-    let productData: UserRecommendProductResponseData
+    let data: ProductDetailData
     let rank: Int
-    
     // MARK: - Init
     
     init(
-        productData: UserRecommendProductResponseData,
+        data: ProductDetailData,
         rank: Int
     ) {
-        self.productData = productData
+        self.data = data
         self.rank = rank
     }
     
@@ -40,7 +39,8 @@ struct HomeUserRecommendProduct: View {
             
             productInfo
         })
-        .frame(maxWidth: 84, maxHeight: 160)
+        
+        .frame(width: 84, height: 150)
     }
     
     /// 순위 표시 태그
@@ -64,7 +64,7 @@ struct HomeUserRecommendProduct: View {
     /// 반려동물 추천 제품 Top8 이미지
     @ViewBuilder
     private var productImage: some View {
-        if let url = URL(string: productData.productImage) {
+        if let url = URL(string: data.image) {
             KFImage(url)
                 .placeholder {
                     ProgressView()
@@ -87,11 +87,11 @@ struct HomeUserRecommendProduct: View {
         var formattedPrice: String {
             let formatter = NumberFormatter()
             formatter.numberStyle = .decimal
-            return formatter.string(from: NSNumber(value: productData.productPrice)) ?? "\(productData.productPrice)"
+            return formatter.string(from: NSNumber(value: data.price)) ?? "\(data.price)"
         }
         
         VStack(alignment: .leading, spacing: 4, content: {
-            Text(productData.productTitle.split(separator: "").joined(separator: "\u{200B}"))
+            Text(data.title.split(separator: "").joined(separator: "\u{200B}"))
                 .font(.suit(type: .medium, size: 10))
                 .foregroundStyle(Color.gray_900)
                 .lineLimit(nil)
@@ -101,11 +101,10 @@ struct HomeUserRecommendProduct: View {
                 .font(.suit(type: .medium, size: 12))
                 .foregroundStyle(Color.gray_900)
             
-            Text(productData.productCompany)
+            Text(data.brand)
                 .font(.suit(type: .regular, size: 8))
                 .foregroundStyle(Color.gray_400)
         })
-        
     }
 }
 
@@ -113,6 +112,7 @@ struct HomeUserRecommendProduct: View {
 
 struct HomeUserRecommendProduct_Preview: PreviewProvider {
     static var previews: some View {
-        HomeUserRecommendProduct(productData: UserRecommendProductResponseData(productImage: "https://shopping-phinf.pstatic.net/main_3596342/35963422008.jpg", productTitle: "아껴주다 저자극 천연 고양이 샴푸", productPrice: 18000, productCompany: "쿠팡"), rank: 0)
+        HomeUserRecommendProduct(data: ProductDetailData(productId: 1, title: "아껴주다 저자극 천연 고양이 샴푸", image: "https://shopping-phinf.pstatic.net/main_8516432/85164327357.jpg", price: 12000, brand: "쿠팡", purchaseLink: "https://smartstore.naver.com/main/products/7619827035", category1: "건강", category2: "반려동물", category3: "관리용품", category4: "영양제", totalLike: 10, likeStatus: false), rank: 2)
+            .previewLayout(.sizeThatFits)
     }
 }

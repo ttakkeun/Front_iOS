@@ -38,8 +38,8 @@
 				Home/HomeTodoCircle.swift,
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
-				Profile/MakeProfileNameTag.swift,
 				Home/ToDoCheckList.swift,
+				Profile/MakeProfileNameTag.swift,
 				Profile/ProfileSelect.swift,
 				Recommend/ProductSheetView.swift,
 				Schedule/CustomDiary.swift,
@@ -114,6 +114,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				PetProfileAPITarget.swift,
+				ProductRecommendAPITarget.swift,
 				ScheduleAPITarget.swift,
 				UserLoginAPITarget.swift,
 			);
@@ -125,6 +126,7 @@
 				CustomDiaryViewModel.swift,
 				HomeProfileCardViewModel.swift,
 				LoginViewModel.swift,
+				ProductViewModel.swift,
 				ProfileCardViewModel.swift,
 				ScheduleViewModel.swift,
 			);
@@ -133,16 +135,15 @@
 		48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				AIRecommendProductData.swift,
 				LoginResponseData.swift,
 				PetProfile/CreatePetProfileRequestData.swift,
 				PetProfile/HomeProfileData.swift,
 				PetProfile/PetProfileData.swift,
 				PetProfile/PetProfileImageData.swift,
+				Product/AIRecommendProductData.swift,
 				RecommendProductData.swift,
 				Schedule/ScheduleInquiryData.swift,
 				Schedule/TodoCompleteData.swift,
-				UserRecommendProductData.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
