@@ -38,6 +38,7 @@
 				Home/HomeTodoCircle.swift,
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
+				Profile/MakeProfileButtonCustom.swift,
 				Home/ToDoCheckList.swift,
 				Journal/AnswerButton.swift,
 				Journal/DiagnosticImages.swift,
@@ -80,11 +81,6 @@
 		483558A32C3D0F13006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Diagnosis/RegistDiagnosisFlowView.swift,
-				Diagnosis/RegistDiagnosisPageContents.swift,
-				HomeTab/CompactTodo.swift,
-				HomeTab/ExpandTodo.swift,
-				HomeTab/HomeDragView.swift,
 				HomeTab/HomeProfileCard.swift,
 				HomeTab/HomeView.swift,
 				LoginView.swift,
@@ -129,6 +125,7 @@
 		48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				CreateProfileViewModel.swift,
 				CustomDiaryViewModel.swift,
 				HomeProfileCardViewModel.swift,
 				LoginViewModel.swift,

@@ -70,11 +70,12 @@ struct CustomTextField: View {
             isTextFocused = false
         }
         .ignoresSafeArea(.keyboard)
+        .frame(maxWidth: maxWidth)
     }
     
     private var inputOneLineTextField: some View {
         TextField("", text: $text, axis: .horizontal)
-            .frame(width: maxWidth - 40, height: maxHeight)
+            .frame(width: maxWidth - 20, height: maxHeight)
             .keyboardType(keyboardType)
             .font(.suit(type: .medium, size: fontSize))
             .foregroundStyle(Color.black)
@@ -121,9 +122,13 @@ struct CustomTextField: View {
 
 struct CustomTextField_PreView: PreviewProvider {
     
-    @State static var text: String = "가나다라마바사"
+    static let devices = ["iPhone 11", "iphone 15 Pro"]
     
     static var previews: some View {
-        CustomTextField(text: $text, placeholder: "검색어를 입력해주세요", fontSize: 16, cornerRadius: 10, padding: 44, showGlass: true, maxWidth: 331, maxHeight: 40)
+        ForEach(devices, id: \.self) { device in
+            CreateProfileView()
+                .previewDevice(PreviewDevice(rawValue: device))
+                .previewDisplayName(device)
+        }
     }
 }
