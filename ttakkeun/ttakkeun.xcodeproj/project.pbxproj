@@ -114,6 +114,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				PetProfileAPITarget.swift,
+				ProductRecommendAPITarget.swift,
 				ScheduleAPITarget.swift,
 				UserLoginAPITarget.swift,
 			);
@@ -125,6 +126,7 @@
 				CustomDiaryViewModel.swift,
 				HomeProfileCardViewModel.swift,
 				LoginViewModel.swift,
+				ProductViewModel.swift,
 				ProfileCardViewModel.swift,
 				ScheduleViewModel.swift,
 			);
@@ -142,7 +144,6 @@
 				RecommendProductData.swift,
 				Schedule/ScheduleInquiryData.swift,
 				Schedule/TodoCompleteData.swift,
-				UserRecommendProductData.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
