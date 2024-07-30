@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// 5개의 동그라미, Text, 테두리
+/// 투두가 없을 경우 보여지는 빈 뷰
 struct HomeNotTodo: View {
     var body: some View {
         
@@ -16,13 +16,15 @@ struct HomeNotTodo: View {
             topCircleComponents
             
             Text("Todo list를 만들어볼까요?")
-                .font(.suit(type: .semibold, size: 14))
+                .font(.Body3_medium)
+                .foregroundStyle(Color.gray_900)
             
         })
         .frame(width: 273, height: 147)
-        .background(
+        .overlay(
             RoundedRectangle(cornerRadius: 20)
-                .stroke(Color.gray_900)
+                .fill(Color.clear)
+                .stroke(Color.gray_200, lineWidth: 1)
         )
     }
     
@@ -35,7 +37,7 @@ struct HomeNotTodo: View {
             firstCircle
             secondCircle
             
-            HomeNotTodoCircle(color: .beforeEar_Color, icon: Icon.homeEar.image)
+            HomeTodoCircle(partItem: .ear, isBefore: true)
                 .padding(.top, 13)
         })
     }
@@ -44,11 +46,11 @@ struct HomeNotTodo: View {
     /// 끝에서 두번째 원
     private var secondCircle: some View {
         HStack(content: {
-            HomeNotTodoCircle(color: .beforeTeeth_Color, icon: Icon.homeTeeth.image)
+            HomeTodoCircle(partItem: .tooth, isBefore: true)
             
             Spacer()
             
-            HomeNotTodoCircle(color: .beforeEye_Color, icon: Icon.homeEye.image)
+            HomeTodoCircle(partItem: .eye, isBefore: true)
             
         })
         .frame(maxWidth: 117)
@@ -60,11 +62,11 @@ struct HomeNotTodo: View {
     /// 끝에서 첫번째 원
     private var firstCircle: some View {
         HStack(content: {
-            HomeNotTodoCircle(color: .beforeClaw_Color, icon: Icon.homeClaw.image)
+            HomeTodoCircle(partItem: .claw, isBefore: true)
             
             Spacer()
             
-            HomeNotTodoCircle(color: .beforeHair_COlor, icon: Icon.homeHair.image)
+            HomeTodoCircle(partItem: .hair, isBefore: true)
         })
         .frame(maxWidth: 184)
     }
@@ -82,7 +84,6 @@ struct HomeNotTodo_PreView: PreviewProvider {
             HomeNotTodo()
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
-            
                 .previewLayout(.sizeThatFits)
         }
     }
