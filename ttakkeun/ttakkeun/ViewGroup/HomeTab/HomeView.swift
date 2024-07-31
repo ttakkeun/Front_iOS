@@ -9,11 +9,16 @@ import SwiftUI
 
 struct HomeView: View {
     
+    // MARK: - Property
     @StateObject var homeProfileCardViewModel: HomeProfileCardViewModel
+    @StateObject var scheduleViewModel: ScheduleViewModel
+    @StateObject var productViewModel: ProductViewModel
     @EnvironmentObject var petState: PetState
     
     init() {
         self._homeProfileCardViewModel = StateObject(wrappedValue: HomeProfileCardViewModel())
+        self._scheduleViewModel = StateObject(wrappedValue: ScheduleViewModel())
+        self._productViewModel = StateObject(wrappedValue: ProductViewModel())
     }
     
     var body: some View {
@@ -32,11 +37,13 @@ struct HomeView: View {
             })
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             
-            HomeDragView()
+            HomeDragView(scheduleViewModel: scheduleViewModel, productViewModel: productViewModel)
+                .environmentObject(PetState())
         }
     }
 }
 
+// MARK: - Preview
 struct HomeView_Preview: PreviewProvider {
     static let devices = ["iPhone 11", "iPhone 15 Pro"]
     
