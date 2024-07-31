@@ -10,5 +10,5 @@ import Foundation
 /// 선택된 펫 정보 관리
 class PetState: ObservableObject {
     @Published var petName: String? = nil
-    @Published var petId: Int? = nil
+    @Published var petId: Int?
 }

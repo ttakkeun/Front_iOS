@@ -26,7 +26,7 @@ struct HomeDragView: View {
             
             let screenHeight = geometry.size.height
             let minOffset: CGFloat = screenHeight * 0.67
-            let maxOffset: CGFloat = screenHeight * 0.3
+            let maxOffset: CGFloat = screenHeight * 0.25
             
             /* 임계값을 두어 드래그뷰를 위 아래로 조절한다. */
             VStack {
@@ -40,7 +40,7 @@ struct HomeDragView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.yellow)
-            .clipShape(.rect(topLeadingRadius: 10, topTrailingRadius: 10))
+            .clipShape(.rect(topLeadingRadius: 30, topTrailingRadius: 30))
             .shadow03()
             .offset(y: offset + dragOffset)
             .gesture(
@@ -65,10 +65,21 @@ struct HomeDragView: View {
                         lastoffset = offset
                     })
             )
+            .onAppear {
+                self.offset = maxOffset
+            }
         }
         .animation(.interactiveSpring(), value: offset)
     }
     
+    // MARK: - Components
+    
+//    // MARK: - Function
+//    private func titleText(text: String) -> some View {
+//        Text(text)
+//            .font(.H4_bold)
+//            .fore
+//    }
     
 }
 

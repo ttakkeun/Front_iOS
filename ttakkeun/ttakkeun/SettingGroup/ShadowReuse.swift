@@ -25,7 +25,7 @@ struct Shadow02: ViewModifier {
 struct Shadow03: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 0)
+            .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 4)
 
     }
 }
