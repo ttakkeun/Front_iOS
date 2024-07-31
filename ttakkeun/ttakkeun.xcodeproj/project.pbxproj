@@ -32,7 +32,6 @@
 				Home/HomeAINotRecommend.swift,
 				Home/HomeAIRecommendProduct.swift,
 				Home/HomeBackCard.swift,
-				Home/HomeDragView.swift,
 				Home/HomeFrontCard.swift,
 				Home/HomeNotTodo.swift,
 				Home/HomeTodoCircle.swift,
@@ -84,7 +83,9 @@
 			membershipExceptions = (
 				HomeTab/CompactTodo.swift,
 				HomeTab/ExpandTodo.swift,
+				HomeTab/HomeDragView.swift,
 				HomeTab/HomeProfileCard.swift,
+				HomeTab/HomeView.swift,
 				LoginView.swift,
 				ProfileView.swift,
 			);
@@ -140,7 +141,7 @@
 				PetProfile/HomeProfileData.swift,
 				PetProfile/PetProfileData.swift,
 				PetProfile/PetProfileImageData.swift,
-				Product/AIRecommendProductData.swift,
+				Product/AIAndSearchProductData.swift,
 				RecommendProductData.swift,
 				Schedule/ScheduleInquiryData.swift,
 				Schedule/TodoCompleteData.swift,
