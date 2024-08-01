@@ -83,15 +83,17 @@ struct HomeDragView: View {
         .animation(.interactiveSpring(), value: offset)
     }
     
-    // MARK: - Components
+    
     private var compatchComponents: some View {
         VStack(alignment: .leading, spacing: 21, content: {
             compactTodoGroup
+            compactAIProduct
         })
         .frame(width: 350)
         .padding(.horizontal, 20)
     }
     
+    // MARK: - 오늘의 일정 관리
     /// 드래그뷰 하단 오늘의 일정 관리 컴포넌트
     @ViewBuilder
     private var compactTodoGroup: some View {
@@ -143,6 +145,45 @@ struct HomeDragView: View {
                 await scheduleViewModel.getScheduleData(currentDate: scheduleViewModel.inputDate)
             }
             
+        }
+    }
+    
+    // MARK: - AI 추천 목록
+    
+    @ViewBuilder
+    private var compactAIProduct: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            titleText(text: "\(petState.petName ?? "등록돈 펫 정보 없음")를 위한 따끈따끈 AI 추천 제품")
+            
+            if let resultData = productViewModel.aiProductData?.result {
+                ScrollView(.horizontal, showsIndicators: false, content: {
+                    LazyHGrid(rows: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 241)), count: 1), spacing: 12, content: {
+                        ForEach(resultData.prefix(4), id: \.self ) { data in
+                            HomeAIRecommendProduct(data: data)
+                        }
+                    })
+                    .frame(height: 92)
+                    .padding(.horizontal, 10)
+                })
+                .onAppear {
+                    Task {
+                        await productViewModel.getAIProduct()
+                    }
+                }
+            } else {
+                HStack {
+                    Spacer()
+                    
+                    HomeAINotRecommend()
+                    
+                    Spacer()
+                }
+            }
+        }
+        .onAppear {
+            Task {
+                await productViewModel.getAIProduct()
+            }
         }
     }
     

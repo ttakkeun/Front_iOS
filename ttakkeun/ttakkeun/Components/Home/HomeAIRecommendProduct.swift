@@ -26,7 +26,7 @@ struct HomeAIRecommendProduct: View {
             productImage
             productInfo
         })
-        .frame(maxWidth: 241, maxHeight: 92)
+        .frame(width: 241, height: 92)
         .background(Color.clear)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
