@@ -11,6 +11,7 @@ import Moya
 @MainActor
 class ScheduleViewModel: ObservableObject {
     @Published var inputDate: DateRequestData
+    @Published var scheduleData: ScheduleInquiry?
     
     private let provider: MoyaProvider<ScheduleAPITarget>
     

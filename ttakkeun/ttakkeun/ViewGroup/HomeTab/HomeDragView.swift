@@ -93,38 +93,50 @@ struct HomeDragView: View {
     }
     
     /// 드래그뷰 하단 오늘의 일정 관리 컴포넌트
+    @ViewBuilder
     private var compactTodoGroup: some View {
         VStack(alignment: .leading, spacing: 16, content: {
             titleText(text: "오늘의 일정 관리")
             
-            ScrollView(.horizontal, content: {
-                LazyHGrid(rows: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 147)), count: 1), spacing: 12, content: {
-                    /* earTodos ForEach*/
-                    if !scheduleViewModel.earTodos.isEmpty {
-                        CompactTodo(viewModel: scheduleViewModel, partItem: .ear)
-                    }
-                    /* hairTodos ForEach*/
-                    if !scheduleViewModel.hairTodos.isEmpty {
-                        CompactTodo(viewModel: scheduleViewModel, partItem: .hair)
-                    }
-                    /* clawTodos ForEach*/
-                    if !scheduleViewModel.clawTodos.isEmpty {
-                        CompactTodo(viewModel: scheduleViewModel, partItem: .claw)
-                    }
-                    /* eyeTodos ForEach*/
-                    if !scheduleViewModel.eyeTodos.isEmpty {
-                        CompactTodo(viewModel: scheduleViewModel, partItem: .eye)
-                    }
-                    /* toothTodos ForEach*/
-                    if !scheduleViewModel.toothTodos.isEmpty {
-                        CompactTodo(viewModel: scheduleViewModel, partItem: .tooth)
-                    }
+            if scheduleViewModel.earTodos.isEmpty && scheduleViewModel.eyeTodos.isEmpty && scheduleViewModel.hairTodos.isEmpty && scheduleViewModel.clawTodos.isEmpty && scheduleViewModel.toothTodos.isEmpty {
+                HStack {
+                    Spacer()
                     
+                    HomeNotTodo()
+                    
+                    Spacer()
+                }
+                
+            } else {
+                
+                ScrollView(.horizontal, showsIndicators: false, content: {
+                    LazyHGrid(rows: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 147)), count: 1), spacing: 12, content: {
+                        /* earTodos ForEach*/
+                        if !scheduleViewModel.earTodos.isEmpty {
+                            CompactTodo(viewModel: scheduleViewModel, partItem: .ear)
+                        }
+                        /* hairTodos ForEach*/
+                        if !scheduleViewModel.hairTodos.isEmpty {
+                            CompactTodo(viewModel: scheduleViewModel, partItem: .hair)
+                        }
+                        /* clawTodos ForEach*/
+                        if !scheduleViewModel.clawTodos.isEmpty {
+                            CompactTodo(viewModel: scheduleViewModel, partItem: .claw)
+                        }
+                        /* eyeTodos ForEach*/
+                        if !scheduleViewModel.eyeTodos.isEmpty {
+                            CompactTodo(viewModel: scheduleViewModel, partItem: .eye)
+                        }
+                        /* toothTodos ForEach*/
+                        if !scheduleViewModel.toothTodos.isEmpty {
+                            CompactTodo(viewModel: scheduleViewModel, partItem: .tooth)
+                        }
+                        
+                    })
+                    .frame(height: 180)
+                    .padding(.horizontal, 10)
                 })
-                .frame(height: 180)
-                .padding(.leading, 5)
-                .scrollIndicators(.hidden)
-            })
+            }
         })
         .onAppear {
             Task {
