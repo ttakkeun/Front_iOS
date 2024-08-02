@@ -1,0 +1,252 @@
+[
+    {
+        "category": "EAR",
+        "question": "귀에서 이상한 소리가 나요.",
+        "answer": "아이의 귀 상태를 체크해주세요."
+    },
+    {
+        "category": "EAR",
+        "question": "귀가 가려워요.",
+        "answer": "귀 청소를 주기적으로 해주세요."
+    },
+    {
+        "category": "EAR",
+        "question": "귀에서 냄새가 나요.",
+        "answer": "귀 감염 여부를 확인해주세요."
+    },
+    {
+        "category": "EAR",
+        "question": "귀가 붉어졌어요.",
+        "answer": "알레르기 가능성을 확인해주세요."
+    },
+    {
+        "category": "EAR",
+        "question": "귀에 진드기가 있는 것 같아요.",
+        "answer": "동물병원에 방문하세요."
+    },
+    {
+        "category": "EAR",
+        "question": "귀가 부었어요.",
+        "answer": "귀 염증을 의심해보세요."
+    },
+    {
+        "category": "EAR",
+        "question": "귀에서 피가 나요.",
+        "answer": "즉시 동물병원에 가세요."
+    },
+    {
+        "category": "EAR",
+        "question": "귀에 딱지가 생겼어요.",
+        "answer": "상처가 나지 않도록 주의해주세요."
+    },
+    {
+        "category": "EAR",
+        "question": "귀가 차가워요.",
+        "answer": "체온을 확인해주세요."
+    },
+    {
+        "category": "EAR",
+        "question": "귀가 축 처졌어요.",
+        "answer": "탈수 여부를 체크해주세요."
+    },
+    {
+        "category": "EYE",
+        "question": "눈이 빨개요.",
+        "answer": "눈을 비비지 않도록 해주세요."
+    },
+    {
+        "category": "EYE",
+        "question": "눈에서 눈물이 나요.",
+        "answer": "눈 감염 여부를 확인해주세요."
+    },
+    {
+        "category": "EYE",
+        "question": "눈에 부종이 있어요.",
+        "answer": "알레르기 여부를 확인해주세요."
+    },
+    {
+        "category": "EYE",
+        "question": "눈을 자주 비벼요.",
+        "answer": "이물질이 없는지 확인해주세요."
+    },
+    {
+        "category": "EYE",
+        "question": "눈이 흐릿해 보여요.",
+        "answer": "시력을 체크해주세요."
+    },
+    {
+        "category": "EYE",
+        "question": "눈곱이 많이 끼는 이유는 무엇인가요?",
+        "answer": "감염 여부를 확인해주세요."
+    },
+    {
+        "category": "EYE",
+        "question": "눈이 부었어요.",
+        "answer": "아이가 알레르기 반응을 보이는지 확인해주세요."
+    },
+    {
+        "category": "EYE",
+        "question": "눈이 충혈됐어요.",
+        "answer": "아이가 눈을 너무 많이 비빈 것은 아닌지 확인해주세요."
+    },
+    {
+        "category": "EYE",
+        "question": "눈 주위가 붉어요.",
+        "answer": "피부염 여부를 체크해주세요."
+    },
+    {
+        "category": "EYE",
+        "question": "눈이 가렵대요.",
+        "answer": "알레르기 여부를 확인해주세요."
+    },
+    {
+        "category": "HAIR",
+        "question": "털이 너무 빠져요.",
+        "answer": "아이의 식습관이 괜찮은지 확인해주세요."
+    },
+    {
+        "category": "HAIR",
+        "question": "털에 비듬이 있어요.",
+        "answer": "샴푸를 바꿔보세요."
+    },
+    {
+        "category": "HAIR",
+        "question": "털이 푸석푸석해요.",
+        "answer": "영양 보충이 필요해요."
+    },
+    {
+        "category": "HAIR",
+        "question": "털에 윤기가 없어요.",
+        "answer": "건강 검진을 받아보세요."
+    },
+    {
+        "category": "HAIR",
+        "question": "털이 엉켜요.",
+        "answer": "정기적으로 빗질을 해주세요."
+    },
+    {
+        "category": "HAIR",
+        "question": "털에 염증이 있어요.",
+        "answer": "피부과 검진을 받아보세요."
+    },
+    {
+        "category": "HAIR",
+        "question": "털이 갈라져요.",
+        "answer": "털 관리 제품을 사용해보세요."
+    },
+    {
+        "category": "HAIR",
+        "question": "털이 너무 짧아졌어요.",
+        "answer": "정기적으로 털을 다듬어주세요."
+    },
+    {
+        "category": "HAIR",
+        "question": "털이 너무 길어요.",
+        "answer": "정기적인 이발이 필요해요."
+    },
+    {
+        "category": "HAIR",
+        "question": "털이 빠진 자리에 딱지가 생겼어요.",
+        "answer": "피부 감염 여부를 확인해주세요."
+    },
+    {
+        "category": "CLAW",
+        "question": "발톱을 자주 깎아줘야 하나요?",
+        "answer": "발톱이 너무 길어지지 않도록 주기적으로 관리해주세요."
+    },
+    {
+        "category": "CLAW",
+        "question": "발톱이 부러졌어요.",
+        "answer": "부러진 발톱을 정리하고, 감염 여부를 확인해주세요."
+    },
+    {
+        "category": "CLAW",
+        "question": "발톱 주변이 붉어요.",
+        "answer": "염증 여부를 확인해주세요."
+    },
+    {
+        "category": "CLAW",
+        "question": "발톱이 변색됐어요.",
+        "answer": "감염 여부를 체크해주세요."
+    },
+    {
+        "category": "CLAW",
+        "question": "발톱이 갈라졌어요.",
+        "answer": "영양 부족을 확인해주세요."
+    },
+    {
+        "category": "CLAW",
+        "question": "발톱이 너무 날카로워요.",
+        "answer": "정기적으로 발톱을 다듬어주세요."
+    },
+    {
+        "category": "CLAW",
+        "question": "발톱이 너무 무뎌요.",
+        "answer": "발톱 건강을 체크해주세요."
+    },
+    {
+        "category": "CLAW",
+        "question": "발톱에서 냄새가 나요.",
+        "answer": "감염 여부를 확인해주세요."
+    },
+    {
+        "category": "CLAW",
+        "question": "발톱이 빠졌어요.",
+        "answer": "상처 부위를 깨끗하게 관리해주세요."
+    },
+    {
+        "category": "CLAW",
+        "question": "발톱이 흔들려요.",
+        "answer": "발톱이 뽑히지 않도록 주의해주세요."
+    },
+    {
+        "category": "TEETH",
+        "question": "이빨이 자주 아파요.",
+        "answer": "이빨 상태를 정기적으로 체크하고 양치질을 도와주세요."
+    },
+    {
+        "category": "TEETH",
+        "question": "이빨이 흔들려요.",
+        "answer": "이빨이 건강한지 확인해주세요."
+    },
+    {
+        "category": "TEETH",
+        "question": "이빨이 변색됐어요.",
+        "answer": "치아 청소를 주기적으로 해주세요."
+    },
+    {
+        "category": "TEETH",
+        "question": "이빨에 이가 끼었어요.",
+        "answer": "칫솔질을 도와주세요."
+    },
+    {
+        "category": "TEETH",
+        "question": "이빨에 구멍이 생겼어요.",
+        "answer": "충치 여부를 확인해주세요."
+    },
+    {
+        "category": "TEETH",
+        "question": "이빨이 깨졌어요.",
+        "answer": "동물병원에 방문하세요."
+    },
+    {
+        "category": "TEETH",
+        "question": "이빨이 너무 길어요.",
+        "answer": "정기적인 치아 다듬기를 해주세요."
+    },
+    {
+        "category": "TEETH",
+        "question": "이빨이 너무 짧아요.",
+        "answer": "이빨 건강을 체크해주세요."
+    },
+    {
+        "category": "TEETH",
+        "question": "이빨에서 피가 나요.",
+        "answer": "즉시 동물병원에 가세요."
+    },
+    {
+        "category": "TEETH",
+        "question": "이빨이 삐뚤빼뚤해요.",
+        "answer": "치아 교정이 필요한지 확인해주세요."
+    }
+]

@@ -38,6 +38,7 @@
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
 				Profile/ProfileSelect.swift,
+				QnA/TopTenQuestion.swift,
 				Recommend/ProductSheetView.swift,
 				Schedule/CustomDiary.swift,
 				Schedule/DiarySelectSheet.swift,
@@ -82,6 +83,7 @@
 				HomeTab/HomeProfileCard.swift,
 				HomeTab/ProfileView.swift,
 				LoginView.swift,
+				QnaTab/QnaFAQView.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -120,6 +122,7 @@
 				HomeProfileCardViewModel.swift,
 				LoginViewModel.swift,
 				ProfileCardViewModel.swift,
+				QnaViewModel.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -127,13 +130,16 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AIRecommendProductData.swift,
+				CategoryQnAData.swift,
 				LoginResponseData.swift,
 				PetProfile/CreatePetProfileRequestData.swift,
 				PetProfile/HomeProfileData.swift,
 				PetProfile/PetProfileData.swift,
 				PetProfile/PetProfileImageData.swift,
+				QnaJson/CategoryQnaJsonData.json,
 				RecommendProductData.swift,
 				TodoCompleteData.swift,
+				TopTenQuestionData.swift,
 				UserRecommendProductData.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -147,6 +153,16 @@
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		5507017B2C5B411000299913 /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 481C77B52C3A6C70005D60EB /* Sources */;
+			membershipExceptions = (
+				QnaJson/CategoryQnaJsonData.json,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		4828552E2C4A5FD000A2DC80 /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (482855322C4A5FE300A2DC80 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
 		483558842C3D083F006AB282 /* SettingGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4835588A2C3D08E1006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = SettingGroup; sourceTree = "<group>"; };
@@ -155,7 +171,7 @@
 		4863B2A62C3D163C00BDA2B4 /* File */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2AA2C3D166000BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = File; sourceTree = "<group>"; };
 		4863B2AF2C3D16AD00BDA2B4 /* APITarget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = APITarget; sourceTree = "<group>"; };
 		48D5D12B2C3E825500B2E6D5 /* ViewModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewModelGroup; sourceTree = "<group>"; };
-		48D5D12E2C3E827800B2E6D5 /* DataModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = DataModelGroup; sourceTree = "<group>"; };
+		48D5D12E2C3E827800B2E6D5 /* DataModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 5507017B2C5B411000299913 /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = DataModelGroup; sourceTree = "<group>"; };
 		48DDC3232C43D1CF0058EBFF /* EnumFile */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = EnumFile; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
