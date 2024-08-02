@@ -150,10 +150,11 @@ struct HomeDragView: View {
     
     // MARK: - AI 추천 목록
     
+    /// 따끈따끈 AI 추천 제품
     @ViewBuilder
     private var compactAIProduct: some View {
         VStack(alignment: .leading, spacing: 16) {
-            titleText(text: "\(petState.petName ?? "등록돈 펫 정보 없음")를 위한 따끈따끈 AI 추천 제품")
+            titleText(text: "\(petState.petName ?? "등록돈 펫 정보 없음") 위한 따끈따끈 AI 추천 제품")
             
             if let resultData = productViewModel.aiProductData?.result {
                 ScrollView(.horizontal, showsIndicators: false, content: {
@@ -185,6 +186,32 @@ struct HomeDragView: View {
                 await productViewModel.getAIProduct()
             }
         }
+    }
+    
+    /// 따끄나끈 유저 추천 제품
+    private var compactTopProduct: some View {
+        //TODO: -
+        VStack(alignment: .leading, spacing: 16, content: {
+            titleText(text: "\(petState.petName ?? "등록된 펫 정보 없음")위한 추천 제품 Top 8")
+            
+            if let resultData = productViewModel.userProductData?.result {
+                ScrollView(.horizontal, showsIndicators: false, content: {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 98), spacing: 6), count: 2), spacing: 11, content: {
+                        ForEach(Array(resultData.prefix(8).enumerated()), id: \.element) { index, data in
+                            HomeUserRecommendProduct(data: data, rank: index + 1)
+                        }
+                    })
+                    .frame(height: 331)
+                    .padding(.horizontal, 10)
+                    .padding(.bottom, 30)
+                })
+                .onAppear {
+                    Task {
+                        await productViewModel.getUserProduct(page: 0)
+                    }
+                }
+            }
+        })
     }
     
     // MARK: - Function
