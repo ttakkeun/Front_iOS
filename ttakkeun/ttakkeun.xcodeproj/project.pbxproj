@@ -26,6 +26,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				ETC/CustomAlert.swift,
+				ETC/CustomNavigation.swift,
 				ETC/CustomTextField.swift,
 				ETC/MainButton.swift,
 				ETC/TopStatusBar.swift,
