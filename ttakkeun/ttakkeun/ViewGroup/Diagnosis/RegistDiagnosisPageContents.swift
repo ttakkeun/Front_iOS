@@ -42,7 +42,12 @@ struct RegistDiagnosisPageContents: View {
             .frame(height: 459)
             
             MainButton(btnText: "다음", width: 339, height: 63, action: {
-                print("getData")
+                if viewModel.selectedPart != nil {
+                    Task {
+                        viewModel.currentPage += 1
+                        await viewModel.getJournalQuestions()
+                    }
+                }
             }, color: Color.primaryColorMain)
         })
         .frame(width: 339)

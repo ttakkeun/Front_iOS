@@ -9,7 +9,8 @@ import Foundation
 import Moya
 
 enum JournalAPITarget {
-    case registJournal(data: RegistJournalData) /* 일지 등록 API */
+    case getJournalQuestions(category: PartItem) /* 일지 질문 조회 */
+    case registJournal(data: RegistJournalData) /* 일지 등록 */
 }
 
 extension JournalAPITarget: TargetType {
@@ -19,6 +20,8 @@ extension JournalAPITarget: TargetType {
     
     var path: String {
         switch self {
+        case .getJournalQuestions(let category):
+            return "/record/register/\(category)"
         case .registJournal:
             return "/record/register"
         }
@@ -26,6 +29,8 @@ extension JournalAPITarget: TargetType {
     
     var method: Moya.Method {
         switch self {
+        case .getJournalQuestions:
+            return .get
         case .registJournal:
             return .post
         }
@@ -33,6 +38,8 @@ extension JournalAPITarget: TargetType {
     
     var task: Moya.Task {
         switch self {
+        case .getJournalQuestions:
+            return .requestPlain
         case .registJournal(let data):
             return .requestJSONEncodable(data)
         }
