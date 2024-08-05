@@ -24,6 +24,14 @@ struct CompactTodo: View {
         VStack(alignment: .leading, spacing: 24, content: {
             HomeTodoCircle(partItem: partItem, isBefore: false)
             todoList(partItem: partItem)
+            HStack {
+                Spacer()
+                
+                Text("more")
+                    .font(.Body3_medium)
+                    .foregroundStyle(Color.gray_400)
+            }
+            .padding(.top, -15)
         })
         .padding()
         .background(Color.clear)
@@ -32,13 +40,7 @@ struct CompactTodo: View {
                 .fill(Color.clear)
                 .stroke(Color.gray_200, lineWidth: 1)
         )
-        .frame(width: 230, height: 147)
-        .onAppear {
-            Task {
-                await viewModel.getScheduleData(currentDate: viewModel.inputDate)
-            }
-            
-        }
+        .frame(width: 230)
     }
     
     /// 각 부위에 해당하는 체크리스트
