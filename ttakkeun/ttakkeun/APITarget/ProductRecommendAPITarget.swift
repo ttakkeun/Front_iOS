@@ -45,4 +45,172 @@ extension ProductRecommendAPITarget: TargetType {
     var headers: [String : String]? {
         return ["Content-Type": "application/json"]
     }
+    
+    var sampleData: Data {
+        switch self {
+        case .getAIRecommend:
+            let json = """
+{
+  "isSuccess": true,
+  "code": 200,
+  "message": "Success",
+  "result": [
+    {
+      "product_id": 1,
+      "title": "아껴주다 저자극 천연 고양이 샴푸",
+      "image": "https://shopping-phinf.pstatic.net/main_8516432/85164327357.jpg",
+      "price": 12000,
+      "brand": "쿠팡",
+      "link": "https://smartstore.naver.com/main/products/7619827035",
+      "category1": "건강",
+      "category2": "샴푸",
+      "category3": "목록",
+      "category4": "몰라요",
+      "total_likes": 0,
+      "isLike": true
+    },
+    {
+      "product_id": 2,
+      "title": "아껴주다 저자극 천연 고양이 비누",
+      "image": "https://shopping-phinf.pstatic.net/main_4898686/48986864176.20240708011652.jpg",
+      "price": 17000,
+      "brand": "쿠팡",
+      "link": "https://smartstore.naver.com/main/products/7619827035",
+      "category1": "건강",
+      "category2": "샴푸",
+      "category3": "목록",
+      "category4": "비누",
+      "total_likes": 0,
+      "isLike": true
+    }
+  ]
+}
+"""
+            return Data(json.utf8)
+            
+        case .getRankProduct:
+            let json = """
+{
+  "isSuccess": true,
+  "code": 200,
+  "message": "Success",
+  "result": [
+    {
+      "product_id": 1,
+      "title": "아껴주다 저자극 천연 고양이 샴푸",
+      "image": "https://shopping-phinf.pstatic.net/main_8516432/85164327357.jpg",
+      "price": 12000,
+      "brand": "쿠팡",
+      "link": "https://smartstore.naver.com/main/products/7619827035",
+      "category1": "건강",
+      "category2": "샴푸",
+      "category3": "목록",
+      "category4": "몰라요",
+      "total_likes": 0,
+      "isLike": true
+    },
+    {
+      "product_id": 2,
+      "title": "아껴주다 저자극 천연 고양이 비누",
+      "image": "https://shopping-phinf.pstatic.net/main_4898686/48986864176.20240708011652.jpg",
+      "price": 17000,
+      "brand": "쿠팡",
+      "link": "https://smartstore.naver.com/main/products/7619827035",
+      "category1": "건강",
+      "category2": "샴푸",
+      "category3": "목록",
+      "category4": "비누",
+      "total_likes": 0,
+      "isLike": true
+    },
+    {
+      "product_id": 3,
+      "title": "아껴주다 저자극 천연 고양이 비누",
+      "image": "https://shopping-phinf.pstatic.net/main_4898686/48986864176.20240708011652.jpg",
+      "price": 17000,
+      "brand": "쿠팡",
+      "link": "https://smartstore.naver.com/main/products/7619827035",
+      "category1": "건강",
+      "category2": "샴푸",
+      "category3": "목록",
+      "category4": "비누",
+      "total_likes": 0,
+      "isLike": true
+    },
+    {
+      "product_id": 4,
+      "title": "아껴주다 저자극 천연 고양이 비누",
+      "image": "https://shopping-phinf.pstatic.net/main_4898686/48986864176.20240708011652.jpg",
+      "price": 17000,
+      "brand": "쿠팡",
+      "link": "https://smartstore.naver.com/main/products/7619827035",
+      "category1": "건강",
+      "category2": "샴푸",
+      "category3": "목록",
+      "category4": "비누",
+      "total_likes": 0,
+      "isLike": true
+    },
+    {
+      "product_id": 5,
+      "title": "아껴주다 저자극 천연 고양이 비누",
+      "image": "https://shopping-phinf.pstatic.net/main_4898686/48986864176.20240708011652.jpg",
+      "price": 17000,
+      "brand": "쿠팡",
+      "link": "https://smartstore.naver.com/main/products/7619827035",
+      "category1": "건강",
+      "category2": "샴푸",
+      "category3": "목록",
+      "category4": "비누",
+      "total_likes": 0,
+      "isLike": true
+    },
+    {
+      "product_id": 6,
+      "title": "아껴주다 저자극 천연 고양이 비누",
+      "image": "https://shopping-phinf.pstatic.net/main_4898686/48986864176.20240708011652.jpg",
+      "price": 17000,
+      "brand": "쿠팡",
+      "link": "https://smartstore.naver.com/main/products/7619827035",
+      "category1": "건강",
+      "category2": "샴푸",
+      "category3": "목록",
+      "category4": "비누",
+      "total_likes": 0,
+      "isLike": true
+    },
+    {
+      "product_id": 7,
+      "title": "아껴주다 저자극 천연 고양이 비누",
+      "image": "https://shopping-phinf.pstatic.net/main_4898686/48986864176.20240708011652.jpg",
+      "price": 17000,
+      "brand": "쿠팡",
+      "link": "https://smartstore.naver.com/main/products/7619827035",
+      "category1": "건강",
+      "category2": "샴푸",
+      "category3": "목록",
+      "category4": "비누",
+      "total_likes": 0,
+      "isLike": true
+    },
+    {
+      "product_id": 8,
+      "title": "아껴주다 저자극 천연 고양이 비누",
+      "image": "https://shopping-phinf.pstatic.net/main_4898686/48986864176.20240708011652.jpg",
+      "price": 17000,
+      "brand": "쿠팡",
+      "link": "https://smartstore.naver.com/main/products/7619827035",
+      "category1": "건강",
+      "category2": "샴푸",
+      "category3": "목록",
+      "category4": "비누",
+      "total_likes": 0,
+      "isLike": true
+    }
+  ]
+}
+"""
+            return Data(json.utf8)
+        }
+    }
 }

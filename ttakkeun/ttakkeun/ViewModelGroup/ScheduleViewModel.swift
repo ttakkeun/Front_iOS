@@ -11,6 +11,7 @@ import Moya
 @MainActor
 class ScheduleViewModel: ObservableObject {
     @Published var inputDate: DateRequestData
+    @Published var scheduleData: ScheduleInquiry?
     
     private let provider: MoyaProvider<ScheduleAPITarget>
     
@@ -67,6 +68,7 @@ class ScheduleViewModel: ObservableObject {
             let decodedData = try JSONDecoder().decode(ScheduleInquiry.self, from: response.data)
             DispatchQueue.main.async {
                 self.processFetchData(decodedData.result)
+                print("캘린더 정보 조회 완료")
             }
         } catch {
             print("ToDo 캘린더 조회 디코더 에러: \(error)")

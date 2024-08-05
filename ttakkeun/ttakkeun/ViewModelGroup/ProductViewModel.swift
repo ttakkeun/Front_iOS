@@ -51,7 +51,7 @@ class ProductViewModel: ObservableObject {
     // MARK: - User Product API Function
     
     /// 유저 추천 상품 조회 API
-    /// - Parameter page: <#page description#>
+    /// - Parameter page: 물품 페이지 번호
     public func getUserProduct(page: Int) async {
         provider.request(.getRankProduct(pageNum: page)) { [weak self] result in
             switch result {
@@ -70,6 +70,7 @@ class ProductViewModel: ObservableObject {
             let decodedData = try JSONDecoder().decode(AIAndSearchProductData.self, from: response.data)
             DispatchQueue.main.async {
                 self.userProductData = decodedData
+                print("유저 추천 제품 데이터 디코더 완료")
             }
         } catch {
             print("유저 추천 상품 디코더 에러: \(error)")
