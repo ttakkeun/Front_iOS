@@ -26,6 +26,7 @@ enum Icon: String {
     case togetherPet = "togetherPet"
     case ProfileCat = "ProfileCat"
     case ProfileDog = "ProfileDog"
+    case check = "check"
     
     // MARK: - Home
     case editProfile = "editProfile"

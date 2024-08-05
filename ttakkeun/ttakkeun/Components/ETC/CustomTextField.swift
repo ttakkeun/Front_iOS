@@ -126,7 +126,7 @@ struct CustomTextField_PreView: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            CreateProfileView()
+            CreateProfileView(viewModel: CreateProfileViewModel())
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }

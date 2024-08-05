@@ -81,6 +81,9 @@
 		483558A32C3D0F13006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				CreateProfileView.swift,
+				HomeTab/CompactTodo.swift,
+				HomeTab/ExpandTodo.swift,
 				HomeTab/HomeProfileCard.swift,
 				HomeTab/HomeView.swift,
 				LoginView.swift,
