@@ -32,6 +32,7 @@ struct CustomNavigation: View {
                 .font(.Body2_semibold)
                 .foregroundStyle(Color.gray_900)
         })
+        .frame(width: 353, height: 20)
     }
 }
 
