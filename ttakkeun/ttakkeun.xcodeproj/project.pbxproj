@@ -84,6 +84,7 @@
 				HomeTab/ProfileView.swift,
 				LoginView.swift,
 				QnaTab/QnaFAQView.swift,
+				QnaTab/QnaTipsView.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -130,16 +131,16 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AIRecommendProductData.swift,
-				CategoryQnAData.swift,
 				LoginResponseData.swift,
 				PetProfile/CreatePetProfileRequestData.swift,
 				PetProfile/HomeProfileData.swift,
 				PetProfile/PetProfileData.swift,
 				PetProfile/PetProfileImageData.swift,
+				QnaFaqData.swift,
 				QnaJson/CategoryQnaJsonData.json,
+				QnaJson/TopTenQnaJsonData.json,
 				RecommendProductData.swift,
 				TodoCompleteData.swift,
-				TopTenQuestionData.swift,
 				UserRecommendProductData.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;

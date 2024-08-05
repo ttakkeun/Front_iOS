@@ -15,7 +15,8 @@ struct QnaView: View {
     @Namespace var name
     
     let categoryColors: [CategoryType: Color] = [
-        .ear: Color.afterEar,
+        .ear: Color(red: 1, green: 0.93, blue: 0.32)
+        .opacity(0.4),
         .eye: Color.afterEye,
         .hair: Color.afterHair,
         .claw: Color.afterClaw,
@@ -34,13 +35,27 @@ struct QnaView: View {
     var body: some View {
         VStack(spacing: 0) {
             Header
-            ScrollView(.vertical){
-                topTenQuestionSet
-                categoryQna
-                Spacer()
+            GeometryReader { geometry in
+                HStack(spacing: 0) {
+                    ScrollView(.vertical, showsIndicators: false) {
+                        faqContent
+                            .frame(width: geometry.size.width)
+                        TipsView()
+                            .frame(width: geometry.size.width)
+                    }
+                }
+                .offset(x: selected == "FAQ" ? 0 : -geometry.size.width)
+                .animation(.easeInOut, value: selected)
             }
         }
     }
+    
+    private var faqContent: some View {
+            VStack {
+                topTenQuestionSet
+                categoryQna
+            }
+        }
     
     /// StatusBar랑 FAQ,TIPS segmentedControl 모은 최상단 Header
     private var Header: some View {
@@ -60,12 +75,13 @@ struct QnaView: View {
     
     /// 제목과 10개의 질문 모음
     private var topTenQuestionSet: some View {
-        VStack(alignment: .leading, spacing: 15) {
-            Text("자주 묻는 질문 Top 10")
-                .font(.H4_bold)
-                .padding(.top, 30)
-                .padding(.leading, 14)
-            topTenQuestion
+        ZStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: -8){
+                topTenQuestionTitle
+                    .zIndex(1)
+                    .padding([.top, .leading], 25)
+                topTenQuestion
+            }
         }
         .frame(maxHeight: 200)
         .padding(.bottom, 30)
@@ -74,6 +90,18 @@ struct QnaView: View {
                 .frame(height: 1)
                 .foregroundColor(Color.gray200),
             alignment: .bottom)
+    }
+    
+    /// 고양이와 자주묻는 질문 Top10 텍스트
+    private var topTenQuestionTitle: some View {
+        HStack(spacing: 9){
+            Icon.ProfileCat.image
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 67, height: 56)
+            Text("자주 묻는 질문 Top 10")
+                .font(.H4_bold)
+        }
     }
   
     /// 카테고리 버튼과 카테고리별 qna 모음
@@ -120,36 +148,20 @@ struct QnaView: View {
         }
     }
     
-    
-    //TODO: - 배열 Json으로 바꿔야함!! 내가 생각하기에 question데이터의 구조가 다 똑같다. 그래서 TIPS뷰 나오면 toptenquestion 데이타 삭제하고 Questiondata로 통일 > 대신 Json 파일만 다르게
-    /// 질문 LazyHgrid
-    private var topTenQuestion: some View {
-        let rows = [GridItem(.flexible(minimum: 160, maximum: 180))]
-        let questions: [TopTenQuestionData] = [
-            TopTenQuestionData(category: .ear, content: "털이 왜 이렇게 빠지는 지 궁금해요 !!"),
-            TopTenQuestionData(category: .eye, content: "눈이 왜 이렇게 빨간가요?"),
-            TopTenQuestionData(category: .hair, content: "털이 왜 이렇게 빠지는 지 궁금해요 !!"),
-            TopTenQuestionData(category: .claw, content: "발톱을 자주 깎아줘야 하나요?"),
-            TopTenQuestionData(category: .teeth, content: "이빨이 자주 아파요."),
-            TopTenQuestionData(category: .ear, content: "귀에서 이상한 소리가 나요."),
-            TopTenQuestionData(category: .eye, content: "눈곱이 많이 끼는 이유는 무엇인가요?"),
-            TopTenQuestionData(category: .hair, content: "털이 왜 이렇게 빠지는 지 궁금해요 !!"),
-            TopTenQuestionData(category: .claw, content: "발톱을 자주 깎아줘야 하나요?"),
-            TopTenQuestionData(category: .teeth, content: "이빨이 자주 아파요.")
-        ]
-        return ScrollView(.horizontal, showsIndicators: false) {
-            LazyHGrid(rows: rows, spacing: 16) {
-                Spacer().frame(width: -2)
-                ForEach(Array(questions.prefix(10).enumerated()), id: \.element.id) { index, question in
-                    
-                    Button(action: {print("버튼 클릭")}){
-                        TopTenQuestion(data: question, index: index)
-                            .foregroundStyle(Color.gray900)
-                    }
-                }
-            }
-        }
-    }
+      /// 질문 LazyHgrid
+      private var topTenQuestion: some View {
+          let rows = [GridItem(.flexible(minimum: 160, maximum: 180))]
+          return ScrollView(.horizontal, showsIndicators: false) {
+              LazyHGrid(rows: rows, spacing: 16) {
+                  ForEach(Array(viewModel.topTenQuestions.prefix(10).enumerated()), id: \.element.id) { index, question in
+                      TopTenQuestion(data: question, index: index)
+                          .foregroundStyle(Color.gray900)
+                  }
+              }
+              .padding([.leading, .trailing], 14)
+          }
+      }
+      
     
     /// 카테고리 버튼 텍스트 변환
     private func categoryText(_ category: CategoryType) -> String {
@@ -189,7 +201,7 @@ struct QnaView: View {
     }
     
     /// 뷰모델에서 질문이랑 대답 가져와서 배열에 넣기
-    private var filteredQnaItems: [CategoryQnAData] {
+    private var filteredQnaItems: [QnaFaqData] {
         return viewModel.qnaItems.filter { $0.category == selectedCategory }
     }
     
