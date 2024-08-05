@@ -85,12 +85,15 @@ struct HomeDragView: View {
     
     
     private var compatchComponents: some View {
-        VStack(alignment: .leading, spacing: 21, content: {
-            compactTodoGroup
-            compactAIProduct
-        })
-        .frame(width: 350)
-        .padding(.horizontal, 20)
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(alignment: .leading, spacing: 21, content: {
+                compactTodoGroup
+                compactAIProduct
+                compactTopProduct
+            })
+            .frame(width: 350)
+            .padding(.horizontal, 10)
+        }
     }
     
     // MARK: - 오늘의 일정 관리
@@ -136,7 +139,7 @@ struct HomeDragView: View {
                         
                     })
                     .frame(height: 180)
-                    .padding(.horizontal, 10)
+                    .padding(.horizontal, 5)
                 })
             }
         })
@@ -164,7 +167,7 @@ struct HomeDragView: View {
                         }
                     })
                     .frame(height: 92)
-                    .padding(.horizontal, 10)
+                    .padding(.horizontal, 5)
                 })
                 .onAppear {
                     Task {
@@ -188,30 +191,29 @@ struct HomeDragView: View {
         }
     }
     
-    /// 따끄나끈 유저 추천 제품
+    /// 따끈나끈 유저 추천 제품
     private var compactTopProduct: some View {
-        //TODO: -
+        //TODO: - PetState 정보 수정할 것
         VStack(alignment: .leading, spacing: 16, content: {
             titleText(text: "\(petState.petName ?? "등록된 펫 정보 없음")위한 추천 제품 Top 8")
             
             if let resultData = productViewModel.userProductData?.result {
                 ScrollView(.horizontal, showsIndicators: false, content: {
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 98), spacing: 6), count: 2), spacing: 11, content: {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 84), spacing: 6), count: 4), spacing: 11, content: {
                         ForEach(Array(resultData.prefix(8).enumerated()), id: \.element) { index, data in
-                            HomeUserRecommendProduct(data: data, rank: index + 1)
+                            HomeUserRecommendProduct(data: data, rank: index)
                         }
                     })
                     .frame(height: 331)
-                    .padding(.horizontal, 10)
                     .padding(.bottom, 30)
                 })
-                .onAppear {
-                    Task {
-                        await productViewModel.getUserProduct(page: 0)
-                    }
-                }
             }
         })
+        .onAppear {
+            Task {
+                await productViewModel.getUserProduct(page: 0)
+            }
+        }
     }
     
     // MARK: - Function
