@@ -22,9 +22,14 @@ struct CustomNavigation: View {
     
     var body: some View {
         HStack(alignment: .center, content: {
-            Image(systemName: "xmark")
-                .resizable()
-                .frame(width: 14, height: 14)
+            Button(action: {
+                action
+            }, label: {
+                Image(systemName: "xmark")
+                    .resizable()
+                    .frame(width: 14, height: 14)
+                    .foregroundStyle(Color.black)
+            })
             
             Spacer()
             
