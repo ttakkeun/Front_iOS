@@ -39,7 +39,7 @@ struct MakeProfileNameTag: View {
                 .foregroundStyle(Color.red)
                 .padding(.top, -6)
         })
-        .frame(width: 331, height: 20, alignment: .leading)
+        .frame(width: 313, height: 20, alignment: .leading)
     }
 }
 
