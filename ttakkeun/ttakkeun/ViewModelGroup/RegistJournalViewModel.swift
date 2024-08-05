@@ -8,10 +8,12 @@
 import Foundation
 import Moya
 
+@MainActor
 class RegistJournalViewModel: ObservableObject {
     
     @Published var inputData: RegistJournalData?
     @Published var currentPage: Int = 1
+    @Published var selectedPart: PartItem?
     private let provider: MoyaProvider<JournalAPITarget>
     
     
@@ -22,7 +24,7 @@ class RegistJournalViewModel: ObservableObject {
     
     // MARK: - API Function
     
-    public func postInputData() {
+    public func postInputData() async {
         
         guard let data = self.inputData else { return }
         

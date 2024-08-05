@@ -20,6 +20,10 @@ struct RegistDiagnosisFlowView: View {
             CustomNavigation(action: {
                 dismiss()
             }, currentPage: viewModel.currentPage)
+            
+            Spacer()
+            
+            RegistDiagnosisPageContents(viewModel: viewModel)
         })
     }
 }
