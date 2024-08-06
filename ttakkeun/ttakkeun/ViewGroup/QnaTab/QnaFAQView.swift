@@ -60,7 +60,7 @@ struct QnaView: View {
     /// StatusBar랑 FAQ,TIPS segmentedControl 모은 최상단 Header
     private var Header: some View {
         VStack(alignment: .leading) {
-            topStatusBar()
+            TopStatusBar()
             Spacer()
             customSegmentedControl
         }
