@@ -12,7 +12,7 @@ struct MainButton: View {
     var btnText: String
     var width: CGFloat
     var height: CGFloat
-    var action: Void
+    var action: () -> Void
     var color: Color
     
     //MARK: - Init
@@ -33,7 +33,7 @@ struct MainButton: View {
         self.btnText = btnText
         self.width = width
         self.height = height
-        self.action = action()
+        self.action = action
         self.color = color
     }
     
@@ -41,7 +41,7 @@ struct MainButton: View {
     /// 버튼 기본적인 구조
     var body: some View {
         Button(action: {
-            action
+            action()
         }, label: {
             Text(btnText)
                 .frame(width: width, height: height)

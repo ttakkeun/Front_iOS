@@ -9,17 +9,18 @@ import SwiftUI
 
 struct AnswerButton: View {
     
-    @State var isSelected: Bool = false
-    
+    @Binding var isSelected: Bool
     let answerValue: AnswerValue
     let onSelect: () -> Void
     
     // MARK: - Init
     
     init(
+        isSelected: Binding<Bool>,
         answerValue: AnswerValue,
         _ onSelect: @escaping () -> Void
     ) {
+        self._isSelected = isSelected
         self.answerValue = answerValue
         self.onSelect = onSelect
     }
@@ -69,7 +70,7 @@ struct AnswerButton: View {
 
 struct AnswerButton_Preview: PreviewProvider {
     static var previews: some View {
-        AnswerButton(answerValue: .alopecia, {
+        AnswerButton(isSelected: .constant(false), answerValue: .alopecia, {
             print("hello")
         })
         .previewLayout(.sizeThatFits)
