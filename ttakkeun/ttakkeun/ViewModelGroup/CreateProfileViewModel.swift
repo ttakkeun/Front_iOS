@@ -76,8 +76,7 @@ class CreateProfileViewModel: ObservableObject, @preconcurrency ImageHandling {
     
     
     //MARK: - API Function
-    /// 로그인 데이터 전송
-    /// - Parameter token: 인가 코드
+    //TODO: - API Function 작성 필요함
     
     /// 펫 프로필 등록 결과 받아오기 핸들러 함수
     /// - Parameter response: API 호출 시 받게 되는 응답
