@@ -13,11 +13,7 @@ class CreateProfileViewModel: ObservableObject {
     
     @Published var requestData: CreatePetProfileRequestData? = CreatePetProfileRequestData(name: "", type: .dog, variety: "", birth: "", neutralization: false)
     @Published var responseData: CreatePetProfileResponseData?
-    public var isProfileCompleted: Bool = false{
-        didSet {
-            isProfileCompleted = isNameFilled && isTypeFilled && isVarietyFilled && isNeutralizationFilled
-        }
-    }
+    @Published var isProfileCompleted: Bool = false
     
     private let provider: MoyaProvider<PetProfileAPITarget>
     
@@ -31,11 +27,25 @@ class CreateProfileViewModel: ObservableObject {
     
     // MARK: - btnProperty
     /// 시작하기 버튼 활성화 여부 판단
-    @Published public var isNameFilled: Bool = false
-    @Published public var isTypeFilled: Bool = false
-    @Published public var isVarietyFilled: Bool = false
-    @Published public var isBirthFilled: Bool = false
-    @Published public var isNeutralizationFilled: Bool = false
+    @Published public var isNameFilled: Bool = false {
+        didSet { checkFilledStates() }
+    }
+    @Published public var isTypeFilled: Bool = false  {
+        didSet { checkFilledStates() }
+    }
+    @Published public var isVarietyFilled: Bool = false  {
+        didSet { checkFilledStates() }
+    }
+    @Published public var isBirthFilled: Bool = false  {
+        didSet { checkFilledStates() }
+    }
+    @Published public var isNeutralizationFilled: Bool = false  {
+        didSet { checkFilledStates() }
+    }
+    
+    private func checkFilledStates() {
+        isProfileCompleted = isNameFilled && isTypeFilled && isVarietyFilled && isNeutralizationFilled
+    }
     
     
     //MARK: - API Function

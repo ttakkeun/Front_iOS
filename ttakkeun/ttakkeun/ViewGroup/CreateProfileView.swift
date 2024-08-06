@@ -213,13 +213,11 @@ struct CreateProfileView: View {
     private var registerBtn: some View {
         MainButton(btnText: "등록하기", width: 330, height: 56, action: {
             if viewModel.isProfileCompleted {
-                print("마지막 버튼 눌림")
+                print("프로필 등록 성공")
             } else {
                 print("모든 필드를 입력해주세요.")
             }
-            print("Test")
         }, color: Color.primaryColor_Main)
-        .disabled(!viewModel.isProfileCompleted)
     }
 }
 
