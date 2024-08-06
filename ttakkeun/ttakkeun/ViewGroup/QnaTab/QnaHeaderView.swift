@@ -16,23 +16,22 @@ struct QnaHeaderView: View {
 
     //MARK: - Contents
     var body: some View {
-        VStack(spacing: 0) {
-            header
-            //FAQ뷰와 TIPS뷰 전환하는 코드
-            GeometryReader { geometry in
-                HStack(spacing: 0) {
-                    ScrollView(.vertical, showsIndicators: false) {
-                        QnaFAQView()
-                            .frame(width: geometry.size.width)
-                        QnaFAQView()
-                            .frame(width: geometry.size.width)
-                    }
-                }
-                .offset(x: selected == "FAQ" ? 0 : -geometry.size.width)
-                .animation(.easeInOut, value: selected)
-            }
-        }
-    }
+           VStack(spacing: 0) {
+               header
+               // FAQ뷰와 TIPS뷰 전환하는 코드
+               GeometryReader { geometry in
+                   HStack(spacing: 0) {
+                       QnaFAQView()
+                           .frame(width: geometry.size.width)
+                       QnaTipsView()
+                           .frame(width: geometry.size.width)
+                   }
+                   .frame(width: geometry.size.width * 2, alignment: selected == "FAQ" ? .leading : .trailing)
+                   .offset(x: selected == "FAQ" ? 0 : -geometry.size.width)
+                   .animation(.easeInOut, value: selected)
+               }
+           }
+       }
     
     /// StatusBar랑 FAQ,TIPS segmentedControl 모은 최상단 Header
     private var header: some View {

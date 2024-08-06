@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-/// FAQ화면 자주 묻는 질문 TOP10에 들어갈 qna두ㅕ 컴포넌트
+/// FAQ화면 자주 묻는 질문 TOP10에 들어갈 qna 컴포넌트
 struct TopTenQuestion: View {
     let data: QnaFaqData
     let index: Int
@@ -130,13 +130,12 @@ struct TopTenQuestion: View {
             Text("이빨")
         }
     }
-    //TODO: - 귀에 대한 색 컬러셋 추가하고 바꾸기
+
     /// 카테고리 뒷 배경
     private var categoryColor: Color {
         switch data.category {
         case .ear:
-            Color(red: 1, green: 0.93, blue: 0.32)
-                .opacity(0.4)
+            Color.qnAEar
         case .eye:
             Color.afterEye
         case .hair:

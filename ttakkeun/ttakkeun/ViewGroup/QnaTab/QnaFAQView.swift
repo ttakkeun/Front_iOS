@@ -10,7 +10,6 @@ import SwiftUI
 struct QnaFAQView: View {
     
     @StateObject private var viewModel = QnaViewModel()
-    @State private var selectedCategory: PartItem = .ear
     @State private var expandedQuestionIds: Set<UUID> = []
     
     //MARK: - Init
@@ -21,8 +20,10 @@ struct QnaFAQView: View {
     //MARK: - Contents
     var body: some View {
         VStack(spacing: 0) {
-            topTenQuestionSet
-            categoryQna
+            ScrollView(.vertical, showsIndicators: false){
+                topTenQuestionSet
+                categoryQna
+            }
         }
     }
     
@@ -86,8 +87,7 @@ struct QnaFAQView: View {
     private func categoryColor(_ category: PartItem) -> Color {
         switch category {
         case .ear:
-            return Color(red: 1, green: 0.93, blue: 0.32)
-                .opacity(0.4)
+            return Color.qnAEar
         case .eye:
             return Color.afterEye
         case .hair:
@@ -106,13 +106,13 @@ struct QnaFAQView: View {
         return LazyVGrid(columns: columns, spacing: 11) {
             ForEach(categories, id: \.self) { category in
                 Button(action: {
-                    selectedCategory = category
+                    viewModel.selectedCategory = category
                 }) {
                     Text(category.toKorean())
                         .frame(width: 105, height: 43)
                         .font(.Body3_semibold)
                         .foregroundStyle(Color.gray900)
-                        .background(selectedCategory == category ? categoryColor(category) : Color.checkBg)
+                        .background(viewModel.selectedCategory == category ? categoryColor(category) : Color.checkBg)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
             }
@@ -122,7 +122,7 @@ struct QnaFAQView: View {
     
     /// 뷰모델에서 질문이랑 대답 가져와서 배열에 넣기
     private var filteredQnaItems: [QnaFaqData] {
-        return viewModel.qnaItems.filter { $0.category == selectedCategory }
+        return viewModel.qnaItems.filter { $0.category == viewModel.selectedCategory }
     }
     
     /// 카테고리별 질문 , 클릭하면 id부여해서 답나오게 함

@@ -10,7 +10,8 @@ import SwiftUI
 struct QnaTipsView: View {
     var body: some View {
         VStack {
-            /*TipsView 만들자*/
+            Text("hello world!")
+                .foregroundStyle(Color.gray900)
         }
     }
 }
