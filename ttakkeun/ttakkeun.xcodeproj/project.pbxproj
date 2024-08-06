@@ -40,7 +40,7 @@
 				Home/ProfileImageCard.swift,
 				Home/ToDoCheckList.swift,
 				Journal/AnswerButton.swift,
-				"Journal/Diagnostic images.swift",
+				Journal/DiagnosticImages.swift,
 				Journal/SelctCareButton.swift,
 				Profile/MakeProfileNameTag.swift,
 				Profile/ProfileSelect.swift,

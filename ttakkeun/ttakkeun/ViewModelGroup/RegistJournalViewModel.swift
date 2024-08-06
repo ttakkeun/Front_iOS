@@ -7,9 +7,10 @@
 
 import Foundation
 import Moya
+import SwiftUI
 
 @MainActor
-class RegistJournalViewModel: ObservableObject {
+class RegistJournalViewModel: ObservableObject, @preconcurrency ImageHandling {
     
     @Published var inputData: RegistJournalData?
     @Published var getQuestions: JournalQuestionsDetailData?
@@ -77,4 +78,31 @@ class RegistJournalViewModel: ObservableObject {
         }
     }
     
+    
+    // MARK: - ImagePicker
+    
+    @Published var isImagePickerPresented: Bool = false
+    @Published var arrImages: [UIImage] = []
+    var selectedImageCount: Int {
+        arrImages.count
+    }
+    
+    
+    func addImage(_ images: UIImage) {
+        arrImages.append(images)
+    }
+    
+    func removeImage(at index: Int) {
+        if arrImages.indices.contains(index) {
+            arrImages.remove(at: index)
+        }
+    }
+    
+    func showImagePicker() {
+        isImagePickerPresented = true
+    }
+    
+    func getImages() -> [UIImage] {
+        arrImages
+    }
 }
