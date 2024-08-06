@@ -6,6 +6,7 @@
 //
 import SwiftUI
 
+/// FAQ화면 자주 묻는 질문 TOP10에 들어갈 qna두ㅕ 컴포넌트
 struct TopTenQuestion: View {
     let data: QnaFaqData
     let index: Int
@@ -125,7 +126,7 @@ struct TopTenQuestion: View {
             Text("털")
         case .claw:
             Text("발톱")
-        case .teeth:
+        case .tooth:
             Text("이빨")
         }
     }
@@ -142,7 +143,7 @@ struct TopTenQuestion: View {
             Color.afterClaw
         case .claw:
             Color.afterEye
-        case .teeth:
+        case .tooth:
             Color.afterTeeth
         }
     }

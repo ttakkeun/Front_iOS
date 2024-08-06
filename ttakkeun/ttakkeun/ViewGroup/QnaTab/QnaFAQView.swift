@@ -1,28 +1,16 @@
 //
-//  QnaView.swift
+//  QnaFAQView.swift
 //  ttakkeun
 //
 //  Created by 한지강 on 7/28/24.
 //
 import SwiftUI
 
-struct QnaView: View {
+/// Qna탭에서 FAQ에 대한 뷰
+struct QnaFAQView: View {
     
     @StateObject private var viewModel = QnaViewModel()
-    
-    let segments: [String] = ["FAQ", "TIPS"]
-    @State private var selected: String = "FAQ"
-    @Namespace var name
-    
-    let categoryColors: [CategoryType: Color] = [
-        .ear: Color(red: 1, green: 0.93, blue: 0.32)
-        .opacity(0.4),
-        .eye: Color.afterEye,
-        .hair: Color.afterHair,
-        .claw: Color.afterClaw,
-        .teeth: Color.afterTeeth
-    ]
-    @State private var selectedCategory: CategoryType = .ear
+    @State private var selectedCategory: PartItem = .ear
     @State private var expandedQuestionIds: Set<UUID> = []
     
     //MARK: - Init
@@ -30,47 +18,12 @@ struct QnaView: View {
         self._viewModel = StateObject(wrappedValue: QnaViewModel())
     }
     
-    
     //MARK: - Contents
     var body: some View {
         VStack(spacing: 0) {
-            Header
-            GeometryReader { geometry in
-                HStack(spacing: 0) {
-                    ScrollView(.vertical, showsIndicators: false) {
-                        faqContent
-                            .frame(width: geometry.size.width)
-                        TipsView()
-                            .frame(width: geometry.size.width)
-                    }
-                }
-                .offset(x: selected == "FAQ" ? 0 : -geometry.size.width)
-                .animation(.easeInOut, value: selected)
-            }
+            topTenQuestionSet
+            categoryQna
         }
-    }
-    
-    private var faqContent: some View {
-            VStack {
-                topTenQuestionSet
-                categoryQna
-            }
-        }
-    
-    /// StatusBar랑 FAQ,TIPS segmentedControl 모은 최상단 Header
-    private var Header: some View {
-        VStack(alignment: .leading) {
-            TopStatusBar()
-            Spacer()
-            customSegmentedControl
-        }
-        .frame(maxWidth: .infinity, maxHeight: 100)
-        .background(Color.mainBg)
-        .overlay(
-            Rectangle()
-                .frame(width: .infinity, height: 1)
-                .foregroundColor(Color.gray200),
-            alignment: .bottom)
     }
     
     /// 제목과 10개의 질문 모음
@@ -101,6 +54,7 @@ struct QnaView: View {
                 .frame(width: 67, height: 56)
             Text("자주 묻는 질문 Top 10")
                 .font(.H4_bold)
+                .foregroundStyle(Color.gray900)
         }
     }
   
@@ -109,42 +63,6 @@ struct QnaView: View {
         VStack(spacing: 15) {
             fiveCategoryButton
                 categoryQnaList
-        }
-    }
-    
-    /// FAQ, TIPS segmented Control
-    private var customSegmentedControl: some View {
-        HStack(spacing: 0){
-            ForEach(segments, id: \.self) { segment in
-                Button {
-                    withAnimation{
-                        selected = segment
-                    }
-                } label: {
-                    VStack(spacing: 6) {
-                        if selected == segment {
-                            Text(segment)
-                                .font(.Body2_bold)
-                                .foregroundColor(.gray900)
-                        } else {
-                            Text(segment)
-                                .font(.Body2_regular)
-                                .foregroundColor(.gray900)
-                        }
-                        ZStack {
-                            Capsule()
-                                .fill(Color.clear)
-                                .frame(width: 46, height: 3)
-                            if selected == segment {
-                                Capsule()
-                                    .fill(Color.gray600)
-                                    .frame(width: 46, height: 3)
-                                    .matchedGeometryEffect(id: "Tab", in: name)
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
     
@@ -161,38 +79,40 @@ struct QnaView: View {
               .padding([.leading, .trailing], 14)
           }
       }
-      
     
-    /// 카테고리 버튼 텍스트 변환
-    private func categoryText(_ category: CategoryType) -> String {
+    /// Switch로 카테고리버튼의 색을 바꿀 수 있도록 함
+    /// - Parameter category: 귀, 눈, 머리, 발톱, 이빨의 카데고리
+    /// - Returns: 카테고리에 맞는 색을 반환
+    private func categoryColor(_ category: PartItem) -> Color {
         switch category {
         case .ear:
-            return "귀"
+            return Color(red: 1, green: 0.93, blue: 0.32)
+                .opacity(0.4)
         case .eye:
-            return "눈"
+            return Color.afterEye
         case .hair:
-            return "털"
+            return Color.afterHair
         case .claw:
-            return "발톱"
-        case .teeth:
-            return "이빨"
+            return Color.afterClaw
+        case .tooth:
+            return Color.afterTeeth
         }
     }
     
     /// 카테고리 버튼
     private var fiveCategoryButton: some View {
-        let categories = CategoryType.allCases
+        let categories = PartItem.allCases
         let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
         return LazyVGrid(columns: columns, spacing: 11) {
             ForEach(categories, id: \.self) { category in
                 Button(action: {
                     selectedCategory = category
                 }) {
-                    Text(categoryText(category))
+                    Text(category.toKorean())
                         .frame(width: 105, height: 43)
                         .font(.Body3_semibold)
                         .foregroundStyle(Color.gray900)
-                        .background(selectedCategory == category ? categoryColors[category] : Color.checkBg)
+                        .background(selectedCategory == category ? categoryColor(category) : Color.checkBg)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
             }
@@ -276,7 +196,7 @@ struct QnaFAQView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            QnaView()
+            QnaFAQView()
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }

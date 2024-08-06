@@ -9,7 +9,7 @@ import SwiftUI
 
 struct QnaFaqData: Identifiable, Codable {
     var id = UUID()
-    var category: CategoryType
+    var category: PartItem
     var question: String
     var answer: String
     
@@ -17,14 +17,6 @@ struct QnaFaqData: Identifiable, Codable {
     private enum CodingKeys: String, CodingKey {
         case category, question, answer
     }
-}
-
-enum CategoryType: String, Codable, CaseIterable {
-    case ear = "EAR"
-    case eye = "EYE"
-    case hair = "HAIR"
-    case claw = "CLAW"
-    case teeth = "TEETH"
 }
 
 

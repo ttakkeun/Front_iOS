@@ -11,7 +11,7 @@ import Combine
 class QnaViewModel: ObservableObject {
     @Published var qnaItems: [QnaFaqData] = []
     @Published var topTenQuestions: [QnaFaqData] = []
-    @Published var selectedCategory: CategoryType = .ear
+    @Published var selectedCategory: PartItem = .ear
     
     
     //MARK: - init
@@ -23,7 +23,8 @@ class QnaViewModel: ObservableObject {
     }
     
     //MARK: - Function
-  
+    
+    /// 자주묻는 질문 Top 10에 대한 Qna데이터가 들어가 있는 Json파일 읽는 함수
     public func loadToptenQnAItems() async {
            guard let url = Bundle.main.url(forResource: "TopTenQnaJsonData", withExtension: "json") else {
                print("JSON 파일 찾지 못함")
@@ -43,6 +44,7 @@ class QnaViewModel: ObservableObject {
            }
        }
     
+    /// 카테고리 질문에 대한 Qna데이터가 들어가 있는 Json파일 읽는 함수
     public func loadCategoryQnAItems() async {
         guard let url = Bundle.main.url(forResource: "CategoryQnaJsonData", withExtension: "json") else {
             print("JSON 파일 찾지 못함")
