@@ -38,6 +38,7 @@
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
 				Home/ToDoCheckList.swift,
+				Profile/BirthSelect.swift,
 				Profile/MakeProfileButtonCustom.swift,
 				Profile/MakeProfileNameTag.swift,
 				Profile/ProfileSelect.swift,

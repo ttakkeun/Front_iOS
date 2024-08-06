@@ -33,11 +33,14 @@ struct MakeProfileNameTag: View {
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray_900)
             
-            Text("*")
-                .font(.H4_bold)
-                //TODO: - ColorSet 추가해서 색상 변경해야함!!!
-                .foregroundStyle(Color.red)
-                .padding(.top, -6)
+            if mustMark {
+                Text("*")
+                    .font(.H4_bold)
+                    //TODO: - ColorSet 추가해서 색상 변경해야함!!!
+                    .foregroundStyle(Color.red)
+                    .padding(.top, -6)
+            }
+            
         })
         .frame(width: 313, height: 20, alignment: .leading)
     }
