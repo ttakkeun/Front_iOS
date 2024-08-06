@@ -10,15 +10,40 @@ import SwiftUI
 struct CreateProfileView: View {
     
     @StateObject var viewModel: CreateProfileViewModel
+    @State private var showingVarietySearch = false
     
+    // MARK: - Contents
     var body: some View {
         VStack {
             
-            //TODO: - 프로필 사진 등록
-            ///우선 그냥 동그라미 넣어둠
-            Circle()
-                .fill(Color.black)
-                .frame(width: 120, height: 120)
+            Button(action: {
+                viewModel.showImagePicker()
+            }, label: {
+                ZStack {
+                    Circle()
+                        .fill(Color.modalBg_Color)
+                        .frame(width: 120, height: 120)
+                    
+                    if viewModel.profileImage.isEmpty {
+                        VStack(alignment: .center, spacing: 4, content: {
+                            Text("사진을")
+                                .font(.Body4_medium)
+                                .foregroundStyle(Color.gray_400)
+                            Text("등록해주세요")
+                                .font(.Body4_medium)
+                                .foregroundStyle(Color.gray_400)
+                        })
+                    } else {
+                        if let image = viewModel.profileImage.first {
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 120, height: 120)
+                                .clipShape(Circle())
+                        }
+                    }
+                }
+            })
             
             Spacer().frame(height: 21)
             
@@ -31,6 +56,14 @@ struct CreateProfileView: View {
         .onAppear(perform: {
             UIApplication.shared.hideKeyboard()
         })
+        .sheet(isPresented: $viewModel.isImagePickerPresented, content: {
+            ProfileImageRegistPicker(imageHandler: viewModel)
+        })
+        .sheet(isPresented: $showingVarietySearch) {
+            VarietySearch(viewModel: viewModel, showingVarietySearch: $showingVarietySearch)
+                .presentationDragIndicator(.visible)
+        }
+        
     }
     
     ///정보 입력 필드
@@ -127,23 +160,20 @@ struct CreateProfileView: View {
                 }
             }
             
-            if let requestData = viewModel.requestData {
-                CustomTextField(
-                    text: Binding(
-                        get: { requestData.variety },
-                        set: {
-                            viewModel.requestData?.variety = $0
-                            viewModel.isVarietyFilled = !$0.isEmpty
-                        }),
-                    placeholder: "반려동물의 품종을 입력해주세요.",
-                    fontSize: 14,
-                    cornerRadius: 10,
-                    padding: 23,
-                    showGlass: false,
-                    maxWidth: 331,
-                    maxHeight: 44
-                )
-                .ignoresSafeArea(.keyboard)
+            Button(action: {
+                showingVarietySearch.toggle()
+            }) {
+                ZStack(alignment: .leading, content: {
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.gray_200)
+                        .frame(width: 331, height: 44)
+                        .foregroundStyle(Color.clear)
+                    
+                    Text(viewModel.requestData?.variety.isEmpty == false ? viewModel.requestData?.variety ?? "" : "반려동물의 품종을 선택해주세요")
+                        .font(.Body3_semibold)
+                        .foregroundStyle(viewModel.requestData?.variety.isEmpty == false ? Color.gray_900 : Color.gray_200)
+                        .padding(.leading, 15)
+                })
             }
         })
         .frame(width: 331, height: 80)
