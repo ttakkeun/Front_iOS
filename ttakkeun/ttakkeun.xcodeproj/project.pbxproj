@@ -39,6 +39,7 @@
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
 				Home/ToDoCheckList.swift,
+				Journal/AnswerButton.swift,
 				Journal/SelctCareButton.swift,
 				Profile/MakeProfileNameTag.swift,
 				Profile/ProfileSelect.swift,
@@ -153,6 +154,7 @@
 		48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AnswerValue.swift,
 				PartItem.swift,
 				ProfileType.swift,
 			);

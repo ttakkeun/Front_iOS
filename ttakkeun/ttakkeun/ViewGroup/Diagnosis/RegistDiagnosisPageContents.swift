@@ -28,6 +28,7 @@ struct RegistDiagnosisPageContents: View {
     }
     
     // MARK: - 1 Page(부위 선택)
+    
     /// 부위 선택
     //TODO: - 서브 타이틀 수정할 것
     private var firstPage: some View {
@@ -53,7 +54,14 @@ struct RegistDiagnosisPageContents: View {
         .frame(width: 339)
     }
     
+    // MARK: - 2 page(첫 번째 질문)
+    
     // MARK: - Function
+    /// 일지 등록 타이틀 생성 함수
+    /// - Parameters:
+    ///   - title: 가장 상단 타이틀
+    ///   - sub: 서브 타이틀
+    /// - Returns: 뷰 타입 반환
     private func titleText(_ title: String, _ sub: String) -> some View {
         VStack(alignment: .leading, spacing: 10, content: {
             Text(title)
@@ -68,6 +76,8 @@ struct RegistDiagnosisPageContents: View {
     }
     
 }
+
+// MARK: - Preview
 
 struct RegistDiagnosisPageContents_Preview: PreviewProvider {
     

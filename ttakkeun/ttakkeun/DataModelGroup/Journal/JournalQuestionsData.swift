@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// 사용자 기록한 일지 등록 데이터 Response
+/// 카데고리 선택 시, 카테고리에 해당하는 질문 받아온다.
 struct JournalQuestionsData: Codable {
     let isSuccess: Bool
     let code: Int
