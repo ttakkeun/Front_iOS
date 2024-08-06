@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct topStatusBar: View {
+struct TopStatusBar: View {
     var body: some View {
         statusBar
     }
@@ -39,5 +39,5 @@ struct topStatusBar: View {
 }
 
 #Preview {
-    topStatusBar()
+    TopStatusBar()
 }

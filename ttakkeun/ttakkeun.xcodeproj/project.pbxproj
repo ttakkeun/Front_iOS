@@ -28,15 +28,17 @@
 				ETC/CustomAlert.swift,
 				ETC/CustomTextField.swift,
 				ETC/MainButton.swift,
-				ETC/topStatusBar.swift,
+				ETC/TopStatusBar.swift,
+				Home/HomeAINotRecommend.swift,
 				Home/HomeAIRecommendProduct.swift,
 				Home/HomeBackCard.swift,
-				Home/HomeDragView.swift,
 				Home/HomeFrontCard.swift,
 				Home/HomeNotTodo.swift,
-				Home/HomeNotTodoCircle.swift,
+				Home/HomeTodoCircle.swift,
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
+				Home/ToDoCheckList.swift,
+				Profile/MakeProfileNameTag.swift,
 				Profile/ProfileSelect.swift,
 				QnA/TopTenQuestion.swift,
 				Recommend/ProductSheetView.swift,
@@ -53,6 +55,17 @@
 				Assets.xcassets,
 				Color.swift,
 				Color.xcassets,
+				Fonts/Font.swift,
+				Fonts/HSSanTokki.ttf,
+				"Fonts/SUIT-Bold.otf",
+				"Fonts/SUIT-ExtraBold.otf",
+				"Fonts/SUIT-ExtraLight.otf",
+				"Fonts/SUIT-Heavy.otf",
+				"Fonts/SUIT-Light.otf",
+				"Fonts/SUIT-Medium.otf",
+				"Fonts/SUIT-Regular.otf",
+				"Fonts/SUIT-SemiBold.otf",
+				"Fonts/SUIT-Thin.otf",
 				Icon.swift,
 				KeyBoardHide.swift,
 				ShadowReuse.swift,
@@ -60,31 +73,18 @@
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
-		4835589E2C3D0A35006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Font.swift,
-				HSSanTokki.ttf,
-				"SUIT-Bold.otf",
-				"SUIT-ExtraBold.otf",
-				"SUIT-ExtraLight.otf",
-				"SUIT-Heavy.otf",
-				"SUIT-Light.otf",
-				"SUIT-Medium.otf",
-				"SUIT-Regular.otf",
-				"SUIT-SemiBold.otf",
-				"SUIT-Thin.otf",
-			);
-			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
-		};
 		483558A32C3D0F13006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				HomeTab/CompactTodo.swift,
+				HomeTab/ExpandTodo.swift,
+				HomeTab/HomeDragView.swift,
 				HomeTab/HomeProfileCard.swift,
-				HomeTab/ProfileView.swift,
+				HomeTab/HomeView.swift,
 				LoginView.swift,
 				QnaTab/QnaFAQView.swift,
 				QnaTab/QnaTipsView.swift,
+				ProfileView.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -101,6 +101,7 @@
 				PetState.swift,
 				TokenRefresh/AccessTokenRefresher.swift,
 				TokenRefresh/APIManager.swift,
+				TokenRefresh/AuthAPITarget.swift,
 				TokenRefresh/TokenProvider.swift,
 				TokenRefresh/TokenProviding.swift,
 				TokenRefresh/TokenResponse.swift,
@@ -110,8 +111,9 @@
 		4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				AuthAPITarget.swift,
 				PetProfileAPITarget.swift,
+				ProductRecommendAPITarget.swift,
+				ScheduleAPITarget.swift,
 				UserLoginAPITarget.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -122,32 +124,29 @@
 				CustomDiaryViewModel.swift,
 				HomeProfileCardViewModel.swift,
 				LoginViewModel.swift,
+				ProductViewModel.swift,
 				ProfileCardViewModel.swift,
-				QnaViewModel.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
 		48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				AIRecommendProductData.swift,
 				LoginResponseData.swift,
 				PetProfile/CreatePetProfileRequestData.swift,
 				PetProfile/HomeProfileData.swift,
 				PetProfile/PetProfileData.swift,
 				PetProfile/PetProfileImageData.swift,
-				QnaFaqData.swift,
-				QnaJson/CategoryQnaJsonData.json,
-				QnaJson/TopTenQnaJsonData.json,
 				RecommendProductData.swift,
-				TodoCompleteData.swift,
-				UserRecommendProductData.swift,
+				Schedule/ScheduleInquiryData.swift,
+				Schedule/TodoCompleteData.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
 		48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				PartItem.swift,
 				ProfileType.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -168,7 +167,6 @@
 		4828552E2C4A5FD000A2DC80 /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (482855322C4A5FE300A2DC80 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
 		483558842C3D083F006AB282 /* SettingGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4835588A2C3D08E1006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = SettingGroup; sourceTree = "<group>"; };
 		483558862C3D084F006AB282 /* ViewGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (483558A32C3D0F13006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewGroup; sourceTree = "<group>"; };
-		4835588B2C3D0928006AB282 /* Fonts */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4835589E2C3D0A35006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Fonts; sourceTree = "<group>"; };
 		4863B2A62C3D163C00BDA2B4 /* File */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2AA2C3D166000BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = File; sourceTree = "<group>"; };
 		4863B2AF2C3D16AD00BDA2B4 /* APITarget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = APITarget; sourceTree = "<group>"; };
 		48D5D12B2C3E825500B2E6D5 /* ViewModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewModelGroup; sourceTree = "<group>"; };
@@ -219,7 +217,6 @@
 				48D5D12E2C3E827800B2E6D5 /* DataModelGroup */,
 				48D5D12B2C3E825500B2E6D5 /* ViewModelGroup */,
 				483558862C3D084F006AB282 /* ViewGroup */,
-				4835588B2C3D0928006AB282 /* Fonts */,
 				483558842C3D083F006AB282 /* SettingGroup */,
 				481C77C22C3A6C71005D60EB /* Preview Content */,
 			);

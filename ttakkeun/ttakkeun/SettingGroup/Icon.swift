@@ -42,6 +42,7 @@ enum Icon: String {
     case alarm = "alarm"
     case setting = "setting"
     case glass = "glass"
+    
     // MARK: - Schedule
     case downArrow = "downArrow"
     case neutral = "neutral"
@@ -50,6 +51,9 @@ enum Icon: String {
     case soso = "soso"
     case smile = "smile"
     case heart = "heart"
+    case unCheckBox = "unCheckBox"
+    case checkBox = "checkBox"
+    case checkV = "checkV"
     
     var image: Image {
         return Image(self.rawValue)

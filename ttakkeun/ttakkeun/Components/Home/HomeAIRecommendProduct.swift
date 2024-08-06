@@ -11,12 +11,12 @@ import Kingfisher
 /// AI 추천 제품 카드
 struct HomeAIRecommendProduct: View {
     
-    let productData: AIRecommendProductResponseData
+    let data: ProductDetailData
     
     // MARK: - Init
     
-    init(productData: AIRecommendProductResponseData) {
-        self.productData = productData
+    init(data: ProductDetailData) {
+        self.data = data
     }
     
     // MARK: - Contents
@@ -26,20 +26,19 @@ struct HomeAIRecommendProduct: View {
             productImage
             productInfo
         })
-        .frame(maxWidth: 241, maxHeight: 92)
+        .frame(width: 241, height: 92)
         .background(Color.clear)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color.clear)
                 .stroke(Color.gray_200, lineWidth: 1)
         )
-        .padding([.vertical, .horizontal], 14)
     }
     
     /// 추천 상품 이미지
     @ViewBuilder
     private var productImage: some View {
-        if let url = URL(string: productData.imageUrl) {
+        if let url = URL(string: data.image) {
             KFImage(url)
                 .placeholder {
                     ProgressView()
@@ -62,12 +61,12 @@ struct HomeAIRecommendProduct: View {
         var formattedPrice: String {
                 let formatter = NumberFormatter()
                 formatter.numberStyle = .decimal
-                return formatter.string(from: NSNumber(value: productData.price)) ?? "\(productData.price)"
+                return formatter.string(from: NSNumber(value: data.price)) ?? "\(data.price)"
             }
         
         
         VStack(alignment: .leading, spacing: 6) {
-            Text(productData.name.split(separator: "").joined(separator: "\u{200B}"))
+            Text(data.title.split(separator: "").joined(separator: "\u{200B}"))
                 .font(.suit(type: .semibold, size: 14))
                 .foregroundStyle(Color.gray_900)
                 .lineLimit(nil)
@@ -85,7 +84,7 @@ struct HomeAIRecommendProduct: View {
 
 struct HomeRecommendProduct_Preview: PreviewProvider {
     static var previews: some View {
-        HomeAIRecommendProduct(productData: AIRecommendProductResponseData(imageUrl: "https://image.sivillage.com/upload/C00001/goods/org/226/220831003041226.jpg?RS=750&SP=1", name: "아껴주다 저자극 천연 고양이 샴푸 500ml", price: 12000))
+        HomeAIRecommendProduct(data: ProductDetailData(productId: 1, title: "아껴주다 저자극 천연 고양이 샴푸", image: "https://shopping-phinf.pstatic.net/main_8516432/85164327357.jpg", price: 12000, brand: "쿠팡", purchaseLink: "https://smartstore.naver.com/main/products/7619827035", category1: "건강", category2: "샴푸", category3: "목록", category4: "몰라요", totalLike: 0, likeStatus: true))
             .previewLayout(.sizeThatFits)
     }
 }

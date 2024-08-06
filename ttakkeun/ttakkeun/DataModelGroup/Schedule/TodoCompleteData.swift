@@ -7,19 +7,10 @@
 
 import Foundation
 
+/// 일정 - 투두 완수율 조회 데이터
 struct TodoCompleteData: Codable {
-    let partType: TodoCompleteType
+    let partType: PartItem
     let currentInt: CGFloat
     let totalInt: CGFloat
 }
-
-enum TodoCompleteType: String, Codable {
-    case ear = "EAR"
-    case eye = "EYE"
-    case hair = "HAIR"
-    case claw = "CLAW"
-    case teeth = "TEETH"
-}
-
-
 
