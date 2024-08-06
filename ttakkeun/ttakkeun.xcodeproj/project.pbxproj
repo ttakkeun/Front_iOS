@@ -40,6 +40,8 @@
 				Home/ProfileImageCard.swift,
 				Profile/MakeProfileButtonCustom.swift,
 				Home/ToDoCheckList.swift,
+				Profile/BirthSelect.swift,
+				Profile/MakeProfileButtonCustom.swift,
 				Journal/AnswerButton.swift,
 				Journal/DiagnosticImages.swift,
 				Journal/SelctCareButton.swift,

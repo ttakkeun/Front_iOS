@@ -31,12 +31,6 @@ struct CreateProfileView: View {
         .onAppear(perform: {
             UIApplication.shared.hideKeyboard()
         })
-        .onAppear {
-            /// requestData가 nil일때 초기화
-            if viewModel.requestData == nil {
-                viewModel.requestData = CreatePetProfileRequestData(name: "", type: .dog, variety: "", birth: "", neutralization: false)
-            }
-        }
     }
     
     ///정보 입력 필드
@@ -96,7 +90,7 @@ struct CreateProfileView: View {
                 MakeProfileNameTag(titleText: "반려", mustMark: true)
                 
                 Spacer().frame(width: 0)
-
+                
                 if viewModel.isTypeFilled {
                     Icon.check.image
                         .frame(width: 18, height: 18)
@@ -140,8 +134,7 @@ struct CreateProfileView: View {
                         set: {
                             viewModel.requestData?.variety = $0
                             viewModel.isVarietyFilled = !$0.isEmpty
-                        }
-                    ),
+                        }),
                     placeholder: "반려동물의 품종을 입력해주세요.",
                     fontSize: 14,
                     cornerRadius: 10,
@@ -159,12 +152,29 @@ struct CreateProfileView: View {
     /// 생년월일 name tag + text field
     private var birthField: some View {
         VStack(alignment: .leading, spacing: 10, content: {
-            MakeProfileNameTag(titleText: "생년월일", mustMark: false)
-            
-            //TODO: 생년 월일 선택하는 피커 만들어야 함!
-            RoundedRectangle(cornerRadius: 10)
-                .frame(width: 330, height: 44)
+            HStack() {
+                MakeProfileNameTag(titleText: "생년월일", mustMark: false)
                 
+                Spacer().frame(width: 0)
+                
+                if viewModel.isBirthFilled {
+                    Icon.check.image
+                        .frame(width: 18, height: 18)
+                }
+            }
+            
+            if let requestData = viewModel.requestData {
+                BirthSelect(
+                    birthDate: Binding(
+                        get: { requestData.birth },
+                        set: { 
+                            viewModel.requestData?.birth = $0
+                            viewModel.isBirthFilled = !$0.isEmpty
+                        }
+                    ),
+                    isBirthFilled: $viewModel.isBirthFilled
+                )
+            }
         })
         .frame(width: 331, height: 74)
     }
@@ -176,13 +186,13 @@ struct CreateProfileView: View {
                 MakeProfileNameTag(titleText: "중성화여부", mustMark: true)
                 
                 Spacer().frame(width: 0)
-
+                
                 if viewModel.isNeutralizationFilled {
                     Icon.check.image
                         .frame(width: 18, height: 18)
                 }
             }
-
+            
             MakeProfileButtonCustom(
                 firstText: "예",
                 secondText: "아니오",
@@ -201,19 +211,15 @@ struct CreateProfileView: View {
     
     /// 등록하기 버튼
     private var registerBtn: some View {
-        Button(action: {
-            viewModel.checkFilledStates()
+        MainButton(btnText: "등록하기", width: 330, height: 56, action: {
             if viewModel.isProfileCompleted {
-                // 등록 로직
-                Task {
-                    if let requestData = viewModel.requestData {
-                        await viewModel.registerBtn(PetProfileData: requestData)
-                    }
-                }
+                print("마지막 버튼 눌림")
+            } else {
+                print("모든 필드를 입력해주세요.")
             }
-        }, label: {
-            MainButton(btnText: "등록하기", width: 330, height: 56, action: {print("프로필 등록됨")}, color: Color.primaryColor_Main)
-        })
+            print("Test")
+        }, color: Color.primaryColor_Main)
+        .disabled(!viewModel.isProfileCompleted)
     }
 }
 

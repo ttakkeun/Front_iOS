@@ -11,14 +11,20 @@ import Moya
 @MainActor
 class CreateProfileViewModel: ObservableObject {
     
-    @Published var requestData: CreatePetProfileRequestData?
+    @Published var requestData: CreatePetProfileRequestData? = CreatePetProfileRequestData(name: "", type: .dog, variety: "", birth: "", neutralization: false)
     @Published var responseData: CreatePetProfileResponseData?
-    @Published public var isProfileCompleted: Bool
+    public var isProfileCompleted: Bool = false{
+        didSet {
+            isProfileCompleted = isNameFilled && isTypeFilled && isVarietyFilled && isNeutralizationFilled
+        }
+    }
     
     private let provider: MoyaProvider<PetProfileAPITarget>
     
     //MARK: - INIT
-    init(isProfileCompleted: Bool = false, provider: MoyaProvider<PetProfileAPITarget> = APIManager.shared.testProvider(for: PetProfileAPITarget.self)) {
+    init(isProfileCompleted: Bool = false,
+         provider: MoyaProvider<PetProfileAPITarget> = APIManager.shared.testProvider(for: PetProfileAPITarget.self)
+    ) {
         self.isProfileCompleted = isProfileCompleted
         self.provider = provider
     }
@@ -28,30 +34,9 @@ class CreateProfileViewModel: ObservableObject {
     @Published public var isNameFilled: Bool = false
     @Published public var isTypeFilled: Bool = false
     @Published public var isVarietyFilled: Bool = false
+    @Published public var isBirthFilled: Bool = false
     @Published public var isNeutralizationFilled: Bool = false
-
-    //MARK: - Function
-
-    public func registerBtn(PetProfileData: CreatePetProfileRequestData) async {
-        requestData = PetProfileData
-        
-
-        
-        do {
-            //TODO: API 연동 공부해서 작성
-        } catch {
-            print("프로필 생성 중 오류 발생: \(error)")
-        }
-    }
     
-    ///Check filled states
-    public func checkFilledStates() {
-        isProfileCompleted = ((requestData?.name.isEmpty) == nil) &&
-        (requestData?.type == .cat || requestData?.type == .dog) &&
-        ((requestData?.variety.isEmpty) == nil) &&
-        ((requestData?.birth.isEmpty) == nil) &&
-        (requestData?.neutralization == true || requestData?.neutralization == false)
-    }
     
     //MARK: - API Function
     /// 로그인 데이터 전송
