@@ -7,9 +7,10 @@
 
 import Foundation
 import Moya
+import SwiftUI
 
 @MainActor
-class CreateProfileViewModel: ObservableObject {
+class CreateProfileViewModel: ObservableObject, @preconcurrency ImageHandling {
     
     @Published var requestData: CreatePetProfileRequestData? = CreatePetProfileRequestData(name: "", type: .dog, variety: "", birth: "", neutralization: false)
     @Published var responseData: CreatePetProfileResponseData?
@@ -46,6 +47,32 @@ class CreateProfileViewModel: ObservableObject {
     private func checkFilledStates() {
         isProfileCompleted = isNameFilled && isTypeFilled && isVarietyFilled && isNeutralizationFilled
     }
+    
+    // MARK: - AppendImage Function
+    func addImage(_ images: UIImage) {
+        if !profileImage.isEmpty {
+            profileImage.removeAll()
+        }
+        profileImage.append(images)
+    }
+    
+    func removeImage(at index: Int) {
+        profileImage.remove(at: index)
+    }
+    
+    func showImagePicker() {
+        isImagePickerPresented = true
+    }
+    
+    func getImages() -> [UIImage] {
+        profileImage
+    }
+    
+    @Published var isImagePickerPresented: Bool = false
+    
+    var selectedImageCount: Int = 0
+    
+    var profileImage: [UIImage] = []
     
     
     //MARK: - API Function

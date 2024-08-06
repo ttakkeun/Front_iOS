@@ -49,7 +49,6 @@ struct BirthSelect: View {
                     .frame(width: 110, height: 44)
             )
             
-            
             Divider()
                 .frame(width: 1, height: 44)
                 .background(Color.gray_200)
