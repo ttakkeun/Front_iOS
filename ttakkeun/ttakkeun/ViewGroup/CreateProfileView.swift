@@ -15,7 +15,7 @@ struct CreateProfileView: View {
     // MARK: - Contents
     var body: some View {
         VStack {
-            
+            ///프로필 사진 선택 버튼(동그라미)
             Button(action: {
                 viewModel.showImagePicker()
             }, label: {
@@ -25,14 +25,10 @@ struct CreateProfileView: View {
                         .frame(width: 120, height: 120)
                     
                     if viewModel.profileImage.isEmpty {
-                        VStack(alignment: .center, spacing: 4, content: {
-                            Text("사진을")
-                                .font(.Body4_medium)
-                                .foregroundStyle(Color.gray_400)
-                            Text("등록해주세요")
-                                .font(.Body4_medium)
-                                .foregroundStyle(Color.gray_400)
-                        })
+                        Text("사진을 \n 등록해주세요")
+                            .lineSpacing(2)
+                            .font(.Body4_medium)
+                            .foregroundStyle(Color.gray_400)
                     } else {
                         if let image = viewModel.profileImage.first {
                             Image(uiImage: image)
@@ -63,17 +59,19 @@ struct CreateProfileView: View {
             VarietySearch(viewModel: viewModel, showingVarietySearch: $showingVarietySearch)
                 .presentationDragIndicator(.visible)
         }
-        
+
     }
     
     ///정보 입력 필드
     private var infoField: some View {
         VStack(alignment: .center, spacing: 19, content: {
-            nameField
-            typeField
-            varietyField
-            birthField
-            neutralizationField
+            Group {
+                nameField
+                typeField
+                varietyField
+                birthField
+                neutralizationField
+            }
         })
     }
     
@@ -82,8 +80,6 @@ struct CreateProfileView: View {
         VStack(alignment: .leading, spacing: 10, content: {
             HStack() {
                 MakeProfileNameTag(titleText: "이름", mustMark: true)
-                
-                Spacer().frame(width: 0)
                 
                 if viewModel.isNameFilled {
                     Icon.check.image
@@ -122,8 +118,6 @@ struct CreateProfileView: View {
             HStack() {
                 MakeProfileNameTag(titleText: "반려", mustMark: true)
                 
-                Spacer().frame(width: 0)
-                
                 if viewModel.isTypeFilled {
                     Icon.check.image
                         .frame(width: 18, height: 18)
@@ -151,8 +145,6 @@ struct CreateProfileView: View {
         VStack(alignment: .leading, spacing: 10, content: {
             HStack() {
                 MakeProfileNameTag(titleText: "품종", mustMark: true)
-                
-                Spacer().frame(width: 0)
                 
                 if viewModel.isVarietyFilled {
                     Icon.check.image
@@ -185,8 +177,6 @@ struct CreateProfileView: View {
             HStack() {
                 MakeProfileNameTag(titleText: "생년월일", mustMark: false)
                 
-                Spacer().frame(width: 0)
-                
                 if viewModel.isBirthFilled {
                     Icon.check.image
                         .frame(width: 18, height: 18)
@@ -215,8 +205,6 @@ struct CreateProfileView: View {
             HStack() {
                 MakeProfileNameTag(titleText: "중성화여부", mustMark: true)
                 
-                Spacer().frame(width: 0)
-                
                 if viewModel.isNeutralizationFilled {
                     Icon.check.image
                         .frame(width: 18, height: 18)
@@ -240,6 +228,7 @@ struct CreateProfileView: View {
     }
     
     /// 등록하기 버튼
+    //TODO: API 함수 액션 필요
     private var registerBtn: some View {
         MainButton(btnText: "등록하기", width: 330, height: 56, action: {
             if viewModel.isProfileCompleted {

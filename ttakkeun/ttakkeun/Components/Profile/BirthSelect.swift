@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 프로필 생성뷰에서 생년월일 선택하는 필드 구현
 struct BirthSelect: View {
     
     @State private var selectedYear: Int? = nil
@@ -28,6 +29,7 @@ struct BirthSelect: View {
     /// 버튼 구조
     var body: some View {
         HStack(alignment: .center, spacing: 0, content: {
+            ///연도 피커
             Picker(selection: Binding(
                 get: { selectedYear ?? Calendar.current.component(.year, from: Date()) },
                 set: {
@@ -45,7 +47,7 @@ struct BirthSelect: View {
             .overlay(
                 Text(selectedYear == nil ? "연도" : "\(yearFormatter.string(from: NSNumber(value: selectedYear!)) ?? "\(selectedYear!)")년")
                     .foregroundColor(Color.gray_400)
-                    .font(.system(size: 14, weight: .medium))
+                    .font(.Body3_medium)
                     .frame(width: 110, height: 44)
             )
             
@@ -53,6 +55,7 @@ struct BirthSelect: View {
                 .frame(width: 1, height: 44)
                 .background(Color.gray_200)
             
+            /// 월 피커
             Picker(selection: Binding(
                 get: { selectedMonth ?? Calendar.current.component(.month, from: Date()) },
                 set: {
@@ -70,7 +73,7 @@ struct BirthSelect: View {
             .overlay(
                 Text(selectedMonth == nil ? "월" : "\(selectedMonth!)월")
                     .foregroundColor(Color.gray_400)
-                    .font(.system(size: 14, weight: .medium))
+                    .font(.Body3_medium)
                     .frame(width: 110, height: 44)
             )
             .onChange(of: selectedMonth) { updateBirthDate() }
@@ -80,6 +83,7 @@ struct BirthSelect: View {
                 .frame(width: 1, height: 44)
                 .background(Color.gray_200)
             
+            /// 일 피커
             Picker(selection: Binding(
                 get: { selectedDay ?? Calendar.current.component(.day, from: Date()) },
                 set: {
@@ -97,7 +101,7 @@ struct BirthSelect: View {
             .overlay(
                 Text(selectedDay == nil ? "일" : "\(selectedDay!)일")
                     .foregroundColor(Color.gray_400)
-                    .font(.system(size: 14, weight: .medium))
+                    .font(.Body3_medium)
                     .frame(width: 110, height: 44)
             )
             .onChange(of: selectedDay) { updateBirthDate() }

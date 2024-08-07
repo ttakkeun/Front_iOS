@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 프로필 생성뷰 각 필드 네임태그 + 필수표시 별
 struct MakeProfileNameTag: View {
     
     var titleText: String
@@ -17,9 +18,7 @@ struct MakeProfileNameTag: View {
     /// Description
     /// - Parameters:
     ///   - titleText: 네임태그 텍스트
-    ///   - width: 331
-    ///   - height: 20
-    ///   - color: .gray_900
+    ///   - mustMark: 필수 작성해야 하는 필드 표시하는 마크 유무
     init(titleText: String, mustMark: Bool) {
         self.titleText = titleText
         self.mustMark = mustMark
@@ -36,13 +35,12 @@ struct MakeProfileNameTag: View {
             if mustMark {
                 Text("*")
                     .font(.H4_bold)
-                    //TODO: - ColorSet 추가해서 색상 변경해야함!!!
-                    .foregroundStyle(Color.red)
+                    .foregroundStyle(Color.redStarColor)
                     .padding(.top, -6)
             }
             
         })
-        .frame(width: 313, height: 20, alignment: .leading)
+        .frame(width: 306, height: 20, alignment: .leading)
     }
 }
 
