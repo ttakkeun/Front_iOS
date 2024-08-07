@@ -9,6 +9,7 @@ import Foundation
 import Moya
 import SwiftUI
 
+///포로필 생성뷰 뷰모델
 @MainActor
 class CreateProfileViewModel: ObservableObject, @preconcurrency ImageHandling {
     

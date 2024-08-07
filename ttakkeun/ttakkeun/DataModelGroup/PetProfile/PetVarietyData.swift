@@ -5,6 +5,7 @@
 //  Created by 황유빈 on 8/6/24.
 //
 
+/// 강아지, 고양이 품종 선택을 위한 데이터
 enum PetVarietyData: String ,CaseIterable {
     case 푸들 = "푸들"
     case 말티즈 = "말티즈"

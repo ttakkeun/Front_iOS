@@ -8,13 +8,15 @@
 
 import SwiftUI
 
+/// 반려동물 품종 검색을 위한 뷰 구현
 struct VarietySearch: View {
     
     @State private var searchText = ""
     @ObservedObject var viewModel: CreateProfileViewModel
     @Binding var showingVarietySearch: Bool
     
-    var filteredVarieties: [PetVarietyData] {
+    /// 입력 텍스트 필터링('푸'검색하면 푸들 나오도록)
+    private var filteredVarieties: [PetVarietyData] {
         if searchText.isEmpty {
             return PetVarietyData.allCases
         } else {
@@ -22,8 +24,9 @@ struct VarietySearch: View {
         }
     }
     
+    //MARK: - Contents
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 ForEach(filteredVarieties, id: \.self) { item in
                     Button(action: {
@@ -43,6 +46,9 @@ struct VarietySearch: View {
                 prompt: "검색어를 입력하세요"
             )
         }
+        .onAppear(perform: {
+            UIApplication.shared.hideKeyboard()
+        })
         .font(.Body2_medium)
     }
 }
