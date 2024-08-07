@@ -8,7 +8,7 @@
 import Foundation
 
 /// 따끈에 사용되는 5가지 부위 항목
-enum PartItem: String, Codable {
+enum PartItem: String, Codable, CaseIterable {
     case ear = "EAR"
     case eye = "EYE"
     case hair = "HAIR"
