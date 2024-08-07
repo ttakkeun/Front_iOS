@@ -55,7 +55,7 @@ struct DiagnosticImages: View {
                             .frame(width: 47, height: 47)
                         
                         Text("\(viewModel.selectedImageCount) / 5")
-                            .font(.Body5_medium)
+                            .font(.Body3_regular)
                             .foregroundStyle(Color.gray_400)
                     })
                    
