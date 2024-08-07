@@ -44,6 +44,7 @@
 				Journal/SelctCareButton.swift,
 				Profile/MakeProfileNameTag.swift,
 				Profile/ProfileSelect.swift,
+				QnA/TopTenQuestion.swift,
 				Recommend/ProductSheetView.swift,
 				Schedule/CustomDiary.swift,
 				Schedule/DiarySelectSheet.swift,
@@ -88,6 +89,9 @@
 				HomeTab/HomeView.swift,
 				LoginView.swift,
 				ProfileView.swift,
+				QnaTab/QnaFAQView.swift,
+				QnaTab/QnaHeaderView.swift,
+				QnaTab/QnaTipsView.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -130,6 +134,7 @@
 				LoginViewModel.swift,
 				ProductViewModel.swift,
 				ProfileCardViewModel.swift,
+				QnaViewModel.swift,
 				RegistJournalViewModel.swift,
 				ScheduleViewModel.swift,
 			);
@@ -146,6 +151,9 @@
 				PetProfile/PetProfileData.swift,
 				PetProfile/PetProfileImageData.swift,
 				Product/AIAndSearchProductData.swift,
+				QnaFaqData.swift,
+				QnaJson/CategoryQnaJsonData.json,
+				QnaJson/TopTenQnaJsonData.json,
 				RecommendProductData.swift,
 				Schedule/ScheduleInquiryData.swift,
 				Schedule/TodoCompleteData.swift,

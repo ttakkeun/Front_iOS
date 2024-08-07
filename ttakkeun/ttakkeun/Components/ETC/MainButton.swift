@@ -60,5 +60,6 @@ struct MainButton: View {
 struct MainButton_Preview: PreviewProvider {
     static var previews: some View {
         MainButton(btnText: "구매하러가기", width: 330, height: 59, action: {print("hello")}, color: .primaryColor_Main)
+            .previewLayout(.sizeThatFits)
     }
 }
