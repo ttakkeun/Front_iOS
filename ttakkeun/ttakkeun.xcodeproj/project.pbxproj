@@ -40,11 +40,11 @@
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
 				Home/ToDoCheckList.swift,
-				Profile/BirthSelect.swift,
-				Profile/MakeProfileButtonCustom.swift,
 				Journal/AnswerButton.swift,
 				Journal/DiagnosticImages.swift,
 				Journal/SelctCareButton.swift,
+				Profile/BirthSelect.swift,
+				Profile/MakeProfileButtonCustom.swift,
 				Profile/MakeProfileNameTag.swift,
 				Profile/ProfileSelect.swift,
 				Profile/VarietySearch.swift,
@@ -84,6 +84,9 @@
 		483558A32C3D0F13006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				CreateProfileView.swift,
+				Diagnosis/RegistDiagnosisFlowView.swift,
+				Diagnosis/RegistDiagnosisPageContents.swift,
 				HomeTab/CompactTodo.swift,
 				HomeTab/ExpandTodo.swift,
 				HomeTab/HomeDragView.swift,

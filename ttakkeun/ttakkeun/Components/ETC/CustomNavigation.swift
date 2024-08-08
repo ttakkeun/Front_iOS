@@ -9,33 +9,58 @@ import SwiftUI
 
 struct CustomNavigation: View {
     
-    let action: Void
-    let currentPage: Int
+    let action: () -> Void
+    let title: String?
+    let currentPage: Int?
+    let naviIcon: Image
     
+    /// Navigation Init
+    /// - Parameters:
+    ///   - action: 버튼 액션
+    ///   - title: 네비게이션 내부 타이틀
+    ///   - currentPage: 현재 페이지
+    ///   - naviIcon: 네비게이션 아이콘
     init(
         action: @escaping () -> Void,
-        currentPage: Int
+        title: String?,
+        currentPage: Int?,
+        naviIcon: Image
     ) {
-        self.action = action()
+        self.action = action
+        self.title = title
         self.currentPage = currentPage
+        self.naviIcon = naviIcon
     }
     
     var body: some View {
         HStack(alignment: .center, content: {
             Button(action: {
-                action
+                action()
             }, label: {
-                Image(systemName: "xmark")
+                naviIcon
                     .resizable()
                     .frame(width: 14, height: 14)
                     .foregroundStyle(Color.black)
             })
             
-            Spacer()
+            if let title = self.title {
+                Spacer()
+                
+                Text(title)
+                    .font(.H3_bold)
+                    .foregroundStyle(Color.black)
+            } else {
+                Spacer()
+            }
             
-            Text("\(currentPage) / 5")
-                .font(.Body2_semibold)
-                .foregroundStyle(Color.gray_900)
+            if let currentPage = self.currentPage {
+                Text("\(currentPage) / 5")
+                    .font(.Body2_semibold)
+                    .foregroundStyle(Color.gray_900)
+            } else {
+                Spacer()
+            }
+            
         })
         .frame(width: 353, height: 20)
     }
@@ -45,7 +70,7 @@ struct customNavigation_Preview: PreviewProvider {
     static var previews: some View {
         CustomNavigation(action: {
             print("hello")
-        }, currentPage: 1)
+        }, title: "마이페이지", currentPage: nil, naviIcon: Image(systemName: "xmark"))
             .previewLayout(.sizeThatFits)
     }
 }
