@@ -27,6 +27,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				ETC/CustomAlert.swift,
+				ETC/CustomNavigation.swift,
 				ETC/CustomTextField.swift,
 				ETC/MainButton.swift,
 				ETC/TopStatusBar.swift,
@@ -39,6 +40,9 @@
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
 				Home/ToDoCheckList.swift,
+				Journal/AnswerButton.swift,
+				Journal/DiagnosticImages.swift,
+				Journal/SelctCareButton.swift,
 				Profile/BirthSelect.swift,
 				Profile/MakeProfileButtonCustom.swift,
 				Profile/MakeProfileNameTag.swift,
@@ -81,6 +85,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CreateProfileView.swift,
+				Diagnosis/RegistDiagnosisFlowView.swift,
+				Diagnosis/RegistDiagnosisPageContents.swift,
 				HomeTab/CompactTodo.swift,
 				HomeTab/ExpandTodo.swift,
 				HomeTab/HomeDragView.swift,
@@ -119,6 +125,7 @@
 		4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				JournalAPITarget.swift,
 				PetProfileAPITarget.swift,
 				ProductRecommendAPITarget.swift,
 				ScheduleAPITarget.swift,
@@ -136,6 +143,7 @@
 				ProductViewModel.swift,
 				ProfileCardViewModel.swift,
 				QnaViewModel.swift,
+				RegistJournalViewModel.swift,
 				ScheduleViewModel.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -143,6 +151,8 @@
 		48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Journal/JournalQuestionsData.swift,
+				Journal/RegistJournalData.swift,
 				LoginResponseData.swift,
 				PetProfile/CreatePetProfileRequestData.swift,
 				PetProfile/HomeProfileData.swift,
@@ -162,6 +172,7 @@
 		48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AnswerValue.swift,
 				PartItem.swift,
 				ProfileType.swift,
 			);
