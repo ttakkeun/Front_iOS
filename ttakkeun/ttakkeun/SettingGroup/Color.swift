@@ -79,5 +79,8 @@ extension Color {
     static let btnBackground_Color = Color("BtnBackground") /* #D9D9D9 100% */
     // MARK: - QnA
     static let QnAEar_Color = Color("QnAEar") /* #FFEE52 40% */
+    
+    // MARK: - Login
+    static let onboarding_Color = Color("Onboarding") /* F5FC47 78% */
 }
 
