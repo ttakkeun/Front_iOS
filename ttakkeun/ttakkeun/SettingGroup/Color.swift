@@ -71,6 +71,7 @@ extension Color {
     static let mainBg_Color = Color("MainBg") /* #ECF083 100% */
     static let checkBg_Color = Color("CheckBg") /* #EEEEEE 100% */
     static let postBg_Color = Color("PostBg") /* #F8F8F8 100% */
+    static let line_Color = Color("LineColor") /* #DBDBDB 100% */
     
     // MARK: - Schedule
     static let scheduleCard_Color = Color("ScheduleCard") /* #F6F6F6 100% */

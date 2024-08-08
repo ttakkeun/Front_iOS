@@ -38,13 +38,12 @@
 				Home/HomeTodoCircle.swift,
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
-				Profile/MakeProfileButtonCustom.swift,
 				Home/ToDoCheckList.swift,
-				Profile/BirthSelect.swift,
-				Profile/MakeProfileButtonCustom.swift,
 				Journal/AnswerButton.swift,
 				Journal/DiagnosticImages.swift,
 				Journal/SelctCareButton.swift,
+				Profile/BirthSelect.swift,
+				Profile/MakeProfileButtonCustom.swift,
 				Profile/MakeProfileNameTag.swift,
 				Profile/ProfileSelect.swift,
 				Profile/VarietySearch.swift,
@@ -85,8 +84,12 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CreateProfileView.swift,
+				Diagnosis/DiagnosisHeader.swift,
+				Diagnosis/RegistDiagnosisFlowView.swift,
+				Diagnosis/RegistDiagnosisPageContents.swift,
 				HomeTab/CompactTodo.swift,
 				HomeTab/ExpandTodo.swift,
+				HomeTab/HomeDragView.swift,
 				HomeTab/HomeProfileCard.swift,
 				HomeTab/HomeView.swift,
 				LoginView.swift,
@@ -168,6 +171,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AnswerValue.swift,
+				DiagnosisSegment.swift,
 				PartItem.swift,
 				ProfileType.swift,
 			);
