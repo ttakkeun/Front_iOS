@@ -7,10 +7,12 @@
 
 import SwiftUI
 
-struct DiagnosisHeader: View {
+struct DiagnosisView: View {
     
     @State private var selectedSegment: DiagnosisSegment = .journalList
     @State private var selectedPartItem: PartItem = .ear
+    @ObservedObject var journalViewModel: JournalViewModel
+    @EnvironmentObject var petState: PetState
     @Namespace var name
     
     var body: some View {
@@ -77,13 +79,18 @@ struct DiagnosisHeader: View {
         })
     }
     
+    /// 5가지 항목 데이터 조회 버트
     private var itemsButton: some View {
         HStack(alignment: .center, spacing: 20, content: {
             ForEach(PartItem.allCases, id: \.self) { item in
                 Button(action: {
                     withAnimation(.easeInOut(duration: 0.4)) {
                         selectedPartItem = item
-                        print("현재 선택 버튼 : \(item)")
+                        if selectedSegment == .journalList {
+                            Task {
+                                await journalViewModel.getJournalList(petID: petState.petId ?? 0, category: selectedPartItem)
+                            }
+                        }
                     }
                 }, label: {
                     Text(item.toKorean())
@@ -96,14 +103,15 @@ struct DiagnosisHeader: View {
     }
 }
 
-struct DiagnosisHeader_Preview: PreviewProvider {
+struct DiagnosisView_Preview: PreviewProvider {
     static let devices = ["iPhone 11", "iPhone 15"]
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            DiagnosisHeader()
+            DiagnosisView(journalViewModel: JournalViewModel())
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
+                .environmentObject(PetState())
         }
     }
 }

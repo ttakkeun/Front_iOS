@@ -85,8 +85,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CreateProfileView.swift,
-				CreateProfileView.swift,
-				Diagnosis/DiagnosisHeader.swift,
+				Diagnosis/DiagnosisView.swift,
 				Diagnosis/RegistDiagnosisFlowView.swift,
 				Diagnosis/RegistDiagnosisPageContents.swift,
 				HomeTab/CompactTodo.swift,
@@ -141,6 +140,7 @@
 				CreateProfileViewModel.swift,
 				CustomDiaryViewModel.swift,
 				HomeProfileCardViewModel.swift,
+				JournalViewModel.swift,
 				LoginViewModel.swift,
 				ProductViewModel.swift,
 				ProfileCardViewModel.swift,
@@ -153,6 +153,7 @@
 		48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Journal/JournalListData.swift,
 				Journal/JournalQuestionsData.swift,
 				Journal/RegistJournalData.swift,
 				LoginResponseData.swift,

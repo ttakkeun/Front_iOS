@@ -10,7 +10,7 @@ import Moya
 
 // MARK: - 일지 API Target
 enum JournalAPITarget {
-    case getJournalList(petID: Int, category: PartItem) /* 일지 목록 조회 */
+    case getJournalList(petID: Int, category: PartItem, page: Int) /* 일지 목록 조회 */
     case getJournalQuestions(category: PartItem) /* 일지 질문 조회 */
     case registJournal(data: RegistJournalData) /* 일지 등록 */
 }
@@ -22,8 +22,8 @@ extension JournalAPITarget: TargetType {
     
     var path: String {
         switch self {
-        case .getJournalList(let petID, let category):
-            return "/record/\(petID)/\(category)"
+        case .getJournalList(let petID, let category, let page):
+            return "/record/\(petID)/\(category)/\(page)"
         case .getJournalQuestions(let category):
             return "/record/register/\(category)"
         case .registJournal:
