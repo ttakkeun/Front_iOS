@@ -84,6 +84,19 @@ struct QnaHeaderView: View {
             }
         }
     }
+    
+    private var floatingBtn: some View {
+        TabView {
+            NavigationStack {
+                Button(action: {print("hello")}, label: {
+                    Image(systemName: "plus")
+                        .padding()
+                })
+            }
+        }
+        
+    }
+    
 }
 
 //MARK: - Preview
