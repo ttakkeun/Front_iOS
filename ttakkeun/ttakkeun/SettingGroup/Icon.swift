@@ -67,6 +67,9 @@ enum Icon: String {
     case petCamera = "petCamera"
     case imageRemove = "imageRemove"
     
+    //MARK: - MyPage
+    case heartTips = "heartTips"
+    
     var image: Image {
         return Image(self.rawValue)
     }
