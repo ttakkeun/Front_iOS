@@ -9,20 +9,22 @@ import Foundation
 import Moya
 
 @MainActor
-class JournalViewModel: ObservableObject {
+class DiagnosisViewModel: ObservableObject {
     
     @Published var journalListData: JournalListData?
     @Published var page: Int = 0
     private let provider: MoyaProvider<JournalAPITarget>
     
-    init(provider: MoyaProvider<JournalAPITarget> = APIManager.shared.testProvider(for: JournalAPITarget.self)) {
+    init(
+        provider: MoyaProvider<JournalAPITarget> = APIManager.shared.testProvider(for: JournalAPITarget.self)
+    ) {
         self.provider = provider
     }
     
     // MARK: - 일지 목록 조회 API
     
-    public func getJournalList(petID: Int, category: PartItem) async {
-        provider.request(.getJournalList(petID: petID, category: category, page: self.page)) { [weak self] result in
+    public func getJournalList(petId: Int, category: PartItem) async {
+        provider.request(.getJournalList(petID: petId, category: category, page: self.page)) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.handlerGetJournalList(response: response)

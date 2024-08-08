@@ -85,7 +85,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CreateProfileView.swift,
+				Diagnosis/DiagnosisHeader.swift,
 				Diagnosis/DiagnosisView.swift,
+				Diagnosis/JournalList.swift,
 				Diagnosis/RegistDiagnosisFlowView.swift,
 				Diagnosis/RegistDiagnosisPageContents.swift,
 				HomeTab/CompactTodo.swift,
@@ -139,8 +141,8 @@
 			membershipExceptions = (
 				CreateProfileViewModel.swift,
 				CustomDiaryViewModel.swift,
+				DiagnosisViewModel.swift,
 				HomeProfileCardViewModel.swift,
-				JournalViewModel.swift,
 				LoginViewModel.swift,
 				ProductViewModel.swift,
 				ProfileCardViewModel.swift,
