@@ -74,6 +74,9 @@ enum Icon: String {
     case schedule = "schedule"
     case suggestion = "suggestion"
     
+    //MARK: - MyPage
+    case heartTips = "heartTips"
+    
     var image: Image {
         return Image(self.rawValue)
     }

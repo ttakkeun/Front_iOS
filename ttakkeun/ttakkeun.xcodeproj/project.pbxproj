@@ -104,6 +104,7 @@
 				LoginView/LoginView.swift,
 				LoginView/Onboarding.json,
 				LoginView/OnboardingView.swift,
+				MyPage/MyPageView.swift,
 				ProfileView.swift,
 				Qna/QnaFAQView.swift,
 				Qna/QnaHeaderView.swift,
