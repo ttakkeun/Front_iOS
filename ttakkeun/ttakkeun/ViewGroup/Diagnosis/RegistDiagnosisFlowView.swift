@@ -16,15 +16,7 @@ struct RegistDiagnosisFlowView: View {
     }
     
     var body: some View {
-        VStack(alignment: .center, content: {
-            CustomNavigation(action: {
-                dismiss()
-            }, currentPage: viewModel.currentPage)
-            
-            Spacer()
-            
-            RegistDiagnosisPageContents(viewModel: viewModel)
-        })
+        Text("hello")
     }
 }
 
