@@ -13,6 +13,8 @@ struct CustomNavigation: View {
     let title: String?
     let currentPage: Int?
     let naviIcon: Image
+    let width: CGFloat
+    let height: CGFloat
     
     /// Navigation Init
     /// - Parameters:
@@ -24,12 +26,16 @@ struct CustomNavigation: View {
         action: @escaping () -> Void,
         title: String?,
         currentPage: Int?,
-        naviIcon: Image
+        naviIcon: Image,
+        width: CGFloat,
+        height: CGFloat
     ) {
         self.action = action
         self.title = title
         self.currentPage = currentPage
         self.naviIcon = naviIcon
+        self.width = width
+        self.height = height
     }
     
     var body: some View {
@@ -39,7 +45,7 @@ struct CustomNavigation: View {
             }, label: {
                 naviIcon
                     .resizable()
-                    .frame(width: 14, height: 14)
+                    .frame(width: width, height: height)
                     .foregroundStyle(Color.black)
             })
             
@@ -66,11 +72,3 @@ struct CustomNavigation: View {
     }
 }
 
-struct customNavigation_Preview: PreviewProvider {
-    static var previews: some View {
-        CustomNavigation(action: {
-            print("hello")
-        }, title: "마이페이지", currentPage: nil, naviIcon: Image(systemName: "xmark"))
-            .previewLayout(.sizeThatFits)
-    }
-}
