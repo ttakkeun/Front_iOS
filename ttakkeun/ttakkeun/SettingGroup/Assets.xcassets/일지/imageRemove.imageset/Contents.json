@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "imageRemove.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
