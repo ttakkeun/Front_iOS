@@ -108,6 +108,10 @@ extension Font {
     
     // MARK: - Body2
     
+    static var Body2_extrabold: Font {
+        return .suit(type: .extraBold, size: 16)
+    }
+    
     static var Body2_bold: Font {
         return .suit(type: .bold, size: 16)
     }

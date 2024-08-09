@@ -52,7 +52,6 @@ struct MyPageView: View {
             
             useInfo
             
-            
         })
     }
     
@@ -81,7 +80,7 @@ struct MyPageView: View {
     private var appInfoTitle: some View {
         HStack {
             Text("앱 정보")
-                .font(.H4_bold)
+                .font(.Body2_extrabold)
                 .foregroundStyle(Color.gray_900)
             
             Spacer()
@@ -130,7 +129,6 @@ struct MyPageView: View {
             
             VStack(alignment: .leading, spacing: 15, content: {
                 
-                
                 useInfoTitle
                 
                 useInfoBtns
@@ -145,7 +143,7 @@ struct MyPageView: View {
     private var useInfoTitle: some View {
         HStack {
             Text("이용 정보")
-                .font(.H4_bold)
+                .font(.Body2_extrabold)
                 .foregroundStyle(Color.gray_900)
             
             Spacer()
@@ -184,8 +182,6 @@ struct MyPageView: View {
         })
     }
 }
-
-
 
 
 struct MyPageView_Preview: PreviewProvider {
