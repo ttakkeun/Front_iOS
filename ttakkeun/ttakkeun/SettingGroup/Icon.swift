@@ -66,6 +66,9 @@ enum Icon: String {
     case answerNotCheck = "answerNotCheck"
     case petCamera = "petCamera"
     case imageRemove = "imageRemove"
+    case diagnosisBackground = "diagnosisBackground"
+    case bubble = "bubble"
+    case bubbleLogo = "bubbleLogo"
     
     //MARK: - MyPage
     case heartTips = "heartTips"

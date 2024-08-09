@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 일지 생성 뷰 전환 컨텐츠
 struct RegistDiagnosisPageContents: View {
     
     @ObservedObject var viewModel: RegistJournalViewModel

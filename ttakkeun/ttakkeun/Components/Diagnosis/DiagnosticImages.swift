@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 진단 생성 시 사용 이미지 버튼
 struct DiagnosticImages: View {
     
     @ObservedObject var viewModel: RegistJournalViewModel
