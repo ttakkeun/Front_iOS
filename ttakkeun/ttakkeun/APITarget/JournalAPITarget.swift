@@ -8,17 +8,14 @@
 import Foundation
 import Moya
 
-// MARK: - 일지 API Target
+///일지 작성 API 타겟
 enum JournalAPITarget {
     case getJournalList(petID: Int, category: PartItem, page: Int) /* 일지 목록 조회 */
     case getJournalQuestions(category: PartItem) /* 일지 질문 조회 */
     case registJournal(data: RegistJournalData) /* 일지 등록 */
 }
 
-extension JournalAPITarget: TargetType {
-    var baseURL: URL {
-        return URL(string: "https://ttakkeun.herokuapp.com")!
-    }
+extension JournalAPITarget: APITargetType {
     
     var path: String {
         switch self {

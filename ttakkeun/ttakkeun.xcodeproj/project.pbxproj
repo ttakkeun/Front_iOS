@@ -26,6 +26,11 @@
 		482855322C4A5FE300A2DC80 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Diagnosis/AnswerButton.swift,
+				Diagnosis/DiagnosisHeader.swift,
+				Diagnosis/DiagnosticImages.swift,
+				Diagnosis/JournalList.swift,
+				Diagnosis/SelctCareButton.swift,
 				ETC/CustomAlert.swift,
 				ETC/CustomNavigation.swift,
 				ETC/CustomTextField.swift,
@@ -40,9 +45,6 @@
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
 				Home/ToDoCheckList.swift,
-				Journal/AnswerButton.swift,
-				Journal/DiagnosticImages.swift,
-				Journal/SelctCareButton.swift,
 				Profile/BirthSelect.swift,
 				Profile/MakeProfileButtonCustom.swift,
 				Profile/MakeProfileNameTag.swift,
@@ -88,7 +90,6 @@
 				Diagnosis/DiagnosisHeader.swift,
 				Diagnosis/DiagnosisTopbutton.swift,
 				Diagnosis/DiagnosisView.swift,
-				Diagnosis/JournalList.swift,
 				Diagnosis/RegistDiagnosisFlowView.swift,
 				Diagnosis/RegistDiagnosisPageContents.swift,
 				HomeTab/CompactTodo.swift,
@@ -129,10 +130,12 @@
 		4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				APIBaseURL.swift,
 				JournalAPITarget.swift,
 				PetProfileAPITarget.swift,
 				ProductRecommendAPITarget.swift,
 				ScheduleAPITarget.swift,
+				TodoAPITarget.swift,
 				UserLoginAPITarget.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -172,6 +175,8 @@
 				RecommendProductData.swift,
 				Schedule/ScheduleInquiryData.swift,
 				Schedule/TodoCompleteData.swift,
+				ToDo/CorrectionTodo.swift,
+				ToDo/CreateTodoData.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};

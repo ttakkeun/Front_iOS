@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 질문에 관한 답변 선택 버튼
 struct AnswerButton: View {
     
     @Binding var isSelected: Bool
@@ -44,6 +45,7 @@ struct AnswerButton: View {
     
     // MARK: - Contents
     
+    /// 질문의 ID에 맞는 답변 버튼 자동 생성 컴포넌트
     private var buttonContents: some View {
         HStack(alignment: .center, content: {
             Text(answerValue.rawValue)
