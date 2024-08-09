@@ -11,13 +11,11 @@ import Moya
 /// 일정관련 API 타겟
 //TODO: - 일정 완수율 조회 데이터 필요
 enum ScheduleAPITarget {
+    /// TODO 일정 조회 API
     case getCalendar(dateData: DateRequestData)
 }
 
-extension ScheduleAPITarget: TargetType {
-    var baseURL: URL {
-        return URL(string: "https://ttakkeun.herokuapp.com")!
-    }
+extension ScheduleAPITarget: APITargetType {
     
     var path: String {
         switch self {

@@ -10,14 +10,13 @@ import Moya
 
 /// 검색 추천 API Target
 enum ProductRecommendAPITarget {
+    /// AI 추천 상품 API
     case getAIRecommend
+    /// 유저 추천 상품 API
     case getRankProduct(pageNum: Int)
 }
 
-extension ProductRecommendAPITarget: TargetType {
-    var baseURL: URL {
-        return URL(string: "https://ttakkeun.herokuapp.com")!
-    }
+extension ProductRecommendAPITarget: APITargetType {
     
     var path: String {
         switch self {

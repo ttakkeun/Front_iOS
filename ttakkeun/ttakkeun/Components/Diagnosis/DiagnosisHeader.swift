@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// 진단 탭 뷰
+/// 진단 탭 상단 헤더 뷰
 struct DiagnosisHeader: View {
     
     @Binding var selectedSegment: DiagnosisSegment
