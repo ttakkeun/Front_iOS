@@ -12,4 +12,10 @@ struct CorrectionTodo: Codable {
     var category: PartItem
     var name: String
     var status: Bool
+    
+    enum CodingKeys: String, CodingKey {
+        case category = "todo_category"
+        case name = "todo_name"
+        case status = "todo_status"
+    }
 }

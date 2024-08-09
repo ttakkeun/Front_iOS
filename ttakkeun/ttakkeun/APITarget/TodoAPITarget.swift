@@ -60,9 +60,23 @@ extension TodoAPITarget: APITargetType {
         }
     }
     
-    //TODO: - MoyaTask 작성
     var task: Moya.Task {
-        <#code#>
+        switch self {
+        case .createTodo(let data):
+            return .requestJSONEncodable(data)
+        case .checkTodo:
+            return .requestPlain
+        case .todoCorrection(_, let data):
+            return .requestJSONEncodable(data)
+        case .todoDelete:
+            return .requestPlain
+        case .todoRepeatTomorrow:
+            return .requestPlain
+        case .todoOtherDay(_, let data), .todoChangeDay(_, let data):
+            return .requestParameters(parameters: ["new_date": data], encoding: JSONEncoding.default)
+        case .todoTomorrow:
+            return .requestPlain
+        }
     }
     
     var headers: [String : String]? {
