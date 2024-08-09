@@ -11,9 +11,12 @@ import Moya
 @MainActor
 class DiagnosisViewModel: ObservableObject {
     
-    @Published var journalListData: JournalListData?
-    @Published var page: Int = 0
+    @Published var journalListData: JournalListData? /* 일지 리스트 목록 조회 API */
+    @Published var page: Int = 0 /* 일지 목록 조회 페이징 */
+    @Published var isSelectJournalData: Bool = false
     private let provider: MoyaProvider<JournalAPITarget>
+    
+    // MARK: - Init
     
     init(
         provider: MoyaProvider<JournalAPITarget> = APIManager.shared.testProvider(for: JournalAPITarget.self)

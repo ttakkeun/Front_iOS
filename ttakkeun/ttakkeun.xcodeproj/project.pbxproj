@@ -86,6 +86,7 @@
 			membershipExceptions = (
 				CreateProfileView.swift,
 				Diagnosis/DiagnosisHeader.swift,
+				Diagnosis/DiagnosisTopbutton.swift,
 				Diagnosis/DiagnosisView.swift,
 				Diagnosis/JournalList.swift,
 				Diagnosis/RegistDiagnosisFlowView.swift,
