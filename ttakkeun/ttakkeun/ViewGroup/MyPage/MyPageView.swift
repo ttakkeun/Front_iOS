@@ -11,24 +11,23 @@ struct MyPageView: View {
     
     //MARK: - Contents
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(alignment: .center, content: {
-                ///네비게이션 바
-                CustomNavigation(action: {
-                    print("hello, this is myPage")
-                }, title: "마이페이지", currentPage: nil, naviIcon: Image(systemName: "chevron.left"))
-                
-                Spacer().frame(height:36)
-                
-                petInfo
-                
-                Spacer().frame(height:20)
-                
-                myPageInfo
-            })
-            .frame(width: 350)
-            .padding(.horizontal, 10)
-        }
+        VStack(alignment: .center, content: {
+            CustomNavigation(action: {
+                print("hello, this is myPage")
+            }, title: "마이페이지", currentPage: nil, naviIcon: Image(systemName: "chevron.left"), width: 8, height: 16)
+            .padding(.top, 17)
+            
+            Spacer().frame(height:36)
+            
+            petInfo
+            
+            Spacer().frame(height:20)
+            
+            myPageInfo
+            
+            Spacer()
+        })
+        .frame(width: 350)
     }
     
     /// 반려동물 정보 카드
@@ -45,10 +44,9 @@ struct MyPageView: View {
         })
     }
     
-    /// 반려동물 정보 카드
+    /// 앱 정보, 이용정보 - 마이페이지 정보 부분
     private var myPageInfo: some View {
         VStack(alignment: .center, spacing: 15, content: {
-            myTips
             
             appInfo
             
@@ -58,82 +56,133 @@ struct MyPageView: View {
         })
     }
     
-    /// 나의 TIPS 모음
-    private var myTips: some View {
+    /// 앱 정보 칸
+    private var appInfo: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color.scheduleCard_Color)
                 .frame(width: 347, height: 175)
             
             
-            VStack(alignment: .leading, spacing: 11, content: {
-                myTipsTitle
-                myTipsButton
+            VStack(alignment: .leading, spacing: 15, content: {
+                
+                
+                appInfoTitle
+                
+                appInfoBtns
             })
             .frame(width: 319, height: 128)
-            .border(Color.black)
-            .padding(.leading, 10) // 좌측 여백 추가
+            .padding(.leading, 10)
+            .padding(.top, -10)
         }
     }
     
-    /// 나의 TIPS 타이틀
-    private var myTipsTitle: some View {
-        HStack(alignment: .center, spacing: 1.5, content: {
-            Icon.heartTips.image
-            
-            Text("TIPS")
+    /// 앱 정보 칸 타이틀
+    private var appInfoTitle: some View {
+        HStack {
+            Text("앱 정보")
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray_900)
-        })
+            
+            Spacer()
+        }
     }
-    
-    /// 나의 TIPS 모음에 있는 텍스트 버튼 모음
-    private var myTipsButton: some View {
+
+    /// 앱 정보 칸 버튼 모음
+    private var appInfoBtns: some View {
         VStack(alignment: .leading, spacing: 20, content: {
-            ///내가 쓴 tips 버튼
+            ///알림 설정 버튼
             Button(action: {
-                
+                print("알림 설정 버튼 눌림")
             }, label: {
-                Text("내가 쓴 tips")
+                Text("알림 설정")
                     .font(.Body3_medium)
                     .foregroundStyle(Color.gray_900)
             })
             
-            ///내가 좋아요한 tips 버튼
+            ///앱 버전 정보 버튼
             Button(action: {
-                
+                print("앱 버전 정보 버튼 눌림")
             }, label: {
-                Text("내가 좋아요한 tips")
+                Text("앱 버전 정보")
                     .font(.Body3_medium)
                     .foregroundStyle(Color.gray_900)
             })
             
-            ///내가 스크랩한 tips 버튼
+            ///이용약관 및 정책 버튼
             Button(action: {
-                
+                print("이용약관 및 정책 버튼 눌림")
             }, label: {
-                Text("내가 스크랩한 tips")
+                Text("이용약관 및 정책")
                     .font(.Body3_medium)
                     .foregroundStyle(Color.gray_900)
             })
         })
     }
     
-    /// 앱 정보 칸
-    private var appInfo: some View {
-        RoundedRectangle(cornerRadius: 10)
-            .fill(Color.scheduleCard_Color)
-            .frame(width: 347, height: 175)
-    }
-    
-    /// 이용 정보 칸
+    /// 이용정보 칸
     private var useInfo: some View {
-        RoundedRectangle(cornerRadius: 10)
-            .fill(Color.scheduleCard_Color)
-            .frame(width: 347, height: 175)
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.scheduleCard_Color)
+                .frame(width: 347, height: 175)
+            
+            
+            VStack(alignment: .leading, spacing: 15, content: {
+                
+                
+                useInfoTitle
+                
+                useInfoBtns
+            })
+            .frame(width: 319, height: 128)
+            .padding(.leading, 10)
+            .padding(.top, -10)
+        }
     }
     
-    
+    /// 이용정보 칸 타이틀
+    private var useInfoTitle: some View {
+        HStack {
+            Text("이용 정보")
+                .font(.H4_bold)
+                .foregroundStyle(Color.gray_900)
+            
+            Spacer()
+        }
+    }
+
+    /// 이용정보 칸 버튼 모음
+    private var useInfoBtns: some View {
+        VStack(alignment: .leading, spacing: 20, content: {
+            ///공지사항 버튼
+            Button(action: {
+                print("공지사항 버튼 눌림")
+            }, label: {
+                Text("공지사항")
+                    .font(.Body3_medium)
+                    .foregroundStyle(Color.gray_900)
+            })
+            
+            ///문의하기 버튼
+            Button(action: {
+                print("문의하기 버튼 눌림")
+            }, label: {
+                Text("문의하기")
+                    .font(.Body3_medium)
+                    .foregroundStyle(Color.gray_900)
+            })
+            
+            ///신고하기 버튼
+            Button(action: {
+                print("신고하기 버튼 눌림")
+            }, label: {
+                Text("힌고하기")
+                    .font(.Body3_medium)
+                    .foregroundStyle(Color.gray_900)
+            })
+        })
+    }
 }
 
 
