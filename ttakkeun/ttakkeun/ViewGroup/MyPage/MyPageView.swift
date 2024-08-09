@@ -30,18 +30,72 @@ struct MyPageView: View {
         .frame(width: 350)
     }
     
-    /// 반려동물 정보 카드
+    /// 반려동물 정보 타이틀 + 카드
     private var petInfo: some View {
         VStack(alignment: .leading, spacing: 20, content: {
             Text("반려동물 정보")
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray_900)
             
+            petInfoCard
+        })
+    }
+    
+    ///반려동물 정보 카드
+    private var petInfoCard: some View {
+        ZStack {
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color.white)
                 .stroke(Color.gray_200)
                 .frame(width: 347, height: 178)
-        })
+            
+            VStack(alignment: .center, spacing: 22, content: {
+                HStack {
+                    Circle()
+                        .fill(Color.productCard_Color)
+                        .frame(width: 70, height: 70)
+                    
+                    Spacer().frame(width: 15)
+                    
+                    Text("유애")
+                        .font(.H4_bold)
+                    
+                    Spacer().frame(width: 109)
+                    
+                    Button(action: {
+                        print("프로필 바꾸기 버튼 눌림 -> 프로필 화면으로")
+                    }, label: {
+                        Text("프로필 바꾸기")
+                            .frame(width:82, height: 33)
+                            .font(.Body4_semibold)
+                            .foregroundStyle(Color.primarycolor_700)
+                            .background(Color.primarycolor_400)
+                            .clipShape(RoundedRectangle(cornerRadius: 30))
+                            .overlay(RoundedRectangle(cornerRadius: 30)
+                                .fill(Color.clear)
+                                .frame(width: 82, height: 33))
+
+                    })
+                }
+                
+                //TODO: 메인 버튼 수정 후 재활용
+                /// Mainbutton 텍스트 폰트 정할 수 있으면 재활용 가능할듯!
+                /// 일단 텍스트 폰트 설정 불가해서 직접 만듦
+                Button(action: {
+                    print("정보 수정하기 버튼 눌림 -> 반려동물 정보 변경")
+                }, label: {
+                    Text("정보 수정하기")
+                        .frame(width: 307, height: 42)
+                        .font(.Body3_medium)
+                        .foregroundStyle(Color.gray_900)
+                        .background(Color.scheduleCard_Color)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .overlay(RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.clear)
+                            .frame(width: 307, height: 42))
+                })
+            })
+        }
     }
     
     /// 앱 정보, 이용정보 - 마이페이지 정보 부분

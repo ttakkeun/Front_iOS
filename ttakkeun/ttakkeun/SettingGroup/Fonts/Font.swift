@@ -148,8 +148,13 @@ extension Font {
     
     // MARK: - Body4
     
+    
     static var Body4_extrabold: Font {
         return .suit(type: .extraBold, size: 12)
+    }
+    
+    static var Body4_semibold: Font {
+        return .suit(type: .semibold, size: 12)
     }
     
     static var Body4_medium: Font {
