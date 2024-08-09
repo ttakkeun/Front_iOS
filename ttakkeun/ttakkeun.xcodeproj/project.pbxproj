@@ -133,6 +133,7 @@
 				PetProfileAPITarget.swift,
 				ProductRecommendAPITarget.swift,
 				ScheduleAPITarget.swift,
+				TodoAPITarget.swift,
 				UserLoginAPITarget.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -172,6 +173,8 @@
 				RecommendProductData.swift,
 				Schedule/ScheduleInquiryData.swift,
 				Schedule/TodoCompleteData.swift,
+				ToDo/CorrectionTodo.swift,
+				ToDo/CreateTodoData.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};

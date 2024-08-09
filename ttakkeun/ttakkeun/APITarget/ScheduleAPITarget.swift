@@ -8,11 +8,12 @@
 import Foundation
 import Moya
 
-/// 일정관련 API 타겟
-//TODO: - 일정 완수율 조회 데이터 필요
+/// 일정 관련 API 타켓
 enum ScheduleAPITarget {
     /// TODO 일정 조회 API
     case getCalendar(dateData: DateRequestData)
+    /// 일정 완수율 조회
+    case getCompleteRate(petId: Int)
 }
 
 extension ScheduleAPITarget: APITargetType {
@@ -21,19 +22,21 @@ extension ScheduleAPITarget: APITargetType {
         switch self {
         case .getCalendar(let data):
             return "/calendar/\(data.year)/\(data.month)/\(data.date)"
+        case .getCompleteRate(let petId):
+            return "/todos/completion-rate/\(petId)"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getCalendar:
+        case .getCalendar, .getCompleteRate:
             return .get
         }
     }
     
     var task: Task {
         switch self {
-        case .getCalendar:
+        case .getCalendar, .getCompleteRate:
             return .requestPlain
         }
     }
@@ -104,6 +107,28 @@ extension ScheduleAPITarget: APITargetType {
               ]
             }
           }
+"""
+            return Data(json.utf8)
+            
+            
+        case .getCompleteRate:
+            let json = """
+{
+            "isSuccess": true,
+            "code": "200",
+            "message": "Inquiry successful",
+            "result": {
+"ear_total": 10,
+"ear_completed": 4,
+"hair_total": 5,
+"hair_completed": 2,
+"claw_total": 20,
+"claw_completed": 4,
+"eye_total": 100,
+"eye_completed": 20,
+"teeth_total": 1,
+"teeth_completed": 1
+                }
 """
             return Data(json.utf8)
         }
