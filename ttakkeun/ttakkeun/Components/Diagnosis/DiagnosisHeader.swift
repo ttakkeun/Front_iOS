@@ -43,6 +43,7 @@ struct DiagnosisHeader: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(maxHeight: 221)
+                .shadow03()
             
                 topSegmentGroup
         }
