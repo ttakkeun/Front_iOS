@@ -51,12 +51,14 @@ struct MyPageView: View {
             
             VStack(alignment: .center, spacing: 22, content: {
                 HStack {
+                    //TODO: 프로필 데이터 홈에서 받아온 데이터값 받을 수 있도록 해야함
                     Circle()
                         .fill(Color.productCard_Color)
                         .frame(width: 70, height: 70)
                     
                     Spacer().frame(width: 15)
                     
+                    //TODO: 프로필 데이터 홈에서 받아온 데이터값 받을 수 있도록 해야함
                     Text("유애")
                         .font(.H4_bold)
                     

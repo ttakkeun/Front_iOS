@@ -81,7 +81,7 @@ struct MyPageDetailView: View {
     
     
     ///반려동물 디테일 정보 카드
-    //TODO: - 내용 데이터 불러와야 함
+    //TODO: 프로필 데이터 홈에서 받아온 데이터값 받을 수 있도록 해야함
     private var petInfoDetail: some View {
         VStack(alignment: .leading, spacing: 18, content: {
             makeInfo(nametag: "이름", content: "유애", spacing: 72)
