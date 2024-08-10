@@ -9,19 +9,17 @@ import Foundation
 import Moya
 
 @MainActor
-class DiagnosisViewModel: ObservableObject {
+class JournalListViewModel: ObservableObject {
     
     @Published var journalListData: JournalListData? /* 일지 리스트 목록 조회 API */
     @Published var page: Int = 0 /* 일지 목록 조회 페이징 */
     @Published var selectedCnt: Int = 20 /* 일지 선택 갯수 */
     @Published var isSelectionMode: Bool = false
     @Published var selectedItem: Set<Int> = [] /* 선택된 아이템 목록 */
-    @Published var diagnosticAvailable: Int = 10
     
     private let provider: MoyaProvider<JournalAPITarget>
     
     // MARK: - Init
-    
     init(
         provider: MoyaProvider<JournalAPITarget> = APIManager.shared.testProvider(for: JournalAPITarget.self)
     ) {
@@ -58,6 +56,29 @@ class DiagnosisViewModel: ObservableObject {
         }
     }
     
+    // MARK: - 일지 삭제 API
+    
+    /// 일지 삭제 API
+    /// - Parameter journalID: 선택한 일지 ID
+    private func deleteJournalList(journalID: Int) async {
+        provider.request(.deleteJournalList(journalID: journalID)) { result in
+            switch result {
+            case .success(let response):
+                print("일지 삭제 성공: \(response)")
+            case .failure(let error):
+                print("일지 삭제 네트워크 오류 : \(error)")
+            }
+        }
+    }
+    
+    /// 반복문을 사용하여 일지 데이터 삭제
+    public func deleteSelecttedJournalList() async {
+        for journalID in selectedItem {
+            await deleteJournalList(journalID: journalID)
+        }
+        await clearSelection()
+    }
+    
     // MARK: - 일지 선택 Function
     
     /// 선택버튼 누를 시 아이템 카운트 및 담기
@@ -73,7 +94,6 @@ class DiagnosisViewModel: ObservableObject {
     
     /// 전체 선택 취소 버튼 액션
     public func clearSelection() async {
-        print("취소 버튼 눌림")
         selectedItem.removeAll()
         selectedCnt = 0
     }

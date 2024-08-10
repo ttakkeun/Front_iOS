@@ -12,7 +12,7 @@ struct DiagnosisHeader: View {
     
     @Binding var selectedSegment: DiagnosisSegment
     @Binding var selectedPartItem: PartItem
-    @ObservedObject var viewModel: DiagnosisViewModel
+    @ObservedObject var journalListViewModel: JournalListViewModel
     let petId: Int
     
     @Namespace var name
@@ -20,12 +20,12 @@ struct DiagnosisHeader: View {
     
     init(selectedSegment: Binding<DiagnosisSegment>,
          selectedPartItem: Binding<PartItem>,
-         viewModel: DiagnosisViewModel,
+         journalListViewModel: JournalListViewModel,
          petId: Int
     ) {
         self._selectedSegment = selectedSegment
         self._selectedPartItem = selectedPartItem
-        self.viewModel = viewModel
+        self.journalListViewModel = journalListViewModel
         self.petId = petId
     }
     
@@ -106,8 +106,8 @@ struct DiagnosisHeader: View {
                         selectedPartItem = item
                         if selectedSegment == .journalList {
                             Task {
-                                viewModel.page = 0
-                                await viewModel.getJournalList(petId: petId, category: selectedPartItem)
+                                journalListViewModel.page = 0
+                                await journalListViewModel.getJournalList(petId: petId, category: selectedPartItem)
                             }
                         }
                     }
@@ -130,7 +130,7 @@ struct DiagnosisView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            DiagnosisHeader(selectedSegment: $segment, selectedPartItem: $selectedPartItem, viewModel: DiagnosisViewModel(), petId: 0)
+            DiagnosisHeader(selectedSegment: $segment, selectedPartItem: $selectedPartItem, journalListViewModel: JournalListViewModel(), petId: 0)
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
                 .environmentObject(PetState())
