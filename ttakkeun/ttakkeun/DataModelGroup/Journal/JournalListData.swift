@@ -16,16 +16,18 @@ struct JournalListData: Codable {
 }
 
 struct JournalListResponseData: Codable {
-    let category: String
+    let category: PartItem
     let recordList: [JournalRecord]
 }
 
 struct JournalRecord: Codable {
     let recordID: Int
     let recordDate: String
+    let recordTime: String
     
     enum CodingKeys: String, CodingKey {
         case recordID = "record_id"
-        case recordDate = "created_at"
+        case recordDate = "updatedAtDate"
+        case recordTime = "updatedAtTime"
     }
 }
