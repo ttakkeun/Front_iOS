@@ -37,6 +37,13 @@ struct Shadow04: ViewModifier {
     }
 }
 
+struct Shadow05: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .shadow(color: Color.black.opacity(0.1), radius: 2, x: 3, y: 4)
+    }
+}
+
 
 extension View {
     func shadow01() -> some View {
@@ -53,6 +60,10 @@ extension View {
     
     func shadow04() -> some View {
         self.modifier(Shadow04())
+    }
+    
+    func shadow05() -> some View {
+        self.modifier(Shadow05())
     }
 }
 

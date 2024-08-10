@@ -10,11 +10,11 @@ import SwiftUI
 struct DiagnosisView: View {
     @State  var segment: DiagnosisSegment = .diagnosticResults
     @State  var selectedPartItem: PartItem = .hair
-    @StateObject var diagnosisViewModel: DiagnosisViewModel = DiagnosisViewModel()
+    @StateObject var journalListViewModel: JournalListViewModel = JournalListViewModel()
     @EnvironmentObject var petState: PetState
     
     var body: some View {
-        DiagnosisHeader(selectedSegment: $segment, selectedPartItem: $selectedPartItem, viewModel: diagnosisViewModel, petId: petState.petId ?? 0)
+        DiagnosisHeader(selectedSegment: $segment, selectedPartItem: $selectedPartItem, journalListViewModel: journalListViewModel, petId: petState.petId ?? 0)
     }
 }
 

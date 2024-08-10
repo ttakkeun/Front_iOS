@@ -13,6 +13,7 @@ enum JournalAPITarget {
     case getJournalList(petID: Int, category: PartItem, page: Int) /* 일지 목록 조회 */
     case getJournalQuestions(category: PartItem) /* 일지 질문 조회 */
     case registJournal(data: RegistJournalData) /* 일지 등록 */
+    case deleteJournalList(journalID: Int) /* 일지 삭제 */
 }
 
 extension JournalAPITarget: APITargetType {
@@ -25,6 +26,8 @@ extension JournalAPITarget: APITargetType {
             return "/record/register/\(category)"
         case .registJournal:
             return "/record/register"
+        case .deleteJournalList(let id):
+            return "/record/\(id)"
         }
     }
     
@@ -36,6 +39,8 @@ extension JournalAPITarget: APITargetType {
             return .get
         case .registJournal:
             return .post
+        case .deleteJournalList:
+            return .delete
         }
     }
     
@@ -47,6 +52,8 @@ extension JournalAPITarget: APITargetType {
             return .requestPlain
         case .registJournal(let data):
             return .requestJSONEncodable(data)
+        case .deleteJournalList:
+            return .requestPlain
         }
     }
     
