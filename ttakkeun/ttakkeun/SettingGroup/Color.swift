@@ -83,5 +83,8 @@ extension Color {
     
     // MARK: - Login
     static let onboarding_Color = Color("Onboarding") /* F5FC47 78% */
+    
+    // MARK: - MyPage
+    static let exit_Color = Color("exit") /* FF2C2C 100% */
 }
 

@@ -78,7 +78,6 @@ struct MyPageView: View {
                     })
                 }
                 
-                //TODO: 메인 버튼 수정 후 재활용
                 /// Mainbutton 텍스트 폰트 정할 수 있으면 재활용 가능할듯!
                 /// 일단 텍스트 폰트 설정 불가해서 직접 만듦
                 Button(action: {
@@ -229,7 +228,7 @@ struct MyPageView: View {
             Button(action: {
                 print("신고하기 버튼 눌림")
             }, label: {
-                Text("힌고하기")
+                Text("신고하기")
                     .font(.Body3_medium)
                     .foregroundStyle(Color.gray_900)
             })
