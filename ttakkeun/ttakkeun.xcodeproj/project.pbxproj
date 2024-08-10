@@ -28,6 +28,7 @@
 			membershipExceptions = (
 				Diagnosis/AnswerButton.swift,
 				Diagnosis/DiagnosisHeader.swift,
+				Diagnosis/DiagnosisTopbutton.swift,
 				Diagnosis/DiagnosticImages.swift,
 				Diagnosis/JournalList.swift,
 				Diagnosis/SelctCareButton.swift,
@@ -87,8 +88,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CreateProfileView.swift,
-				Diagnosis/DiagnosisHeader.swift,
-				Diagnosis/DiagnosisTopbutton.swift,
 				Diagnosis/DiagnosisView.swift,
 				Diagnosis/RegistDiagnosisFlowView.swift,
 				Diagnosis/RegistDiagnosisPageContents.swift,

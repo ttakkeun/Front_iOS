@@ -36,7 +36,7 @@ struct SelctCareButton: View {
                 ZStack(content: {
                     RoundedRectangle(cornerRadius: 10)
                         .fill(selectedPart == partItem ? buttonColor() : Color.clear)
-                        .stroke(Color.gray_600, lineWidth: 1)
+                        .stroke(selectedPart == partItem ? strokeColor() : Color.gray_600, lineWidth: 1)
                         .frame(width: 126, height: 126)
                         .scaleEffect(selectedPart == partItem ? (animateWave ? 1.1 : 1.0) : 1.0)
                         .animation(.easeInOut(duration: 0.3), value: animateWave)
@@ -87,6 +87,21 @@ struct SelctCareButton: View {
             return Color.beforeClaw_Color
         case .tooth:
             return Color.beforeTeeth_Color
+        }
+    }
+    
+    private func strokeColor() -> Color {
+        switch self.partItem {
+        case .ear:
+            return Color.afterEar_Color
+        case .eye:
+            return Color.afterEye_Color
+        case .hair:
+            return Color.afterHair_Color
+        case .claw:
+            return Color.afterClaw_Color
+        case .tooth:
+            return Color.afterTeeth_Color
         }
     }
 }
