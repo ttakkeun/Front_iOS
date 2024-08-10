@@ -15,11 +15,6 @@ struct DiagnosisTopbutton: View {
     
     var body: some View {
         topButton
-            .onAppear {
-                Task {
-                    await diagnosticResultViewModel.getDiagnosticPoint()
-                }
-            }
     }
     
     /// 돋보기 + 선택 버튼
@@ -42,6 +37,9 @@ struct DiagnosisTopbutton: View {
                 .onAppear {
                     withAnimation(.easeInOut(duration: 1.0)) {
                         journalListViewModel.isSelectionMode = true
+                    }
+                    Task {
+                        await diagnosticResultViewModel.getDiagnosticPoint()
                     }
                 }
             } else {

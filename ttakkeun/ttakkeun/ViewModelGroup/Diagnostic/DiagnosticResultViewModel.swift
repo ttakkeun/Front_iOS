@@ -41,6 +41,7 @@ class DiagnosticResultViewModel: ObservableObject {
             let decodedData = try JSONDecoder().decode(DiagnosticPoint.self, from: response.data)
             DispatchQueue.main.async {
                 self.point = decodedData.result.point
+                print("진단 포인트 조회 완료")
             }
         } catch {
             print("진단 포인트 디코더 에러 : \(error)")
