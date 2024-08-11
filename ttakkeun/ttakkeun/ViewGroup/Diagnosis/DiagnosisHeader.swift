@@ -7,26 +7,23 @@
 
 import SwiftUI
 
-/// 진단 탭 상단 헤더 뷰
+/// 진단 탭 상단 헤더 뷰, 검색 버튼과 진단결과 일지 목록 세그먼트 버튼
 struct DiagnosisHeader: View {
     
     @Binding var selectedSegment: DiagnosisSegment
     @Binding var selectedPartItem: PartItem
     @ObservedObject var journalListViewModel: JournalListViewModel
-    let petId: Int
     
     @Namespace var name
     
     
     init(selectedSegment: Binding<DiagnosisSegment>,
          selectedPartItem: Binding<PartItem>,
-         journalListViewModel: JournalListViewModel,
-         petId: Int
+         journalListViewModel: JournalListViewModel
     ) {
         self._selectedSegment = selectedSegment
         self._selectedPartItem = selectedPartItem
         self.journalListViewModel = journalListViewModel
-        self.petId = petId
     }
     
     var body: some View {
@@ -37,13 +34,11 @@ struct DiagnosisHeader: View {
     
     /// 화면 전환 세그먼트 전환 헤더
     private var header: some View {
-        ZStack(alignment: .leading) {
+        ZStack(alignment: .center) {
             
             Icon.diagnosisBackground.image
                 .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(maxHeight: 221)
-                .shadow03()
+                .aspectRatio(contentMode: .fit)
             
                 topSegmentGroup
         }
@@ -54,10 +49,14 @@ struct DiagnosisHeader: View {
     private var topSegmentGroup: some View {
         VStack(alignment: .leading, spacing: 18, content: {
             TopStatusBar()
+                .padding(.leading, 5)
+            
             selectedSegmentButton
+            
             itemsButton
+                .padding(.leading, 7)
         })
-        .frame(height: 121)
+        .frame(width: 353, height: 121)
         .background(Color.clear)
         .padding(.horizontal, 15)
     }
@@ -93,7 +92,6 @@ struct DiagnosisHeader: View {
                 })
             }
         })
-        .padding(.leading, 6)
     }
     
     /// 5가지 항목 데이터 조회 버트
@@ -104,12 +102,6 @@ struct DiagnosisHeader: View {
                 Button(action: {
                     withAnimation(.easeInOut(duration: 0.4)) {
                         selectedPartItem = item
-                        if selectedSegment == .journalList {
-                            Task {
-                                journalListViewModel.page = 0
-                                await journalListViewModel.getJournalList(petId: petId, category: selectedPartItem)
-                            }
-                        }
                     }
                 }, label: {
                     Text(item.toKorean())
@@ -118,22 +110,5 @@ struct DiagnosisHeader: View {
                 })
             }
         })
-        .padding(.leading, 12)
-    }
-}
-
-struct DiagnosisView_Preview: PreviewProvider {
-    static let devices = ["iPhone 11", "iPhone 15"]
-    
-    @State static var segment: DiagnosisSegment = .diagnosticResults
-    @State static var selectedPartItem: PartItem = .hair
-    
-    static var previews: some View {
-        ForEach(devices, id: \.self) { device in
-            DiagnosisHeader(selectedSegment: $segment, selectedPartItem: $selectedPartItem, journalListViewModel: JournalListViewModel(), petId: 0)
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewDisplayName(device)
-                .environmentObject(PetState())
-        }
     }
 }

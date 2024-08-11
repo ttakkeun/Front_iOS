@@ -16,14 +16,20 @@ class JournalListViewModel: ObservableObject {
     @Published var selectedCnt: Int = 20 /* 일지 선택 갯수 */
     @Published var isSelectionMode: Bool = false
     @Published var selectedItem: Set<Int> = [] /* 선택된 아이템 목록 */
+    @Published var selectCategory: PartItem = .ear /* 버튼 컨트롤러 카테고리 변경*/
+    @Published var isLoaadingPage: Bool = false /* 페이징 로딩 */
+    @Published var hasMoreData: Bool = true /* 데이터 가져올 것이 있는지 체크 */
     
     private let provider: MoyaProvider<JournalAPITarget>
+    let petId: Int
     
     // MARK: - Init
     init(
-        provider: MoyaProvider<JournalAPITarget> = APIManager.shared.testProvider(for: JournalAPITarget.self)
+        provider: MoyaProvider<JournalAPITarget> = APIManager.shared.testProvider(for: JournalAPITarget.self),
+        petId: Int
     ) {
         self.provider = provider
+        self.petId = petId
     }
     
     // MARK: - 일지 목록 조회 API
@@ -32,8 +38,11 @@ class JournalListViewModel: ObservableObject {
     /// - Parameters:
     ///   - petId: 일지 조회 시 사용되는 펫 아이디
     ///   - category: 일지 조회 시 사용되는 카테고리
-    public func getJournalList(petId: Int, category: PartItem) async {
-        provider.request(.getJournalList(petID: petId, category: category, page: self.page)) { [weak self] result in
+    public func getJournalList() async {
+        guard !isLoaadingPage, hasMoreData else { return }
+        isLoaadingPage = true
+        
+        provider.request(.getJournalList(petID: self.petId, category: selectCategory, page: self.page)) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.handlerGetJournalList(response: response)
@@ -49,11 +58,30 @@ class JournalListViewModel: ObservableObject {
         do {
             let decodedData = try JSONDecoder().decode(JournalListData.self, from: response.data)
             DispatchQueue.main.async {
-                self.journalListData = decodedData
+                if self.page == 0 {
+                    self.journalListData = decodedData
+                } else {
+                    self.journalListData?.result.recordList.append(contentsOf: decodedData.result.recordList)
+                }
+                if decodedData.result.recordList.isEmpty {
+                    self.hasMoreData = false
+                } else {
+                    self.page += 1
+                }
             }
         } catch {
             print("일지 목록 조회 디코더 에러: \(error)")
         }
+    }
+    
+    /// 스크롤이 끝에 도달했을 때 더 많은 데이터를 불러온다.
+    public func loadMorePageData(for record: JournalRecord) async {
+        guard let lastRecord = journalListData?.result.recordList.last else { return }
+        
+        if record == lastRecord && !isLoaadingPage && hasMoreData {
+            await getJournalList()
+        }
+        
     }
     
     // MARK: - 일지 삭제 API

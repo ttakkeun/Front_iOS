@@ -67,18 +67,15 @@ struct JournalListCard: View {
                 Text(formattedTime)
                     .font(.Body5_medium)
                     .foregroundStyle(isSelected ? Color.gray_200 : Color.gray_900)
-                    .padding(.leading, 50)
+                    .padding(.leading, 43)
+                    .frame(alignment: .leading)
             })
             .frame(width: 74, height: 70)
             
         })
         .padding(.top, 6)
     }
-    
-//    /// 일지 선택되었을 때, 일지 카드 모습
-//    private var selectedView: some View {
-//        
-//    }
+
     
     /// 일지 상단 포스트잇 스티커
     private var topPostit: some View {
@@ -143,11 +140,6 @@ struct JournalListCard_Preview: PreviewProvider {
     static let devices = ["iPhone 11", "iPhone 15 Pro"]
     
     static var previews: some View {
-        ForEach(devices, id: \.self) { device in
-            JournalListCard(data: JournalRecord(recordID: 1, recordDate: "2024-12-31", recordTime: "15:22:10"), part: .hair, isSelected: .constant(false))
-                .previewDisplayName(device)
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewLayout(.sizeThatFits)
-        }
+        DiagnosisView(petId: 0)
     }
 }

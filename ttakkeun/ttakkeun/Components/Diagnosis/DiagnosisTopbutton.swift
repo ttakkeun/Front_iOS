@@ -100,9 +100,3 @@ struct DiagnosisTopbutton: View {
         .frame(maxWidth: 340)
     }
 }
-
-struct DiagnosisTopbutton_Preview: PreviewProvider {
-    static var previews: some View {
-        DiagnosisTopbutton(journalListViewModel: JournalListViewModel(), diagnosticResultViewModel: DiagnosticResultViewModel())
-    }
-}

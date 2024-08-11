@@ -8,17 +8,30 @@
 import SwiftUI
 
 struct DiagnosisView: View {
-    @State  var segment: DiagnosisSegment = .diagnosticResults
-    @State  var selectedPartItem: PartItem = .hair
-    @StateObject var journalListViewModel: JournalListViewModel = JournalListViewModel()
-    @EnvironmentObject var petState: PetState
+    @State var segment: DiagnosisSegment = .journalList
+    @StateObject var journalListViewModel: JournalListViewModel
+    @StateObject var diagnosticResultViewModel: DiagnosticResultViewModel
+    
+    init(petId: Int) {
+        self._journalListViewModel = StateObject(wrappedValue: JournalListViewModel(petId: petId))
+        self._diagnosticResultViewModel = StateObject(wrappedValue: DiagnosticResultViewModel(petId: petId))
+    }
     
     var body: some View {
-        DiagnosisHeader(selectedSegment: $segment, selectedPartItem: $selectedPartItem, journalListViewModel: journalListViewModel, petId: petState.petId ?? 0)
+        VStack(spacing: 10) {
+            DiagnosisHeader(selectedSegment: $segment, selectedPartItem: $journalListViewModel.selectCategory, journalListViewModel: journalListViewModel)
+            
+            DiagnosisTopbutton(journalListViewModel: journalListViewModel, diagnosticResultViewModel: diagnosticResultViewModel)
+            
+            JournalListView(viewModel: journalListViewModel)
+        }
+        .ignoresSafeArea(.all)
+        
     }
 }
 
-#Preview {
-    DiagnosisView()
-        .environmentObject(PetState())
+struct DiagnosisView_Prewview: PreviewProvider {
+    static var previews: some View {
+        DiagnosisView(petId: 0)
+    }
 }

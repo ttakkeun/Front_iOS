@@ -60,4 +60,57 @@ extension JournalAPITarget: APITargetType {
     var headers: [String : String]? {
         return ["Content-Type": "application/json"]
     }
+    
+    var sampleData: Data {
+        switch self {
+        case .getJournalList:
+            let json =
+            """
+{
+    "isSuccess": true,
+    "code": "200",
+    "message": "Success",
+    "result": {
+        "category": "EAR",
+        "recordList": [
+            {
+                "record_id": 1,
+                "updatedAtDate": "2024-08-10",
+                "updatedAtTime": "14:23:10"
+            },
+            {
+                "record_id": 1,
+                "updatedAtDate": "2024-08-10",
+                "updatedAtTime": "14:23:10"
+            },
+            {
+                "record_id": 1,
+                "updatedAtDate": "2024-08-10",
+                "updatedAtTime": "14:23:10"
+            },
+            {
+                "record_id": 1,
+                "updatedAtDate": "2024-08-10",
+                "updatedAtTime": "14:23:10"
+            },
+            {
+                "record_id": 1,
+                "updatedAtDate": "2024-08-10",
+                "updatedAtTime": "14:23:10"
+            }
+        ]
+    }
+}
+
+
+"""
+            return Data(json.utf8)
+            
+        default:
+            let json = """
+
+"""
+            return Data(json.utf8)
+        }
+    }
 }

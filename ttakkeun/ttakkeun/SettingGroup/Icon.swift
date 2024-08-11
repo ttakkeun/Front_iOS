@@ -70,6 +70,7 @@ enum Icon: String {
     case bubble = "bubble"
     case bubbleLogo = "bubbleLogo"
     case trash = "trash"
+    case loadingBg = "loadingBg"
     
     var image: Image {
         return Image(self.rawValue)

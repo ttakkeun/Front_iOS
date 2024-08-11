@@ -8,9 +8,7 @@
 import SwiftUI
 
 /// 일지 목록 리스트 뷰 없을 시 데이터
-struct JournalList: View {
-    
-    @ObservedObject var viewModel: JournalListViewModel
+struct NotJournalList: View {
     
     var body: some View {
         noDataImage
@@ -29,6 +27,6 @@ struct JournalList: View {
 
 struct JournalList_Preview: PreviewProvider {
     static var previews: some View {
-        JournalList(viewModel: JournalListViewModel())
+        NotJournalList()
     }
 }
