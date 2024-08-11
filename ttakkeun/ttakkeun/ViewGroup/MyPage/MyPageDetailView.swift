@@ -9,6 +9,16 @@ import SwiftUI
 
 struct MyPageDetailView: View {
     
+    @ObservedObject var viewModel: MyPageViewModel
+    @EnvironmentObject var petState: PetState
+    let petId: Int
+    
+    //MARK: - Init
+    init(viewModel: MyPageViewModel, petId: Int) {
+        self.viewModel = viewModel
+        self.petId = petId
+    }
+    
     //MARK: - Contents
     var body: some View {
         VStack(alignment: .center, content: {
@@ -20,6 +30,11 @@ struct MyPageDetailView: View {
             Spacer().frame(height: 56)
             
             petInfoDetailCard
+                .onAppear {
+                    Task {
+                        await viewModel.getPetProfileInfo(petId: petId)
+                    }
+                }
             
             Spacer().frame(height: 23)
             
@@ -84,11 +99,14 @@ struct MyPageDetailView: View {
     //TODO: 프로필 데이터 홈에서 받아온 데이터값 받을 수 있도록 해야함
     private var petInfoDetail: some View {
         VStack(alignment: .leading, spacing: 18, content: {
-            makeInfo(nametag: "이름", content: "유애", spacing: 72)
-            makeInfo(nametag: "반려", content: "고양이", spacing: 72)
-            makeInfo(nametag: "품종", content: "코리안 쇼트 헤어", spacing: 72)
-            makeInfo(nametag: "생년월일", content: "2022년 3월 4일", spacing: 48)
-            makeInfo(nametag: "중성화 여부", content: "유", spacing: 32)
+            if let data = viewModel.profileData?.result {
+                makeInfo(nametag: "이름", content: data.name, spacing: 72)
+                makeInfo(nametag: "반려", content: data.type.toKorean(), spacing: 72)
+                makeInfo(nametag: "품종", content: data.variety, spacing: 72)
+                makeInfo(nametag: "생년월일", content: data.birth, spacing: 48)
+                makeInfo(nametag: "중성화 여부", content: data.neutralization ? "유" : "무", spacing: 32)
+
+            }
 
         })
     }
@@ -177,7 +195,8 @@ struct MyPageDetailView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices , id: \.self) { device in
-            MyPageDetailView()
+            MyPageDetailView(viewModel: MyPageViewModel(), petId: PetState().petId ?? 0)
+                .environmentObject(PetState())
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }

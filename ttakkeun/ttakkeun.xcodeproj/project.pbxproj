@@ -154,6 +154,7 @@
 				Diagnostic/JournalListViewModel.swift,
 				HomeProfileCardViewModel.swift,
 				LoginViewModel.swift,
+				MyPageViewModel.swift,
 				ProductViewModel.swift,
 				ProfileCardViewModel.swift,
 				QnaViewModel.swift,
