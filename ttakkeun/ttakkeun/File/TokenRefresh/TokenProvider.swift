@@ -32,9 +32,9 @@ class TokenProvider: TokenProviding {
     
     /* 리프레시 토큰 데이터 담아서 보내야 함 */
     func refreshToken(completion: @escaping (String?, Error?) -> Void) {
-        guard let userInfo = keyChain.loadSession(for: "userSession") else { return }
+        guard let userInfo = keyChain.loadSession(for: "userSession"), let refreshToken = userInfo.refreshToken else { return }
         
-        provider.request(.refreshToken(refreshToken: userInfo.refreshToken ?? "")) { result in
+        provider.request(.refreshToken(refreshToken: refreshToken)) { result in
             switch result {
             case .success(let response):
                 do {

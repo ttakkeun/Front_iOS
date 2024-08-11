@@ -13,15 +13,12 @@ enum AuthAPITarget {
     case refreshToken(refreshToken: String)
 }
 
-extension AuthAPITarget: TargetType {
-    var baseURL: URL {
-        return URL(string: "example")!
-    }
+extension AuthAPITarget: APITargetType {
     
     var path: String {
         switch self {
         case .refreshToken:
-            return "/auth/regenerate-token"
+            return "/auth/refresh"
         }
     }
     
