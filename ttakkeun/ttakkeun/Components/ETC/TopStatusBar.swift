@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TopStatusBar: View {
+    
     var body: some View {
         statusBar
     }
@@ -25,7 +26,7 @@ struct TopStatusBar: View {
                     .frame(width: 54, height: 38)
             })
             
-            Spacer().frame(maxWidth: 180)
+            Spacer()
            
             HStack(spacing: 8, content: {
                 Icon.alarm.image
@@ -34,7 +35,7 @@ struct TopStatusBar: View {
                     .fixedSize()
             })
         }
-        .frame(maxWidth: 353)
+        .frame(width: 353)
     }
 }
 

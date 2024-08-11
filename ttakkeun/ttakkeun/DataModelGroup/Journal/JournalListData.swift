@@ -12,15 +12,16 @@ struct JournalListData: Codable {
     let isSuccess: Bool
     let code: String
     let message: String
-    let result: JournalListResponseData
+    var result: JournalListResponseData
 }
 
 struct JournalListResponseData: Codable {
-    let category: PartItem
-    let recordList: [JournalRecord]
+    var category: PartItem
+    var recordList: [JournalRecord]
 }
 
-struct JournalRecord: Codable {
+struct JournalRecord: Codable, Hashable, Identifiable {
+    let id = UUID()
     let recordID: Int
     let recordDate: String
     let recordTime: String

@@ -29,8 +29,8 @@
 				Diagnosis/AnswerButton.swift,
 				Diagnosis/DiagnosisTopbutton.swift,
 				Diagnosis/DiagnosticImages.swift,
-				Diagnosis/JournalList.swift,
 				Diagnosis/JournalListCard.swift,
+				Diagnosis/NotJournalList.swift,
 				Diagnosis/SelctCareButton.swift,
 				ETC/CustomAlert.swift,
 				ETC/CustomNavigation.swift,
@@ -88,6 +88,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CreateProfileView.swift,
+				Diagnosis/DiagnosingView.swift,
 				Diagnosis/DiagnosisHeader.swift,
 				Diagnosis/DiagnosisView.swift,
 				Diagnosis/JournalListView.swift,
@@ -149,7 +150,6 @@
 			membershipExceptions = (
 				CreateProfileViewModel.swift,
 				CustomDiaryViewModel.swift,
-				DiagnosisViewModel.swift,
 				Diagnostic/DiagnosticResultViewModel.swift,
 				Diagnostic/JournalListViewModel.swift,
 				HomeProfileCardViewModel.swift,

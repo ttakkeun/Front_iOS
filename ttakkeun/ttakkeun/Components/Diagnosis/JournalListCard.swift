@@ -12,6 +12,7 @@ struct JournalListCard: View {
     
     let data: JournalRecord
     let part: PartItem
+    @Binding var isSelected: Bool
     
     // MARK: - Init
     
@@ -19,10 +20,12 @@ struct JournalListCard: View {
     /// - Parameter data: 일지 데이터 값
     init(
         data: JournalRecord,
-        part: PartItem
+        part: PartItem,
+        isSelected: Binding<Bool>
     ) {
         self.data = data
         self.part = part
+        self._isSelected = isSelected
     }
     
     // MARK: - Contents
@@ -31,6 +34,16 @@ struct JournalListCard: View {
         ZStack(alignment: .top, content: {
             journalListCard
             topPostit
+            
+            if isSelected {
+                    Icon.answerCheck.image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 18, height: 18)
+                        .padding(.top, 72)
+                        .padding(.leading, 77)
+                        .padding(.trailing, 5)
+            }
         })
     }
     
@@ -38,14 +51,14 @@ struct JournalListCard: View {
     private var journalListCard: some View {
         ZStack(alignment: .center, content: {
             RoundedRectangle(cornerRadius: 2)
-                .fill(Color.white)
+                .fill(isSelected ? Color.postBg_Color : Color.white)
                 .frame(width: 95, height: 95)
                 .shadow03()
           
             VStack(alignment: .leading, content: {
                 Text("\(formattedDate.prefix(4)) \n\(formattedDate.dropFirst(5))")
                     .font(.Body4_medium)
-                    .foregroundStyle(Color.gray_900)
+                    .foregroundStyle(isSelected ? Color.gray_200 : Color.gray_900)
                     .multilineTextAlignment(.center)
                     .lineSpacing(3)
                 
@@ -53,13 +66,16 @@ struct JournalListCard: View {
                 
                 Text(formattedTime)
                     .font(.Body5_medium)
-                    .foregroundStyle(Color.gray_500)
-                    .padding(.leading, 50)
+                    .foregroundStyle(isSelected ? Color.gray_200 : Color.gray_900)
+                    .padding(.leading, 43)
+                    .frame(alignment: .leading)
             })
             .frame(width: 74, height: 70)
+            
         })
         .padding(.top, 6)
     }
+
     
     /// 일지 상단 포스트잇 스티커
     private var topPostit: some View {
@@ -124,11 +140,6 @@ struct JournalListCard_Preview: PreviewProvider {
     static let devices = ["iPhone 11", "iPhone 15 Pro"]
     
     static var previews: some View {
-        ForEach(devices, id: \.self) { device in
-            JournalListCard(data: JournalRecord(recordID: 1, recordDate: "2024-12-31", recordTime: "15:22:10"), part: .hair)
-                .previewDisplayName(device)
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewLayout(.sizeThatFits)
-        }
+        DiagnosisView(petId: 0)
     }
 }
