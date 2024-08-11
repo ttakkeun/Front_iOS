@@ -62,7 +62,7 @@ struct ProfileView: View {
                 .font(.santokki(type: .regular, size: 40))
                 .foregroundStyle(Color.gray_900)
                 .frame(maxHeight: 80)
-            Text(viewModel.isLastedCard ? "새로운 가족을 등록해주세요" : "안녕허세요! \n저는 \(viewModel.titleName)에요!")
+            Text(viewModel.isLastedCard ? "새로운 가족을 등록해주세요" : "안녕하세요! \n저는 \(viewModel.titleName)에요!")
                 .font(.suit(type: .bold, size: 20))
                 .foregroundStyle(Color.black)
                 .multilineTextAlignment(.center)
