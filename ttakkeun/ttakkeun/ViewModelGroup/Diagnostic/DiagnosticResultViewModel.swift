@@ -13,11 +13,16 @@ class DiagnosticResultViewModel: ObservableObject {
     @Published var point: Int = 0
     
     private let provider: MoyaProvider<DiagnosticResultAPITarget>
+    let petId: Int
     
     // MARK: - Init
     
-    init(provider: MoyaProvider<DiagnosticResultAPITarget> = APIManager.shared.testProvider(for: DiagnosticResultAPITarget.self)) {
+    init(
+        provider: MoyaProvider<DiagnosticResultAPITarget> = APIManager.shared.testProvider(for: DiagnosticResultAPITarget.self),
+        petId: Int
+    ) {
         self.provider = provider
+        self.petId = petId
     }
     
     // MARK: - 진단 포인트 API
