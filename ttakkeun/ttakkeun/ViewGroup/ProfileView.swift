@@ -196,7 +196,7 @@ struct ProfielView_Preview: PreviewProvider {
             ProfileView()
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
-                .environmentObject(PetState())
+                .environmentObject(PetState(petName: "유애", petId: 1))
         }
     }
 }

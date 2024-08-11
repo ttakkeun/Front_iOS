@@ -104,10 +104,13 @@
 				LoginView/Onboarding.json,
 				LoginView/OnboardingView.swift,
 				ProfileView.swift,
-				QnaTab/QnaFAQView.swift,
-				QnaTab/QnaHeaderView.swift,
-				QnaTab/QnaTipsView.swift,
+				Qna/QnaFAQView.swift,
+				Qna/QnaHeaderView.swift,
+				Qna/QnaTipsView.swift,
+				Schedule/ScheduleView.swift,
+				Suggestion/SuggestionView.swift,
 				TabView/CustomTab.swift,
+				TabView/TabView.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
