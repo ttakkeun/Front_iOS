@@ -8,7 +8,8 @@
 import SwiftUI
 import Lottie
 
-//TODO: - viewModel API 연결 필요합니다.
+
+/// 로그인 화면 전 온보딩 뷰, 유저 정보 조회
 struct OnboardingView: View {
     var body: some View {
         ZStack() {
