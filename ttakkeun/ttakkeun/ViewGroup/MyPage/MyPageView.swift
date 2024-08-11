@@ -6,8 +6,19 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct MyPageView: View {
+    
+    @ObservedObject var viewModel: MyPageViewModel
+    @EnvironmentObject var petState: PetState
+    let petId: Int
+    
+    //MARK: - Init
+    init(viewModel: MyPageViewModel, petId: Int) {
+        self.viewModel = viewModel
+        self.petId = petId
+    }
     
     //MARK: - Contents
     var body: some View {
@@ -20,6 +31,11 @@ struct MyPageView: View {
             Spacer().frame(height:36)
             
             petInfo
+                .onAppear {
+                    Task {
+                        await viewModel.getPetProfileInfo(petId: petId)
+                    }
+                }
             
             Spacer().frame(height:20)
             
@@ -29,6 +45,7 @@ struct MyPageView: View {
         })
         .frame(width: 350)
     }
+    
     
     /// 반려동물 정보 타이틀 + 카드
     private var petInfo: some View {
@@ -52,15 +69,30 @@ struct MyPageView: View {
             VStack(alignment: .center, spacing: 22, content: {
                 HStack {
                     //TODO: 프로필 데이터 홈에서 받아온 데이터값 받을 수 있도록 해야함
-                    Circle()
-                        .fill(Color.productCard_Color)
-                        .frame(width: 70, height: 70)
+                    if let imageUrl = viewModel.profileData?.result.image,
+                       let url = URL(string: imageUrl) {
+                        KFImage(url)
+                            .placeholder {
+                                ProgressView()
+                                    .frame(width: 70, height: 70)
+                            }.retry(maxCount: 2, interval: .seconds(2))
+                            .onFailure { _ in
+                                print("프로필 이미지 캐시 오류")
+                            }
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 70, height: 70)
+                            .clipShape(Circle())
+                            .shadow01()
+                    }
                     
                     Spacer().frame(width: 15)
                     
                     //TODO: 프로필 데이터 홈에서 받아온 데이터값 받을 수 있도록 해야함
-                    Text("유애")
-                        .font(.H4_bold)
+                    if let name = viewModel.profileData?.result.name {
+                        Text(name)
+                            .font(.H4_bold)
+                    }
                     
                     Spacer().frame(width: 109)
                     
@@ -245,7 +277,8 @@ struct MyPageView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices , id: \.self) { device in
-            MyPageView()
+            MyPageView(viewModel: MyPageViewModel(), petId: PetState().petId ?? 0)
+                .environmentObject(PetState())
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }

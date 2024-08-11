@@ -166,6 +166,8 @@
 				HomeProfileCardViewModel.swift,
 				LoginOnBoarding/AppFlowViewModel.swift,
 				LoginOnBoarding/LoginViewModel.swift,
+				LoginViewModel.swift,
+				MyPageViewModel.swift,
 				ProductViewModel.swift,
 				ProfileCardViewModel.swift,
 				QnaViewModel.swift,
