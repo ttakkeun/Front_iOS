@@ -96,6 +96,7 @@ struct MyPageView: View {
                     Spacer().frame(width: 109)
                     
                     Button(action: {
+                        //TODO: 프로필 바꾸기 버튼 눌렸을 때 액션 함수
                         print("프로필 바꾸기 버튼 눌림 -> 프로필 화면으로")
                     }, label: {
                         Text("프로필 바꾸기")
@@ -144,34 +145,7 @@ struct MyPageView: View {
     
     /// 앱 정보 칸
     private var appInfo: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.scheduleCard_Color)
-                .frame(width: 347, height: 175)
-            
-            
-            VStack(alignment: .leading, spacing: 15, content: {
-                
-                
-                appInfoTitle
-                
-                appInfoBtns
-            })
-            .frame(width: 319, height: 128)
-            .padding(.leading, 10)
-            .padding(.top, -10)
-        }
-    }
-    
-    /// 앱 정보 칸 타이틀
-    private var appInfoTitle: some View {
-        HStack {
-            Text("앱 정보")
-                .font(.Body2_extrabold)
-                .foregroundStyle(Color.gray_900)
-            
-            Spacer()
-        }
+        infoCard(title: "앱 정보", btns: appInfoBtns)
     }
 
     /// 앱 정보 칸 버튼 모음
@@ -193,33 +167,7 @@ struct MyPageView: View {
     
     /// 이용정보 칸
     private var useInfo: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.scheduleCard_Color)
-                .frame(width: 347, height: 175)
-            
-            
-            VStack(alignment: .leading, spacing: 15, content: {
-                
-                useInfoTitle
-                
-                useInfoBtns
-            })
-            .frame(width: 319, height: 128)
-            .padding(.leading, 10)
-            .padding(.top, -10)
-        }
-    }
-    
-    /// 이용정보 칸 타이틀
-    private var useInfoTitle: some View {
-        HStack {
-            Text("이용 정보")
-                .font(.Body2_extrabold)
-                .foregroundStyle(Color.gray_900)
-            
-            Spacer()
-        }
+        infoCard(title: "이용 정보", btns: useInfoBtns)
     }
 
     /// 이용정보 칸 버튼 모음
@@ -240,6 +188,36 @@ struct MyPageView: View {
         })
     }
 }
+
+//MARK: - Function
+///마이페이지 정보(앱 정보, 이용 정보) 같은 구조 -> 재활용하기 위한 함수
+private func infoCard(title: String, btns: some View) -> some View {
+    ZStack {
+        RoundedRectangle(cornerRadius: 10)
+            .fill(Color.scheduleCard_Color)
+            .frame(width: 347, height: 175)
+        
+        
+        VStack(alignment: .leading, spacing: 15, content: {
+            
+            makeTitle(title: title)
+            
+            btns
+        })
+        .frame(width: 319, height: 128)
+        .padding(.top, -10)
+        .padding(.leading, -10)
+    }
+}
+
+///타이틀 생성 재활용 하기 위한 함수
+private func makeTitle(title: String) -> some View {
+    Text(title)
+        .font(.Body2_extrabold)
+        .foregroundStyle(Color.gray_900)
+        .frame(width: 300, alignment: .leading)
+}
+
 
 ///버튼 생성 재활용 하기 위한 함수
 private func makeBtn(action: @escaping () -> Void, text: String) -> some View {
