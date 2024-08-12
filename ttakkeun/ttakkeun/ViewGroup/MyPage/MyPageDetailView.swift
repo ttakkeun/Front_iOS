@@ -9,13 +9,12 @@ import SwiftUI
 
 struct MyPageDetailView: View {
     
-    @ObservedObject var viewModel: MyPageViewModel
-    @EnvironmentObject var petState: PetState
+    @StateObject var viewModel: MyPageViewModel
     let petId: Int
     
     //MARK: - Init
-    init(viewModel: MyPageViewModel, petId: Int) {
-        self.viewModel = viewModel
+    init(petId: Int) {
+        self._viewModel = StateObject(wrappedValue: MyPageViewModel())
         self.petId = petId
     }
     
@@ -23,18 +22,13 @@ struct MyPageDetailView: View {
     var body: some View {
         VStack(alignment: .center, content: {
             CustomNavigation(action: {
-                print("hello, this is myPageDetail")
+                //TODO: 마이페이지 아이콘 버튼 눌렀을 때 액션 함수 처리
             }, title: "마이페이지", currentPage: nil, naviIcon: Image(systemName: "chevron.left"), width: 8, height: 16)
             .padding(.top, 17)
             
             Spacer().frame(height: 56)
             
             petInfoDetailCard
-                .onAppear {
-                    Task {
-                        await viewModel.getPetProfileInfo(petId: petId)
-                    }
-                }
             
             Spacer().frame(height: 23)
             
@@ -60,19 +54,26 @@ struct MyPageDetailView: View {
                     .padding(.top, -7)
                 
                 petInfoDetail
-                
             })
+        }
+        .onAppear {
+            Task {
+                await viewModel.getPetProfileInfo(petId: petId)
+            }
         }
     }
     
     ///반려동물 정보 디테일 카드 네임태그
     private var petInfoDetailNameTag: some View {
-        HStack(alignment: .center, spacing: 197, content: {
+        HStack(alignment: .center, content: {
             Text("내 정보")
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray_900)
             
+            Spacer().frame(width: 197)
+            
             Button(action: {
+                //TODO: 수정 버튼 눌렸을 때 액션 함수
                 print("수정 버튼 눌림")
             }, label: {
                 HStack(alignment: .center, spacing: 5, content: {
@@ -96,7 +97,6 @@ struct MyPageDetailView: View {
     
     
     ///반려동물 디테일 정보 카드
-    //TODO: 프로필 데이터 홈에서 받아온 데이터값 받을 수 있도록 해야함
     private var petInfoDetail: some View {
         VStack(alignment: .leading, spacing: 18, content: {
             if let data = viewModel.profileData?.result {
@@ -107,7 +107,6 @@ struct MyPageDetailView: View {
                 makeInfo(nametag: "중성화 여부", content: data.neutralization ? "유" : "무", spacing: 32)
 
             }
-
         })
     }
     
@@ -143,39 +142,24 @@ struct MyPageDetailView: View {
     /// 계정 관련된 기능 제공 버튼 모음
     private var accountBtns: some View {
         VStack(alignment: .leading, spacing: 20, content: {
-            ///알림 설정 버튼
-            Button(action: {
-                print("로그아웃하기 버튼 눌림")
-            }, label: {
-                Text("로그아웃하기")
-                    .font(.Body3_medium)
-                    .foregroundStyle(Color.gray_900)
-            })
+            ///로그아웃하기 버튼
+            //TODO: 로그아웃하기 버튼 눌렸을 때 액션 함수
+            makeBtn(action: {print("로그아웃하기 버튼 눌림")}, text: "로그아웃하기", color: Color.gray_900)
             
-            ///앱 버전 정보 버튼
-            Button(action: {
-                print("프로필 삭제하기 버튼 눌림")
-            }, label: {
-                Text("프로필 삭제하기")
-                    .font(.Body3_medium)
-                    .foregroundStyle(Color.gray_900)
-            })
+            ///프로필 삭제하기 버튼
+            //TODO: 프로필 삭제하기 버튼 눌렸을 때 액션 함수
+            makeBtn(action: {print("프로필 삭제하기 버튼 눌림")}, text: "프로필 삭제하기", color: Color.gray_900)
             
-            ///이용약관 및 정책 버튼
-            Button(action: {
-                print("탈퇴하기 버튼 눌림")
-            }, label: {
-                Text("탈퇴하기")
-                    .font(.Body3_medium)
-                    .foregroundStyle(Color.exit_Color)
-            })
+            ///탈퇴하기 버튼
+            //TODO: 탈퇴하기 버튼 눌렸을 때 액션 함수
+            makeBtn(action: {print("탈퇴하기 버튼 눌림")}, text: "탈퇴하기", color: Color.exit_Color)
         })
     }
 }
 
 
 //MARK: - function
-///내 정보 내용들 다 똑같은 구조 가지고 있어서 뷰 생성에 재활용하기 위한 함수
+///프로필 디테일 카드 내용들 다 똑같은 구조 가지고 있어서 뷰 생성에 재활용하기 위한 함수
 private func makeInfo(nametag: String, content: String, spacing: CGFloat) -> some View {
     HStack(alignment: .center, spacing: spacing, content: {
         Text(nametag)
@@ -188,6 +172,17 @@ private func makeInfo(nametag: String, content: String, spacing: CGFloat) -> som
     })
 }
 
+///버튼 생성 재활용 하기 위한 함수
+private func makeBtn(action: @escaping () -> Void, text: String, color: Color) -> some View {
+    Button(action: {
+        action()
+    }, label: {
+        Text(text)
+            .font(.Body3_medium)
+            .foregroundStyle(color)
+    })
+}
+
 //MARK: - preview
 struct MyPageDetailView_Preview: PreviewProvider {
     
@@ -195,8 +190,7 @@ struct MyPageDetailView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices , id: \.self) { device in
-            MyPageDetailView(viewModel: MyPageViewModel(), petId: PetState().petId ?? 0)
-                .environmentObject(PetState())
+            MyPageDetailView(petId:1)
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }
