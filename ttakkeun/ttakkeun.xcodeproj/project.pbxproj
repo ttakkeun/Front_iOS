@@ -89,7 +89,6 @@
 				HomeTab/HomeDragView.swift,
 				HomeTab/HomeProfileCard.swift,
 				HomeTab/HomeView.swift,
-				LoginView.swift,
 				ProfileView.swift,
 				QnaTab/QnaFAQView.swift,
 				QnaTab/QnaHeaderView.swift,

@@ -59,6 +59,22 @@ enum Icon: String {
     case checkBox = "checkBox"
     case checkV = "checkV"
     
+    // MARK: - Diagnosis
+    case buttonClaw = "buttonClaw"
+    case buttonEar = "buttonEar"
+    case buttonEye = "buttonEye"
+    case buttonHair = "buttonHair"
+    case buttonTeeth = "buttonTeeth"
+    case answerCheck = "answerCheck"
+    case answerNotCheck = "answerNotCheck"
+    case petCamera = "petCamera"
+    case imageRemove = "imageRemove"
+    case diagnosisBackground = "diagnosisBackground"
+    case bubble = "bubble"
+    case bubbleLogo = "bubbleLogo"
+    case trash = "trash"
+    case loadingBg = "loadingBg"
+    
     var image: Image {
         return Image(self.rawValue)
     }

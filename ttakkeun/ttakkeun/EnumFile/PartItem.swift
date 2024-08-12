@@ -24,7 +24,7 @@ enum PartItem: String, Codable, CaseIterable {
         case .eye:
             return "눈"
         case .hair:
-            return "머리"
+            return "털"
         case .claw:
             return "발톱"
         case .tooth:
