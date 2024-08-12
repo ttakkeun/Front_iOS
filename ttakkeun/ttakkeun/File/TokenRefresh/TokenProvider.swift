@@ -30,21 +30,33 @@ class TokenProvider: TokenProviding {
         }
     }
     
-    /* 리프레시 토큰 데이터 담아서 보내야 함 */
+    /* 리프레시 토큰 전달하여 유저 정보 탐색 및 액세스 토큰 초기화 */
     func refreshToken(completion: @escaping (String?, Error?) -> Void) {
-        guard let userInfo = keyChain.loadSession(for: "userSession"), let refreshToken = userInfo.refreshToken else { return }
+        
+        guard let userInfo = keyChain.loadSession(for: "userSession"), let refreshToken = userInfo.refreshToken else {
+            let error = NSError(domain: "example.com", code: -2, userInfo: [NSLocalizedDescriptionKey: "User session or refresh token not found"])
+            completion(nil, error)
+                return
+            }
         
         provider.request(.refreshToken(refreshToken: refreshToken)) { result in
             switch result {
             case .success(let response):
                 do {
                     let tokenData = try JSONDecoder().decode(TokenResponse.self, from: response.data)
-                    self.accessToken = tokenData.result.accessToken
-                    completion(self.accessToken, nil)
+                    if tokenData.isSuccess {
+                        self.accessToken = tokenData.result.accessToken
+                        completion(self.accessToken, nil)
+                    } else {
+                        let error = NSError(domain: "example.com", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token Refresh failed: isSuccess false"])
+                        completion(nil, error)
+                    }
                 } catch {
+                    print("리프레시 토큰 디코더 에러: \(error)")
                     completion(nil, error)
                 }
             case .failure(let error):
+                print("리프레시 토큰 네트워크 오류 : \(error)")
                 completion(nil, error)
             }
         }

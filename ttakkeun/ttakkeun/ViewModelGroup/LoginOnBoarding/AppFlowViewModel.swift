@@ -11,23 +11,23 @@ import Moya
 /// 앱 유저 정보 체크 뷰모델
 @MainActor
 class AppFlowViewModel: ObservableObject {
-    private let tokenProvider: TokenProvider
+    private let tokenProvider: TokenProvider = TokenProvider()
+    
     @Published var userExistence: Bool = false
     
-    init(tokenProvider: TokenProvider) {
-        self.tokenProvider = tokenProvider
-    }
-    
-    public func startAppFlow(completion: @escaping (Bool, Error?) -> Void) {
+    /// 리프레시 통한 유저 정보 체크
+    /// - Parameter completion: 유저 정보 채크 성공 여부
+    public func startAppFlow(completion: @escaping (Bool, Error?) -> Void) async {
         tokenProvider.refreshToken { [weak self] accessToken, error in
-            guard let self = self else { return }
+            guard self != nil else { return }
             
             if let error = error {
                 completion(false, error)
+                print("등록된 유저 정보 없음: \(error)")
                 return
             }
             
-            if let accessToken = accessToken {
+            if accessToken != nil {
                 completion(true, nil)
             } else {
                 completion(false, nil)
