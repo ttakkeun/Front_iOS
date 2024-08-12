@@ -10,13 +10,13 @@ import Kingfisher
 
 struct MyPageView: View {
     
-    @ObservedObject var viewModel: MyPageViewModel
-    @EnvironmentObject var petState: PetState
+    @StateObject var viewModel: MyPageViewModel
     let petId: Int
     
+    
     //MARK: - Init
-    init(viewModel: MyPageViewModel, petId: Int) {
-        self.viewModel = viewModel
+    init(petId: Int) {
+        self._viewModel = StateObject(wrappedValue: MyPageViewModel())
         self.petId = petId
     }
     
@@ -24,18 +24,13 @@ struct MyPageView: View {
     var body: some View {
         VStack(alignment: .center, content: {
             CustomNavigation(action: {
-                print("hello, this is myPage")
+                //TODO: 마이페이지 아이콘 버튼 눌렀을 때 액션 함수 처리
             }, title: "마이페이지", currentPage: nil, naviIcon: Image(systemName: "chevron.left"), width: 8, height: 16)
             .padding(.top, 17)
             
             Spacer().frame(height:36)
             
             petInfo
-                .onAppear {
-                    Task {
-                        await viewModel.getPetProfileInfo(petId: petId)
-                    }
-                }
             
             Spacer().frame(height:20)
             
@@ -56,6 +51,11 @@ struct MyPageView: View {
             
             petInfoCard
         })
+        .onAppear {
+            Task {
+                await viewModel.getPetProfileInfo(petId: petId)
+            }
+        }
     }
     
     ///반려동물 정보 카드
@@ -68,13 +68,12 @@ struct MyPageView: View {
             
             VStack(alignment: .center, spacing: 22, content: {
                 HStack {
-                    //TODO: 프로필 데이터 홈에서 받아온 데이터값 받을 수 있도록 해야함
                     if let imageUrl = viewModel.profileData?.result.image,
                        let url = URL(string: imageUrl) {
                         KFImage(url)
                             .placeholder {
                                 ProgressView()
-                                    .frame(width: 70, height: 70)
+                                    .frame(width: 100, height: 100)
                             }.retry(maxCount: 2, interval: .seconds(2))
                             .onFailure { _ in
                                 print("프로필 이미지 캐시 오류")
@@ -88,10 +87,10 @@ struct MyPageView: View {
                     
                     Spacer().frame(width: 15)
                     
-                    //TODO: 프로필 데이터 홈에서 받아온 데이터값 받을 수 있도록 해야함
                     if let name = viewModel.profileData?.result.name {
                         Text(name)
                             .font(.H4_bold)
+                            .foregroundStyle(Color.gray_900)
                     }
                     
                     Spacer().frame(width: 109)
@@ -115,6 +114,7 @@ struct MyPageView: View {
                 /// Mainbutton 텍스트 폰트 정할 수 있으면 재활용 가능할듯!
                 /// 일단 텍스트 폰트 설정 불가해서 직접 만듦
                 Button(action: {
+                    //TODO: 정보 수정하기 버튼 눌렸을 때 액션 함수
                     print("정보 수정하기 버튼 눌림 -> 반려동물 정보 변경")
                 }, label: {
                     Text("정보 수정하기")
@@ -178,31 +178,16 @@ struct MyPageView: View {
     private var appInfoBtns: some View {
         VStack(alignment: .leading, spacing: 20, content: {
             ///알림 설정 버튼
-            Button(action: {
-                print("알림 설정 버튼 눌림")
-            }, label: {
-                Text("알림 설정")
-                    .font(.Body3_medium)
-                    .foregroundStyle(Color.gray_900)
-            })
+            //TODO: 알림 설정 버튼 눌렸을 때 액션 함수
+            makeBtn(action: {print("알림 설정 버튼 눌림")}, text: "알림 설정")
             
             ///앱 버전 정보 버튼
-            Button(action: {
-                print("앱 버전 정보 버튼 눌림")
-            }, label: {
-                Text("앱 버전 정보")
-                    .font(.Body3_medium)
-                    .foregroundStyle(Color.gray_900)
-            })
+            //TODO: 앱 버전 정보 버튼 눌렸을 때 액션 함수
+            makeBtn(action: {print("앱 버전 정보 버튼 눌림")}, text: "앱 버전 정보")
             
             ///이용약관 및 정책 버튼
-            Button(action: {
-                print("이용약관 및 정책 버튼 눌림")
-            }, label: {
-                Text("이용약관 및 정책")
-                    .font(.Body3_medium)
-                    .foregroundStyle(Color.gray_900)
-            })
+            //TODO: 이용약관 및 정책 버튼 눌렸을 때 액션 함수
+            makeBtn(action: {print("이용약관 및 정책 버튼 눌림")}, text: "이용약관 및 정책")
         })
     }
     
@@ -241,44 +226,40 @@ struct MyPageView: View {
     private var useInfoBtns: some View {
         VStack(alignment: .leading, spacing: 20, content: {
             ///공지사항 버튼
-            Button(action: {
-                print("공지사항 버튼 눌림")
-            }, label: {
-                Text("공지사항")
-                    .font(.Body3_medium)
-                    .foregroundStyle(Color.gray_900)
-            })
+            //TODO: 공지사항 버튼 눌렸을 때 액션 함수
+            makeBtn(action: {print("공지사항 버튼 눌림")}, text: "공지사항")
             
+
             ///문의하기 버튼
-            Button(action: {
-                print("문의하기 버튼 눌림")
-            }, label: {
-                Text("문의하기")
-                    .font(.Body3_medium)
-                    .foregroundStyle(Color.gray_900)
-            })
+            //TODO: 문의하기 버튼 눌렸을 때 액션 함수
+            makeBtn(action: {print("문의하기 버튼 눌림")}, text: "문의하기")
             
             ///신고하기 버튼
-            Button(action: {
-                print("신고하기 버튼 눌림")
-            }, label: {
-                Text("신고하기")
-                    .font(.Body3_medium)
-                    .foregroundStyle(Color.gray_900)
-            })
+            //TODO: 신고하기 버튼 눌렸을 때 액션 함수
+            makeBtn(action: {print("신고하기 버튼 눌림")}, text: "신고하기")
         })
     }
 }
 
+///버튼 생성 재활용 하기 위한 함수
+private func makeBtn(action: @escaping () -> Void, text: String) -> some View {
+    Button(action: {
+        action()
+    }, label: {
+        Text(text)
+            .font(.Body3_medium)
+            .foregroundStyle(Color.gray_900)
+    })
+}
 
+//MARK: - Preview
 struct MyPageView_Preview: PreviewProvider {
     
     static let devices: [String] = ["iPhone 11", "iPhone 15 Pro"]
     
     static var previews: some View {
         ForEach(devices , id: \.self) { device in
-            MyPageView(viewModel: MyPageViewModel(), petId: PetState().petId ?? 0)
-                .environmentObject(PetState())
+            MyPageView(petId: 1)
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }
