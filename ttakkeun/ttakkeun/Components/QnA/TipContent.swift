@@ -138,6 +138,13 @@ struct TipContent: View {
             Text("발톱")
         case .tooth:
             Text("이빨")
+        case .etc:
+            Text("기타")
+        case .best:
+            Text("인기")
+        default:
+            Text("")
+            
         }
     }
     
@@ -154,6 +161,10 @@ struct TipContent: View {
             Color.afterEye
         case .tooth:
             Color.afterTeeth
+        case .best:
+            Color.primarycolor200
+        default:
+            Color.clear
         }
     }
     
@@ -185,7 +196,7 @@ struct TipContent: View {
 //MARK: - Preview
 struct TipContent_Preview: PreviewProvider {
     static var previews: some View {
-        TipContent(data: QnaTipsData(category: .hair, title: "털 안꼬이게 빗는 법 꿀팁공유", content: "털은 빗어주지 않으면 어쩌구저쩌구 솰라솰라 어쩌구저쩌구 솰라솰라", userName: "한지강", elapsedTime: 140, heartNumber: 20))
+        TipContent(data: QnaTipsData(category: .best, title: "털 안꼬이게 빗는 법 꿀팁공유", content: "털은 빗어주지 않으면 어쩌구저쩌구 솰라솰라 어쩌구저쩌구 솰라솰라", userName: "한지강", elapsedTime: 140, heartNumber: 20))
             .previewLayout(.sizeThatFits)
     }
 }

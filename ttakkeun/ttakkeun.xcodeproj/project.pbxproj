@@ -27,6 +27,7 @@
 			membershipExceptions = (
 				ETC/CustomAlert.swift,
 				ETC/CustomTextField.swift,
+				ETC/FloatingButton.swift,
 				ETC/MainButton.swift,
 				ETC/TopStatusBar.swift,
 				Home/HomeAINotRecommend.swift,
@@ -42,9 +43,11 @@
 				Profile/MakeProfileButtonCustom.swift,
 				Profile/MakeProfileNameTag.swift,
 				Profile/ProfileSelect.swift,
-				QnA/TipContent.swift,
 				Profile/VarietySearch.swift,
+				QnA/FloatingWrtieBtn.swift,
+				QnA/TipContent.swift,
 				QnA/TopTenQuestion.swift,
+				QnA/WriteCategory.swift,
 				Recommend/ProductSheetView.swift,
 				Schedule/CustomDiary.swift,
 				Schedule/DiarySelectSheet.swift,
@@ -91,6 +94,7 @@
 				QnaTab/QnaFAQView.swift,
 				QnaTab/QnaHeaderView.swift,
 				QnaTab/QnaTipsView.swift,
+				QnaTab/QnaWriteTipsView.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -119,6 +123,7 @@
 			membershipExceptions = (
 				PetProfileAPITarget.swift,
 				ProductRecommendAPITarget.swift,
+				QnaTipsAPITarget.swift,
 				ScheduleAPITarget.swift,
 				UserLoginAPITarget.swift,
 			);
@@ -135,11 +140,20 @@
 				ProfileCardViewModel.swift,
 				QnaTipsViewModel.swift,
 				QnaViewModel.swift,
+				QnaWriteTipsViewModel.swift,
 				ScheduleViewModel.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
-		48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				PartItem.swift,
+				ProfileType.swift,
+			);
+			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
+		};
+		55BD643F2C685E4500AB5486 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				LoginResponseData.swift,
@@ -149,21 +163,13 @@
 				PetProfile/PetProfileImageData.swift,
 				PetProfile/PetVarietyData.swift,
 				Product/AIAndSearchProductData.swift,
+				QnA/CategoryQnaJsonData.json,
 				QnA/QnaFaqData.swift,
 				QnA/QnaTipsData.swift,
-				QnaJson/CategoryQnaJsonData.json,
-				QnaJson/TopTenQnaJsonData.json,
+				QnA/TopTenQnaJsonData.json,
 				RecommendProductData.swift,
 				Schedule/ScheduleInquiryData.swift,
 				Schedule/TodoCompleteData.swift,
-			);
-			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
-		};
-		48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				PartItem.swift,
-				ProfileType.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -176,8 +182,8 @@
 		4863B2A62C3D163C00BDA2B4 /* File */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2AA2C3D166000BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = File; sourceTree = "<group>"; };
 		4863B2AF2C3D16AD00BDA2B4 /* APITarget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = APITarget; sourceTree = "<group>"; };
 		48D5D12B2C3E825500B2E6D5 /* ViewModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewModelGroup; sourceTree = "<group>"; };
-		48D5D12E2C3E827800B2E6D5 /* DataModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = DataModelGroup; sourceTree = "<group>"; };
 		48DDC3232C43D1CF0058EBFF /* EnumFile */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = EnumFile; sourceTree = "<group>"; };
+		55BD64302C685E4500AB5486 /* DataModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (55BD643F2C685E4500AB5486 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = DataModelGroup; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,7 +226,7 @@
 				48DDC3232C43D1CF0058EBFF /* EnumFile */,
 				4863B2AF2C3D16AD00BDA2B4 /* APITarget */,
 				4863B2A62C3D163C00BDA2B4 /* File */,
-				48D5D12E2C3E827800B2E6D5 /* DataModelGroup */,
+				55BD64302C685E4500AB5486 /* DataModelGroup */,
 				48D5D12B2C3E825500B2E6D5 /* ViewModelGroup */,
 				483558862C3D084F006AB282 /* ViewGroup */,
 				483558842C3D083F006AB282 /* SettingGroup */,

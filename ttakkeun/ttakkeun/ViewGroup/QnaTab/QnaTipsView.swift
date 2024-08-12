@@ -18,14 +18,20 @@ struct QnaTipsView: View {
     
     //MARK: - Contents
     var body: some View {
-        VStack{
-            categorySegment
-                .padding(.top, 16)
-            TipContents
-            Spacer()
+        NavigationStack{
+            ZStack{
+                VStack{
+                    categorySegment
+                        .padding(.top, 16)
+                    tipContents
+                    Spacer()
+                }
+                FloatingWriteBtn()
+            }
         }
     }
     
+    /// 카테고리 별로 나눈 segmented Control
     private var categorySegment: some View {
            let categories = TipsCategorySegment.allCases
            return ScrollView(.horizontal, showsIndicators: false) {
@@ -55,8 +61,17 @@ struct QnaTipsView: View {
            }
        }
     
+    //TODO: - 전체랑 BEST에만 제목 넣어야함
+    private var title: some View {
+        Text(viewModel.selectedCategory.toKorean())
+    }
     
-    private var TipContents: some View {
+  
+    
+    
+
+    /// 공유한 팁 내용들
+    private var tipContents: some View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(spacing: 16) {
                 ForEach(viewModel.filteredTips) { tip in
@@ -67,7 +82,6 @@ struct QnaTipsView: View {
         }
     }
 }
-    
     
 //MARK: - Preview
 struct QnaTipsView_Preview: PreviewProvider {
