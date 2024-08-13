@@ -13,6 +13,7 @@
 		488158172C3C3CCC002A9CB4 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 488158162C3C3CCC002A9CB4 /* Moya */; };
 		488158192C3C3CCC002A9CB4 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 488158182C3C3CCC002A9CB4 /* ReactiveMoya */; };
 		4881581B2C3C3CCC002A9CB4 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 4881581A2C3C3CCC002A9CB4 /* RxMoya */; };
+		F9EDA9662C648D16005872DD /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = F9EDA9652C648D16005872DD /* Lottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +26,14 @@
 		482855322C4A5FE300A2DC80 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Diagnosis/AnswerButton.swift,
+				Diagnosis/DiagnosisTopbutton.swift,
+				Diagnosis/DiagnosticImages.swift,
+				Diagnosis/JournalListCard.swift,
+				Diagnosis/NotJournalList.swift,
+				Diagnosis/SelctCareButton.swift,
 				ETC/CustomAlert.swift,
+				ETC/CustomNavigation.swift,
 				ETC/CustomTextField.swift,
 				ETC/FloatingButton.swift,
 				ETC/MainButton.swift,
@@ -84,15 +92,25 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CreateProfileView.swift,
+				Diagnosis/DiagnosingView.swift,
+				Diagnosis/DiagnosisHeader.swift,
+				Diagnosis/DiagnosisView.swift,
+				Diagnosis/JournalListView.swift,
+				Diagnosis/RegistDiagnosisFlowView.swift,
+				Diagnosis/RegistDiagnosisPageContents.swift,
 				HomeTab/CompactTodo.swift,
 				HomeTab/ExpandTodo.swift,
 				HomeTab/HomeDragView.swift,
 				HomeTab/HomeProfileCard.swift,
 				HomeTab/HomeView.swift,
+				LoginView/LoginView.swift,
+				LoginView/Onboarding.json,
+				LoginView/OnboardingView.swift,
 				ProfileView.swift,
 				QnaTab/QnaFAQView.swift,
 				QnaTab/QnaHeaderView.swift,
 				QnaTab/QnaTipsView.swift,
+				QnaTab/QnaView.swift,
 				QnaTab/QnaWriteTipsView.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -103,6 +121,7 @@
 				ImagePicker/ImageHandling.swift,
 				ImagePicker/PetImagePicker.swift,
 				ImagePicker/ProfileImageRegistPicker.swift,
+				ImagePicker/QnaImagePicker.swift,
 				KeyChain/KeyChainManager.swift,
 				KeyChain/UserInfo.swift,
 				LoginManager/AppleLoginManager.swift,
@@ -120,10 +139,14 @@
 		4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				APIBaseURL.swift,
+				DiagnosticResultAPITarget.swift,
+				JournalAPITarget.swift,
 				PetProfileAPITarget.swift,
 				ProductRecommendAPITarget.swift,
 				QnaTipsAPITarget.swift,
 				ScheduleAPITarget.swift,
+				TodoAPITarget.swift,
 				UserLoginAPITarget.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -133,6 +156,8 @@
 			membershipExceptions = (
 				CreateProfileViewModel.swift,
 				CustomDiaryViewModel.swift,
+				Diagnostic/DiagnosticResultViewModel.swift,
+				Diagnostic/JournalListViewModel.swift,
 				HomeProfileCardViewModel.swift,
 				LoginViewModel.swift,
 				ProductViewModel.swift,
@@ -140,21 +165,18 @@
 				QnaTipsViewModel.swift,
 				QnaViewModel.swift,
 				QnaWriteTipsViewModel.swift,
+				RegistJournalViewModel.swift,
 				ScheduleViewModel.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
-		48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				PartItem.swift,
-				ProfileType.swift,
-			);
-			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
-		};
-		55BD643F2C685E4500AB5486 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
+				Diagnostic/DiagnosticPoint.swift,
+				Journal/JournalListData.swift,
+				Journal/JournalQuestionsData.swift,
+				Journal/RegistJournalData.swift,
 				LoginResponseData.swift,
 				PetProfile/CreatePetProfileRequestData.swift,
 				PetProfile/HomeProfileData.swift,
@@ -164,11 +186,24 @@
 				Product/AIAndSearchProductData.swift,
 				QnA/CategoryQnaJsonData.json,
 				QnA/QnaFaqData.swift,
+				QnA/QnaPostTipsData.swift,
 				QnA/QnaTipsData.swift,
 				QnA/TopTenQnaJsonData.json,
 				RecommendProductData.swift,
 				Schedule/ScheduleInquiryData.swift,
 				Schedule/TodoCompleteData.swift,
+				ToDo/CorrectionTodo.swift,
+				ToDo/CreateTodoData.swift,
+			);
+			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
+		};
+		48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AnswerValue.swift,
+				DiagnosisSegment.swift,
+				PartItem.swift,
+				ProfileType.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -181,8 +216,8 @@
 		4863B2A62C3D163C00BDA2B4 /* File */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2AA2C3D166000BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = File; sourceTree = "<group>"; };
 		4863B2AF2C3D16AD00BDA2B4 /* APITarget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = APITarget; sourceTree = "<group>"; };
 		48D5D12B2C3E825500B2E6D5 /* ViewModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ViewModelGroup; sourceTree = "<group>"; };
+		48D5D12E2C3E827800B2E6D5 /* DataModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = DataModelGroup; sourceTree = "<group>"; };
 		48DDC3232C43D1CF0058EBFF /* EnumFile */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = EnumFile; sourceTree = "<group>"; };
-		55BD64302C685E4500AB5486 /* DataModelGroup */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (55BD643F2C685E4500AB5486 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = DataModelGroup; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +230,7 @@
 				488158192C3C3CCC002A9CB4 /* ReactiveMoya in Frameworks */,
 				488158122C3C3CB6002A9CB4 /* Kingfisher in Frameworks */,
 				488158172C3C3CCC002A9CB4 /* Moya in Frameworks */,
+				F9EDA9662C648D16005872DD /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,7 +261,7 @@
 				48DDC3232C43D1CF0058EBFF /* EnumFile */,
 				4863B2AF2C3D16AD00BDA2B4 /* APITarget */,
 				4863B2A62C3D163C00BDA2B4 /* File */,
-				55BD64302C685E4500AB5486 /* DataModelGroup */,
+				48D5D12E2C3E827800B2E6D5 /* DataModelGroup */,
 				48D5D12B2C3E825500B2E6D5 /* ViewModelGroup */,
 				483558862C3D084F006AB282 /* ViewGroup */,
 				483558842C3D083F006AB282 /* SettingGroup */,
@@ -264,6 +300,7 @@
 				488158162C3C3CCC002A9CB4 /* Moya */,
 				488158182C3C3CCC002A9CB4 /* ReactiveMoya */,
 				4881581A2C3C3CCC002A9CB4 /* RxMoya */,
+				F9EDA9652C648D16005872DD /* Lottie */,
 			);
 			productName = ttakkeun;
 			productReference = 481C77B92C3A6C70005D60EB /* ttakkeun.app */;
@@ -295,6 +332,7 @@
 			packageReferences = (
 				488158102C3C3CB6002A9CB4 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				488158132C3C3CCC002A9CB4 /* XCRemoteSwiftPackageReference "Moya" */,
+				F9EDA9642C648D16005872DD /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			preferredProjectObjectVersion = 73;
 			productRefGroup = 481C77BA2C3A6C70005D60EB /* Products */;
@@ -549,6 +587,14 @@
 				minimumVersion = 15.0.3;
 			};
 		};
+		F9EDA9642C648D16005872DD /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -576,6 +622,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 488158132C3C3CCC002A9CB4 /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = RxMoya;
+		};
+		F9EDA9652C648D16005872DD /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F9EDA9642C648D16005872DD /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

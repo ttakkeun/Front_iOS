@@ -3,6 +3,7 @@ import SwiftUI
 /// 카테고리 선택하고 그에 대한 Tip작성할 수 있도록 하는 플로팅 버튼
 struct FloatingWriteBtn: View {
     @State var isPresented: Bool = false
+    @State private var selectedCategory: TipsCategorySegment? = nil
     
     //MARK: - Contents
     var body: some View {
@@ -30,6 +31,9 @@ struct FloatingWriteBtn: View {
             }
             .padding(.trailing, 24)
             .animation(.easeInOut, value: isPresented)
+        }
+        .fullScreenCover(item: $selectedCategory) { category in
+            QnaWriteTipsView(viewModel: QnaWriteTipsViewModel(), category: category)
         }
     }
     
@@ -68,7 +72,10 @@ struct FloatingWriteBtn: View {
     private var clickedfloatingBtn: some View {
         VStack(spacing: 13) {
             ForEach(TipsCategorySegment.allCases.filter { $0 != .all && $0 != .best }, id: \.self) { category in
-                NavigationLink(destination: QnaWriteTipsView(category: category)) {
+                Button(action: {
+                    selectedCategory = category
+                    isPresented = false
+                }) {
                     WriteCategory(tipscategory: category)
                 }
             }

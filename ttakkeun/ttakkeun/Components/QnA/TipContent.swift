@@ -6,32 +6,53 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 /// Qna탭에서 TIps화면에 들어가는 컴포넌트: Tip정보가 들어있음
 struct TipContent: View {
-    let data: QnaTipsData
+    let data: QnaTipsResponseData
+    let isBestCategory: Bool
     
-    
+    @State private var isExpanded: Bool = false
     //MARK: - Init
-    init(data: QnaTipsData) {
-        self.data = data
-    }
+    init(data: QnaTipsResponseData, isBestCategory: Bool = true) {
+            self.data = data
+            self.isBestCategory = isBestCategory
+        }
     
     //MARK: - Contents
     var body: some View {
-        VStack(alignment: .leading, spacing: 20){
+        VStack(alignment: .leading, spacing: 20) {
             categoryAndHeart
-            TitleAndContent
+            if isExpanded {
+                expandedContent
+                    .transition(.opacity)
+            } else {
+                contentSet
+            }
             BottomInfo
         }
-        .frame(maxWidth: 327, maxHeight: 140)
-        .padding(12)
+        .frame(maxWidth: 327)
+        .padding(14)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
                 .fill(.clear)
                 .stroke(Color.gray400)
         )
+        .animation(.easeInOut(duration: 0.5), value: isExpanded)
     }
+    
+    
+    /// 더보기 버튼 눌렀을때 나오는 것
+    private var expandedContent: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            title
+                .lineLimit(nil)
+            content
+            tipsImage
+        }
+    }
+    
     
     /// 카테고리와 하트버튼
     private var categoryAndHeart: some View {
@@ -41,12 +62,22 @@ struct TipContent: View {
             heartBtn
         }
     }
+    
+    private var contentSet: some View {
+        HStack(alignment: .top){
+            TitleAndContent
+                .lineLimit(3)
+            Spacer()
+            tipsImage
+        }
+    }
 
     /// 제목과 내용
     private var TitleAndContent: some View {
-        VStack(alignment: .leading, spacing: 9){
+        VStack(alignment: .leading, spacing: 12){
             title
             content
+            
         }
     }
     
@@ -61,10 +92,19 @@ struct TipContent: View {
     
     /// Category(categoryText와 뒷배경까지)
     private var categorySet: some View {
-        category
-            .font(.Body4_medium)
-            .frame(width: 47, height: 23)
-            .background(RoundedRectangle(cornerRadius: 30).foregroundStyle(categoryColor))
+        HStack(spacing: 5) {
+                  category
+                      .font(.Body4_medium)
+                      .frame(width: 47, height: 23)
+                      .background(RoundedRectangle(cornerRadius: 30).foregroundStyle(categoryColor))
+                  
+                  if isBestCategory {
+                      Text("인기")
+                          .font(.Body4_medium)
+                          .frame(width: 47, height: 23)
+                          .background(RoundedRectangle(cornerRadius: 30).foregroundStyle(Color.primarycolor200))
+                  }
+              }
     }
     
     /// 하트와 하트 수
@@ -84,7 +124,7 @@ struct TipContent: View {
     /// 제목
     private var title: some View {
         Text(data.title)
-            .frame(maxWidth: 300, alignment: .leading)
+            .frame(maxWidth: 210, alignment: .leading)
             .font(.Body2_semibold)
             .foregroundStyle(Color.gray900)
         
@@ -93,11 +133,28 @@ struct TipContent: View {
     /// 내용
     private var content: some View {
         Text(data.content.split(separator: "").joined(separator: "\u{200B}"))
-            .frame(maxWidth: 250, alignment: .leading)
+            .frame(maxWidth: 210, alignment: .leading)
             .font(.Body4_medium)
             .foregroundStyle(Color.gray_300)
             .multilineTextAlignment(.leading)
-            .lineLimit(nil)
+    }
+    
+    @ViewBuilder
+    private var tipsImage: some View {
+        if let url = URL(string: data.image ?? "") {
+            KFImage(url)
+                .placeholder {
+                    ProgressView()
+                        .frame(width: 100, height: 100)
+                }.retry(maxCount: 2, interval: .seconds(2))
+                .onFailure{ _ in
+                    print("이미지 로드 실패")
+                }
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 65, height: 65)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+        }
     }
     
     /// 사용자 이름과 경과된 시간
@@ -113,15 +170,20 @@ struct TipContent: View {
         }
     }
     
+    
+    //TODO: - 더보기 누르면 내용 아래로 펼쳐지고 레이아웃 바뀜
     /// 더보기 버튼
     private var moreInfoBtn: some View{
-        Button(action: {print("더보기 버튼")}, label: {
+        Button(action: {            isExpanded.toggle()
+        }, label: {
             Text("더보기")
                 .font(.Body4_medium)
                 .foregroundStyle(Color.gray400)
                 .underline()
         })
     }
+    
+   
     
     //MARK: - 카테고리 Switch
     /// 이름에따라 카테고리 변경
@@ -196,8 +258,7 @@ struct TipContent: View {
 //MARK: - Preview
 struct TipContent_Preview: PreviewProvider {
     static var previews: some View {
-        TipContent(data: QnaTipsData(category: .best, title: "털 안꼬이게 빗는 법 꿀팁공유", content: "털은 빗어주지 않으면 어쩌구저쩌구 솰라솰라 어쩌구저쩌구 솰라솰라", userName: "한지강", elapsedTime: 140, heartNumber: 20))
+        TipContent(data: QnaTipsResponseData(category: .ear, title: "털 안꼬이게 빗는 법 꿀팁공유", content: "털은 빗어주지 않으면 어쩌구저쩌구 솰라솰라 어쩌구저쩌구 솰라솰라아 진짜 미치겠다 아아아아 그만할래아아", userName: "한지강", image: "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg", elapsedTime: 140, heartNumber: 20))
             .previewLayout(.sizeThatFits)
     }
 }
-
