@@ -39,11 +39,13 @@ struct AgreementDetailSheet: View {
                             }
                         }
                         .padding(.bottom, 10)
+                        .padding(.horizontal, 15)
                     }
                 }
-                .padding()
+                .padding(.horizontal, 10)
             }
+            .frame(maxHeight: .infinity)
+            .ignoresSafeArea(.all)
         }
-        .padding()
     }
 }
