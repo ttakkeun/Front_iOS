@@ -15,6 +15,7 @@ class ProfileCardViewModel: ObservableObject {
     
     let provider: MoyaProvider<PetProfileAPITarget>
     let colors: [Color] = [Color.card001_Color, Color.card002_Color, Color.card003_Color, Color.card004_Color, Color.card005_Color, Color.primaryColor_Main]
+    private var container: DIContainer
     
     @Published var petProfileData: PetProfileData?
     @Published var backgroundColor: Color = .white
@@ -26,9 +27,12 @@ class ProfileCardViewModel: ObservableObject {
     // MARK: - Init
     
     init(provider: MoyaProvider<PetProfileAPITarget> = APIManager.shared.testProvider(for: PetProfileAPITarget.self),
-         petProfileData: PetProfileData? = nil) {
+         petProfileData: PetProfileData? = nil,
+         container: DIContainer
+    ) {
         self.provider = provider
         self.petProfileData = petProfileData
+        self.container = container
     }
     
     // MARK: - Init
@@ -85,5 +89,11 @@ class ProfileCardViewModel: ObservableObject {
         withAnimation(.easeInOut(duration: 0.5)) {
             self.backgroundColor = newColor
         }
+    }
+    
+    // MARK: - Navigation
+    
+    public func goToCreateProfile() async {
+        self.container.navigationRouter.push(to: .createProfile)
     }
 }

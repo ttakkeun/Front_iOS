@@ -11,25 +11,27 @@ struct ProfileView: View {
     
     @StateObject var viewModel: ProfileCardViewModel
     @EnvironmentObject var petState: PetState
-    
-    init() {
-        self._viewModel = StateObject(wrappedValue: ProfileCardViewModel())
-    }
+    @EnvironmentObject var container: DIContainer
     
     // MARK: - Contents
     
     var body: some View {
-        VStack(alignment: .center, spacing: 32, content: {
-            topTitle
-            scrollProfile
-            
-        })
-        .frame(maxWidth: .infinity, maxHeight: .infinity).ignoresSafeArea(.all)
-        .background(viewModel.backgroundColor)
-        .onAppear {
-            Task {
-                await viewModel.getPetProfile()
-                await viewModel.updateBackgroundColor()
+        NavigationStack(path: $container.navigationRouter.destinations) {
+            VStack(alignment: .center, spacing: 32, content: {
+                topTitle
+                scrollProfile
+                
+            })
+            .frame(maxWidth: .infinity, maxHeight: .infinity).ignoresSafeArea(.all)
+            .background(viewModel.backgroundColor)
+            .onAppear {
+                Task {
+                    await viewModel.getPetProfile()
+                    await viewModel.updateBackgroundColor()
+                }
+            }
+            .navigationDestination(for: NavigationDestination.self) {
+                NavigationRoutingView(destination: $0)
             }
         }
     }
@@ -125,7 +127,7 @@ struct ProfileView: View {
     /// - Returns: 스크롤 내부 사이즈
     private func profileCreateView(geometry: GeometryProxy) -> some View {
         GeometryReader { item in
-            ProfileCreateView()
+            ProfileCreateView(viewModel: viewModel)
                 .scaleEffect(self.scaleValue(geometry: geometry, itemGeometry: item))
                 .animation(.easeOut, value: self.scaleValue(geometry: geometry, itemGeometry: item))
                 .onChange(of: self.isCentered(geometry: geometry, itemGeometry: item)) {
@@ -147,26 +149,33 @@ struct ProfileView: View {
 /// 프로필 생성 카드 뷰
 fileprivate struct ProfileCreateView: View {
     
-    var body: some View {
-        ZStack(alignment: .top, content: {
-            createProfilie
-                .padding(.top, 70)
-            topImage
-        })
-        .padding(.top, 28)
-    }
+    @ObservedObject var viewModel: ProfileCardViewModel
     
-    private var topImage: some View {
-        Icon.togetherPet.image
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 134, height: 90)
-    }
-    /// 카드 생성하기
-    private var createProfilie: some View {
+    var body: some View {
         Button(action: {
-            print("새로운 가족 추가하기 버튼")
+            Task {
+                await viewModel.goToCreateProfile()
+            }
         }, label: {
+            ZStack(alignment: .top, content: {
+                createProfilie
+                    .padding(.top, 70)
+                topImage
+            })
+            .padding(.top, 28)
+        })
+    }
+        
+               
+        private var topImage: some View {
+            Icon.togetherPet.image
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 134, height: 90)
+        }
+        /// 카드 생성하기
+        private var createProfilie: some View {
+            
             VStack(alignment: .center, spacing: 18, content: {
                 Text("새로운 가족 추가하기")
                     .font(.suit(type: .bold, size: 16))
@@ -181,22 +190,21 @@ fileprivate struct ProfileCreateView: View {
             .background(Color.primaryColor_Main)
             .clipShape(.rect(cornerRadius: 20))
             .shadow04()
-        })
+        }
         
     }
     
-}
-
-struct ProfielView_Preview: PreviewProvider {
-    
-    static let devices: [String] = ["iPhone 11", "iPhone 15 Pro"]
-    
-    static var previews: some View {
-        ForEach(devices , id: \.self) { device in
-            ProfileView()
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewDisplayName(device)
-                .environmentObject(PetState(petName: "유애", petId: 1))
+    struct ProfileView_Previews: PreviewProvider {
+        static var previews: some View {
+            
+            let container = DIContainer()
+            
+            let petState = PetState()
+            
+            let viewModel = ProfileCardViewModel(container: container)
+            
+            ProfileView(viewModel: viewModel)
+                .environmentObject(petState)
+                .environmentObject(container)
         }
     }
-}

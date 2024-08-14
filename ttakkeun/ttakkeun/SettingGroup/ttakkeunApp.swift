@@ -13,6 +13,7 @@ struct ttakkeunApp: App {
     @StateObject var appFlowViewModel: AppFlowViewModel = AppFlowViewModel()
     @StateObject var loginViewModel: LoginViewModel = LoginViewModel()
     @StateObject var petState: PetState = PetState()
+    @StateObject var container: DIContainer = DIContainer()
     
     var body: some Scene {
         WindowGroup {
@@ -23,7 +24,9 @@ struct ttakkeunApp: App {
             //                LoginView(viewModel: loginViewModel)
             //            }
             //        }
-            LoginView(viewModel: loginViewModel)
+            ProfileView(viewModel: ProfileCardViewModel(container: container))
+                .environmentObject(petState)
+                .environmentObject(container)
         }
     }
 }
