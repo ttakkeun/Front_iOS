@@ -72,6 +72,10 @@ enum Icon: String {
     case trash = "trash"
     case loadingBg = "loadingBg"
     
+    //MARK: - MyPage
+    case heartTips = "heartTips"
+    case pencil = "pencil"
+    
     var image: Image {
         return Image(self.rawValue)
     }
