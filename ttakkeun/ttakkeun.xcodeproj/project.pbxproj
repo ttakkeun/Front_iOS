@@ -187,6 +187,7 @@
 				Journal/JournalQuestionsData.swift,
 				Journal/RegistJournalData.swift,
 				Login/AgreementData.swift,
+				Login/AgreementDetailData.swift,
 				LoginResponseData.swift,
 				PetProfile/CreatePetProfileRequestData.swift,
 				PetProfile/HomeProfileData.swift,

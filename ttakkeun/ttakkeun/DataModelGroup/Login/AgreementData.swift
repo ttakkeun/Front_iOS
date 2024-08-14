@@ -13,10 +13,15 @@ struct AgreementData: Identifiable, Codable {
     var title: String
     var isMandatory: Bool
     var isChecked: Bool = false
-    var detailText: String
+    var detailText: [SectionData]
     
     private enum CodingKeys: String, CodingKey {
         case title, isMandatory, isChecked, detailText
     }
 }
 
+// 각 조항의 제목과 내용을 담는 구조체
+struct SectionData: Codable {
+    var section: String
+    var text: String
+}

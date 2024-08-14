@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 본인확인 및 동의항목 뷰
 struct AgreementView: View {
     @StateObject var viewModel = AgreementViewModel()
     
@@ -38,6 +39,7 @@ struct AgreementView: View {
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray_900)
             
+            //TODO: 로그인 후 넘겨받은 이메일을 출력하도록 이메일 주소 필드 바꿔야함!
             Text(verbatim: "asdasd0000@naver.com")
                 .font(.Body3_medium)
                 .foregroundStyle(Color.gray_400)
@@ -51,7 +53,7 @@ struct AgreementView: View {
         })
     }
     
-    ///동의항목 파트
+    ///동의항목 파트(타이틀 + 네모 박스)
     private var agreementPart: some View {
         VStack(alignment: .leading, spacing: 12, content: {
             Text("동의 항목")
@@ -76,6 +78,7 @@ struct AgreementView: View {
     /// 동의항목 선택 요소들
     private var agreements: some View {
         
+        /// 3가지 동의항목
         LazyVGrid(columns: [GridItem(.flexible())], alignment: .leading, spacing: 20) {
             ForEach(viewModel.agreements, id: \.id) { item in
                 HStack(alignment: .center, spacing: 17, content: {
@@ -98,8 +101,10 @@ struct AgreementView: View {
             .padding(.leading, 19)
         }
         .frame(width: 341, height: 167, alignment: .leading)
+        ///텍스트 누르면 해당 동의항목 자세한 사항들 시트뷰로 뜸
         .sheet(item: $viewModel.selectedAgreement) { item in
             AgreementDetailSheet(agreement: item)
+                .presentationDragIndicator(.visible)
         }
     }
     
@@ -124,7 +129,6 @@ struct AgreementView: View {
         })
     }
     
-    //TODO: 완료버튼 눌렀을 때 액션 함수 추가 필요
     /// 완료 버튼
     private var registerBtn: some View {
         MainButton(
@@ -133,6 +137,7 @@ struct AgreementView: View {
             height: 63,
             action: {
                 if viewModel.isAllMandatoryChecked {
+                    //TODO: 완료버튼 눌렀을 때 액션 함수 추가 필요
                     print("완료버튼 눌림")
                 } else {
                     print("필수 동의 사항에 모두 체크해주세요")
