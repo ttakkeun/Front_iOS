@@ -9,11 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @StateObject var viewModel: LoginViewModel
-    
-    init() {
-        self._viewModel = StateObject(wrappedValue: LoginViewModel())
-    }
+    @ObservedObject var viewModel: LoginViewModel
     
     var body: some View {
         contetsView
@@ -69,18 +65,6 @@ struct LoginView: View {
     
     /// 로그인 버튼 그룹
     private var loginBtnGroup: some View {
-        VStack(alignment: .center, spacing: 14, content: {
-            Button(action: {
-                Task {
-                    await viewModel.kakaoLoginBtn()
-                }
-                
-            }, label: {
-                Icon.kakaoLogin.image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 330, height: 44)
-            })
             /* Apple 로그인 */
             Button(action: {
                 Task {
@@ -92,7 +76,6 @@ struct LoginView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 330, height: 44)
             })
-        })
     }
 }
 
@@ -102,7 +85,7 @@ struct LoginView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            LoginView()
+            LoginView(viewModel: LoginViewModel())
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }

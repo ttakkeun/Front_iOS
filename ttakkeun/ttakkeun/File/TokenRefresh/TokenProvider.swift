@@ -25,7 +25,22 @@ class TokenProvider: TokenProviding {
             guard var userInfo = keyChain.loadSession(for: userSession) else { return }
             userInfo.accessToken = newValue
             if keyChain.saveSession(userInfo, for: "userSession") {
-                print("유저 토큰 갱신 됨")
+                print("유저 액세스 토큰 갱신 됨")
+            }
+        }
+    }
+    
+    var refreshToken: String? {
+        get {
+            guard let userInfo = keyChain.loadSession(for: userSession) else { return nil }
+            return userInfo.refreshToken
+        }
+        
+        set {
+            guard var userInfo = keyChain.loadSession(for: userSession) else { return }
+            userInfo.refreshToken = newValue
+            if keyChain.saveSession(userInfo, for: "userSession") {
+                print("유저 리프레시 토큰 갱신 됨")
             }
         }
     }
@@ -46,6 +61,7 @@ class TokenProvider: TokenProviding {
                     let tokenData = try JSONDecoder().decode(TokenResponse.self, from: response.data)
                     if tokenData.isSuccess {
                         self.accessToken = tokenData.result.accessToken
+                        self.refreshToken = tokenData.result.refreshToken
                         completion(self.accessToken, nil)
                     } else {
                         let error = NSError(domain: "example.com", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token Refresh failed: isSuccess false"])
