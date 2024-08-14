@@ -10,6 +10,7 @@ import SwiftUI
 /// 본인확인 및 동의항목 뷰
 struct AgreementView: View {
     @StateObject var viewModel = AgreementViewModel()
+    @Environment(\.dismiss) var dismiss
     
     //MARK: - INIT
     init() {
@@ -19,7 +20,9 @@ struct AgreementView: View {
     //MARK: - Contents
     var body: some View {
         VStack(alignment: .center, spacing: 50, content: {
-            CustomNavigation(action: {}, title: "본인확인", currentPage: nil, naviIcon: Image(systemName: "xmark"), width: 14, height: 14)
+            CustomNavigation(action: {
+                dismiss()
+            }, title: "본인확인", currentPage: nil, naviIcon: Image(systemName: "xmark"), width: 14, height: 14)
                 .padding(.top, 15)
             
             emailField
@@ -95,6 +98,7 @@ struct AgreementView: View {
                         Text(item.title)
                             .font(.Body2_regular)
                             .foregroundStyle(Color.gray_900)
+                            .underline(true, color: Color.gray_500)
                     })
                 })
             }
@@ -139,8 +143,6 @@ struct AgreementView: View {
                 if viewModel.isAllMandatoryChecked {
                     //TODO: 완료버튼 눌렀을 때 액션 함수 추가 필요
                     print("완료버튼 눌림")
-                } else {
-                    print("필수 동의 사항에 모두 체크해주세요")
                 }
             },
             color: viewModel.isAllMandatoryChecked ? Color.primaryColor_Main : Color.gray_200
