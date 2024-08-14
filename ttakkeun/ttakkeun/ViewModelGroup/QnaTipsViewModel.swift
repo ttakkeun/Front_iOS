@@ -23,7 +23,7 @@ class QnaTipsViewModel: ObservableObject {
            self.selectedCategory = .best
        }
     
-    // 더미 데이터 업데이트
+
     @Published var tips: [QnaTipsResponseData] = []
    
      /// 전체, 인기 세그먼트 분류하기 위한 필터
@@ -40,11 +40,10 @@ class QnaTipsViewModel: ObservableObject {
     
     //MARK: - API Function
     public func getQnaTipsData() async {
-        print("getQnaTipsData called") // 확인용 print
         provider.request(.getQnaTips) { [weak self] result in
             switch result {
             case .success(let response):
-                print("API 호출 성공") // 확인용 print
+                print("API 호출 성공")
                 self?.handlerResponseGetTipsData(response: response)
             case .failure(let error):
                 print("네트워크 오류: \(error)")
@@ -57,7 +56,6 @@ class QnaTipsViewModel: ObservableObject {
             let decodedData = try JSONDecoder().decode(QnaTipsData.self, from: response.data)
             DispatchQueue.main.async {
                 self.tips = decodedData.result
-                print("디코딩된 데이터: \(decodedData)") // 확인용 print
             }
         } catch {
             print("카테고리 질문 디코더 에러: \(error)")

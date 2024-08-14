@@ -12,10 +12,10 @@ import Moya
 @MainActor
 class QnaWriteTipsViewModel: ObservableObject, @preconcurrency ImageHandling {
     
-    @Published var inputData: QnaTipsRequestData?
+    @Published var requestData: QnaTipsRequestData? = QnaTipsRequestData(category: .all, title: "", content: "")
     @Published var responseData: QnaTipsData?
     @Published var isTipsinputCompleted: Bool = false
-    @Published var selectedImages: [UIImage] = []
+  
 
     
     private let provider: MoyaProvider<QnaTipsAPITarget>
@@ -37,9 +37,9 @@ class QnaWriteTipsViewModel: ObservableObject, @preconcurrency ImageHandling {
     @Published var Content: Bool = false {
         didSet { checkFilledStates() }
     }
-    
-    private func checkFilledStates() {
-        isTipsinputCompleted = Title && Content
+   
+    func checkFilledStates() {
+        isTipsinputCompleted = (requestData?.title.isEmpty == false) && (requestData?.content.isEmpty == false)
     }
     
     
@@ -54,63 +54,68 @@ class QnaWriteTipsViewModel: ObservableObject, @preconcurrency ImageHandling {
     
     //MARK: - AppendImage Function
     @Published var isImagePickerPresented: Bool = false
+    @Published var arrImages: [UIImage] = []
 
+    var selectedImageCount: Int {
+        arrImages.count
+    }
+    
     func addImage(_ images: UIImage) {
-        if selectedImages.count < 3 {
-            selectedImages.append(images)
+        arrImages.append(images)
+    }
+    
+    func removeImage(at index: Int) {
+        if arrImages.indices.contains(index) {
+            arrImages.remove(at: index)
         }
     }
-
-      func removeImage(at index: Int) {
-          if selectedImages.indices.contains(index) {
-              selectedImages.remove(at: index)
-          }
-      }
-      
-      func showImagePicker() {
-          isImagePickerPresented = true
-      }
-      
-      func getImages() -> [UIImage] {
-          selectedImages
-      }
     
- 
+    func showImagePicker() {
+        isImagePickerPresented = true
+    }
     
-    
-     var selectedImageCount: Int {
-         selectedImages.count
-     }
+    func getImages() -> [UIImage] {
+        arrImages
+    }
      
     
     //MARK: - API Function
-    private func postTipsData() async {
-        guard let data = self.inputData else { return }
-        provider.request(.createTipsContent(data: data)) {[weak self]
-            result in
-            switch result {
-            case . success(let response):
-                self?.handlerResponsepostTipsData(response: response)
-            case .failure(let error):
-                print("네트워크에러 \(error)")
-            }
-        }
-    }
+    func postTipsData() async {
+         guard let data = self.requestData else { return }
+         provider.request(.createTipsContent(data: data)) { [weak self] result in
+             switch result {
+             case .success(let response):
+                 self?.handlerResponsepostTipsData(response: response)
+                 // 사진도 포스트합니다.
+                 if let images = self?.arrImages, !images.isEmpty {
+                     self?.postImages(images: images)
+                 }
+             case .failure(let error):
+                 print("네트워크 에러: \(error)")
+             }
+         }
+     }
 
-    private func handlerResponsepostTipsData(response: Response) {
-        do {
-            let decodedData = try
-            JSONDecoder().decode(QnaTipsData.self, from: response.data)
-            DispatchQueue.main.async {
-                self.responseData = decodedData
-                print("Tips")
-            }
-        } catch {
-            print("TIps")
-            
-        }
-    }
-    
-    
-    
-}
+     private func handlerResponsepostTipsData(response: Response) {
+         do {
+             let decodedData = try JSONDecoder().decode(QnaTipsData.self, from: response.data)
+             DispatchQueue.main.async {
+                 self.responseData = decodedData
+                 print("Tips 포스트 성공")
+             }
+         } catch {
+             print("Tips 디코딩 에러: \(error)")
+         }
+     }
+
+     private func postImages(images: [UIImage]) {
+         provider.request(.sendTipsImage(images: images)) { result in
+             switch result {
+             case .success(let response):
+                 print("이미지 업로드 성공: \(response.statusCode)")
+             case .failure(let error):
+                 print("이미지 업로드 실패: \(error)")
+             }
+         }
+     }
+ }

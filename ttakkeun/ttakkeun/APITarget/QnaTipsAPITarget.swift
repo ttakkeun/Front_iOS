@@ -11,7 +11,7 @@ import SwiftUI
 
 enum QnaTipsAPITarget {
     case getQnaTips
-    case sendfTipsImage(images: [UIImage])
+    case sendTipsImage(images: [UIImage])
     case createTipsContent(data: QnaTipsRequestData)
 }
 
@@ -21,7 +21,7 @@ extension QnaTipsAPITarget: APITargetType {
         switch self {
         case .createTipsContent(let data):
             return "/tips/add"
-        case .sendfTipsImage(_):
+        case .sendTipsImage(_):
             return "/tips/add-image"
         case .getQnaTips:
             return "/tips/load"
@@ -30,7 +30,7 @@ extension QnaTipsAPITarget: APITargetType {
     
     var method: Moya.Method {
         switch self {
-        case .createTipsContent, .sendfTipsImage:
+        case .createTipsContent, .sendTipsImage:
             return .post
         case .getQnaTips:
             return .get
@@ -43,7 +43,7 @@ extension QnaTipsAPITarget: APITargetType {
             return .requestPlain
         case .createTipsContent(let data):
             return .requestJSONEncodable(data)
-        case .sendfTipsImage(let images):
+        case .sendTipsImage(let images):
             var multipartData = [MultipartFormData]()
             
             for (index, image) in images.enumerated() {
@@ -59,7 +59,7 @@ extension QnaTipsAPITarget: APITargetType {
         switch self {
         case .getQnaTips, .createTipsContent:
             return ["Content-Type": "application/json"]
-        case .sendfTipsImage:
+        case .sendTipsImage:
             return ["Content-Type": "multipart/form-data"]
         }
     }
@@ -186,7 +186,7 @@ extension QnaTipsAPITarget: APITargetType {
                """
             return Data(json.utf8)
             
-        case .sendfTipsImage:
+        case .sendTipsImage:
             let json = """
                {
                    "isSuccess": true,

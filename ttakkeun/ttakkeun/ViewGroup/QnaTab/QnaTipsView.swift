@@ -28,7 +28,6 @@ struct QnaTipsView: View {
                 FloatingWriteBtn()
             }
             .onAppear {
-                print("QnaTipsView appeared") // 확인용 print
                 Task {
                     await viewModel.getQnaTipsData()
                 }

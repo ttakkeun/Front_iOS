@@ -48,7 +48,7 @@ struct TipContent: View {
         VStack(alignment: .leading, spacing: 12) {
             title
                 .lineLimit(nil)
-            content
+            expandedcontent
             tipsImage
         }
     }
@@ -134,6 +134,14 @@ struct TipContent: View {
     private var content: some View {
         Text(data.content.split(separator: "").joined(separator: "\u{200B}"))
             .frame(maxWidth: 210, alignment: .leading)
+            .font(.Body4_medium)
+            .foregroundStyle(Color.gray_300)
+            .multilineTextAlignment(.leading)
+    }
+    
+    private var expandedcontent: some View {
+        Text(data.content.split(separator: "").joined(separator: "\u{200B}"))
+            .frame(alignment: .leading)
             .font(.Body4_medium)
             .foregroundStyle(Color.gray_300)
             .multilineTextAlignment(.leading)
