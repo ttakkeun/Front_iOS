@@ -13,6 +13,7 @@
 		488158172C3C3CCC002A9CB4 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 488158162C3C3CCC002A9CB4 /* Moya */; };
 		488158192C3C3CCC002A9CB4 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 488158182C3C3CCC002A9CB4 /* ReactiveMoya */; };
 		4881581B2C3C3CCC002A9CB4 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 4881581A2C3C3CCC002A9CB4 /* RxMoya */; };
+		F9EDA9662C648D16005872DD /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = F9EDA9652C648D16005872DD /* Lottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +26,14 @@
 		482855322C4A5FE300A2DC80 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Diagnosis/AnswerButton.swift,
+				Diagnosis/DiagnosisTopbutton.swift,
+				Diagnosis/DiagnosticImages.swift,
+				Diagnosis/JournalListCard.swift,
+				Diagnosis/NotJournalList.swift,
+				Diagnosis/SelctCareButton.swift,
 				ETC/CustomAlert.swift,
+				ETC/CustomNavigation.swift,
 				ETC/CustomTextField.swift,
 				ETC/MainButton.swift,
 				ETC/TopStatusBar.swift,
@@ -38,6 +46,7 @@
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
 				Home/ToDoCheckList.swift,
+				Login/AgreementDetailSheet.swift,
 				Profile/BirthSelect.swift,
 				Profile/MakeProfileButtonCustom.swift,
 				Profile/MakeProfileNameTag.swift,
@@ -80,12 +89,23 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CreateProfileView.swift,
+				Diagnosis/DiagnosingView.swift,
+				Diagnosis/DiagnosisHeader.swift,
+				Diagnosis/DiagnosisView.swift,
+				Diagnosis/JournalListView.swift,
+				Diagnosis/RegistDiagnosisFlowView.swift,
+				Diagnosis/RegistDiagnosisPageContents.swift,
 				HomeTab/CompactTodo.swift,
 				HomeTab/ExpandTodo.swift,
 				HomeTab/HomeDragView.swift,
 				HomeTab/HomeProfileCard.swift,
 				HomeTab/HomeView.swift,
-				LoginView.swift,
+				LoginView/AgreementView.swift,
+				LoginView/LoginView.swift,
+				LoginView/Onboarding.json,
+				LoginView/OnboardingView.swift,
+				MyPage/MyPageDetailView.swift,
+				MyPage/MyPageView.swift,
 				ProfileView.swift,
 				QnaTab/QnaFAQView.swift,
 				QnaTab/QnaHeaderView.swift,
@@ -116,9 +136,13 @@
 		4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				APIBaseURL.swift,
+				DiagnosticResultAPITarget.swift,
+				JournalAPITarget.swift,
 				PetProfileAPITarget.swift,
 				ProductRecommendAPITarget.swift,
 				ScheduleAPITarget.swift,
+				TodoAPITarget.swift,
 				UserLoginAPITarget.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -126,13 +150,18 @@
 		48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AgreementViewModel.swift,
 				CreateProfileViewModel.swift,
 				CustomDiaryViewModel.swift,
+				Diagnostic/DiagnosticResultViewModel.swift,
+				Diagnostic/JournalListViewModel.swift,
 				HomeProfileCardViewModel.swift,
 				LoginViewModel.swift,
+				MyPageViewModel.swift,
 				ProductViewModel.swift,
 				ProfileCardViewModel.swift,
 				QnaViewModel.swift,
+				RegistJournalViewModel.swift,
 				ScheduleViewModel.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -140,6 +169,12 @@
 		48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Diagnostic/DiagnosticPoint.swift,
+				Journal/JournalListData.swift,
+				Journal/JournalQuestionsData.swift,
+				Journal/RegistJournalData.swift,
+				Login/AgreementData.swift,
+				Login/AgreementDetailData.swift,
 				LoginResponseData.swift,
 				PetProfile/CreatePetProfileRequestData.swift,
 				PetProfile/HomeProfileData.swift,
@@ -153,12 +188,16 @@
 				RecommendProductData.swift,
 				Schedule/ScheduleInquiryData.swift,
 				Schedule/TodoCompleteData.swift,
+				ToDo/CorrectionTodo.swift,
+				ToDo/CreateTodoData.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
 		48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AnswerValue.swift,
+				DiagnosisSegment.swift,
 				PartItem.swift,
 				ProfileType.swift,
 			);
@@ -187,6 +226,7 @@
 				488158192C3C3CCC002A9CB4 /* ReactiveMoya in Frameworks */,
 				488158122C3C3CB6002A9CB4 /* Kingfisher in Frameworks */,
 				488158172C3C3CCC002A9CB4 /* Moya in Frameworks */,
+				F9EDA9662C648D16005872DD /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +296,7 @@
 				488158162C3C3CCC002A9CB4 /* Moya */,
 				488158182C3C3CCC002A9CB4 /* ReactiveMoya */,
 				4881581A2C3C3CCC002A9CB4 /* RxMoya */,
+				F9EDA9652C648D16005872DD /* Lottie */,
 			);
 			productName = ttakkeun;
 			productReference = 481C77B92C3A6C70005D60EB /* ttakkeun.app */;
@@ -287,6 +328,7 @@
 			packageReferences = (
 				488158102C3C3CB6002A9CB4 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				488158132C3C3CCC002A9CB4 /* XCRemoteSwiftPackageReference "Moya" */,
+				F9EDA9642C648D16005872DD /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			preferredProjectObjectVersion = 73;
 			productRefGroup = 481C77BA2C3A6C70005D60EB /* Products */;
@@ -541,6 +583,14 @@
 				minimumVersion = 15.0.3;
 			};
 		};
+		F9EDA9642C648D16005872DD /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -568,6 +618,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 488158132C3C3CCC002A9CB4 /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = RxMoya;
+		};
+		F9EDA9652C648D16005872DD /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F9EDA9642C648D16005872DD /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

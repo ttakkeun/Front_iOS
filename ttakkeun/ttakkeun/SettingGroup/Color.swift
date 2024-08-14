@@ -71,6 +71,7 @@ extension Color {
     static let mainBg_Color = Color("MainBg") /* #ECF083 100% */
     static let checkBg_Color = Color("CheckBg") /* #EEEEEE 100% */
     static let postBg_Color = Color("PostBg") /* #F8F8F8 100% */
+    static let line_Color = Color("LineColor") /* #DBDBDB 100% */
     
     // MARK: - Schedule
     static let scheduleCard_Color = Color("ScheduleCard") /* #F6F6F6 100% */
@@ -79,5 +80,11 @@ extension Color {
     static let btnBackground_Color = Color("BtnBackground") /* #D9D9D9 100% */
     // MARK: - QnA
     static let QnAEar_Color = Color("QnAEar") /* #FFEE52 40% */
+    
+    // MARK: - Login
+    static let onboarding_Color = Color("Onboarding") /* F5FC47 78% */
+    
+    // MARK: - MyPage
+    static let exit_Color = Color("exit") /* FF2C2C 100% */
 }
 

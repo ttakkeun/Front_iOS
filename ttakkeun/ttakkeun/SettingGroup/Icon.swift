@@ -20,7 +20,7 @@ enum Icon: String {
     case kakaoLogin = "kakaoLogin"
     case loginBackground = "loginBackground"
     case petFriends = "petFriends"
-    
+    case uncheck = "uncheck"
     
     // MARK: - Profile
     case togetherPet = "togetherPet"
@@ -55,6 +55,26 @@ enum Icon: String {
     case unCheckBox = "unCheckBox"
     case checkBox = "checkBox"
     case checkV = "checkV"
+    
+    // MARK: - Diagnosis
+    case buttonClaw = "buttonClaw"
+    case buttonEar = "buttonEar"
+    case buttonEye = "buttonEye"
+    case buttonHair = "buttonHair"
+    case buttonTeeth = "buttonTeeth"
+    case answerCheck = "answerCheck"
+    case answerNotCheck = "answerNotCheck"
+    case petCamera = "petCamera"
+    case imageRemove = "imageRemove"
+    case diagnosisBackground = "diagnosisBackground"
+    case bubble = "bubble"
+    case bubbleLogo = "bubbleLogo"
+    case trash = "trash"
+    case loadingBg = "loadingBg"
+    
+    //MARK: - MyPage
+    case heartTips = "heartTips"
+    case pencil = "pencil"
     
     var image: Image {
         return Image(self.rawValue)

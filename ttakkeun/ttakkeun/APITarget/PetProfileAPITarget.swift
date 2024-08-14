@@ -22,10 +22,7 @@ enum PetProfileAPITarget {
     case editProfileImage(petId: Int, images: [UIImage])
 }
 
-extension PetProfileAPITarget: TargetType {
-    var baseURL: URL {
-        return URL(string: "https://ttakkeun.herokuapp.com")!
-    }
+extension PetProfileAPITarget: APITargetType {
     
     var path: String {
         switch self {

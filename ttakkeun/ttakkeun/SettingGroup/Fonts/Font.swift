@@ -89,12 +89,28 @@ extension Font {
         return .suit(type: .bold, size: 16)
     }
     
+    static var H4_semibold: Font {
+        return .suit(type: .semibold, size: 16)
+    }
+    
+    static var H4_medium: Font {
+        return .suit(type: .medium, size: 16)
+    }
+    
     // MARK: - Body1
     static var Body1_bold: Font {
         return .suit(type: .bold, size: 18)
     }
     
+    static var Body1_semibold: Font {
+        return .suit(type: .semibold, size: 18)
+    }
+    
     // MARK: - Body2
+    
+    static var Body2_extrabold: Font {
+        return .suit(type: .extraBold, size: 16)
+    }
     
     static var Body2_bold: Font {
         return .suit(type: .bold, size: 16)
@@ -132,8 +148,13 @@ extension Font {
     
     // MARK: - Body4
     
+    
     static var Body4_extrabold: Font {
         return .suit(type: .extraBold, size: 12)
+    }
+    
+    static var Body4_semibold: Font {
+        return .suit(type: .semibold, size: 12)
     }
     
     static var Body4_medium: Font {
