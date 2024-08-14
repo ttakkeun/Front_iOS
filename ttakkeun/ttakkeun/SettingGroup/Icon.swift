@@ -15,7 +15,7 @@ enum Icon: String {
     case kakaoLogin = "kakaoLogin"
     case loginBackground = "loginBackground"
     case petFriends = "petFriends"
-    
+    case uncheck = "uncheck"
     
     // MARK: - Profile
     case togetherPet = "togetherPet"
