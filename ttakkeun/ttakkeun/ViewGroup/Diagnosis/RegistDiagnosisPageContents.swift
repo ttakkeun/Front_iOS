@@ -30,7 +30,7 @@ struct RegistDiagnosisPageContents: View {
     
     // MARK: - 1 Page(부위 선택)
     
-    /// 부위 선택
+    
     //TODO: - 서브 타이틀 수정할 것
     private var firstPage: some View {
         VStack(alignment: .center, spacing: 39, content: {

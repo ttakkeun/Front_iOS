@@ -10,6 +10,6 @@ import Foundation
 /// 네비게이션 도착지 설정
 enum NavigationDestination: Hashable {
     case createProfile
-    case myPage(petId: Int)
+    case myPage
     
 }

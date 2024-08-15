@@ -16,7 +16,7 @@ struct NavigationRoutingView: View {
         switch destination {
         case .createProfile:
             CreateProfileView()
-        case .myPage(let petId):
+        case .myPage:
             Text("마이페이잊")
         }
     }
