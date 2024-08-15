@@ -13,10 +13,7 @@ enum UserLoginAPITarget {
     case appleLogin(token: String)
 }
 
-extension UserLoginAPITarget: TargetType {
-    var baseURL: URL {
-        return URL(string: "exapmle")!
-    }
+extension UserLoginAPITarget: APITargetType {
     
     var path: String {
         switch self {

@@ -9,23 +9,19 @@ import Foundation
 import SwiftUI
 
 enum Icon: String {
-    case home = "logo"
-    case diagnosis = "diagnosis"
-    case schedule = "schedule"
-    case sugeestion = "sugeestion"
-    case qna = "qna"
     
     // MARK: - Login
     case appleLogin = "appleLogin"
     case kakaoLogin = "kakaoLogin"
     case loginBackground = "loginBackground"
     case petFriends = "petFriends"
-    
+    case uncheck = "uncheck"
     
     // MARK: - Profile
     case togetherPet = "togetherPet"
     case ProfileCat = "ProfileCat"
     case ProfileDog = "ProfileDog"
+    case check = "check"
     
     // MARK: - Home
     case editProfile = "editProfile"
@@ -65,6 +61,22 @@ enum Icon: String {
     case answerNotCheck = "answerNotCheck"
     case petCamera = "petCamera"
     case imageRemove = "imageRemove"
+    case diagnosisBackground = "diagnosisBackground"
+    case bubble = "bubble"
+    case bubbleLogo = "bubbleLogo"
+    case trash = "trash"
+    case loadingBg = "loadingBg"
+    
+    // MARK: - Tab
+    case diagnosis = "diagnosis"
+    case home = "home"
+    case qna = "qna"
+    case schedule = "schedule"
+    case suggestion = "suggestion"
+    
+    //MARK: - MyPage
+    case heartTips = "heartTips"
+    case pencil = "pencil"
     
     var image: Image {
         return Image(self.rawValue)

@@ -13,18 +13,26 @@
 		488158172C3C3CCC002A9CB4 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 488158162C3C3CCC002A9CB4 /* Moya */; };
 		488158192C3C3CCC002A9CB4 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 488158182C3C3CCC002A9CB4 /* ReactiveMoya */; };
 		4881581B2C3C3CCC002A9CB4 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 4881581A2C3C3CCC002A9CB4 /* RxMoya */; };
+		F9EDA9662C648D16005872DD /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = F9EDA9652C648D16005872DD /* Lottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		481C77B92C3A6C70005D60EB /* ttakkeun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ttakkeun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		481C77C32C3A6C71005D60EB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4835589F2C3D0A6B006AB282 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		48A575E02C6C85CB0083BC19 /* ttakkeun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ttakkeun.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		482855322C4A5FE300A2DC80 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Diagnosis/AnswerButton.swift,
+				Diagnosis/DiagnosisTopbutton.swift,
+				Diagnosis/DiagnosticImages.swift,
+				Diagnosis/JournalListCard.swift,
+				Diagnosis/NotJournalList.swift,
+				Diagnosis/SelctCareButton.swift,
 				ETC/CustomAlert.swift,
 				ETC/CustomNavigation.swift,
 				ETC/CustomTextField.swift,
@@ -39,11 +47,12 @@
 				Home/HomeUserRecommendProduct.swift,
 				Home/ProfileImageCard.swift,
 				Home/ToDoCheckList.swift,
-				Journal/AnswerButton.swift,
-				Journal/DiagnosticImages.swift,
-				Journal/SelctCareButton.swift,
+				Login/AgreementDetailSheet.swift,
+				Profile/BirthSelect.swift,
+				Profile/MakeProfileButtonCustom.swift,
 				Profile/MakeProfileNameTag.swift,
 				Profile/ProfileSelect.swift,
+				Profile/VarietySearch.swift,
 				QnA/TopTenQuestion.swift,
 				Recommend/ProductSheetView.swift,
 				Schedule/CustomDiary.swift,
@@ -72,6 +81,7 @@
 				"Fonts/SUIT-Thin.otf",
 				Icon.swift,
 				KeyBoardHide.swift,
+				KeyboardObserver.swift,
 				ShadowReuse.swift,
 				ttakkeunApp.swift,
 			);
@@ -80,6 +90,11 @@
 		483558A32C3D0F13006AB282 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				CreateProfileView.swift,
+				Diagnosis/DiagnosingView.swift,
+				Diagnosis/DiagnosisHeader.swift,
+				Diagnosis/DiagnosisView.swift,
+				Diagnosis/JournalListView.swift,
 				Diagnosis/RegistDiagnosisFlowView.swift,
 				Diagnosis/RegistDiagnosisPageContents.swift,
 				HomeTab/CompactTodo.swift,
@@ -87,25 +102,39 @@
 				HomeTab/HomeDragView.swift,
 				HomeTab/HomeProfileCard.swift,
 				HomeTab/HomeView.swift,
-				LoginView.swift,
+				LoginView/AgreementView.swift,
+				LoginView/LoginView.swift,
+				LoginView/Onboarding.json,
+				LoginView/OnboardingView.swift,
+				MyPage/MyPageDetailView.swift,
+				MyPage/MyPageView.swift,
 				ProfileView.swift,
-				QnaTab/QnaFAQView.swift,
-				QnaTab/QnaHeaderView.swift,
-				QnaTab/QnaTipsView.swift,
+				Qna/QnaFAQView.swift,
+				Qna/QnaHeaderView.swift,
+				Qna/QnaTipsView.swift,
+				Schedule/ScheduleView.swift,
+				Suggestion/SuggestionView.swift,
+				TabView/CustomTab.swift,
+				TabView/TabView.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
 		4863B2AA2C3D166000BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				ImagePicker/ImageHandling.swift,
 				ImagePicker/PetImagePicker.swift,
 				ImagePicker/ProfileImageRegistPicker.swift,
 				KeyChain/KeyChainManager.swift,
 				KeyChain/UserInfo.swift,
 				LoginManager/AppleLoginManager.swift,
 				LoginManager/AppleUserData.swift,
+				Navigation/DIContainer.swift,
+				Navigation/NavigationDestination.swift,
+				Navigation/NavigationRouter.swift,
+				Navigation/NavigationRoutingView.swift,
 				PetState.swift,
+				Protocol/ImageHandling.swift,
+				Protocol/ObservableObjectSettable.swift,
 				TokenRefresh/AccessTokenRefresher.swift,
 				TokenRefresh/APIManager.swift,
 				TokenRefresh/AuthAPITarget.swift,
@@ -118,10 +147,13 @@
 		4863B2B42C3D16BF00BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				APIBaseURL.swift,
+				DiagnosticResultAPITarget.swift,
 				JournalAPITarget.swift,
 				PetProfileAPITarget.swift,
 				ProductRecommendAPITarget.swift,
 				ScheduleAPITarget.swift,
+				TodoAPITarget.swift,
 				UserLoginAPITarget.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -129,9 +161,16 @@
 		48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AgreementViewModel.swift,
+				CreateProfileViewModel.swift,
 				CustomDiaryViewModel.swift,
+				Diagnostic/DiagnosticResultViewModel.swift,
+				Diagnostic/JournalListViewModel.swift,
 				HomeProfileCardViewModel.swift,
+				LoginOnBoarding/AppFlowViewModel.swift,
+				LoginOnBoarding/LoginViewModel.swift,
 				LoginViewModel.swift,
+				MyPageViewModel.swift,
 				ProductViewModel.swift,
 				ProfileCardViewModel.swift,
 				QnaViewModel.swift,
@@ -143,20 +182,27 @@
 		48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Diagnostic/DiagnosticPoint.swift,
+				Journal/JournalListData.swift,
 				Journal/JournalQuestionsData.swift,
 				Journal/RegistJournalData.swift,
+				Login/AgreementData.swift,
+				Login/AgreementDetailData.swift,
 				LoginResponseData.swift,
 				PetProfile/CreatePetProfileRequestData.swift,
 				PetProfile/HomeProfileData.swift,
 				PetProfile/PetProfileData.swift,
 				PetProfile/PetProfileImageData.swift,
+				PetProfile/PetVarietyData.swift,
 				Product/AIAndSearchProductData.swift,
-				QnaFaqData.swift,
-				QnaJson/CategoryQnaJsonData.json,
-				QnaJson/TopTenQnaJsonData.json,
+				QnA/CategoryQnaJsonData.json,
+				QnA/QnaFaqData.swift,
+				QnA/TopTenQnaJsonData.json,
 				RecommendProductData.swift,
 				Schedule/ScheduleInquiryData.swift,
 				Schedule/TodoCompleteData.swift,
+				ToDo/CorrectionTodo.swift,
+				ToDo/CreateTodoData.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -164,8 +210,10 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AnswerValue.swift,
+				DiagnosisSegment.swift,
 				PartItem.swift,
 				ProfileType.swift,
+				TabCase.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -192,6 +240,7 @@
 				488158192C3C3CCC002A9CB4 /* ReactiveMoya in Frameworks */,
 				488158122C3C3CB6002A9CB4 /* Kingfisher in Frameworks */,
 				488158172C3C3CCC002A9CB4 /* Moya in Frameworks */,
+				F9EDA9662C648D16005872DD /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +266,7 @@
 		481C77BB2C3A6C70005D60EB /* ttakkeun */ = {
 			isa = PBXGroup;
 			children = (
+				48A575E02C6C85CB0083BC19 /* ttakkeun.entitlements */,
 				4835589F2C3D0A6B006AB282 /* Info.plist */,
 				4828552E2C4A5FD000A2DC80 /* Components */,
 				48DDC3232C43D1CF0058EBFF /* EnumFile */,
@@ -261,6 +311,7 @@
 				488158162C3C3CCC002A9CB4 /* Moya */,
 				488158182C3C3CCC002A9CB4 /* ReactiveMoya */,
 				4881581A2C3C3CCC002A9CB4 /* RxMoya */,
+				F9EDA9652C648D16005872DD /* Lottie */,
 			);
 			productName = ttakkeun;
 			productReference = 481C77B92C3A6C70005D60EB /* ttakkeun.app */;
@@ -292,6 +343,7 @@
 			packageReferences = (
 				488158102C3C3CB6002A9CB4 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				488158132C3C3CCC002A9CB4 /* XCRemoteSwiftPackageReference "Moya" */,
+				F9EDA9642C648D16005872DD /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			preferredProjectObjectVersion = 73;
 			productRefGroup = 481C77BA2C3A6C70005D60EB /* Products */;
@@ -451,6 +503,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ttakkeun/ttakkeun.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ttakkeun/Preview Content\"";
@@ -481,6 +534,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ttakkeun/ttakkeun.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ttakkeun/Preview Content\"";
@@ -546,6 +600,14 @@
 				minimumVersion = 15.0.3;
 			};
 		};
+		F9EDA9642C648D16005872DD /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -573,6 +635,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 488158132C3C3CCC002A9CB4 /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = RxMoya;
+		};
+		F9EDA9652C648D16005872DD /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F9EDA9642C648D16005872DD /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

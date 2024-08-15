@@ -157,7 +157,7 @@ struct HomeDragView: View {
     @ViewBuilder
     private var compactAIProduct: some View {
         VStack(alignment: .leading, spacing: 16) {
-            titleText(text: "\(petState.petName ?? "등록돈 펫 정보 없음") 위한 따끈따끈 AI 추천 제품")
+            titleText(text: "\(petState.petName)")
             
             if let resultData = productViewModel.aiProductData?.result {
                 ScrollView(.horizontal, showsIndicators: false, content: {
@@ -195,7 +195,7 @@ struct HomeDragView: View {
     private var compactTopProduct: some View {
         //TODO: - PetState 정보 수정할 것
         VStack(alignment: .leading, spacing: 16, content: {
-            titleText(text: "\(petState.petName ?? "등록된 펫 정보 없음")위한 추천 제품 Top 8")
+            titleText(text: "\(petState.petName)")
             
             if let resultData = productViewModel.userProductData?.result {
                 ScrollView(.horizontal, showsIndicators: false, content: {
@@ -231,7 +231,7 @@ struct HomeDragView_Preview: PreviewProvider {
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
             HomeDragView(scheduleViewModel: ScheduleViewModel(), productViewModel: ProductViewModel())
-                .environmentObject(PetState())
+                .environmentObject(PetState(petName: "유아", petId: 1))
         }
     }
 }
