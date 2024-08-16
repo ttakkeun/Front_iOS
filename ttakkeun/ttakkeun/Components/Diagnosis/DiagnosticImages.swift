@@ -106,7 +106,7 @@ struct DiagnosticImages: View {
 
 struct DiagnosticImages_Preview: PreviewProvider {
     static var previews: some View {
-        DiagnosticImages(viewModel: RegistJournalViewModel())
+        DiagnosticImages(viewModel: RegistJournalViewModel(petId: 0))
             .previewLayout(.sizeThatFits)
     }
 }
