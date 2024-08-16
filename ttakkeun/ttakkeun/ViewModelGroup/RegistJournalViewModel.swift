@@ -9,29 +9,37 @@ import Foundation
 import Moya
 import SwiftUI
 
+/// 일지 생성 시, 사용되는 일지 등록 뷰에서의 뷰모델
 @MainActor
 class RegistJournalViewModel: ObservableObject, @preconcurrency ImageHandling {
     
-    @Published var inputData: RegistJournalData?
+    /// 선택 답변이 저장되는 데이터 모델
+    @Published var inputData: RegistJournalData
+    /// API로 받아온 답변과 질문
     @Published var getQuestions: JournalQuestionsDetailData?
     
     
-    @Published var currentPage: Int = 1
+    @Published var currentPage: Int = 5
     @Published var selectedPart: PartItem?
     private let provider: MoyaProvider<JournalAPITarget>
     
     
     // MARK: - Init
-    init(provider: MoyaProvider<JournalAPITarget> = APIManager.shared.testProvider(for: JournalAPITarget.self)) {
+    init(
+        provider: MoyaProvider<JournalAPITarget> = APIManager.shared.testProvider(for: JournalAPITarget.self),
+        petId: Int
+    )
+    {
         self.provider = provider
+        self.inputData = RegistJournalData(petId: petId)
     }
     
-    // MARK: - 일지 답변 저장
+    // MARK: - 일지 답변 서버 전달 API
     public func postInputData() async {
         
-        guard let data = self.inputData else { return }
+        //TODO: inputData 내용 채워야한다.
         
-        provider.request(.registJournal(data: data)) { [weak self] result in
+        provider.request(.registJournal(data: inputData)) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.handlerResponsePostData(response: response)
@@ -49,6 +57,34 @@ class RegistJournalViewModel: ObservableObject, @preconcurrency ImageHandling {
             print("일정 생성 데이터 디코더 에러 : \(error)")
         }
     }
+    
+    // MARK: - 일지괸련 질문 및 답변 조회
+    
+    /// 사용자가 선택한 답변의 데이터 모델에 저장한다.
+    /// - Parameters:
+    ///   - questionIndex: 질문 인덱스 번호
+    ///   - selectedAnswer: 선택한 답변 조회
+    public func updateAnswer(for questionIndex: Int, selectedAnswer: [String]) {
+        
+        switch questionIndex {
+        case 0:
+            inputData.answer1 = selectedAnswer
+        case 1:
+            inputData.answer2 = selectedAnswer
+        case 3:
+            inputData.answer3 = selectedAnswer
+        default:
+            break
+        }
+    }
+    
+    /// 현재 페이지에 해당하는 질문 조회
+    var currentQuestion: QuestionDetailData? {
+        guard let getQuestion = getQuestions, currentPage <= getQuestion.questions.count else { return nil }
+        return getQuestion.questions[currentPage - 1]
+    }
+    
+    
     
     // MARK: - 일지 질문 조회 API
     
@@ -104,5 +140,21 @@ class RegistJournalViewModel: ObservableObject, @preconcurrency ImageHandling {
     
     func getImages() -> [UIImage] {
         arrImages
+    }
+    
+    // MARK: - Page Change
+    
+    /// 페이지 감소 버튼
+    public func pageDecrease() async {
+        if currentPage > 1 {
+            self.currentPage -= 1
+        }
+    }
+    
+    /// 페이지 감소 버튼
+    public func pageIncrease() async {
+        if currentPage < 5 {
+            self.currentPage += 1
+        }
     }
 }

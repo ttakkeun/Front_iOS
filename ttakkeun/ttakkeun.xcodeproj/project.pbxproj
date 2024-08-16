@@ -32,7 +32,7 @@
 				Diagnosis/DiagnosticImages.swift,
 				Diagnosis/JournalListCard.swift,
 				Diagnosis/NotJournalList.swift,
-				Diagnosis/SelctCareButton.swift,
+				Diagnosis/SelectCareButton.swift,
 				ETC/CustomAlert.swift,
 				ETC/CustomNavigation.swift,
 				ETC/CustomTextField.swift,
@@ -95,6 +95,7 @@
 				Diagnosis/DiagnosisHeader.swift,
 				Diagnosis/DiagnosisView.swift,
 				Diagnosis/JournalListView.swift,
+				Diagnosis/JournalQuestionView.swift,
 				Diagnosis/RegistDiagnosisFlowView.swift,
 				Diagnosis/RegistDiagnosisPageContents.swift,
 				HomeTab/CompactTodo.swift,
@@ -169,7 +170,6 @@
 				HomeProfileCardViewModel.swift,
 				LoginOnBoarding/AppFlowViewModel.swift,
 				LoginOnBoarding/LoginViewModel.swift,
-				LoginViewModel.swift,
 				MyPageViewModel.swift,
 				ProductViewModel.swift,
 				ProfileCardViewModel.swift,
@@ -209,7 +209,6 @@
 		48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				AnswerValue.swift,
 				DiagnosisSegment.swift,
 				PartItem.swift,
 				ProfileType.swift,
