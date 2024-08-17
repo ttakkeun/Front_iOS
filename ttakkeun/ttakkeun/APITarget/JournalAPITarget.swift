@@ -24,8 +24,8 @@ extension JournalAPITarget: APITargetType {
             return "/record/\(petID)/\(category)/\(page)"
         case .getJournalQuestions(let category):
             return "/record/register/\(category)"
-        case .registJournal:
-            return "/record/register"
+        case .registJournal(let data):
+            return "/record/register/\(data.petId)"
         case .deleteJournalList(let id):
             return "/record/\(id)"
         }

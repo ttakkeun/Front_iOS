@@ -62,18 +62,18 @@ struct RegistDiagnosisPageContents: View {
     @ViewBuilder
     private var questionAnswer: some View {
         if let question = viewModel.currentQuestion {
-                VStack(alignment: .center) {
-                    JournalQuestionView(
-                        viewModel: viewModel,
-                        question: question,
-                        allowMultiSelection: true,
-                        questionIndex: viewModel.currentPage - 2)
-                    
-                    Spacer()
-                    
-                    pageChangeBtn
-                }
-                .frame(height: 691)
+            VStack(alignment: .center) {
+                JournalQuestionView(
+                    viewModel: viewModel,
+                    question: question,
+                    allowMultiSelection: true,
+                    questionIndex: viewModel.currentPage - 2)
+                
+                Spacer()
+                
+                pageChangeBtn
+            }
+            .frame(height: 691)
             
         } else {
             ProgressView()
@@ -97,6 +97,12 @@ struct RegistDiagnosisPageContents: View {
             MainButton(btnText: viewModel.currentPage == 5 ? "완료" : "다음", width: 208, height: 63, action: {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     viewModel.pageIncrease()
+                }
+                
+                Task {
+                    if viewModel.currentPage == 5 {
+                        await viewModel.postInputData()
+                    }
                 }
             }, color: Color.primaryColor_Main)
         })

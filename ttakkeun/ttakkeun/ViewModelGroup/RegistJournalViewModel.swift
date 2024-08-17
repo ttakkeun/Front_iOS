@@ -37,8 +37,6 @@ class RegistJournalViewModel: ObservableObject, @preconcurrency ImageHandling {
     // MARK: - 일지 답변 서버 전달 API
     public func postInputData() async {
         
-        //TODO: inputData 내용 채워야한다.
-        
         provider.request(.registJournal(data: inputData)) { [weak self] result in
             switch result {
             case .success(let response):

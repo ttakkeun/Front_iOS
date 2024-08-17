@@ -25,5 +25,13 @@ struct RegistJournalResponseData: Codable {
     let isSuccess: Bool
     let code: String
     let message: String
-    let result: String
+    let result: RecordId
+}
+
+struct RecordId: Codable {
+    let recordID: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case recordID = "record_Id"
+    }
 }
