@@ -10,6 +10,9 @@ import SwiftUI
 
 enum Icon: String {
     
+    // MARK: - Close
+    case close = "close"
+    
     // MARK: - Login
     case appleLogin = "appleLogin"
     case kakaoLogin = "kakaoLogin"

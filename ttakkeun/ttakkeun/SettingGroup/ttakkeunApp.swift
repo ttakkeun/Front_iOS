@@ -24,9 +24,7 @@ struct ttakkeunApp: App {
             //                LoginView(viewModel: loginViewModel)
             //            }
             //        }
-            ProfileView(viewModel: ProfileCardViewModel(container: container))
-                .environmentObject(petState)
-                .environmentObject(container)
+            RegistDiagnosisFlowView(petState: PetState())
         }
     }
 }

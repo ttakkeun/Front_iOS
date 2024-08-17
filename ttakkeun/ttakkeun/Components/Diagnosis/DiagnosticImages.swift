@@ -24,27 +24,28 @@ struct DiagnosticImages: View {
     
     private var imageTitle: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text("사진을 등록해주사면 \n따끈 AI 진단에서 더 정확한 결과를 받을 수 있어요")
+            Text("사진을 등록해주시면 \n따끈 AI 진단에서 더 정확한 결과를 받을 수 있어요")
                 .font(.Body3_medium)
                 .foregroundStyle(Color.gray_900)
+                .frame(height: 36)
             
             Text("최대 5장")
                 .font(.Body5_medium)
                 .foregroundStyle(Color.gray_400)
             
-            Spacer().frame(height: 11)
+            Spacer().frame(height: 8)
             
             cameraBtn
         }
-        .frame(maxWidth: 277)
+        .frame(maxWidth: 353)
     }
     
     /// 사진 등록 카메라 버튼
     private var cameraBtn: some View {
-        Button(action: {
-            viewModel.showImagePicker()
-        }, label: {
-            HStack(alignment: .top, spacing: 8) {
+        HStack(alignment: .top, spacing: 8) {
+            Button(action: {
+                viewModel.showImagePicker()
+            }, label: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.scheduleCard_Color)
@@ -60,12 +61,11 @@ struct DiagnosticImages: View {
                             .font(.Body3_regular)
                             .foregroundStyle(Color.gray_400)
                     })
-                   
                 }
-                showSelectedImage
-            }
-            .frame(height: 180)
-        })
+            })
+            
+            showSelectedImage
+        }
     }
     
     private func imageAddAndRemove(for index: Int, image: UIImage) -> some View {
@@ -94,8 +94,8 @@ struct DiagnosticImages: View {
     }
     
     private var showSelectedImage: some View {
-        ScrollView(.vertical, showsIndicators: false, content: {
-            LazyVGrid(columns: Array(repeating: GridItem(.fixed(80)), count: 2), content: {
+        ScrollView(.horizontal, showsIndicators: false, content: {
+            LazyVGrid(columns: Array(repeating: GridItem(.fixed(80)), count: 3), content: {
                 ForEach(0..<viewModel.getImages().count, id: \.self) { index in
                     imageAddAndRemove(for: index, image: viewModel.getImages()[index])
                 }

@@ -38,4 +38,8 @@ struct QuestionDetailData: Codable {
 struct AnswerDetailData: Codable {
     var answerID =  UUID()
     let answerText: String
+    
+    enum CodingKeys: String, CodingKey {
+        case answerText
+    }
 }

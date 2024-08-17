@@ -19,7 +19,7 @@ class RegistJournalViewModel: ObservableObject, @preconcurrency ImageHandling {
     @Published var getQuestions: JournalQuestionsDetailData?
     
     
-    @Published var currentPage: Int = 5
+    @Published var currentPage: Int = 1
     @Published var selectedPart: PartItem?
     private let provider: MoyaProvider<JournalAPITarget>
     
@@ -80,14 +80,15 @@ class RegistJournalViewModel: ObservableObject, @preconcurrency ImageHandling {
     
     /// 현재 페이지에 해당하는 질문 조회
     var currentQuestion: QuestionDetailData? {
-        guard let getQuestion = getQuestions, currentPage <= getQuestion.questions.count else { return nil }
-        return getQuestion.questions[currentPage - 1]
+        guard let getQuestion = getQuestions, currentPage - 1 <= getQuestion.questions.count else { return nil }
+        return getQuestion.questions[currentPage - 2]
     }
     
     
     
     // MARK: - 일지 질문 조회 API
     
+    /// 서버로부터 질문과 답변을 조회한다.
     public func getJournalQuestions() async {
         
         guard let selectedPart = selectedPart else { return }
@@ -107,7 +108,7 @@ class RegistJournalViewModel: ObservableObject, @preconcurrency ImageHandling {
             let decodedData = try JSONDecoder().decode(JournalQuestionsData.self, from: response.data)
             DispatchQueue.main.async {
                 self.getQuestions = decodedData.result
-                print("카테고리 질문 받아오기 성공")
+                print("카테고리 \(String(describing: self.selectedPart?.rawValue)) 질문 받아오기 성공")
             }
         } catch {
             print("카테고리 질문 디코더 에러: \(error)")
@@ -123,7 +124,7 @@ class RegistJournalViewModel: ObservableObject, @preconcurrency ImageHandling {
     
     /// 현재 선택된 이미지 수 반환
     var selectedImageCount: Int {
-        return questionImages.values.reduce(0) { $0 + $1.count }
+        return questionImages[currentPage - 2]?.count ?? 0
     }
     
     
@@ -148,14 +149,7 @@ class RegistJournalViewModel: ObservableObject, @preconcurrency ImageHandling {
     // MARK: - Page Change
     
     /// 페이지 감소 버튼
-    public func pageDecrease() async {
-        if currentPage > 1 {
-            self.currentPage -= 1
-        }
-    }
-    
-    /// 페이지 감소 버튼
-    public func pageIncrease() async {
+    public func pageIncrease() {
         if currentPage < 5 {
             self.currentPage += 1
         }

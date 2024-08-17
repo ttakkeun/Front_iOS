@@ -51,7 +51,7 @@ struct JournalQuestionView: View {
                 loadQuestion()
             }
             
-            Spacer().frame(height: 20)
+            Spacer().frame(height: 10)
             
             DiagnosticImages(viewModel: viewModel)
         })

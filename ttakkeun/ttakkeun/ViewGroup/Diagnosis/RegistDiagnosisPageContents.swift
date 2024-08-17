@@ -24,15 +24,7 @@ struct RegistDiagnosisPageContents: View {
         case 1:
             selectCategory
         case 2, 3, 4:
-            // TODO: - 질문 다 받아온 후 뷰 불려지도록 안 그럼 프로그레스 처리
-            if let question = viewModel.currentQuestion {
-                JournalQuestionView(
-                    viewModel: viewModel,
-                    question: question,
-                    allowMultiSelection: true,
-                    questionIndex: viewModel.currentPage - 2)
-            }
-            
+            questionAnswer
         case 5:
             etcTextView
         default:
@@ -65,35 +57,54 @@ struct RegistDiagnosisPageContents: View {
         .frame(width: 339)
     }
     
+    // MARK: - 2,3,4 page
+    
+    @ViewBuilder
+    private var questionAnswer: some View {
+        if let question = viewModel.currentQuestion {
+                VStack(alignment: .center) {
+                    JournalQuestionView(
+                        viewModel: viewModel,
+                        question: question,
+                        allowMultiSelection: true,
+                        questionIndex: viewModel.currentPage - 2)
+                    
+                    Spacer()
+                    
+                    pageChangeBtn
+                }
+                .frame(height: 691)
+            
+        } else {
+            ProgressView()
+                .frame(width: 100, height: 100)
+                .onAppear {
+                    viewModel.objectWillChange.send()
+                }
+        }
+    }
+    
     /// 페이지 전환 버튼
     @ViewBuilder
     private var pageChangeBtn: some View {
-        if viewModel.currentPage >= 2 {
-            HStack(alignment: .center, spacing: 9, content: {
-                MainButton(btnText: "이전", width: 122, height: 63, action: {
-                    Task {
-                        await viewModel.pageDecrease()
-                    }
-                }, color: Color.productCard_Color)
-                
-                MainButton(btnText: viewModel.currentPage == 5 ? "완료" : "다음", width: 208, height: 63, action: {
-                    Task {
-                        await viewModel.pageIncrease()
-                    }
-                }, color: Color.primaryColor_Main)
-            })
-        } else {
-            MainButton(btnText: "다음", width: 339, height: 63, action: {
-                Task {
-                    await viewModel.pageIncrease()
+        HStack(alignment: .center, spacing: 9, content: {
+            MainButton(btnText: "이전", width: 122, height: 63, action: {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    viewModel.currentPage -= 1
+                }
+            }, color: Color.productCard_Color)
+            
+            MainButton(btnText: viewModel.currentPage == 5 ? "완료" : "다음", width: 208, height: 63, action: {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    viewModel.pageIncrease()
                 }
             }, color: Color.primaryColor_Main)
-        }
+        })
     }
     
     // MARK: - 완료 페이지
     private var etcTextView: some View {
-        VStack(alignment: .leading, spacing: 10, content: {
+        VStack(alignment: .center, spacing: 10, content: {
             titleText("기타 특이사항이 있으면 \n알려주세요", "현재 섭취하고 있는 털 영양제나 평소 빗질 빈도 등 추가적인 사항이나 다른 증상들을 입력해주세요")
             TextEditor(text: Binding<String>(
                 get: { viewModel.inputData.etc ?? "" },
@@ -107,7 +118,13 @@ struct RegistDiagnosisPageContents: View {
             .onAppear {
                 UIApplication.shared.hideKeyboard()
             }
+            
+            Spacer()
+            
+            pageChangeBtn
         })
+        .frame(height: 691)
+        .ignoresSafeArea(.keyboard)
     }
     
     // MARK: - Function

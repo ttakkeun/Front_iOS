@@ -16,7 +16,16 @@ struct RegistDiagnosisFlowView: View {
     }
     
     var body: some View {
-        Text("hello")
+        VStack(alignment: .center, content: {
+            CustomNavigation(action: {
+                dismiss()
+            }, title: "일지 생성", currentPage: viewModel.currentPage, naviIcon: Image("close"), width: 14, height: 14)
+            
+            Spacer()
+            
+            RegistDiagnosisPageContents(viewModel: viewModel)
+        })
+        .frame(width: 355, height: 749)
     }
 }
 
