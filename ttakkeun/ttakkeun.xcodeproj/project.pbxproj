@@ -35,6 +35,7 @@
 				Diagnosis/SelectCareButton.swift,
 				ETC/CustomAlert.swift,
 				ETC/CustomNavigation.swift,
+				ETC/CustomTextEditor.swift,
 				ETC/CustomTextField.swift,
 				ETC/MainButton.swift,
 				ETC/TopStatusBar.swift,
