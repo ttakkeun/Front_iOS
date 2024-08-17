@@ -118,20 +118,23 @@ class RegistJournalViewModel: ObservableObject, @preconcurrency ImageHandling {
     // MARK: - ImagePicker
     
     @Published var isImagePickerPresented: Bool = false
+    @Published var questionImages: [Int: [UIImage]] = [:]
     @Published var arrImages: [UIImage] = []
+    
+    /// 현재 선택된 이미지 수 반환
     var selectedImageCount: Int {
-        arrImages.count
+        return questionImages.values.reduce(0) { $0 + $1.count }
     }
     
     
     func addImage(_ images: UIImage) {
-        arrImages.append(images)
+        if questionImages[currentPage - 2]?.count ?? 0 < 5 {
+            questionImages[currentPage - 2, default: []].append(images)
+        }
     }
     
     func removeImage(at index: Int) {
-        if arrImages.indices.contains(index) {
-            arrImages.remove(at: index)
-        }
+        questionImages[currentPage - 2]?.remove(at: index)
     }
     
     func showImagePicker() {
@@ -139,7 +142,7 @@ class RegistJournalViewModel: ObservableObject, @preconcurrency ImageHandling {
     }
     
     func getImages() -> [UIImage] {
-        arrImages
+        return questionImages[currentPage - 2] ?? []
     }
     
     // MARK: - Page Change

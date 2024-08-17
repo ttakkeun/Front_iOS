@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// 진단 생성 시 사용 이미지 버튼
+/// 일지 생성 시 사용하는 이미지 추가 버튼
 struct DiagnosticImages: View {
     
     @ObservedObject var viewModel: RegistJournalViewModel
@@ -16,6 +16,7 @@ struct DiagnosticImages: View {
         imageTitle
             .sheet(isPresented: $viewModel.isImagePickerPresented, content: {
                 PetImagePicker(imageHandler: viewModel)
+                    .ignoresSafeArea(.all)
             })
     }
     

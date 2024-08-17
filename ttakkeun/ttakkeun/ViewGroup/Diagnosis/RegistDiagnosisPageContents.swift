@@ -24,6 +24,7 @@ struct RegistDiagnosisPageContents: View {
         case 1:
             selectCategory
         case 2, 3, 4:
+            // TODO: - 질문 다 받아온 후 뷰 불려지도록 안 그럼 프로그레스 처리
             if let question = viewModel.currentQuestion {
                 JournalQuestionView(
                     viewModel: viewModel,
@@ -94,6 +95,18 @@ struct RegistDiagnosisPageContents: View {
     private var etcTextView: some View {
         VStack(alignment: .leading, spacing: 10, content: {
             titleText("기타 특이사항이 있으면 \n알려주세요", "현재 섭취하고 있는 털 영양제나 평소 빗질 빈도 등 추가적인 사항이나 다른 증상들을 입력해주세요")
+            TextEditor(text: Binding<String>(
+                get: { viewModel.inputData.etc ?? "" },
+                set: { viewModel.inputData.etc = $0.isEmpty ? nil : $0 }
+            ))
+            .customStyleEditor(placeholder: "자세히 적어주세요! 정확한 진단 결과를 받아볼 수 있어요", text: Binding<String>(
+                get: { viewModel.inputData.etc ?? "" },
+                set: { viewModel.inputData.etc = $0.isEmpty ? nil : $0 }
+            ))
+            .frame(width: 347, height: 204)
+            .onAppear {
+                UIApplication.shared.hideKeyboard()
+            }
         })
     }
     
@@ -113,7 +126,7 @@ struct RegistDiagnosisPageContents: View {
                 .font(.Body3_medium)
                 .foregroundStyle(Color.gray_400)
         })
-        .frame(width: 339, height: 100, alignment: .leading)
+        .frame(width: 339, alignment: .leading)
     }
 }
 
