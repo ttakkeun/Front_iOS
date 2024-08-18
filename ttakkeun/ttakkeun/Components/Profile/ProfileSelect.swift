@@ -83,8 +83,8 @@ struct ProfileSelect: View {
         Button(action: {
             petState.petId = data.pet_id
             petState.petName = data.name
-            print("펫 아이디 : \(petState.petId ?? 0)")
-            print("펫 이름 : \(petState.petName ?? "")")
+            print("펫 아이디 : \(petState.petId)")
+            print("펫 이름 : \(petState.petName)")
         }, label: {
             VStack(alignment: .center, spacing: 28, content: {
                 

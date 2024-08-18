@@ -22,7 +22,18 @@ struct RegistDiagnosisPageContents: View {
     private var currentPageView: some View {
         switch viewModel.currentPage {
         case 1:
-            firstPage
+            selectCategory
+        case 2, 3, 4:
+            if let question = viewModel.currentQuestion {
+                JournalQuestionView(
+                    viewModel: viewModel,
+                    question: question,
+                    allowMultiSelection: true,
+                    questionIndex: viewModel.currentPage - 2)
+            }
+            
+        case 5:
+            etcTextView
         default:
             EmptyView()
         }
@@ -30,15 +41,13 @@ struct RegistDiagnosisPageContents: View {
     
     // MARK: - 1 Page(부위 선택)
     
-    /// 부위 선택
-    //TODO: - 서브 타이틀 수정할 것
-    private var firstPage: some View {
+    private var selectCategory: some View {
         VStack(alignment: .center, spacing: 39, content: {
             titleText("기록하고자 하는 \n케어 종류를 선택해주세요", "최대 1가지까지 선택할 수 있어요")
             
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 126), spacing: 14), count: 2), spacing: 6, content: {
                 ForEach(buttonList, id: \.self) { partItem in
-                    SelctCareButton(partItem: partItem, selectedPart: $viewModel.selectedPart)
+                    SelectCareButton(partItem: partItem, selectedPart: $viewModel.selectedPart)
                 }
             })
             .frame(height: 459)
@@ -55,7 +64,38 @@ struct RegistDiagnosisPageContents: View {
         .frame(width: 339)
     }
     
-    // MARK: - 2 page(첫 번째 질문)
+    /// 페이지 전환 버튼
+    @ViewBuilder
+    private var pageChangeBtn: some View {
+        if viewModel.currentPage >= 2 {
+            HStack(alignment: .center, spacing: 9, content: {
+                MainButton(btnText: "이전", width: 122, height: 63, action: {
+                    Task {
+                        await viewModel.pageDecrease()
+                    }
+                }, color: Color.productCard_Color)
+                
+                MainButton(btnText: viewModel.currentPage == 5 ? "완료" : "다음", width: 208, height: 63, action: {
+                    Task {
+                        await viewModel.pageIncrease()
+                    }
+                }, color: Color.primaryColor_Main)
+            })
+        } else {
+            MainButton(btnText: "다음", width: 339, height: 63, action: {
+                Task {
+                    await viewModel.pageIncrease()
+                }
+            }, color: Color.primaryColor_Main)
+        }
+    }
+    
+    // MARK: - 완료 페이지
+    private var etcTextView: some View {
+        VStack(alignment: .leading, spacing: 10, content: {
+            titleText("기타 특이사항이 있으면 \n알려주세요", "현재 섭취하고 있는 털 영양제나 평소 빗질 빈도 등 추가적인 사항이나 다른 증상들을 입력해주세요")
+        })
+    }
     
     // MARK: - Function
     /// 일지 등록 타이틀 생성 함수
@@ -71,11 +111,10 @@ struct RegistDiagnosisPageContents: View {
             
             Text(sub)
                 .font(.Body3_medium)
-                .foregroundStyle(Color.gray_600)
+                .foregroundStyle(Color.gray_400)
         })
         .frame(width: 339, height: 100, alignment: .leading)
     }
-    
 }
 
 // MARK: - Preview
@@ -86,7 +125,7 @@ struct RegistDiagnosisPageContents_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            RegistDiagnosisFlowView()
+            RegistDiagnosisPageContents(viewModel: RegistJournalViewModel(petId: 0))
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }

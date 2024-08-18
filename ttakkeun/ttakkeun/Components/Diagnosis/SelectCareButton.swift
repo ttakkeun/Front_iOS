@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// 진단 항목 선택 버튼 뷰
-struct SelctCareButton: View {
+struct SelectCareButton: View {
     
     var partItem: PartItem
     @Binding var selectedPart: PartItem?

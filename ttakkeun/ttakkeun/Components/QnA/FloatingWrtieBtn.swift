@@ -7,33 +7,26 @@ struct FloatingWriteBtn: View {
     
     //MARK: - Contents
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            if isPresented {
-                backgroundOpacity
-                    .transition(.opacity)
-                    .onTapGesture {
-                        withAnimation {
-                            isPresented = false
-                        }
+        GeometryReader { geo in
+            ZStack {
+                    floatingBtn
+                        .position(x: geo.size.width * 0.85, y: geo.size.height * 0.85)
+                    if isPresented {
+                        
+                        
+                        clickedfloatingBtn(geo: geo)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
                     }
             }
-            VStack(alignment: .trailing, spacing: 11) {
-                Spacer()
-                if isPresented {
-                    clickedfloatingBtn
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                        .zIndex(1)
-                }
-                HStack {
-                    Spacer()
-                    floatingBtn
+            .background(isPresented ? Color.btnBackground.opacity(0.6) : Color.clear)
+            .onTapGesture {
+                withAnimation {
+                    isPresented = false
                 }
             }
-            .padding(.trailing, 24)
-            .animation(.easeInOut, value: isPresented)
-        }
-        .fullScreenCover(item: $selectedCategory) { category in
-            QnaWriteTipsView(viewModel: QnaWriteTipsViewModel(), category: category)
+            .fullScreenCover(item: $selectedCategory) { category in
+                QnaWriteTipsView(viewModel: QnaWriteTipsViewModel(), category: category)
+            }
         }
     }
     
@@ -69,7 +62,7 @@ struct FloatingWriteBtn: View {
     }
     
     /// 플로팅 버튼 클릭되었을 때 위로 나오는 카테고리들
-    private var clickedfloatingBtn: some View {
+    private func clickedfloatingBtn(geo: GeometryProxy) -> some View {
         VStack(spacing: 13) {
             ForEach(TipsCategorySegment.allCases.filter { $0 != .all && $0 != .best }, id: \.self) { category in
                 Button(action: {
@@ -80,16 +73,14 @@ struct FloatingWriteBtn: View {
                 }
             }
         }
-    }
-    
-    /// 플로팅버튼 클릭되었을때 뒷 배경 opacity
-    private var backgroundOpacity: some View {
-        Color(red: 0.85, green: 0.85, blue: 0.85).opacity(0.6)
-            .ignoresSafeArea(.all)
+        .position(x: geo.size.width * 0.8, y: geo.size.height * 0.55)
     }
 }
 
 //MARK: - Preview
-#Preview{
-    FloatingWriteBtn()
+struct FloatingWriteBtn_Previews: PreviewProvider {
+    static var previews: some View {
+        FloatingWriteBtn()
+            .previewLayout(.sizeThatFits)
+    }
 }

@@ -17,5 +17,5 @@ struct TokenResponse: Codable {
 
 struct TokenResponseDetail: Codable {
     let accessToken: String
-    let refreshTokne: String
+    let refreshToken: String
 }

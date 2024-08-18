@@ -41,7 +41,7 @@ struct TipContent: View {
             }
             BottomInfo
         }
-        .frame(maxWidth: 327)
+        .frame(maxWidth: 355)
         .padding(14)
         .overlay(
             RoundedRectangle(cornerRadius: 10)

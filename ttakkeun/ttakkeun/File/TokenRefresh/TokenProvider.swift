@@ -25,26 +25,54 @@ class TokenProvider: TokenProviding {
             guard var userInfo = keyChain.loadSession(for: userSession) else { return }
             userInfo.accessToken = newValue
             if keyChain.saveSession(userInfo, for: "userSession") {
-                print("유저 토큰 갱신 됨")
+                print("유저 액세스 토큰 갱신 됨")
             }
         }
     }
     
-    /* 리프레시 토큰 데이터 담아서 보내야 함 */
-    func refreshToken(completion: @escaping (String?, Error?) -> Void) {
-        guard let userInfo = keyChain.loadSession(for: "userSession") else { return }
+    var refreshToken: String? {
+        get {
+            guard let userInfo = keyChain.loadSession(for: userSession) else { return nil }
+            return userInfo.refreshToken
+        }
         
-        provider.request(.refreshToken(refreshToken: userInfo.refreshToken ?? "")) { result in
+        set {
+            guard var userInfo = keyChain.loadSession(for: userSession) else { return }
+            userInfo.refreshToken = newValue
+            if keyChain.saveSession(userInfo, for: "userSession") {
+                print("유저 리프레시 토큰 갱신 됨")
+            }
+        }
+    }
+    
+    /* 리프레시 토큰 전달하여 유저 정보 탐색 및 액세스 토큰 초기화 */
+    func refreshToken(completion: @escaping (String?, Error?) -> Void) {
+        
+        guard let userInfo = keyChain.loadSession(for: "userSession"), let refreshToken = userInfo.refreshToken else {
+            let error = NSError(domain: "example.com", code: -2, userInfo: [NSLocalizedDescriptionKey: "User session or refresh token not found"])
+            completion(nil, error)
+                return
+            }
+        
+        provider.request(.refreshToken(refreshToken: refreshToken)) { result in
             switch result {
             case .success(let response):
                 do {
                     let tokenData = try JSONDecoder().decode(TokenResponse.self, from: response.data)
-                    self.accessToken = tokenData.result.accessToken
-                    completion(self.accessToken, nil)
+                    if tokenData.isSuccess {
+                        self.accessToken = tokenData.result.accessToken
+                        self.refreshToken = tokenData.result.refreshToken
+                        completion(self.accessToken, nil)
+                    } else {
+                        let error = NSError(domain: "example.com", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token Refresh failed: isSuccess false"])
+                        completion(nil, error)
+                    }
                 } catch {
+                    print("리프레시 토큰 디코더 에러: \(error)")
                     completion(nil, error)
                 }
             case .failure(let error):
+                print("리프레시 토큰 네트워크 오류 : \(error)")
                 completion(nil, error)
             }
         }

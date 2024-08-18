@@ -12,16 +12,22 @@ import Moya
 @MainActor
 class LoginViewModel: ObservableObject {
     
+    /* 등록된 유저이면 프로필 화면 전환, 등록된 유저 아니면 회원 가입 화면 전환*/
+    @Published var isLogin: Bool = false
+    
     let provider: MoyaProvider<UserLoginAPITarget>
     let keychain = KeyChainManager.standard
     let appleLoginManager =  AppleLoginManager()
     var userInfo = UserInfo()
+    private var userEmail: String?
+    
     
     init(
-        provider: MoyaProvider<UserLoginAPITarget> = APIManager.shared.testProvider(for: UserLoginAPITarget.self)
+        provider: MoyaProvider<UserLoginAPITarget> = APIManager.shared.createProvider(for: UserLoginAPITarget.self)
     ) {
         self.provider = provider
-        self.appleLoginManager.onAuthorizationCompleted = { [weak self] authorizationCode in
+        self.appleLoginManager.onAuthorizationCompleted = { [weak self] authorizationCode, email in
+            self?.userEmail = email
             self?.sendUserIdentyCode(token: authorizationCode)
         }
     }
@@ -58,9 +64,19 @@ class LoginViewModel: ObservableObject {
     private func handlerInvalidToken(response: Response) {
         do {
             let decodedData = try JSONDecoder().decode(LoginResponseData.self, from: response.data)
-            self.userInfo = UserInfo(accessToken: decodedData.result.accessToken, refreshToken: decodedData.result.refreshToken)
-            let saveData =  keychain.saveSession(self.userInfo, for: "userSession")
-            print("키 체인 저장 완료 :\(saveData)")
+            DispatchQueue.main.async {
+                if decodedData.isSuccess {
+                    self.userInfo = UserInfo(accessToken: decodedData.result.accessToken,
+                                             refreshToken: decodedData.result.refreshToken,
+                                             email: self.userEmail
+                    )
+                    let saveData =  self.keychain.saveSession(self.userInfo, for: "userSession")
+                    self.isLogin = true
+                    print("키 체인 저장 완료 :\(saveData)")
+                } else {
+                    self.isLogin = false
+                }
+            }
         } catch {
             print("토큰 디코더 오류 : \(error)")
         }

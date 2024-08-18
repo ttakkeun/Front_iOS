@@ -11,27 +11,29 @@ import SwiftUI
 struct AnswerButton: View {
     
     @Binding var isSelected: Bool
-    let answerValue: AnswerValue
+    let data: AnswerDetailData
+    let allowMultipleSection: Bool
     let onSelect: () -> Void
+    
     
     // MARK: - Init
     
     init(
         isSelected: Binding<Bool>,
-        answerValue: AnswerValue,
+        data: AnswerDetailData,
+        allowMultipleSection: Bool = false,
         _ onSelect: @escaping () -> Void
     ) {
         self._isSelected = isSelected
-        self.answerValue = answerValue
+        self.data = data
+        self.allowMultipleSection = allowMultipleSection
         self.onSelect = onSelect
     }
     
     var body: some View {
         Button(action: {
             isSelected.toggle()
-            if isSelected {
-                onSelect()
-            }
+            onSelect()
         }, label: {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
@@ -48,7 +50,7 @@ struct AnswerButton: View {
     /// 질문의 ID에 맞는 답변 버튼 자동 생성 컴포넌트
     private var buttonContents: some View {
         HStack(alignment: .center, content: {
-            Text(answerValue.rawValue)
+            Text(data.answerText)
                 .font(.Body2_semibold)
                 .foregroundStyle(Color.gray_900)
             
@@ -67,14 +69,5 @@ struct AnswerButton: View {
             }
         })
         .frame(width: 301, height: 30)
-    }
-}
-
-struct AnswerButton_Preview: PreviewProvider {
-    static var previews: some View {
-        AnswerButton(isSelected: .constant(false), answerValue: .alopecia, {
-            print("hello")
-        })
-        .previewLayout(.sizeThatFits)
     }
 }

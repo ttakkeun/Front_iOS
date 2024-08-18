@@ -11,8 +11,8 @@ struct RegistDiagnosisFlowView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel: RegistJournalViewModel
     
-    init() {
-        self._viewModel = StateObject(wrappedValue: RegistJournalViewModel())
+    init(petState: PetState) {
+        self._viewModel = StateObject(wrappedValue: RegistJournalViewModel(petId: petState.petId))
     }
     
     var body: some View {
@@ -21,5 +21,5 @@ struct RegistDiagnosisFlowView: View {
 }
 
 #Preview {
-    RegistDiagnosisFlowView()
+    RegistDiagnosisFlowView(petState: PetState())
 }
