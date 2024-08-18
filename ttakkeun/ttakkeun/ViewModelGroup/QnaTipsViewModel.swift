@@ -11,7 +11,7 @@ import Foundation
 
 /// 공유된 Tip 내용들을 받아오는 기능들이 모여있는 뷰모델
 @MainActor
-class QnaTipsViewModel: ObservableObject {
+class QnaTipsViewModel: ObservableObject, @preconcurrency Hashable  {
     
     @Published var allTips: [QnaTipsResponseData] = []
     @Published var selectedCategory: TipsCategorySegment = .best
@@ -26,6 +26,14 @@ class QnaTipsViewModel: ObservableObject {
            self.provider = provider
            self.selectedCategory = .best
            self.tip_id = tip_id  // 초기화
+       }
+    
+    nonisolated static func == (lhs: QnaTipsViewModel, rhs: QnaTipsViewModel) -> Bool {
+           return lhs === rhs
+       }
+
+       func hash(into hasher: inout Hasher) {
+           hasher.combine(ObjectIdentifier(self))
        }
   
    

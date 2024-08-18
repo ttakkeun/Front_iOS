@@ -9,13 +9,13 @@ import SwiftUI
 /// Qna탭에서 FAQ에 대한 뷰
 struct QnaFAQView: View {
     
-    @StateObject private var viewModel = QnaViewModel()
+    @ObservedObject var viewModel: QnaViewModel
     @State private var expandedQuestionIds: Set<UUID> = []
     
     //MARK: - Init
-    init() {
-        self._viewModel = StateObject(wrappedValue: QnaViewModel())
-    }
+    init(viewModel: QnaViewModel) {
+          self._viewModel = ObservedObject(wrappedValue: viewModel)
+      }
     
     //MARK: - Contents
     var body: some View {
@@ -196,7 +196,7 @@ struct QnaFAQView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            QnaFAQView()
+            QnaFAQView(viewModel: QnaViewModel())
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }

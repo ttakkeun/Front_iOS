@@ -8,7 +8,7 @@ import SwiftUI
 import Combine
 
 @MainActor
-class QnaViewModel: ObservableObject {
+class QnaViewModel: ObservableObject, @preconcurrency Hashable {
     @Published var qnaItems: [QnaFaqData] = []
     @Published var topTenQuestions: [QnaFaqData] = []
     @Published var selectedCategory: PartItem = .ear
@@ -21,6 +21,14 @@ class QnaViewModel: ObservableObject {
             await loadCategoryQnAItems()
         }
     }
+    
+    nonisolated static func == (lhs: QnaViewModel, rhs: QnaViewModel) -> Bool {
+           return lhs === rhs
+       }
+
+       func hash(into hasher: inout Hasher) {
+           hasher.combine(ObjectIdentifier(self))
+       }
     
     //MARK: - Function
     

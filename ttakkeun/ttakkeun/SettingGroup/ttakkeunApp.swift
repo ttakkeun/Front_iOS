@@ -24,7 +24,7 @@ struct ttakkeunApp: App {
             //                LoginView(viewModel: loginViewModel)
             //            }
             //        }
-            RegistDiagnosisFlowView(petState: PetState())
+            QnaView()
         }
     }
 }

@@ -9,12 +9,13 @@ import SwiftUI
 /// Qna탭중 Tips에 대한 뷰
 struct QnaTipsView: View {
     
-    @StateObject private var viewModel = QnaTipsViewModel(tip_id: 0)
+    @ObservedObject var viewModel: QnaTipsViewModel
+
     
     //MARK: - Init
-    init() {
-        self._viewModel = StateObject(wrappedValue: QnaTipsViewModel(tip_id: 0))
-    }
+    init(viewModel: QnaTipsViewModel) {
+           self._viewModel = ObservedObject(wrappedValue: viewModel)
+       }
     
     //MARK: - Contents
     var body: some View {
@@ -101,7 +102,7 @@ struct QnaTipsView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            QnaTipsView()
+            QnaTipsView(viewModel: QnaTipsViewModel(tip_id: 0))
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }
