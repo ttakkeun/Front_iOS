@@ -55,6 +55,9 @@ struct CustomNavigation: View {
                 Text(title)
                     .font(.H3_bold)
                     .foregroundStyle(Color.black)
+                
+                Spacer()
+                
             } else {
                 Spacer()
             }

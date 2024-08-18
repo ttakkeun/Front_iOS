@@ -10,7 +10,7 @@ import Foundation
 /// 카데고리 선택 시, 카테고리에 해당하는 질문과 답변을 받아온다.
 struct JournalQuestionsData: Codable {
     let isSuccess: Bool
-    let code: Int
+    let code: String
     let message: String
     let result: JournalQuestionsDetailData
 }
@@ -35,7 +35,11 @@ struct QuestionDetailData: Codable {
     }
 }
 
-struct AnswerDetailData: Codable {
+struct AnswerDetailData: Codable, Hashable {
     var answerID =  UUID()
     let answerText: String
+    
+    enum CodingKeys: String, CodingKey {
+        case answerText
+    }
 }

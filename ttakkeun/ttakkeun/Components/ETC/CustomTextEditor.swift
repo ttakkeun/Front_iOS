@@ -37,7 +37,6 @@ struct CustomTextEditor: ViewModifier {
                 }
             })
             .textInputAutocapitalization(.none)
-            .autocorrectionDisabled()
             .background(Color.scheduleCard_Color)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .font(.Body3_medium)
