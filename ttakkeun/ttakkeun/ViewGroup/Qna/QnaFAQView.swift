@@ -140,11 +140,16 @@ struct QnaFAQView: View {
                         }
                     }) {
                         VStack(alignment: .leading, spacing: -5) {
-                            HStack {
-                                Text("Q. \(item.question)")
+                            HStack(alignment: .firstTextBaseline)  {
+                                Text("Q.")
                                     .font(.Body3_semibold)
                                     .foregroundStyle(Color.gray900)
-                                    .padding(.leading, 19)
+                                    .padding(.leading,20)
+                                    .frame(alignment:.top)
+                                Text("\(item.question)")
+                                    .font(.Body3_semibold)
+                                    .foregroundStyle(Color.gray900)
+                                    .multilineTextAlignment(.leading)
                                 
                                 Spacer()
                                 
@@ -152,6 +157,7 @@ struct QnaFAQView: View {
                                     .foregroundStyle(Color.gray500)
                                     .padding(.trailing, 19)
                             }
+                            .padding(.horizontal,10)
                             .frame(maxWidth: .infinity, minHeight: 58)
                             .background(Color.clear)
                             
@@ -160,9 +166,10 @@ struct QnaFAQView: View {
                                     Text("A.")
                                         .font(.Body3_semibold)
                                         .foregroundStyle(Color.primarycolor700)
-                                        .padding(.leading, 40)
+                                        .padding(.leading, 50)
                                     Text(item.answer)
-                                        .frame(maxWidth: 300, alignment: .leading)
+                                        .multilineTextAlignment(.leading)
+                                        .frame(maxWidth: 300, alignment: .topLeading)
                                         .font(.Body3_semibold)
                                         .foregroundStyle(Color.primarycolor700)
                                 }
