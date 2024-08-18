@@ -186,6 +186,7 @@
 				Product/AIAndSearchProductData.swift,
 				QnA/CategoryQnaJsonData.json,
 				QnA/QnaFaqData.swift,
+				QnA/QnaHeartChangeData.swift,
 				QnA/QnaPostTipsData.swift,
 				QnA/QnaTipsData.swift,
 				QnA/TopTenQnaJsonData.json,
@@ -204,6 +205,7 @@
 				DiagnosisSegment.swift,
 				PartItem.swift,
 				ProfileType.swift,
+				TipsCategorySegment.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};

@@ -9,97 +9,92 @@ import SwiftUI
 import Moya
 import Foundation
 
+/// 공유된 Tip 내용들을 받아오는 기능들이 모여있는 뷰모델
 @MainActor
 class QnaTipsViewModel: ObservableObject {
     
-    @Published var getTips: [QnaTipsResponseData] = []
+    @Published var allTips: [QnaTipsResponseData] = []
     @Published var selectedCategory: TipsCategorySegment = .best
+    @Published var totalLikes: Int = 0
+    @Published var heartClicked: Bool = false
     
+    let tip_id: Int
     private let provider: MoyaProvider<QnaTipsAPITarget>
     
     //MARK: - Init
-    init(provider: MoyaProvider<QnaTipsAPITarget> = APIManager.shared.testProvider(for: QnaTipsAPITarget.self)) {
+    init(tip_id: Int, provider: MoyaProvider<QnaTipsAPITarget> = APIManager.shared.testProvider(for: QnaTipsAPITarget.self)) {
            self.provider = provider
            self.selectedCategory = .best
+           self.tip_id = tip_id  // 초기화
        }
-    
-
-    @Published var tips: [QnaTipsResponseData] = []
+  
    
      /// 전체, 인기 세그먼트 분류하기 위한 필터
      public var filteredTips: [QnaTipsResponseData] {
          switch selectedCategory {
          case .all:
-             return tips.sorted { $0.elapsedTime < $1.elapsedTime }
+             return allTips.sorted { $0.created_at < $1.created_at }
          case .best:
-             return tips.sorted { $0.heartNumber ?? 0 > $1.heartNumber ?? 0 }
+                let sortedTips = allTips.sorted { $0.recommend_count ?? 0 > $1.recommend_count ?? 0 }
+                return Array(sortedTips.prefix(10))
          default:
-             return tips.filter { $0.category.rawValue == selectedCategory.rawValue }
+             return allTips.filter { $0.category.rawValue == selectedCategory.rawValue }
          }
      }
     
     //MARK: - API Function
+    /// Tip내용들 Get요청 보내는 함수
     public func getQnaTipsData() async {
         provider.request(.getQnaTips) { [weak self] result in
             switch result {
             case .success(let response):
-                print("API 호출 성공")
                 self?.handlerResponseGetTipsData(response: response)
             case .failure(let error):
                 print("네트워크 오류: \(error)")
             }
         }
     }
-
+    
+    /// Tip내용들 받아오는 핸들러함수
+    /// - Parameter response: API 호출 시 받게 되는 응답
     private func handlerResponseGetTipsData(response: Response) {
         do {
             let decodedData = try JSONDecoder().decode(QnaTipsData.self, from: response.data)
             DispatchQueue.main.async {
-                self.tips = decodedData.result
+                self.allTips = decodedData.result.tips
+                print("Tips API 호출 성공")
             }
         } catch {
             print("카테고리 질문 디코더 에러: \(error)")
         }
     }
-}
-
-
-/// 팁화면에 대한 카테고리들
-enum TipsCategorySegment: String, Codable, CaseIterable, Identifiable {
-    case all = "ALL"
-    case best = "BEST"
-    case ear = "EAR"
-    case eye = "EYE"
-    case hair = "HAIR"
-    case claw = "CLAW"
-    case tooth = "TOOTH"
-    case etc = "ETC"
     
     
-    var id: String{ self.rawValue}
-    
-    /// 부위 항목 서버에서 영어로 돌려받는다. 그 결과를 뷰에 보이기 위해 한글로 전환
-       /// - Returns: 번역된 한글 값 전달
-       func toKorean() -> String {
-           switch self {
-           case .all:
-               return "전체"
-           case .best:
-               return "BEST"
-           case .ear:
-               return "귀"
-           case .eye:
-               return "눈"
-           case .hair:
-               return "털"
-           case .claw:
-               return "발톱"
-           case .tooth:
-               return "이빨"
-           case .etc:
-               return "기타"
+    /// Patch로 하트 수 변경 요청하고 전체 하트 수와 변경값 받아오는 함수
+    public func patchHeartChange() async {
+           provider.request(.heartChange(tip_id: tip_id)) { [weak self] result in
+               switch result {
+               case .success(let response):
+                   print("하트변경 API 호출 성공")
+                   self?.handlerResponsePatchHeartChange(response: response)
+               case .failure(let error):
+                   print("네트워크 오류: \(error)")
+               }
            }
+       }
+    
+    /// 하트 변경 점 받아오는 핸들러 함수
+    /// - Parameter response: API 호출 시 받게 되는 응답
+    private func handlerResponsePatchHeartChange(response: Response) {
+        do {
+            let decodedData = try JSONDecoder().decode(QnaHeartChangeData.self, from: response.data)
+            DispatchQueue.main.async {
+                self.heartClicked = decodedData.result.isLike
+                self.totalLikes = decodedData.result.total_likes
+            }
+        } catch {
+            print("하트 변경 디코더 에러: \(error)")
+        }
     }
 }
-
 

@@ -7,31 +7,40 @@
 
 import SwiftUI
 
+/// QnaTipsView에서 Get요청보내고 받을 데이터구조
 struct QnaTipsData: Codable {
     var isSuccess: Bool
     var code: String
     var message: String
-    var result: [QnaTipsResponseData]
+    var result: QnaTipsResult
+}
+
+struct QnaTipsResult: Codable {
+    var tips: [QnaTipsResponseData]
 }
 
 struct QnaTipsResponseData: Identifiable ,Codable {
     var id = UUID()
+    var tip_id: Int
     var category: TipsCategorySegment
+    var author: String
+    var popular: Bool
     var title: String
     var content: String
-    var userName: String
-    var image: String?
-    var elapsedTime: Int
-    
-    var heartNumber: Int?
+    var image_url: String?
+    var created_at: Int
+    var recommend_count: Int?
     
     private enum CodingKeys: String, CodingKey {
+        case tip_id
         case category
+        case author
+        case popular
         case title
         case content
-        case userName
-        case image
-        case elapsedTime
-        case heartNumber
+        case image_url
+        case created_at
+        case recommend_count
     }
+
 }

@@ -9,11 +9,11 @@ import SwiftUI
 /// Qna탭중 Tips에 대한 뷰
 struct QnaTipsView: View {
     
-    @StateObject private var viewModel = QnaTipsViewModel()
+    @StateObject private var viewModel = QnaTipsViewModel(tip_id: 0)
     
     //MARK: - Init
     init() {
-        self._viewModel = StateObject(wrappedValue: QnaTipsViewModel())
+        self._viewModel = StateObject(wrappedValue: QnaTipsViewModel(tip_id: 0))
     }
     
     //MARK: - Contents

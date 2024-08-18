@@ -4,7 +4,7 @@ import Combine
 struct QnaWriteTipsView: View {
     
     @StateObject var viewModel: QnaWriteTipsViewModel
-    var category: TipsCategorySegment  // 선택된 카테고리를 전달 받음
+    var category: TipsCategorySegment  
     @Environment(\.dismiss) private var dismiss
     private let placeholder: String = "나만의 Tip을 작성해주세요!"
     
@@ -61,6 +61,7 @@ struct QnaWriteTipsView: View {
             postPhotoText
             cameraBtn
         }
+        .ignoresSafeArea(.all)
     }
    
     private var categorySet: some View {
@@ -134,7 +135,7 @@ struct QnaWriteTipsView: View {
         .autocorrectionDisabled()
         .background(Color.scheduleCard)
         .scrollContentBackground(.hidden)
-        .font(.system(size: 14))
+        .font(.Body4_medium)
         .overlay(alignment: .bottomTrailing) {
             Text("\(viewModel.requestData?.content.count ?? 0) / 200")
                 .font(.Body4_medium)
