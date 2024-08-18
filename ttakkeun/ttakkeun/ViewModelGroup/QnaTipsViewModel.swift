@@ -11,29 +11,19 @@ import Foundation
 
 /// 공유된 Tip 내용들을 받아오는 기능들이 모여있는 뷰모델
 @MainActor
-class QnaTipsViewModel: ObservableObject, @preconcurrency Hashable  {
+class QnaTipsViewModel: ObservableObject {
     
     @Published var allTips: [QnaTipsResponseData] = []
     @Published var selectedCategory: TipsCategorySegment = .best
     @Published var totalLikes: Int = 0
     @Published var heartClicked: Bool = false
     
-    let tip_id: Int
     private let provider: MoyaProvider<QnaTipsAPITarget>
     
     //MARK: - Init
-    init(tip_id: Int, provider: MoyaProvider<QnaTipsAPITarget> = APIManager.shared.testProvider(for: QnaTipsAPITarget.self)) {
+    init(provider: MoyaProvider<QnaTipsAPITarget> = APIManager.shared.testProvider(for: QnaTipsAPITarget.self)) {
            self.provider = provider
            self.selectedCategory = .best
-           self.tip_id = tip_id  // 초기화
-       }
-    
-    nonisolated static func == (lhs: QnaTipsViewModel, rhs: QnaTipsViewModel) -> Bool {
-           return lhs === rhs
-       }
-
-       func hash(into hasher: inout Hasher) {
-           hasher.combine(ObjectIdentifier(self))
        }
   
    
@@ -79,8 +69,8 @@ class QnaTipsViewModel: ObservableObject, @preconcurrency Hashable  {
     
     
     /// Patch로 하트 수 변경 요청하고 전체 하트 수와 변경값 받아오는 함수
-    public func patchHeartChange() async {
-           provider.request(.heartChange(tip_id: tip_id)) { [weak self] result in
+    public func patchHeartChange(tip_id: Int) async {
+        provider.request(.heartChange(tip_id: tip_id)) { [weak self] result in
                switch result {
                case .success(let response):
                    print("하트변경 API 호출 성공")

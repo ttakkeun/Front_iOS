@@ -2,7 +2,7 @@ import SwiftUI
 
 /// 카테고리 선택하고 그에 대한 Tip작성할 수 있도록 하는 플로팅 버튼
 struct FloatingWriteBtn: View {
-    @State var isPresented: Bool = false
+    @Binding  var isPresented: Bool
     @State private var selectedCategory: TipsCategorySegment? = nil
     
     //MARK: - Contents
@@ -80,7 +80,7 @@ struct FloatingWriteBtn: View {
 //MARK: - Preview
 struct FloatingWriteBtn_Previews: PreviewProvider {
     static var previews: some View {
-        FloatingWriteBtn()
+        FloatingWriteBtn(isPresented: .constant(false))
             .previewLayout(.sizeThatFits)
     }
 }

@@ -7,30 +7,44 @@
 
 import SwiftUI
 
+/// Qna탭에 들어갈 View집합
 struct QnaView: View {
     @StateObject private var faqViewModel = QnaViewModel()
-    @StateObject private var tipsViewModel = QnaTipsViewModel(tip_id: 0)
-    
+    @StateObject private var tipsViewModel = QnaTipsViewModel()
     @State private var selectedSegment: String = "FAQ"
+    @State private var isFloatingBtnPresented: Bool = false
     
     var body: some View {
-        VStack(spacing: 0) {
-            QnaHeaderView(selectedSegment: $selectedSegment)
-            GeometryReader { geometry in
-                HStack(spacing: 0) {
-                    if selectedSegment == "FAQ" {
+        ZStack {
+            VStack(spacing: 0) {
+                QnaHeaderView(selectedSegment: $selectedSegment)
+                GeometryReader { geometry in
+                    HStack(spacing: 0) {
                         QnaFAQView(viewModel: faqViewModel)
                             .frame(width: geometry.size.width)
-                            .id(faqViewModel)
-                    } else if selectedSegment == "TIPS" {
                         QnaTipsView(viewModel: tipsViewModel)
                             .frame(width: geometry.size.width)
-                            .id(tipsViewModel) 
                     }
+                    .frame(width: geometry.size.width * 2, alignment: selectedSegment == "FAQ" ? .leading : .trailing)
+                    .offset(x: selectedSegment == "FAQ" ? 0 : -geometry.size.width)
+                    .animation(.easeInOut, value: selectedSegment)
                 }
-                .frame(width: geometry.size.width * 2, alignment: selectedSegment == "FAQ" ? .leading : .trailing)
-                .offset(x: selectedSegment == "FAQ" ? 0 : -geometry.size.width)
-                .animation(.easeInOut, value: selectedSegment)
+            }
+            .zIndex(1)
+
+            if selectedSegment == "TIPS" {
+                if isFloatingBtnPresented {
+                    Color.btnBackground.opacity(0.6)
+                        .ignoresSafeArea(.all)
+                        .onTapGesture {
+                            withAnimation {
+                                isFloatingBtnPresented = false
+                            }
+                        }
+                }
+
+                FloatingWriteBtn(isPresented: $isFloatingBtnPresented)
+                    .zIndex(2)
             }
         }
     }

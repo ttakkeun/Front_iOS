@@ -14,8 +14,8 @@ struct QnaTipsView: View {
     
     //MARK: - Init
     init(viewModel: QnaTipsViewModel) {
-           self._viewModel = ObservedObject(wrappedValue: viewModel)
-       }
+        self.viewModel = viewModel
+    }
     
     //MARK: - Contents
     var body: some View {
@@ -24,9 +24,9 @@ struct QnaTipsView: View {
                     categorySegment
                         .padding(.top, 16)
                     tipContents
+                        .padding(.top, -5)
                     Spacer()
                 }
-                FloatingWriteBtn()
             }
             .onAppear {
                 Task {
@@ -87,7 +87,7 @@ struct QnaTipsView: View {
             LazyVStack(spacing: 16) {
                 titleSet.frame(alignment: .leading)
                 ForEach(viewModel.filteredTips) { tip in
-                    TipContent(data: tip, isBestCategory: viewModel.selectedCategory == .best)
+                    TipContent(data: tip, isBestCategory: viewModel.selectedCategory == .best, viewModel: viewModel)
                 }
             }
             .padding(.vertical, 27)
@@ -102,8 +102,7 @@ struct QnaTipsView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            QnaTipsView(viewModel: QnaTipsViewModel(tip_id: 0))
-                .previewDevice(PreviewDevice(rawValue: device))
+            QnaTipsView(viewModel: QnaTipsViewModel())    .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }
     }

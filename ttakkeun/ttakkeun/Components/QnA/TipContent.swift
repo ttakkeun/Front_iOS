@@ -12,22 +12,21 @@ import Kingfisher
 struct TipContent: View {
     let data: QnaTipsResponseData
     let isBestCategory: Bool
+    @ObservedObject var viewModel: QnaTipsViewModel
 
     @State private var isExpanded: Bool = false
     @State private var isLike: Bool = false
     @State private var totalLikes: Int = 0
-
-    private let viewModel: QnaTipsViewModel
     
     //MARK: - Init
-    init(data: QnaTipsResponseData, isBestCategory: Bool = true) {
-        self.data = data
-        self.isBestCategory = isBestCategory
-        self.viewModel = QnaTipsViewModel(tip_id: data.tip_id)
-        
-        _isLike = State(initialValue: data.recommend_count ?? 0 > 0)
-        _totalLikes = State(initialValue: data.recommend_count ?? 0)
-    }
+    init(data: QnaTipsResponseData, isBestCategory: Bool = true, viewModel: QnaTipsViewModel) {
+          self.data = data
+          self.isBestCategory = isBestCategory
+          self.viewModel = viewModel
+          
+          _isLike = State(initialValue: data.recommend_count ?? 0 > 0)
+          _totalLikes = State(initialValue: data.recommend_count ?? 0)
+      }
     
     //MARK: - Contents
     var body: some View {
@@ -120,7 +119,7 @@ struct TipContent: View {
             isLike.toggle()
             totalLikes += isLike ? 1 : -1
             Task {
-                await viewModel.patchHeartChange()
+                await viewModel.patchHeartChange(tip_id: data.tip_id)
                 DispatchQueue.main.async {
                     isLike = viewModel.heartClicked
                     totalLikes = viewModel.totalLikes
@@ -284,7 +283,7 @@ struct TipContent_Preview: PreviewProvider {
             recommend_count: 20
         )
         
-        TipContent(data: sampleData)
+        TipContent(data: sampleData, viewModel: QnaTipsViewModel())
             .previewLayout(.sizeThatFits)
     }
 }
