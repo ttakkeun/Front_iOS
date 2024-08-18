@@ -69,6 +69,8 @@ enum Icon: String {
     case bubbleLogo = "bubbleLogo"
     case trash = "trash"
     case loadingBg = "loadingBg"
+    case leftCat = "leftCat"
+    case rightDog = "rightDog"
     
     // MARK: - Tab
     case diagnosis = "diagnosis"

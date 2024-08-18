@@ -15,15 +15,15 @@ struct CheckJournalQnA: Codable {
     var result: CheckJournalQnAResponseData
 }
 
-struct CheckJournalQnAResponseData: Codable {
+struct CheckJournalQnAResponseData: Codable, Hashable {
     let category: PartItem
     let date: String
     let time: String
     let qnaList: [QnAListData]
-    let etcString: String
+    let etcString: String?
 }
 
-struct QnAListData: Codable {
+struct QnAListData: Codable, Hashable {
     let question: String
     let answer: [AnswerDetailData]
     let image: [String]?

@@ -23,7 +23,7 @@ struct CheckQnAComponent: View {
     }
     
     var body: some View {
-        insideContents
+            insideContents
     }
     
     /// 겉 배경 내부 질문 답변 사진 목록
@@ -37,6 +37,15 @@ struct CheckQnAComponent: View {
             
             showAddImage
         })
+        .padding(.horizontal, 15)
+        .padding(.bottom, 25)
+        .padding(.top, 15)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.clear)
+                .stroke(Color.gray_200)
+        )
     }
     
     /// 일지 생성 시 선택했던 답변들 조회, 클릭 안되는 상태로 들어온다.
@@ -53,29 +62,32 @@ struct CheckQnAComponent: View {
     @ViewBuilder
     private var showAddImage: some View {
         if let images = data.image {
-            HStack(spacing: 5, content: {
-                ForEach(images, id: \.self) { image in
-                    if let url = URL(string: image) {
-                        KFImage(url)
-                            .placeholder {
-                                ProgressView()
-                                    .frame(width: 100, height: 100)
-                            }.retry(maxCount: 2, interval: .seconds(2))
-                            .onFailure { _ in
-                                print("일지 답변 저장된 이미지 로딩 실패")
-                            }
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 63, height: 63)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color.clear)
-                                    .stroke(Color.gray_200)
-                            )
+            ScrollView(.horizontal) {
+                HStack(spacing: 5, content: {
+                    ForEach(images, id: \.self) { image in
+                        if let url = URL(string: image) {
+                            KFImage(url)
+                                .placeholder {
+                                    ProgressView()
+                                        .frame(width: 100, height: 100)
+                                }.retry(maxCount: 2, interval: .seconds(2))
+                                .onFailure { _ in
+                                    print("일지 답변 저장된 이미지 로딩 실패")
+                                }
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 63, height: 63)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Color.clear)
+                                        .stroke(Color.gray_200)
+                                )
+                        }
                     }
-                }
-            })
+                })
+            }
+            .frame(width: 312)
         }  else {
             EmptyView()
         }
