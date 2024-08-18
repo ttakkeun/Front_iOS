@@ -41,6 +41,9 @@ enum Icon: String {
     case alarm = "alarm"
     case setting = "setting"
     case glass = "glass"
+    case write = "write"
+    case cancel = "cancel"
+    case camera = "camera"
     
     // MARK: - Schedule
     case downArrow = "downArrow"

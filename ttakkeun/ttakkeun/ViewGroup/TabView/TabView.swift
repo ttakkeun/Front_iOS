@@ -37,7 +37,7 @@ struct TabView: View {
                     SuggestionView()
                         .tag(TabCase.suggestion)
                 case .qna:
-                    QnaHeaderView()
+                    QnaView()
                         .tag(TabCase.qna)
                 }
             
