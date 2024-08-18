@@ -50,6 +50,10 @@ struct JournalQuestionView: View {
             .onAppear {
                 loadQuestion()
             }
+            
+            Spacer().frame(height: 10)
+            
+            DiagnosticImages(viewModel: viewModel)
         })
     }
     
@@ -108,5 +112,6 @@ struct JournalQuestionView: View {
 struct JournalQuestionView_Preview: PreviewProvider {
     static var previews: some View {
         JournalQuestionView(viewModel: RegistJournalViewModel(petId: 0), question: QuestionDetailData(questionID: 1, questionText: "오늘 뭐하고 싶어요?", subtitle: "고르세요", answer: [AnswerDetailData(answerID: UUID(), answerText: "잠자기"), AnswerDetailData(answerID: UUID(), answerText: "책 읽기")]), allowMultiSelection: false, questionIndex: 0)
+            .previewLayout(.sizeThatFits)
     }
 }

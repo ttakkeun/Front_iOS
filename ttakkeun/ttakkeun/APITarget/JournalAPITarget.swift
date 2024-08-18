@@ -24,8 +24,8 @@ extension JournalAPITarget: APITargetType {
             return "/record/\(petID)/\(category)/\(page)"
         case .getJournalQuestions(let category):
             return "/record/register/\(category)"
-        case .registJournal:
-            return "/record/register"
+        case .registJournal(let data):
+            return "/record/register/\(data.petId)"
         case .deleteJournalList(let id):
             return "/record/\(id)"
         }
@@ -105,7 +105,70 @@ extension JournalAPITarget: APITargetType {
 
 """
             return Data(json.utf8)
+        case .getJournalQuestions:
+            let json = """
+            {
+                "isSuccess": true,
+                "code": 200,
+                "message": "Questions fetched successfully",
+                "result": {
+                    "category": "EAR",
+                    "questions": [
+                        {
+                            "question_Id": 1,
+                            "question_text": "How does your pet feel today?",
+                            "subtitle": "Choose the most accurate description",
+                            "answer_text": [
+                                {
+                                    "answerText": "Happy"
+                                },
+                                {
+                                    "answerText": "Sad"
+                                },
+                                {
+                                    "answerText": "Energetic"
+                                }
+                            ]
+                        },
+                        {
+                            "question_Id": 2,
+                            "question_text": "Has your pet eaten well today?",
+                            "subtitle": "Check all that apply",
+                            "answer_text": [
+                                {
+                                    "answerText": "Ate normally"
+                                },
+                                {
+                                    "answerText": "Ate less than usual"
+                                },
+                                {
+                                    "answerText": "Did not eat"
+                                }
+                            ]
+                        },
+                        {
+                            "question_Id": 3,
+                            "question_text": "Is your pet drinking water?",
+                            "subtitle": "Select the most appropriate answer",
+                            "answer_text": [
+                                {
+                                    "answerText": "Yes, drinking normally"
+                                },
+                                {
+                                    "answerText": "Drinking less than usual"
+                                },
+                                {
+                                    "answerText": "Not drinking at all"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+
             
+            """
+            return Data(json.utf8)
         default:
             let json = """
 

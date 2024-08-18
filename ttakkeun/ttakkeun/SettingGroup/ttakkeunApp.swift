@@ -24,7 +24,7 @@ struct ttakkeunApp: App {
             //                LoginView(viewModel: loginViewModel)
             //            }
             //        }
-            FloatingWriteBtn()
+            RegistDiagnosisFlowView(petState: PetState())
         }
     }
 }
