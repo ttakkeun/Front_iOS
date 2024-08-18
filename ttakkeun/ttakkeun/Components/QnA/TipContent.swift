@@ -82,7 +82,7 @@ struct TipContent: View {
             title
                 .lineLimit(nil)
             expandedcontent
-            tipsImage
+            tipsImages
         }
     }
     
@@ -92,7 +92,7 @@ struct TipContent: View {
             TitleAndContent
                 .lineLimit(3)
             Spacer()
-            tipsImage
+            tipsImageWithCount
         }
     }
     
@@ -163,22 +163,65 @@ struct TipContent: View {
     
     /// 팁 관련 이미지
     @ViewBuilder
-    private var tipsImage: some View {
-        if let url = URL(string: data.image_url ?? "") {
-            KFImage(url)
-                .placeholder {
-                    ProgressView()
-                        .frame(width: 100, height: 100)
-                }.retry(maxCount: 2, interval: .seconds(2))
-                .onFailure{ _ in
-                    print("이미지 로드 실패")
-                }
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 65, height: 65)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-        }
-    }
+       private var tipsImages: some View {
+           if let imageUrls = data.image_url, !imageUrls.isEmpty {
+               ScrollView(.horizontal, showsIndicators: false) {
+                   HStack(spacing: 10) {
+                       ForEach(imageUrls, id: \.self) { url in
+                           if let imageUrl = URL(string: url) {
+                               KFImage(imageUrl)
+                                   .placeholder {
+                                       ProgressView()
+                                           .frame(width: 100, height: 100)
+                                   }
+                                   .retry(maxCount: 2, interval: .seconds(2))
+                                   .onFailure { _ in
+                                       print("이미지 로드 실패")
+                                   }
+                                   .resizable()
+                                   .aspectRatio(contentMode: .fill)
+                                   .frame(width: 65, height: 65)
+                                   .clipShape(RoundedRectangle(cornerRadius: 10))
+                           }
+                       }
+                   }
+               }
+           }
+       }
+       
+       /// 첫 번째 이미지를 표시하고, 이미지가 2개 이상일 경우 개수를 표시하는 뷰
+       @ViewBuilder
+       private var tipsImageWithCount: some View {
+           if let imageUrls = data.image_url, !imageUrls.isEmpty {
+               ZStack(alignment: .bottomTrailing) {
+                   if let firstImageUrl = URL(string: imageUrls[0]) {
+                       KFImage(firstImageUrl)
+                           .placeholder {
+                               ProgressView()
+                                   .frame(width: 65, height: 65)
+                           }
+                           .retry(maxCount: 2, interval: .seconds(2))
+                           .onFailure { _ in
+                               print("이미지 로드 실패")
+                           }
+                           .resizable()
+                           .aspectRatio(contentMode: .fill)
+                           .frame(width: 65, height: 65)
+                           .clipShape(RoundedRectangle(cornerRadius: 10))
+                   }
+                   
+                   if imageUrls.count > 1 {
+                       Text("\(imageUrls.count)")
+                           .padding(.horizontal,2)
+                           .padding(4)
+                           .font(.Detail1_bold)
+                           .background(Color.gray800)
+                           .foregroundColor(.white)
+                           .clipShape(RoundedRectangle(cornerRadius: 10))
+                   }
+               }
+           }
+       }
     
     /// 사용자 이름과 지난 시간
     private var userNameAndElapsedTime: some View {
@@ -255,18 +298,26 @@ struct TipContent: View {
     }
 
     // 경과 시간을 포맷팅하는 함수
-    private func formatElapsedTime(_ minutes: Int) -> String {
-        if minutes < 60 {
-            return "\(minutes)분전"
+    private func formatElapsedTime(_ createdAt: String) -> String {
+        guard let date = ISO8601DateFormatter().date(from: createdAt) else { return "알 수 없음" }
+        let now = Date()
+        let elapsedTime = now.timeIntervalSince(date)
+        let minutes = Int(elapsedTime / 60)
+        let hours = minutes / 60
+        
+        if elapsedTime < 24 * 60 * 60 {
+            if hours > 0 {
+                return "\(hours)시간 \(minutes % 60)분 전"
+            } else {
+                return "\(minutes)분 전"
+            }
         } else {
-            let hours = minutes / 60
-            let remainingMinutes = minutes % 60
-            return "\(hours)시간 \(remainingMinutes)분전"
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy.MM.dd HH:mm"
+            return dateFormatter.string(from: date)
         }
     }
 }
-
-//TODO: - 나중에 created at 스트링으로 바꾸고 변환하기
 
 // MARK: - Preview
 struct TipContent_Preview: PreviewProvider {
@@ -278,8 +329,9 @@ struct TipContent_Preview: PreviewProvider {
             popular: true,
             title: "털 안꼬이게 빗는 법 꿀팁공유",
             content: "털은 빗어주지 않으면 어쩌구저쩌구 솰라솰라 어쩌구저쩌구 솰라솰라아 진짜 미치겠다 아아아아 그만할래아아",
-            image_url: "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg",
-            created_at: 140,
+            image_url: ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg",
+                        "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
+            created_at: "2024-08-14T12:00:00Z",
             recommend_count: 20
         )
         

@@ -27,8 +27,8 @@ struct QnaTipsResponseData: Identifiable ,Codable {
     var popular: Bool
     var title: String
     var content: String
-    var image_url: String?
-    var created_at: Int
+    var image_url: [String]?
+    var created_at: String
     var recommend_count: Int?
     
     private enum CodingKeys: String, CodingKey {
