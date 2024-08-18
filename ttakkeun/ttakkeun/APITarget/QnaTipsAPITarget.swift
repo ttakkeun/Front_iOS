@@ -88,8 +88,8 @@ extension QnaTipsAPITarget: APITargetType {
                             "popular": true,
                             "title": "귀 청소하는 방법",
                             "content": "귀는 자주 청소해야 합니다.",
-                            "image_url": "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg",
-                            "created_at": 30,
+                            "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
+                            "created_at": "2024-08-18T08:00:00Z",
                             "recommend_count": 15
                         },
                         {
@@ -99,8 +99,8 @@ extension QnaTipsAPITarget: APITargetType {
                             "popular": false,
                             "title": "귀 건강 관리",
                             "content": "귀를 깨끗하게 유지하는 것이 중요합니다.",
-                            "image_url": "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg",
-                            "created_at": 45,
+                            "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
+                            "created_at": "2024-08-09T10:30:00Z",
                             "recommend_count": 10
                         },
                         {
@@ -110,8 +110,8 @@ extension QnaTipsAPITarget: APITargetType {
                             "popular": true,
                             "title": "눈 건강 지키기",
                             "content": "눈은 주기적으로 검사해야 합니다.",
-                            "image_url": "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg",
-                            "created_at": 120,
+                            "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
+                            "created_at": "2024-08-08T12:00:00Z",
                             "recommend_count": 25
                         },
                         {
@@ -121,8 +121,8 @@ extension QnaTipsAPITarget: APITargetType {
                             "popular": true,
                             "title": "눈의 피로를 줄이는 방법",
                             "content": "장시간 화면을 보면 눈이 피로해집니다.",
-                            "image_url": "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg",
-                            "created_at": 150,
+                            "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
+                            "created_at": "2024-08-08T14:45:00Z",
                             "recommend_count": 20
                         },
                         {
@@ -132,64 +132,9 @@ extension QnaTipsAPITarget: APITargetType {
                             "popular": true,
                             "title": "털 관리 비법",
                             "content": "빗질을 자주 해주면 좋습니다.",
-                            "image_url": "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg",
-                            "created_at": 240,
+                            "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg", "https://example.com/image2.jpg"],
+                            "created_at": "2024-08-07T08:00:00Z",
                             "recommend_count": 50
-                        },
-                        {
-                            "tip_id": 6,
-                            "category": "HAIR",
-                            "author": "정우성",
-                            "popular": true,
-                            "title": "모발 윤기 유지하기",
-                            "content": "건강한 식습관이 중요합니다.",
-                            "image_url": "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg",
-                            "created_at": 270,
-                            "recommend_count": 40
-                        },
-                        {
-                            "tip_id": 7,
-                            "category": "TOOTH",
-                            "author": "조정석",
-                            "popular": true,
-                            "title": "이빨 관리 꿀팁",
-                            "content": "매일 양치질을 해야 합니다.",
-                            "image_url": "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg",
-                            "created_at": 90,
-                            "recommend_count": 30
-                        },
-                        {
-                            "tip_id": 8,
-                            "category": "TOOTH",
-                            "author": "배수지",
-                            "popular": true,
-                            "title": "치아 건강 유지하기",
-                            "content": "정기적으로 치과에 방문해야 합니다.",
-                            "image_url": "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg",
-                            "created_at": 110,
-                            "recommend_count": 35
-                        },
-                        {
-                            "tip_id": 9,
-                            "category": "CLAW",
-                            "author": "송강호",
-                            "popular": true,
-                            "title": "발톱 깎는 법",
-                            "content": "발톱은 주기적으로 깎아야 합니다.",
-                            "image_url": "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg",
-                            "created_at": 60,
-                            "recommend_count": 20
-                        },
-                        {
-                            "tip_id": 10,
-                            "category": "CLAW",
-                            "author": "안성기",
-                            "popular": false,
-                            "title": "발톱 건강 유지하기",
-                            "content": "발톱을 깨끗하게 유지하세요.",
-                            "image_url": "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg",
-                            "created_at": 80,
-                            "recommend_count": 18
                         }
                     ]
                 }
@@ -239,6 +184,5 @@ extension QnaTipsAPITarget: APITargetType {
             """
             return Data(json.utf8)
         }
-   
     }
 }
