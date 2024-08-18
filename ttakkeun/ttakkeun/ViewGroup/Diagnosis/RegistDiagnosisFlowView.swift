@@ -24,6 +24,8 @@ struct RegistDiagnosisFlowView: View {
             Spacer()
             
             RegistDiagnosisPageContents(viewModel: viewModel)
+            
+            Spacer()
         })
         .frame(width: 355, height: 749)
     }

@@ -109,7 +109,7 @@ extension JournalAPITarget: APITargetType {
             let json = """
             {
                 "isSuccess": true,
-                "code": 200,
+                "code": "200",
                 "message": "Questions fetched successfully",
                 "result": {
                     "category": "EAR",

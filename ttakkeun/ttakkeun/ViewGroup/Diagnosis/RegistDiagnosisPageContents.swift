@@ -76,12 +76,12 @@ struct RegistDiagnosisPageContents: View {
             .frame(height: 691)
             
         } else {
-            ProgressView()
-                .frame(width: 100, height: 100)
-                .onAppear {
-                    viewModel.objectWillChange.send()
-                }
-        }
+                ProgressView()
+                    .frame(width: 100, height: 100)
+                    .onAppear {
+                        viewModel.objectWillChange.send()
+                    }
+        }  
     }
     
     /// 페이지 전환 버튼
