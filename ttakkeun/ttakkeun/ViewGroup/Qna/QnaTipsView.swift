@@ -10,7 +10,8 @@ import SwiftUI
 struct QnaTipsView: View {
     
     @ObservedObject var viewModel: QnaTipsViewModel
-
+    @State private var isLoading: Bool = true
+    
     
     //MARK: - Init
     init(viewModel: QnaTipsViewModel) {
@@ -27,13 +28,32 @@ struct QnaTipsView: View {
                         .padding(.top, -5)
                     Spacer()
                 }
-            }
-            .onAppear {
-                Task {
-                    await viewModel.getQnaTipsData()
-                }
-            }
+                if isLoading {
+                             ProgressView()
+                                 .progressViewStyle(CircularProgressViewStyle())
+                                 .scaleEffect(1.5)
+                                 .frame(maxWidth: 100, maxHeight: 100)
+                         }
+                     }
+                     .onAppear {
+                         loadData()
+                     }
+                     .refreshable {
+                        loadData()
+                     }
+                     .onChange(of: viewModel.selectedCategory) {
+                         loadData()
+                     }
     }
+    
+    private func loadData() {
+           Task {
+               isLoading = true
+               await viewModel.getQnaTipsData()
+               isLoading = false
+           }
+       }
+       
     
     /// 카테고리 별로 나눈 segmented Control
     private var categorySegment: some View {
@@ -76,9 +96,13 @@ struct QnaTipsView: View {
     }
     
     private var title: some View {
-        Text("🔥\(viewModel.selectedCategory.toKorean())")
-            .font(.H2_bold)
-            .foregroundStyle(Color.gray900)
+        if isLoading {
+            Text("")
+        } else {
+            Text("🔥\(viewModel.selectedCategory.toKorean())")
+                .font(.H2_bold)
+                .foregroundStyle(Color.gray900)
+        }
     }
 
     /// 공유한 팁 내용들

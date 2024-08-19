@@ -34,7 +34,7 @@ struct QnaView: View {
 
             if selectedSegment == "TIPS" {
                 if isFloatingBtnPresented {
-                    Color.btnBackground.opacity(0.6)
+                    Color.clear
                         .ignoresSafeArea(.all)
                         .onTapGesture {
                             withAnimation {

@@ -14,7 +14,14 @@ import Foundation
 class QnaTipsViewModel: ObservableObject {
     
     @Published var allTips: [QnaTipsResponseData] = []
-    @Published var selectedCategory: TipsCategorySegment = .best
+    @Published var selectedCategory: TipsCategorySegment = .best {
+        didSet {
+            guard oldValue != selectedCategory else { return }  // 중복 호출 방지
+            _Concurrency.Task {
+                await reloadDataForCategory()
+            }
+        }
+    }
     @Published var totalLikes: Int = 0
     @Published var heartClicked: Bool = false
     
@@ -53,6 +60,11 @@ class QnaTipsViewModel: ObservableObject {
         }
     }
     
+    /// 특정 카테고리를 위한 데이터 재로드 함수
+    private func reloadDataForCategory() async {
+        allTips = []
+        await getQnaTipsData()
+    }
     /// Tip내용들 받아오는 핸들러함수
     /// - Parameter response: API 호출 시 받게 되는 응답
     private func handlerResponseGetTipsData(response: Response) {
@@ -75,6 +87,7 @@ class QnaTipsViewModel: ObservableObject {
                case .success(let response):
                    print("하트변경 API 호출 성공")
                    self?.handlerResponsePatchHeartChange(response: response)
+                   
                case .failure(let error):
                    print("네트워크 오류: \(error)")
                }
