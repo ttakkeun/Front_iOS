@@ -9,6 +9,10 @@ struct QnaWriteTipsView: View {
     @Environment(\.dismiss) private var dismiss
     private let placeholder: String = "나만의 Tip을 작성해주세요!"
  
+    init(viewModel: QnaWriteTipsViewModel, category: TipsCategorySegment) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+        self.category = category
+    }
     
     //MARK: - Contents
     var body: some View {

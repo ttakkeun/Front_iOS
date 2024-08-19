@@ -29,7 +29,7 @@ class QnaTipsViewModel: ObservableObject {
     
     private let provider: MoyaProvider<QnaTipsAPITarget>
     private var currentPage = 0
-    private let pageSize = 20
+    private let pageSize = 21
     private var hasMoreData = true
     
     //MARK: - Init
@@ -88,7 +88,7 @@ class QnaTipsViewModel: ObservableObject {
         do {
             let decodedData = try JSONDecoder().decode(QnaTipsData.self, from: response.data)
             DispatchQueue.main.async {
-                self.allTips.append(contentsOf: decodedData.result) // 받아온 데이터를 추가
+                self.allTips.append(contentsOf: decodedData.result)
                 self.currentPage += 1
                 self.hasMoreData = decodedData.result.count == self.pageSize
                 print("Tips API 호출 성공")
@@ -100,16 +100,29 @@ class QnaTipsViewModel: ObservableObject {
     
     /// Patch로 하트 수 변경 요청하고 전체 하트 수와 변경값 받아오는 함수
     public func patchHeartChange(tip_id: Int) async {
-        provider.request(.heartChange(tip_id: tip_id)) { [weak self] result in
-            switch result {
-            case .success(let response):
-                print("하트변경 API 호출 성공")
-                self?.handlerResponsePatchHeartChange(response: response)
-            case .failure(let error):
-                print("네트워크 오류: \(error)")
+           provider.request(.heartChange(tip_id: tip_id)) { [weak self] result in
+               switch result {
+               case .success(let response):
+                   print("하트변경 API 호출 성공")
+                   self?.handlerResponsePatchHeartChange(response: response)
+                   if self?.selectedCategory == .best {
+                       self?.refreshBestTips()
+                   }
+               case .failure(let error):
+                   print("네트워크 오류: \(error)")
+               }
+           }
+       }
+    
+    /// best세그먼트 다시갱신
+    private func refreshBestTips() {
+            allTips = []
+            currentPage = 0
+            hasMoreData = true
+            _Concurrency.Task {
+                await getQnaTipsData()
             }
         }
-    }
     
     /// 하트 변경 점 받아오는 핸들러 함수
     /// - Parameter response: API 호출 시 받게 되는 응답

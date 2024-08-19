@@ -14,6 +14,8 @@ struct QnaView: View {
     @State private var selectedSegment: String = "FAQ"
     @State private var isFloatingBtnPresented: Bool = false
     
+    
+    
     var body: some View {
         ZStack {
             faqAndTipsSegmentSet

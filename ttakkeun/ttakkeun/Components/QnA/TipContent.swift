@@ -289,10 +289,30 @@ struct TipContent: View {
 
     // 사용자 이름 마스킹 함수
     private func maskUserName(_ name: String) -> String {
-        guard name.count > 1 else { return name }
-        let first = name.prefix(1)
-        let last = name.suffix(1)
-        return "\(first)*\(last)"
+        let nameParts = name.split(separator: " ")
+        
+        if nameParts.count == 1 {
+            let firstPart = nameParts[0]
+            
+            if firstPart.count == 2 {
+                let first = firstPart.prefix(1)
+                return "\(first)*"
+            } else if firstPart.count > 2 {
+                let first = firstPart.prefix(1)
+                let remaining = firstPart.dropFirst().dropFirst()
+                return "\(first)*\(remaining)"
+            } else {
+                return String(firstPart)
+            }
+        } else if nameParts.count > 1 {
+            let firstName = nameParts.first ?? ""
+            let lastName = nameParts.dropFirst().joined(separator: " ")
+            
+            let maskedLastName = String(repeating: "*", count: lastName.count)
+            return "\(firstName) \(maskedLastName)"
+        }
+        
+        return name
     }
 
     // 경과 시간을 포맷팅하는 함수
@@ -323,7 +343,7 @@ struct TipContent_Preview: PreviewProvider {
         let sampleData = QnaTipsResponseData(
             tip_id: 1,
             category: .ear,
-            author: "한지강",
+            author: "한강민지",
             popular: true,
             title: "털 안꼬이게 빗는 법 꿀팁공유",
             content: "털은 빗어주지 않으면 어쩌구저쩌구 솰라솰라 어쩌구저쩌구 솰라솰라아 진짜 미치겠다 아아아아 그만할래아아",
