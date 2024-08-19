@@ -14,6 +14,8 @@ struct NavigationRoutingView: View {
     
     var body: some View {
         switch destination {
+        case .signUp(let token, let name, let email):
+            SignupView(signUpData: SignUpData(token: token, email: email, name: name))
         case .createProfile:
             CreateProfileView()
         case .myPage:

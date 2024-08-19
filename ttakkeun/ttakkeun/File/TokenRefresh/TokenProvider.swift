@@ -49,7 +49,7 @@ class TokenProvider: TokenProviding {
     func refreshToken(completion: @escaping (String?, Error?) -> Void) {
         
         guard let userInfo = keyChain.loadSession(for: "userSession"), let refreshToken = userInfo.refreshToken else {
-            let error = NSError(domain: "example.com", code: -2, userInfo: [NSLocalizedDescriptionKey: "User session or refresh token not found"])
+            let error = NSError(domain: "ttakkeun.com", code: -2, userInfo: [NSLocalizedDescriptionKey: "User session or refresh token not found"])
             completion(nil, error)
                 return
             }
@@ -58,10 +58,10 @@ class TokenProvider: TokenProviding {
             switch result {
             case .success(let response):
                 do {
-                    let tokenData = try JSONDecoder().decode(TokenResponse.self, from: response.data)
+                    let tokenData = try JSONDecoder().decode(ResponseData<TokenResponseDetail>.self, from: response.data)
                     if tokenData.isSuccess {
-                        self.accessToken = tokenData.result.accessToken
-                        self.refreshToken = tokenData.result.refreshToken
+                        self.accessToken = tokenData.result?.accessToken
+                        self.refreshToken = tokenData.result?.refreshToken
                         completion(self.accessToken, nil)
                     } else {
                         let error = NSError(domain: "example.com", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token Refresh failed: isSuccess false"])

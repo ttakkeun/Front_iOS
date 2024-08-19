@@ -18,18 +18,20 @@ class LoginViewModel: ObservableObject {
     let provider: MoyaProvider<UserLoginAPITarget>
     let keychain = KeyChainManager.standard
     let appleLoginManager =  AppleLoginManager()
-    var userInfo = UserInfo()
-    private var userEmail: String?
     
+    var userInfo = UserInfo()
+    private var container: DIContainer
     
     init(
-        provider: MoyaProvider<UserLoginAPITarget> = APIManager.shared.createProvider(for: UserLoginAPITarget.self)
+        provider: MoyaProvider<UserLoginAPITarget> = APIManager.shared.createProvider(for: UserLoginAPITarget.self),
+        container: DIContainer
     ) {
         self.provider = provider
-        self.appleLoginManager.onAuthorizationCompleted = { [weak self] authorizationCode, email in
-            self?.userEmail = email
-            self?.sendUserIdentyCode(token: authorizationCode)
+        self.container = container
+        self.appleLoginManager.onAuthorizationCompleted = { [weak self] authorizationCode, email, name in
+            self?.sendUserIdentyCode(signUp: SignUpData(token: authorizationCode, email: email ?? "", name: name))
         }
+        
     }
     
     // MARK: - ViewFunction
@@ -48,11 +50,11 @@ class LoginViewModel: ObservableObject {
     
     /// 로그인 데이터 전송
     /// - Parameter token: 인가 코드
-    private func sendUserIdentyCode(token: String) {
-        provider.request(.appleLogin(token: token)) { [weak self] result in
+    private func sendUserIdentyCode(signUp: SignUpData) {
+        provider.request(.appleLogin(token: signUp.token)) { [weak self] result in
             switch result {
             case .success(let response):
-                self?.handlerInvalidToken(response: response)
+                self?.handlerInvalidToken(response: response, signUpdata: signUp)
             case .failure(let error):
                 print("인가 코드 전송 네트워크 오류 : \(error)")
             }
@@ -61,25 +63,34 @@ class LoginViewModel: ObservableObject {
     
     /// 애플 로그인 성공 시 받게 되는 Response 데이터
     /// - Parameter response: response 데이터
-    private func handlerInvalidToken(response: Response) {
+    private func handlerInvalidToken(response: Response, signUpdata: SignUpData) {
         do {
-            let decodedData = try JSONDecoder().decode(LoginResponseData.self, from: response.data)
+            let decodedData = try JSONDecoder().decode(ResponseData<LoginResponseDetailData>.self, from: response.data)
             DispatchQueue.main.async {
                 if decodedData.isSuccess {
-                    self.userInfo = UserInfo(accessToken: decodedData.result.accessToken,
-                                             refreshToken: decodedData.result.refreshToken,
-                                             email: self.userEmail
-                    )
-                    let saveData =  self.keychain.saveSession(self.userInfo, for: "userSession")
-                    self.isLogin = true
-                    print("키 체인 저장 완료 :\(saveData)")
+                    DispatchQueue.main.async {
+                        self.userInfo = UserInfo(accessToken: decodedData.result?.accessToken,
+                                                 refreshToken: decodedData.result?.refreshToken,
+                                                 email: decodedData.result?.email
+                        )
+                        let saveData =  self.keychain.saveSession(self.userInfo, for: "userSession")
+                        self.isLogin = true
+                        print("키 체인 저장 완료 :\(saveData)")
+                    }
                 } else {
                     self.isLogin = false
+                    self.goToSignupPage(signUpdata: signUpdata)
                 }
             }
         } catch {
             print("토큰 디코더 오류 : \(error)")
         }
+    }
+    
+    // MARK: - Navigation
+    
+    private func goToSignupPage(signUpdata: SignUpData) {
+        self.container.navigationRouter.push(to: .signUp(token: signUpdata.token, name: signUpdata.name, email: signUpdata.email))
     }
     
 }

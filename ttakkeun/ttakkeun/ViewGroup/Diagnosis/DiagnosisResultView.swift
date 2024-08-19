@@ -15,7 +15,7 @@ struct DiagnosisResultView: View {
     
     @ViewBuilder
     var body: some View {
-        if let data = viewModel.diagnosisData {
+        if let _ = viewModel.diagnosisData {
             ScrollView(.vertical, showsIndicators: true) {
                 VStack(spacing: 24) {
                     self.topBackground
