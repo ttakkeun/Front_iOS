@@ -11,7 +11,6 @@ import Kingfisher
 /// Tip뷰에서 Tip관련 정보들이 들어있는 컴포넌트
 struct TipContent: View {
     let data: QnaTipsResponseData
-    let isBestCategory: Bool
     @ObservedObject var viewModel: QnaTipsViewModel
 
     @State private var isExpanded: Bool = false
@@ -19,14 +18,13 @@ struct TipContent: View {
     @State private var totalLikes: Int = 0
     
     //MARK: - Init
-    init(data: QnaTipsResponseData, isBestCategory: Bool = true, viewModel: QnaTipsViewModel) {
-          self.data = data
-          self.isBestCategory = isBestCategory
-          self.viewModel = viewModel
-          
-          _isLike = State(initialValue: data.recommend_count ?? 0 > 0)
-          _totalLikes = State(initialValue: data.recommend_count ?? 0)
-      }
+    init(data: QnaTipsResponseData, viewModel: QnaTipsViewModel) {
+        self.data = data
+        self.viewModel = viewModel
+        
+        _isLike = State(initialValue: data.recommend_count ?? 0 > 0)
+        _totalLikes = State(initialValue: data.recommend_count ?? 0)
+    }
     
     //MARK: - Contents
     var body: some View {
@@ -67,7 +65,7 @@ struct TipContent: View {
                 .frame(width: 47, height: 23)
                 .background(RoundedRectangle(cornerRadius: 30).foregroundStyle(categoryColor))
             
-            if isBestCategory {
+            if data.popular { // 인기 카테고리가 아니라, popular 값이 true일 때 "인기" 텍스트가 표시되도록 수정
                 Text("인기")
                     .font(.Body4_medium)
                     .frame(width: 47, height: 23)

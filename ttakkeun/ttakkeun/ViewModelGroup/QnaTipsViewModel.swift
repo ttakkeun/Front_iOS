@@ -16,7 +16,9 @@ class QnaTipsViewModel: ObservableObject {
     @Published var allTips: [QnaTipsResponseData] = []
     @Published var selectedCategory: TipsCategorySegment = .best {
         didSet {
-            guard oldValue != selectedCategory else { return }  // 중복 호출 방지
+            guard oldValue != selectedCategory else { return }
+            currentPage = 0
+            hasMoreData = true
             _Concurrency.Task {
                 await reloadDataForCategory()
             }
@@ -26,52 +28,69 @@ class QnaTipsViewModel: ObservableObject {
     @Published var heartClicked: Bool = false
     
     private let provider: MoyaProvider<QnaTipsAPITarget>
+    private var currentPage = 0
+    private let pageSize = 20
+    private var hasMoreData = true
     
     //MARK: - Init
     init(provider: MoyaProvider<QnaTipsAPITarget> = APIManager.shared.testProvider(for: QnaTipsAPITarget.self)) {
-           self.provider = provider
-           self.selectedCategory = .best
-       }
+        self.provider = provider
+        self.selectedCategory = .best
+    }
   
-   
-     /// 전체, 인기 세그먼트 분류하기 위한 필터
-     public var filteredTips: [QnaTipsResponseData] {
-         switch selectedCategory {
-         case .all:
-             return allTips.sorted { $0.created_at < $1.created_at }
-         case .best:
-                let sortedTips = allTips.sorted { $0.recommend_count ?? 0 > $1.recommend_count ?? 0 }
-                return Array(sortedTips.prefix(10))
-         default:
-             return allTips.filter { $0.category.rawValue == selectedCategory.rawValue }
-         }
-     }
-    
     //MARK: - API Function
     /// Tip내용들 Get요청 보내는 함수
     public func getQnaTipsData() async {
-        provider.request(.getQnaTips) { [weak self] result in
-            switch result {
-            case .success(let response):
-                self?.handlerResponseGetTipsData(response: response)
-            case .failure(let error):
-                print("네트워크 오류: \(error)")
+        guard hasMoreData else { return }
+        
+        switch selectedCategory {
+        case .all:
+            provider.request(.getAllTips(page: currentPage, size: pageSize)) { [weak self] result in
+                switch result {
+                case .success(let response):
+                    self?.handlerResponseGetTipsData(response: response)
+                case .failure(let error):
+                    print("네트워크 오류: \(error)")
+                }
+            }
+        case .best:
+            provider.request(.getBestTips(page: currentPage, size: pageSize)) { [weak self] result in
+                switch result {
+                case .success(let response):
+                    self?.handlerResponseGetTipsData(response: response)
+                case .failure(let error):
+                    print("네트워크 오류: \(error)")
+                }
+            }
+        default:
+            provider.request(.getTips(category: selectedCategory.rawValue, page: currentPage, size: pageSize)) { [weak self] result in
+                switch result {
+                case .success(let response):
+                    self?.handlerResponseGetTipsData(response: response)
+                case .failure(let error):
+                    print("네트워크 오류: \(error)")
+                }
             }
         }
     }
     
     /// 특정 카테고리를 위한 데이터 재로드 함수
-    private func reloadDataForCategory() async {
+    public func reloadDataForCategory() async {
         allTips = []
+        currentPage = 0
+        hasMoreData = true
         await getQnaTipsData()
     }
+
     /// Tip내용들 받아오는 핸들러함수
     /// - Parameter response: API 호출 시 받게 되는 응답
     private func handlerResponseGetTipsData(response: Response) {
         do {
             let decodedData = try JSONDecoder().decode(QnaTipsData.self, from: response.data)
             DispatchQueue.main.async {
-                self.allTips = decodedData.result.tips
+                self.allTips.append(contentsOf: decodedData.result) // 받아온 데이터를 추가
+                self.currentPage += 1
+                self.hasMoreData = decodedData.result.count == self.pageSize
                 print("Tips API 호출 성공")
             }
         } catch {
@@ -79,20 +98,18 @@ class QnaTipsViewModel: ObservableObject {
         }
     }
     
-    
     /// Patch로 하트 수 변경 요청하고 전체 하트 수와 변경값 받아오는 함수
     public func patchHeartChange(tip_id: Int) async {
         provider.request(.heartChange(tip_id: tip_id)) { [weak self] result in
-               switch result {
-               case .success(let response):
-                   print("하트변경 API 호출 성공")
-                   self?.handlerResponsePatchHeartChange(response: response)
-                   
-               case .failure(let error):
-                   print("네트워크 오류: \(error)")
-               }
-           }
-       }
+            switch result {
+            case .success(let response):
+                print("하트변경 API 호출 성공")
+                self?.handlerResponsePatchHeartChange(response: response)
+            case .failure(let error):
+                print("네트워크 오류: \(error)")
+            }
+        }
+    }
     
     /// 하트 변경 점 받아오는 핸들러 함수
     /// - Parameter response: API 호출 시 받게 되는 응답
@@ -108,4 +125,3 @@ class QnaTipsViewModel: ObservableObject {
         }
     }
 }
-

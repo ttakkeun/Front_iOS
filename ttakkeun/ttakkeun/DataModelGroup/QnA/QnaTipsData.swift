@@ -12,14 +12,10 @@ struct QnaTipsData: Codable {
     var isSuccess: Bool
     var code: String
     var message: String
-    var result: QnaTipsResult
+    var result: [QnaTipsResponseData]
 }
 
-struct QnaTipsResult: Codable {
-    var tips: [QnaTipsResponseData]
-}
-
-struct QnaTipsResponseData: Identifiable ,Codable {
+struct QnaTipsResponseData: Identifiable, Codable {
     var id = UUID()
     var tip_id: Int
     var category: TipsCategorySegment
@@ -42,5 +38,4 @@ struct QnaTipsResponseData: Identifiable ,Codable {
         case created_at
         case recommend_count
     }
-
 }
