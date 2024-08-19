@@ -16,22 +16,9 @@ struct QnaView: View {
     
     var body: some View {
         ZStack {
-            VStack(spacing: 0) {
-                QnaHeaderView(selectedSegment: $selectedSegment)
-                GeometryReader { geometry in
-                    HStack(spacing: 0) {
-                        QnaFAQView(viewModel: faqViewModel)
-                            .frame(width: geometry.size.width)
-                        QnaTipsView(viewModel: tipsViewModel)
-                            .frame(width: geometry.size.width)
-                    }
-                    .frame(width: geometry.size.width * 2, alignment: selectedSegment == "FAQ" ? .leading : .trailing)
-                    .offset(x: selectedSegment == "FAQ" ? 0 : -geometry.size.width)
-                    .animation(.easeInOut, value: selectedSegment)
-                }
-            }
+            faqAndTipsSegmentSet
             .zIndex(1)
-
+            //Tips면 floatingBtn나오도록
             if selectedSegment == "TIPS" {
                 if isFloatingBtnPresented {
                     Color.clear
@@ -42,9 +29,26 @@ struct QnaView: View {
                             }
                         }
                 }
-
                 FloatingWriteBtn(isPresented: $isFloatingBtnPresented)
                     .zIndex(2)
+            }
+        }
+    }
+    
+    /// faq랑 tips 뷰 전환할 수 있도록 함.
+    private var faqAndTipsSegmentSet: some View {
+        VStack(spacing: 0) {
+            QnaHeaderView(selectedSegment: $selectedSegment)
+            GeometryReader { geometry in
+                HStack(spacing: 0) {
+                    QnaFAQView(viewModel: faqViewModel)
+                        .frame(width: geometry.size.width)
+                    QnaTipsView(viewModel: tipsViewModel)
+                        .frame(width: geometry.size.width)
+                }
+                .frame(width: geometry.size.width * 2, alignment: selectedSegment == "FAQ" ? .leading : .trailing)
+                .offset(x: selectedSegment == "FAQ" ? 0 : -geometry.size.width)
+                .animation(.easeInOut, value: selectedSegment)
             }
         }
     }

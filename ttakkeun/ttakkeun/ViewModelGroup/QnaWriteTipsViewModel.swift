@@ -5,6 +5,8 @@
 //  Created by 한지강 on 8/11/24.
 //
 
+// QnaWriteTipsViewModel.swift
+
 import Foundation
 import SwiftUI
 import Moya
@@ -20,7 +22,7 @@ class QnaWriteTipsViewModel: ObservableObject, @preconcurrency ImageHandling {
     private let provider: MoyaProvider<QnaTipsAPITarget>
 
     //MARK: - Init
-    init(isTipsinputCompleted: Bool = false ,
+    init(isTipsinputCompleted: Bool = false,
          provider:
          MoyaProvider<QnaTipsAPITarget> =
          APIManager.shared.testProvider(for: QnaTipsAPITarget.self)
@@ -72,7 +74,7 @@ class QnaWriteTipsViewModel: ObservableObject, @preconcurrency ImageHandling {
     func postTipsData() async {
         guard let data = self.requestData else { return }
 
-        provider.request(.createTipsContent(title: data.title, content: data.content, category: data.category.rawValue)) { [weak self] result in
+        provider.request(.createTipsContent(data: data)) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.handlerResponsePostTipsData(response: response)
@@ -86,7 +88,6 @@ class QnaWriteTipsViewModel: ObservableObject, @preconcurrency ImageHandling {
             }
         }
     }
-
 
     /// Tip내용 핸들러 함수
     /// - Parameter response: API 호출 시 받게 되는 응답
@@ -108,8 +109,6 @@ class QnaWriteTipsViewModel: ObservableObject, @preconcurrency ImageHandling {
             print("postImages() 실패: tip_id를 찾을 수 없음")
             return
         }
-        
-        print("postImages() 시작: \(tipId)")
         
         provider.request(.sendTipsImage(tip_id: tipId, images: arrImages)) { result in
             switch result {

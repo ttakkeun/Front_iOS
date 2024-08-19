@@ -104,7 +104,8 @@ struct QnaTipsView: View {
             }
         }
     }
-
+    
+    /// 전체와 Best세그먼트 제목
     private var title: some View {
         Text("🔥\(viewModel.selectedCategory.toKorean())")
             .font(.H2_bold)

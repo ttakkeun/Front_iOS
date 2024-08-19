@@ -14,7 +14,7 @@ enum QnaTipsAPITarget {
     case getAllTips(page: Int, size: Int)
     case getBestTips(page: Int, size: Int)
     case sendTipsImage(tip_id: Int, images: [UIImage])
-    case createTipsContent(title: String, content: String, category: String)
+    case createTipsContent(data: QnaTipsRequestData)
     case heartChange(tip_id: Int)
 }
 
@@ -58,8 +58,8 @@ extension QnaTipsAPITarget: APITargetType {
                return .requestParameters(parameters: ["page": page, "size": size], encoding: URLEncoding.queryString)
            case .getBestTips(let page, let size):
                return .requestParameters(parameters: ["page": page, "size": size], encoding: URLEncoding.queryString)
-           case .createTipsContent(let title, let content, let category):
-               return .requestParameters(parameters: ["title": title, "content": content, "category": category], encoding: JSONEncoding.default)
+           case .createTipsContent(let data):
+               return .requestJSONEncodable(data)
            case .sendTipsImage(_, let images):
                var multipartData = [MultipartFormData]()
                for (index, image) in images.enumerated() {
