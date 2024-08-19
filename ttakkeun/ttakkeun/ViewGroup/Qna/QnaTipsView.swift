@@ -44,9 +44,6 @@ struct QnaTipsView: View {
         .refreshable {
             refreshData()
         }
-        .onChange(of: viewModel.selectedCategory) {
-            refreshData()
-        }
     }
 
     private func loadData() {

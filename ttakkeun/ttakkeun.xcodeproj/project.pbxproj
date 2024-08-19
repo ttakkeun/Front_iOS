@@ -29,6 +29,7 @@
 			membershipExceptions = (
 				Diagnosis/AnswerButton.swift,
 				Diagnosis/CheckQnAComponent.swift,
+				Diagnosis/DiagnosisProductView.swift,
 				Diagnosis/DiagnosisTopbutton.swift,
 				Diagnosis/DiagnosticImages.swift,
 				Diagnosis/JournalListCard.swift,
@@ -100,6 +101,7 @@
 				Diagnosis/CheckQnAView.swift,
 				Diagnosis/DiagnosingView.swift,
 				Diagnosis/DiagnosisHeader.swift,
+				Diagnosis/DiagnosisResultView.swift,
 				Diagnosis/DiagnosisView.swift,
 				Diagnosis/JournalListView.swift,
 				Diagnosis/JournalQuestionView.swift,
@@ -181,6 +183,11 @@
 				LoginOnBoarding/LoginViewModel.swift,
 				MyPageViewModel.swift,
 				ProductViewModel.swift,
+				Profile/CreateProfileViewModel.swift,
+				Profile/ProfileCardViewModel.swift,
+				QnA/QnaTipsViewModel.swift,
+				QnA/QnaViewModel.swift,
+				QnA/QnaWriteTipsViewModel.swift,
 				RegistJournalViewModel.swift,
 				ScheduleViewModel.swift,
 			);
@@ -189,6 +196,7 @@
 		48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Diagnostic/DiagnosisData.swift,
 				Diagnostic/DiagnosticPoint.swift,
 				Journal/CheckJournalQnA.swift,
 				Journal/JournalListData.swift,
@@ -210,6 +218,7 @@
 				QnA/QnaTipsData.swift,
 				QnA/TopTenQnaJsonData.json,
 				RecommendProductData.swift,
+				ResponseData.swift,
 				Schedule/ScheduleInquiryData.swift,
 				Schedule/TodoCompleteData.swift,
 				ToDo/CorrectionTodo.swift,
@@ -519,7 +528,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ttakkeun/Preview Content\"";
-				DEVELOPMENT_TEAM = 8B8B4462NV;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ttakkeun/Info.plist;
@@ -550,7 +559,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ttakkeun/Preview Content\"";
-				DEVELOPMENT_TEAM = 8B8B4462NV;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ttakkeun/Info.plist;
