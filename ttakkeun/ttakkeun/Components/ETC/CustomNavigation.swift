@@ -55,11 +55,15 @@ struct CustomNavigation: View {
                 Text(title)
                     .font(.H3_bold)
                     .foregroundStyle(Color.black)
+                
             } else {
                 Spacer()
             }
             
             if let currentPage = self.currentPage {
+                
+                Spacer()
+                
                 Text("\(currentPage) / 5")
                     .font(.Body2_semibold)
                     .foregroundStyle(Color.gray_900)

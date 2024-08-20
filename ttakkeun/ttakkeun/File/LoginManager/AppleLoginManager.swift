@@ -9,11 +9,11 @@ import Foundation
 import AuthenticationServices
 
 class AppleLoginManager: NSObject {
-    var onAuthorizationCompleted: ((String) -> Void)?
+    var onAuthorizationCompleted: ((String, String?, String) -> Void)?
     
     public func signWithApple() {
         let request = ASAuthorizationAppleIDProvider().createRequest()
-        request.requestedScopes = [.fullName]
+        request.requestedScopes = [.fullName, .email]
         
         let authorizationController = ASAuthorizationController(authorizationRequests: [request])
         authorizationController.delegate = self
@@ -27,22 +27,26 @@ extension AppleLoginManager: ASAuthorizationControllerDelegate {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             let workItem = DispatchWorkItem {
                 let fullName = appleIDCredential.fullName.flatMap { nameComponents in
-                    [nameComponents.givenName, nameComponents.familyName]
+                    [nameComponents.familyName, nameComponents.givenName]
                         .compactMap { $0 }
-                        .joined(separator: " ")
+                        .joined(separator: "")
                 }
                 
                 let userData = AppleUserData(
                     userIdentifier: appleIDCredential.user,
                     fullName: fullName ?? "",
+                    email: appleIDCredential.email ?? "",
                     authorizationCode: String(data: appleIDCredential.authorizationCode ?? Data(), encoding: .utf8),
                     identityToken: String(data: appleIDCredential.identityToken ?? Data(), encoding: .utf8)
                 )
                 
-                if let authorizationCode = userData.authorizationCode {
-                    self.onAuthorizationCompleted?(authorizationCode)
+                if let authorizationCode = userData.identityToken {
+                    self.onAuthorizationCompleted?(authorizationCode, userData.email, userData.fullName)
+                    print("유저 인가 코드: \(authorizationCode)")
+                    print("유저 이메일 : \(userData.email ?? "")")
+                    print("유저 이름 : \(userData.fullName)")
                 }
-            }
+            }   
             DispatchQueue.main.async(execute: workItem)
         }
     }

@@ -31,14 +31,14 @@ struct HomeView: View {
         ZStack(alignment: .bottom) {
             VStack(alignment: .center, spacing: 14, content: {
                 TopStatusBar()
-                HomeProfileCard(viewModel: homeProfileCardViewModel, petId: petState.petId ?? 1)
+                HomeProfileCard(viewModel: homeProfileCardViewModel, petId: petState.petId)
                 
                 Spacer()
             })
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             
             HomeDragView(scheduleViewModel: scheduleViewModel, productViewModel: productViewModel)
-                .environmentObject(PetState())
+                .environmentObject(petState)
         }
     }
 }
@@ -50,7 +50,7 @@ struct HomeView_Preview: PreviewProvider {
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
             HomeView()
-                .environmentObject(PetState())
+                .environmentObject(PetState(petName: "유애", petId: 1))
                 .background(Color.primaryColor_Main)
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)

@@ -7,13 +7,22 @@
 
 import SwiftUI
 import Combine
+import Moya
 
+@MainActor
 class AgreementViewModel: ObservableObject {
     @Published var agreements: [AgreementData] = []
     @Published var selectedAgreement: AgreementData?
     
+    private let provider: MoyaProvider<UserLoginAPITarget>
+    var userInfo = UserInfo()
+    private let keychain = KeyChainManager.standard
+    
     //MARK: - INIT
-    init() {
+    init(
+        provider: MoyaProvider<UserLoginAPITarget> = APIManager.shared.createProvider(for: UserLoginAPITarget.self)
+    ) {
+        self.provider = provider
         loadAgreements()
     }
     
@@ -48,5 +57,36 @@ class AgreementViewModel: ObservableObject {
     /// 동의 항목 데이터를 로드하는 함수
     private func loadAgreements() {
         agreements = AgreementDetailData.loadAgreements()
+    }
+    
+    public func signUp(token: String, name: String) async {
+        return await withCheckedContinuation { continuation in
+            provider.request(.appleSignup(token: token, name: name)) { [weak self] result in
+                switch result {
+                case .success(let response):
+                    self?.handlerSignUp(response: response)
+                    continuation.resume(returning: ())
+                case .failure(let error):
+                    print("회원강립 네트워크 에러: \(error)")
+                }
+            }
+        }
+    }
+    
+    private func handlerSignUp(response: Response) {
+        do {
+            let decodedData = try JSONDecoder().decode(ResponseData<SignUpResponseData>.self, from: response.data)
+            print(decodedData)
+            if decodedData.isSuccess {
+                DispatchQueue.main.async {
+                    self.userInfo = UserInfo(accessToken: decodedData.result?.accessToken,
+                                             refreshToken: decodedData.result?.refreshToken)
+                    let saveData =  self.keychain.saveSession(self.userInfo, for: "userSession")
+                    print("회원 가입 성공: \(saveData)")
+                }
+            }
+        } catch {
+            print("회원가입 디코더 에러: \(error)")
+        }
     }
 }
