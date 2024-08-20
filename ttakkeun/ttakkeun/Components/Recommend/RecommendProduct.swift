@@ -32,13 +32,14 @@ struct RecommendProduct: View {
     // MARK: - Components
     var body: some View {
         HStack(spacing: 14) {
-            contents
+            imageAndRank
             titleAndPrice
         }
         .frame(maxWidth: 343, maxHeight: 95)
     }
     
-    private var contents: some View {
+    /// 사진이미지와 순위
+    private var imageAndRank: some View {
         VStack(alignment: .leading, spacing: 4, content: {
             ZStack(alignment: .bottomLeading, content: {
                 productImage
@@ -50,6 +51,7 @@ struct RecommendProduct: View {
         .frame(width: 84, height: 150)
     }
     
+    /// 상품이름과 상품가격
     private var titleAndPrice: some View {
         VStack(alignment: .leading) {
             title
@@ -103,6 +105,7 @@ struct RecommendProduct: View {
     }
     
     //TODO: - 상품이름 받아와서 텍스트 띄워야함
+    /// 상품 이름
     private var title: some View {
         Text(data.title)
             .font(.Body3_semibold)
@@ -112,6 +115,7 @@ struct RecommendProduct: View {
     }
     
     //TODO: - 가격받아서 띄워야 함
+    /// 상품 가격
     private var price: some View {
         Text("\(data.price)원")
             .font(.Body2_semibold)
