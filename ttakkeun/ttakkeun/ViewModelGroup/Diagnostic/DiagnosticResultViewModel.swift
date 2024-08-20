@@ -13,12 +13,13 @@ import Moya
 class DiagnosticResultViewModel: ObservableObject {
     
     @Published var point: Int = 0
-    @Published var diagnosisData: DiagnosisData?
+    @Published var diagnosisDetailData: DiagnosisData?
+    @Published var diagnosisList: DiagnosisResultList? = DiagnosisResultList(diagnoses: [Diagnosis(diagID: 1, createdAt: "2024-07-20T15:30:00+09:00", score: 10),Diagnosis(diagID: 2, createdAt: "2024-07-20T15:30:00+09:00", score: 100),Diagnosis(diagID: 3, createdAt: "2024-07-20T15:30:00+09:00", score: 40),Diagnosis(diagID: 4, createdAt: "2024-07-20T15:30:00+09:00", score: 80),Diagnosis(diagID: 5, createdAt: "2024-07-20T15:30:00+09:00", score: 10),Diagnosis(diagID: 6, createdAt: "2024-07-20T15:30:00+09:00", score: 100),Diagnosis(diagID: 7, createdAt: "2024-07-20T15:30:00+09:00", score: 40),Diagnosis(diagID: 8, createdAt: "2024-07-20T15:30:00+09:00", score: 80)])
     
     private let provider: MoyaProvider<DiagnosticResultAPITarget>
     let petId: Int
     
-    // MARK: - Init
+    // MARK: - InitD
     
     init(
         provider: MoyaProvider<DiagnosticResultAPITarget> = APIManager.shared.testProvider(for: DiagnosticResultAPITarget.self),
@@ -77,7 +78,8 @@ class DiagnosticResultViewModel: ObservableObject {
             let decodedData = try JSONDecoder().decode(ResponseData<DiagnosisData>.self, from: response.data)
             if decodedData.isSuccess {
                 DispatchQueue.main.async {
-                    self.diagnosisData = decodedData.result
+                    self.diagnosisDetailData = decodedData.result
+                    print("진단서 상세 내용 조회 완료")
                 }
             } else {
                 print(decodedData.message)
@@ -86,5 +88,8 @@ class DiagnosticResultViewModel: ObservableObject {
             print("진단 상세 내부 데이터 디코더 에러: \(error)")
         }
     }
+    
+    
+    // MARK: - 진단 결과 리스트 조회 API
     
 }
