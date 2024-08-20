@@ -187,6 +187,7 @@
 				Diary/TodoCheckViewModel.swift,
 				HomeProfileCardViewModel.swift,
 				LoginOnBoarding/AgreementViewModel.swift,
+				LoginOnBoarding/AgreementViewModel.swift,
 				LoginViewModel.swift,
 				LoginOnBoarding/AppFlowViewModel.swift,
 				LoginOnBoarding/LoginViewModel.swift,
