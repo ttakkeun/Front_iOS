@@ -106,6 +106,7 @@
 				Diagnosis/CheckQnAView.swift,
 				Diagnosis/DiagnosingView.swift,
 				Diagnosis/DiagnosisHeader.swift,
+				Diagnosis/DiagnosisResultDetailView.swift,
 				Diagnosis/DiagnosisResultView.swift,
 				Diagnosis/DiagnosisView.swift,
 				Diagnosis/JournalListView.swift,

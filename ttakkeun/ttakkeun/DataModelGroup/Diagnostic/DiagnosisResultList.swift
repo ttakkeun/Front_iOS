@@ -11,13 +11,14 @@ struct DiagnosisResultList {
     let diagnoses: [Diagnosis]
 }
 
-struct Diagnosis {
-    let id: Int
+struct Diagnosis: Identifiable, Hashable {
+    var id: Int { diagID }
+    let diagID: Int
     let createdAt: String
     let score: Int
     
     enum CodingKeys: String, CodingKey {
-        case id = "diagnose_id"
+        case diagID = "diagnose_id"
         case createdAt = "created_at"
         case score
     }

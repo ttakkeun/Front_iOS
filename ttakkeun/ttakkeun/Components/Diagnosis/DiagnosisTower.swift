@@ -90,7 +90,7 @@ struct DiagnosisTower: View {
 
 struct DiagnosisTower_Previews: PreviewProvider {
     static var previews: some View {
-        DiagnosisTower(data: Diagnosis.init(id: 1, createdAt: "2024-07-20T15:30:00+09:00", score: 100))
+        DiagnosisTower(data: Diagnosis.init(diagID: 1, createdAt: "2024-07-20T15:30:00+09:00", score: 100))
             .previewLayout(.sizeThatFits)
     }
 }

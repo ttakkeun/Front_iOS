@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DiagnosisView: View {
-    @State var segment: DiagnosisSegment = .journalList
+    @State var segment: DiagnosisSegment = .diagnosticResults
     @StateObject var journalListViewModel: JournalListViewModel
     @StateObject var diagnosticResultViewModel: DiagnosticResultViewModel
     
@@ -23,10 +23,23 @@ struct DiagnosisView: View {
             
             DiagnosisTopbutton(journalListViewModel: journalListViewModel, diagnosticResultViewModel: diagnosticResultViewModel)
             
-            JournalListView(viewModel: journalListViewModel)
+            Spacer()
+            
+            changeView
+            
         }
         .ignoresSafeArea(.all)
         
+    }
+    
+    @ViewBuilder
+    private var changeView: some View {
+        switch segment {
+        case .journalList:
+            JournalListView(viewModel: journalListViewModel)
+        case .diagnosticResults:
+            DiagnosisResultView(viewModel: diagnosticResultViewModel)
+        }
     }
 }
 
