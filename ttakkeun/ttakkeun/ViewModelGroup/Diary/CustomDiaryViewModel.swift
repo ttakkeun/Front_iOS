@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+/// 다이어리 뷰, 날짜 관련 처리 뷰모델
 class CustomDiaryViewModel: ObservableObject {
     @Published var month: Date {
         didSet {
