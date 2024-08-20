@@ -34,7 +34,7 @@ struct DiagnosisResultView: View {
                     })
                     .frame(alignment: .bottom)
                     .padding(.top, 75)
-                    .padding(.bottom, 100)
+                    .padding(.bottom, 80)
                     .zIndex(0)
                 }
                 .frame(minHeight: 750)
