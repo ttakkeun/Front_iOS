@@ -9,7 +9,8 @@ import SwiftUI
 
 struct CreateProfileView: View {
     
-    @StateObject var viewModel: CreateProfileViewModel
+    @StateObject var viewModel: CreateProfileViewModel = CreateProfileViewModel()
+    @Environment(\.dismiss) var dismiss
     @State private var showingVarietySearch = false
     
     // MARK: - Contents
@@ -58,7 +59,20 @@ struct CreateProfileView: View {
         .sheet(isPresented: $showingVarietySearch) {
             VarietySearch(viewModel: viewModel, showingVarietySearch: $showingVarietySearch)
         }
-
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(id: "back", placement: .topBarLeading, content: {
+                Button{
+                    dismiss()
+                       } label: {
+                           HStack {
+                               Image(systemName: "chevron.left")
+                                   .aspectRatio(contentMode: .fit)
+                               Text("뒤로가기")
+                           }
+                       }
+            })
+        }
     }
     
     ///정보 입력 필드

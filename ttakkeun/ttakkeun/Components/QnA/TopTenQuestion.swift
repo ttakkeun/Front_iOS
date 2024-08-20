@@ -51,7 +51,7 @@ struct TopTenQuestion: View {
     
     /// question 컴포넌트
     private var questionCard: some View {
-        VStack(alignment: .leading, spacing: 21) {
+        VStack(alignment: .leading, spacing: 16) {
             questionAndCategory
             question
             Spacer()
@@ -60,10 +60,9 @@ struct TopTenQuestion: View {
     
     /// answer 컴포넌트
     private var answerCard: some View {
-        VStack(alignment: .leading, spacing: 21) {
+        VStack(alignment: .leading, spacing: 16) {
             answerAndCategory
             answer
-            Spacer()
         }
         
     }
@@ -108,8 +107,9 @@ struct TopTenQuestion: View {
     private var answer: some View {
         Text(data.answer)
             .font(.Body4_medium)
-            .transition(.opacity)
-            .animation(.easeInOut(duration: 1.0), value: isFlipped)
+            .lineLimit(nil)
+            .frame(maxWidth: 136,maxHeight: .infinity,alignment: .topLeading)
+            .minimumScaleFactor(0.8)
     }
     
     //MARK: - 카테고리

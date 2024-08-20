@@ -86,7 +86,7 @@ struct JournalListCard: View {
     }
     
     // MARK: - TextFormatter
-    /// 시간 데이터 파
+    /// 시간 데이터 파일   
     private var formattedTime: String {
         let inputFormatter = DateFormatter()
         inputFormatter.dateFormat = "HH:mm:ss"

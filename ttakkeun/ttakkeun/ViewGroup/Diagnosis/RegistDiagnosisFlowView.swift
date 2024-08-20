@@ -11,15 +11,26 @@ struct RegistDiagnosisFlowView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel: RegistJournalViewModel
     
-    init() {
-        self._viewModel = StateObject(wrappedValue: RegistJournalViewModel())
+    init(petState: PetState) {
+        self._viewModel = StateObject(wrappedValue: RegistJournalViewModel(petId: petState.petId))
     }
     
     var body: some View {
-        Text("hello")
+        VStack(alignment: .center, content: {
+            CustomNavigation(action: {
+                dismiss()
+            }, title: "일지 생성", currentPage: viewModel.currentPage, naviIcon: Image("close"), width: 14, height: 14)
+            
+            Spacer()
+            
+            RegistDiagnosisPageContents(viewModel: viewModel)
+            
+            Spacer()
+        })
+        .frame(width: 355, height: 749)
     }
 }
 
 #Preview {
-    RegistDiagnosisFlowView()
+    RegistDiagnosisFlowView(petState: PetState())
 }

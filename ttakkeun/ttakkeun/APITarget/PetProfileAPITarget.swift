@@ -87,7 +87,7 @@ extension PetProfileAPITarget: APITargetType {
                    "message": "Success",
                    "result": {
                        "name": "초코",
-                       "image": "https://i.namu.wiki/i/Uq_tzk1Z2rPj2Nl0E_yP2swC7LFIKY7nikeUKmsgrHCBgL9kH3DYTOVLh4-ZAjZBZyyfItOmTBWYgbsgL2R6nvm2AuQNAyrdcW5xFb6GeaRv3PjHg2QZMUcPVCYnuZXcYDMinLQE7dLlwGgkx0nRUg.webp",
+                       "image": "https://i.namu.wiki/i/T3RqYUWiNHd0pePRCSV2hBZJvtA-uZuZ_l9INsFUgad9k0c3S9apiQE8n2dcFeLWwCzCqVBnUA0o6bwD6lJw7HCqvgPj-EIz2iLfr3ZkPIXz5Km0rUxaIPklVYRmHyQvmPlq8xRbeKCIeIGxu6m_KA.webp",
                        "type": "DOG",
                        "variety": "푸들",
                        "birth": "2021-04-22",
@@ -106,7 +106,7 @@ extension PetProfileAPITarget: APITargetType {
                        {
                            "pet_id": 1,
                            "name": "애깅이",
-                           "image": "https://i.namu.wiki/i/Q7sL1U82ugGToy76opQeurJCJvNetQ72cF67vaK7FrG1b8Hm1cCYzhHk3llhUYHkogvJJuf5D4YxpmQpSB7SBqjid3s_b_CJsgo3N52az4QAcKzI7eB7gFcf3c84ip6v-09yuMng3bv8yFavlsRh8Q.webp",
+                           "image": "https://i.namu.wiki/i/T3RqYUWiNHd0pePRCSV2hBZJvtA-uZuZ_l9INsFUgad9k0c3S9apiQE8n2dcFeLWwCzCqVBnUA0o6bwD6lJw7HCqvgPj-EIz2iLfr3ZkPIXz5Km0rUxaIPklVYRmHyQvmPlq8xRbeKCIeIGxu6m_KA.webp",
                            "type": "CAT",
                            "birth": "2021-04-22"
                        },

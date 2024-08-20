@@ -13,6 +13,6 @@ protocol APITargetType: TargetType {}
 
 extension APITargetType {
     var baseURL: URL {
-        return URL(string: "https://ttakkeun.herokuapp.com")!
+        return URL(string: "http://ttakkeun.com:8080/api")!
     }
 }
