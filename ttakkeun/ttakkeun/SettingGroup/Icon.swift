@@ -44,6 +44,9 @@ enum Icon: String {
     case write = "write"
     case cancel = "cancel"
     case camera = "camera"
+    case plus = "plus"
+    case minus = "minus"
+    case basePlus = "basePlus"
     
     // MARK: - Schedule
     case downArrow = "downArrow"

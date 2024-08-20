@@ -35,6 +35,7 @@
 				Diagnosis/JournalListCard.swift,
 				Diagnosis/NotJournalList.swift,
 				Diagnosis/SelectCareButton.swift,
+				Diary/TodoCard.swift,
 				ETC/CustomAlert.swift,
 				ETC/CustomNavigation.swift,
 				ETC/CustomTextEditor.swift,
@@ -148,6 +149,7 @@
 				PetState.swift,
 				Protocol/ImageHandling.swift,
 				Protocol/ObservableObjectSettable.swift,
+				Protocol/TodoCheckProtocol.swift,
 				TokenRefresh/AccessTokenRefresher.swift,
 				TokenRefresh/APIManager.swift,
 				TokenRefresh/AuthAPITarget.swift,
@@ -175,11 +177,12 @@
 		48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				AgreementViewModel.swift,
-				CustomDiaryViewModel.swift,
 				Diagnostic/DiagnosticResultViewModel.swift,
 				Diagnostic/JournalListViewModel.swift,
+				Diary/CustomDiaryViewModel.swift,
+				Diary/TodoCheckViewModel.swift,
 				HomeProfileCardViewModel.swift,
+				LoginOnBoarding/AgreementViewModel.swift,
 				LoginOnBoarding/AppFlowViewModel.swift,
 				LoginOnBoarding/LoginViewModel.swift,
 				MyPageViewModel.swift,

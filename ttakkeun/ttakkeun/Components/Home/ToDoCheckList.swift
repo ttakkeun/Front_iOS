@@ -8,10 +8,10 @@
 import SwiftUI
 
 /// 투두 항목의 체크 리스트
-struct ToDoCheckList: View {
+struct ToDoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
     
     @Binding var data: TodoList
-    @ObservedObject var viewModel: ScheduleViewModel
+    @ObservedObject var viewModel: ViewModel
     let parItem: PartItem
     
     
@@ -19,7 +19,7 @@ struct ToDoCheckList: View {
     
     init(
         data: Binding<TodoList>,
-        viewModel: ScheduleViewModel,
+        viewModel: ViewModel,
         partItem: PartItem
     ) {
         self._data = data
