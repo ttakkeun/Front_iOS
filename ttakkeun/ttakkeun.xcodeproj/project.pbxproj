@@ -178,17 +178,12 @@
 		48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				AgreementViewModel.swift,
-				CreateProfileViewModel.swift,
-				CustomDiaryViewModel.swift,
 				Diagnostic/DiagnosticResultViewModel.swift,
 				Diagnostic/JournalListViewModel.swift,
 				Diary/CustomDiaryViewModel.swift,
 				Diary/TodoCheckViewModel.swift,
 				HomeProfileCardViewModel.swift,
 				LoginOnBoarding/AgreementViewModel.swift,
-				LoginOnBoarding/AgreementViewModel.swift,
-				LoginViewModel.swift,
 				LoginOnBoarding/AppFlowViewModel.swift,
 				LoginOnBoarding/LoginViewModel.swift,
 				MyPageViewModel.swift,
@@ -214,7 +209,6 @@
 				Journal/RegistJournalData.swift,
 				Login/AgreementData.swift,
 				Login/AgreementDetailData.swift,
-				LoginResponseData.swift,
 				Login/LoginResponseData.swift,
 				Login/SignUpData.swift,
 				Login/SignUpResponseData.swift,
