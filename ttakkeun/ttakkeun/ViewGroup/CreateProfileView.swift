@@ -58,7 +58,6 @@ struct CreateProfileView: View {
         })
         .sheet(isPresented: $showingVarietySearch) {
             VarietySearch(viewModel: viewModel, showingVarietySearch: $showingVarietySearch)
-                .presentationDragIndicator(.visible)
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
