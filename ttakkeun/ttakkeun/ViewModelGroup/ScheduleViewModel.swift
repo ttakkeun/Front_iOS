@@ -9,7 +9,7 @@ import Foundation
 import Moya
 
 @MainActor
-class ScheduleViewModel: ObservableObject {
+class ScheduleViewModel: ObservableObject, @preconcurrency TodoCheckProtocol {
     @Published var inputDate: DateRequestData
     @Published var scheduleData: ScheduleInquiry?
     
