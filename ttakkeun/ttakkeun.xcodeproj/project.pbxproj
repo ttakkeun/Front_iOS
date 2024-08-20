@@ -130,6 +130,8 @@
 				Qna/QnaView.swift,
 				Qna/QnaWriteTipsView.swift,
 				Schedule/ScheduleView.swift,
+				Suggestion/SuggestionInitialView.swift,
+				Suggestion/SuggestionSearchedView.swift,
 				Suggestion/SuggestionView.swift,
 				TabView/CustomTab.swift,
 				TabView/TabView.swift,
@@ -181,17 +183,12 @@
 		48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				AgreementViewModel.swift,
-				CreateProfileViewModel.swift,
-				CustomDiaryViewModel.swift,
 				Diagnostic/DiagnosticResultViewModel.swift,
 				Diagnostic/JournalListViewModel.swift,
 				Diary/CustomDiaryViewModel.swift,
 				Diary/TodoCheckViewModel.swift,
 				HomeProfileCardViewModel.swift,
 				LoginOnBoarding/AgreementViewModel.swift,
-				LoginOnBoarding/AgreementViewModel.swift,
-				LoginViewModel.swift,
 				LoginOnBoarding/AppFlowViewModel.swift,
 				LoginOnBoarding/LoginViewModel.swift,
 				MyPageViewModel.swift,
@@ -203,6 +200,7 @@
 				QnA/QnaWriteTipsViewModel.swift,
 				RegistJournalViewModel.swift,
 				ScheduleViewModel.swift,
+				SuggestionViewModel.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -217,7 +215,6 @@
 				Journal/RegistJournalData.swift,
 				Login/AgreementData.swift,
 				Login/AgreementDetailData.swift,
-				LoginResponseData.swift,
 				Login/LoginResponseData.swift,
 				Login/SignUpData.swift,
 				Login/SignUpResponseData.swift,
@@ -554,6 +551,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -585,6 +583,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
