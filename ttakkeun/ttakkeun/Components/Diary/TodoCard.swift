@@ -37,8 +37,9 @@ struct TodoCard: View {
                     }
                 })
             } else {
-                ProgressView()
-                    .frame(width: 100, height: 100)
+                Text("Todo list를 만들어볼까요?")
+                    .font(.Body3_medium)
+                    .foregroundStyle(Color.gray_400)
             }
         })
         .frame(width: 310)
