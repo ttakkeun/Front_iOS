@@ -56,6 +56,9 @@ enum Icon: String {
     case unCheckBox = "unCheckBox"
     case checkBox = "checkBox"
     case checkV = "checkV"
+    case tommorrow = "tommorrow"
+    case changeDate = "changeDate"
+    case nextTime = "nextTime"
     
     // MARK: - Diagnosis
     case buttonClaw = "buttonClaw"
@@ -81,10 +84,6 @@ enum Icon: String {
     case qna = "qna"
     case schedule = "schedule"
     case suggestion = "suggestion"
-    
-    //MARK: - MyPage
-    case heartTips = "heartTips"
-    case pencil = "pencil"
     
     //MARK: - MyPage
     case heartTips = "heartTips"
