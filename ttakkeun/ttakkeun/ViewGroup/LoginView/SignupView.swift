@@ -8,13 +8,16 @@
 import SwiftUI
 
 /// 본인확인 및 동의항목 뷰
-struct AgreementView: View {
-    @StateObject var viewModel = AgreementViewModel()
+struct SignupView: View {
+    @StateObject var viewModel: AgreementViewModel = AgreementViewModel()
+    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
+    @EnvironmentObject var container: DIContainer
+        
     @Environment(\.dismiss) var dismiss
+    var signUpData: SignUpData
     
-    //MARK: - INIT
-    init() {
-        self._viewModel = StateObject(wrappedValue: AgreementViewModel())
+    init(signUpData: SignUpData) {
+        self.signUpData = signUpData
     }
     
     //MARK: - Contents
@@ -23,16 +26,16 @@ struct AgreementView: View {
             CustomNavigation(action: {
                 dismiss()
             }, title: "본인확인", currentPage: nil, naviIcon: Image(systemName: "xmark"), width: 14, height: 14)
-                .padding(.top, 15)
             
             emailField
-
+            
             agreementPart
             
             Spacer()
             
             registerBtn
         })
+        .navigationBarBackButtonHidden()
     }
     
     /// 로그인 후 넘겨받은 이메일 출력
@@ -42,17 +45,16 @@ struct AgreementView: View {
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray_900)
             
-            //TODO: 로그인 후 넘겨받은 이메일을 출력하도록 이메일 주소 필드 바꿔야함!
-            Text(verbatim: "asdasd0000@naver.com")
-                .font(.Body3_medium)
-                .foregroundStyle(Color.gray_400)
-                .frame(width: 325, height: 44, alignment: .leading)
-                .padding(.leading, 15)
-                .clipShape(.rect(cornerRadius: 10))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray_200, lineWidth: 1)
-                )
+            Text(verbatim: signUpData.email)
+                    .font(.Body3_medium)
+                    .foregroundStyle(Color.gray_400)
+                    .frame(width: 325, height: 44, alignment: .leading)
+                    .padding(.leading, 15)
+                    .clipShape(.rect(cornerRadius: 10))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray_200, lineWidth: 1)
+                    )
         })
     }
     
@@ -71,7 +73,7 @@ struct AgreementView: View {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.gray_200, lineWidth: 1)
                 )
-    
+            
             totalAgreement
         })
         .frame(width: 341, height: 248)
@@ -140,9 +142,13 @@ struct AgreementView: View {
             width: 339,
             height: 63,
             action: {
-                if viewModel.isAllMandatoryChecked {
-                    //TODO: 완료버튼 눌렀을 때 액션 함수 추가 필요
-                    print("완료버튼 눌림")
+                Task {
+                    
+                    if viewModel.isAllMandatoryChecked {
+                        await viewModel.signUp(token: signUpData.token, name: signUpData.name)
+                        container.navigationRouter.pop()
+                        appFlowViewModel.onSignUpSuccess()
+                    }
                 }
             },
             color: viewModel.isAllMandatoryChecked ? Color.primaryColor_Main : Color.gray_200
@@ -150,22 +156,23 @@ struct AgreementView: View {
         .disabled(!viewModel.isAllMandatoryChecked)
     }
     
+    //MARK: - Function
+    /// 체크 상태에 따른 이미지를 반환하는 함수
+    private func checkmarkImage(for isChecked: Bool) -> Image {
+        return isChecked ? Icon.check.image : Icon.uncheck.image
+    }
+    
 }
 
-//MARK: - Function
-/// 체크 상태에 따른 이미지를 반환하는 함수
-private func checkmarkImage(for isChecked: Bool) -> Image {
-    return isChecked ? Icon.check.image : Icon.uncheck.image
-}
 
 //MARK: - Preview
-struct AgreementView_Preview: PreviewProvider {
+struct SignupView_Preview: PreviewProvider {
     
     static let devices = ["iPhone 11", "iphone 15 Pro"]
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            AgreementView()
+            SignupView(signUpData: SignUpData(token: "123", email: "123", name: "123123"))
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }

@@ -9,7 +9,9 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @ObservedObject var viewModel: LoginViewModel
+    @StateObject var viewModel: LoginViewModel
+    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
+    @EnvironmentObject var container: DIContainer
     
     var body: some View {
         contetsView
@@ -18,18 +20,24 @@ struct LoginView: View {
     // MARK: - LogoView
     
     private var contetsView: some View {
-        VStack(alignment: .center, content: {
-            
-            Spacer().frame(height: 200)
-            
-            topLogoContents
-            
-            Spacer().frame(height: 180)
-            
-            loginBtnGroup
-            
-        })
-        .frame(maxWidth: .infinity, maxHeight: .infinity).ignoresSafeArea(.all)
+        NavigationStack(path: $container.navigationRouter.destinations) {
+            VStack(alignment: .center, content: {
+                
+                Spacer().frame(height: 200)
+                
+                topLogoContents
+                
+                Spacer().frame(height: 180)
+                
+                loginBtnGroup
+                
+            })
+            .frame(maxWidth: .infinity, maxHeight: .infinity).ignoresSafeArea(.all)
+            .navigationDestination(for: NavigationDestination.self) {
+                NavigationRoutingView(destination: $0)
+                    .environmentObject(appFlowViewModel)
+            }
+        }
     }
     
     /// 상단 로고
@@ -69,6 +77,7 @@ struct LoginView: View {
             Button(action: {
                 Task {
                     await viewModel.appleLoginBtn()
+                    appFlowViewModel.onLoginSuccess(loginViewModel: viewModel)
                 }
             }, label: {
                 Icon.appleLogin.image
@@ -85,7 +94,7 @@ struct LoginView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            LoginView(viewModel: LoginViewModel())
+            LoginView(viewModel: LoginViewModel(container: DIContainer()))
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }

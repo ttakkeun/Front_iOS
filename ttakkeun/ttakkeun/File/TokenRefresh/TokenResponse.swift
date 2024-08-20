@@ -8,12 +8,6 @@
 import Foundation
 
 /// 리프레시 토큰, 리프레시 갱신 시 받게되는 리스폰스 데이터
-struct TokenResponse: Codable {
-    let isSuccess: Bool
-    let code: String
-    let message: String
-    let result: TokenResponseDetail
-}
 
 struct TokenResponseDetail: Codable {
     let accessToken: String

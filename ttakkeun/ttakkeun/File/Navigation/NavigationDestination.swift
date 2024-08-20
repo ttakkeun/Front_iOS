@@ -9,7 +9,7 @@ import Foundation
 
 /// 네비게이션 도착지 설정
 enum NavigationDestination: Hashable {
+    case signUp(token: String, name: String, email: String)
     case createProfile
     case myPage
-    
 }

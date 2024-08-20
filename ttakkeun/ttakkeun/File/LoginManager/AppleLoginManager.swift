@@ -9,7 +9,7 @@ import Foundation
 import AuthenticationServices
 
 class AppleLoginManager: NSObject {
-    var onAuthorizationCompleted: ((String, String?) -> Void)?
+    var onAuthorizationCompleted: ((String, String?, String) -> Void)?
     
     public func signWithApple() {
         let request = ASAuthorizationAppleIDProvider().createRequest()
@@ -27,9 +27,9 @@ extension AppleLoginManager: ASAuthorizationControllerDelegate {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             let workItem = DispatchWorkItem {
                 let fullName = appleIDCredential.fullName.flatMap { nameComponents in
-                    [nameComponents.givenName, nameComponents.familyName]
+                    [nameComponents.familyName, nameComponents.givenName]
                         .compactMap { $0 }
-                        .joined(separator: " ")
+                        .joined(separator: "")
                 }
                 
                 let userData = AppleUserData(
@@ -41,8 +41,10 @@ extension AppleLoginManager: ASAuthorizationControllerDelegate {
                 )
                 
                 if let authorizationCode = userData.identityToken {
-                    self.onAuthorizationCompleted?(authorizationCode, userData.email)
+                    self.onAuthorizationCompleted?(authorizationCode, userData.email, userData.fullName)
                     print("유저 인가 코드: \(authorizationCode)")
+                    print("유저 이메일 : \(userData.email ?? "")")
+                    print("유저 이름 : \(userData.fullName)")
                 }
             }   
             DispatchQueue.main.async(execute: workItem)
