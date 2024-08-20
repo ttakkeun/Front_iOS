@@ -78,6 +78,13 @@ enum Icon: String {
     case leftCat = "leftCat"
     case rightDog = "rightDog"
     
+    // MARK: - DiagnosisResult
+    case top1 = "top1"
+    case top2 = "top2"
+    case top3 = "top3"
+    case top4 = "top4"
+    case top5 = "top5"
+    
     // MARK: - Tab
     case diagnosis = "diagnosis"
     case home = "home"

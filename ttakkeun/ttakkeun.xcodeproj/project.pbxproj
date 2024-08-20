@@ -31,6 +31,7 @@
 				Diagnosis/CheckQnAComponent.swift,
 				Diagnosis/DiagnosisProductView.swift,
 				Diagnosis/DiagnosisTopbutton.swift,
+				Diagnosis/DiagnosisTower.swift,
 				Diagnosis/DiagnosticImages.swift,
 				Diagnosis/JournalListCard.swift,
 				Diagnosis/NotJournalList.swift,
@@ -205,6 +206,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Diagnostic/DiagnosisData.swift,
+				Diagnostic/DiagnosisResultList.swift,
 				Diagnostic/DiagnosticPoint.swift,
 				Journal/CheckJournalQnA.swift,
 				Journal/JournalListData.swift,
