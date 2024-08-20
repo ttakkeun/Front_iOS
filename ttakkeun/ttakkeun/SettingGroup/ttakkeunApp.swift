@@ -11,20 +11,24 @@ import SwiftUI
 struct ttakkeunApp: App {
     
     @StateObject var appFlowViewModel: AppFlowViewModel = AppFlowViewModel()
-    @StateObject var loginViewModel: LoginViewModel = LoginViewModel()
     @StateObject var petState: PetState = PetState()
     @StateObject var container: DIContainer = DIContainer()
     
     var body: some Scene {
         WindowGroup {
-            //            if appFlowViewModel.userExistence || loginViewModel.isLogin {
-            //                ProfileView()
-            //                    .environmentObject(petState)
-            //            } else {
-            //                LoginView(viewModel: loginViewModel)
-            //            }
-            //        }
-            TabView()
+            switch appFlowViewModel.appState {
+            case .onBoarding:
+                OnboardingView()
+                    .environmentObject(appFlowViewModel)
+            case .login:
+                LoginView(viewModel: LoginViewModel(container: container))
+                    .environmentObject(appFlowViewModel)
+                    .environmentObject(container)
+            case .profile:
+                ProfileView(viewModel: ProfileCardViewModel(container: container))
+                    .environmentObject(petState)
+                    .environmentObject(container)
+            }
         }
     }
 }

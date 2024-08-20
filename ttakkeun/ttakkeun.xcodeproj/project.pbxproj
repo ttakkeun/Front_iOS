@@ -112,10 +112,10 @@
 				HomeTab/HomeDragView.swift,
 				HomeTab/HomeProfileCard.swift,
 				HomeTab/HomeView.swift,
-				LoginView/AgreementView.swift,
 				LoginView/LoginView.swift,
 				LoginView/Onboarding.json,
 				LoginView/OnboardingView.swift,
+				LoginView/SignupView.swift,
 				MyPage/MyPageDetailView.swift,
 				MyPage/MyPageView.swift,
 				ProfileView.swift,
@@ -204,7 +204,9 @@
 				Journal/RegistJournalData.swift,
 				Login/AgreementData.swift,
 				Login/AgreementDetailData.swift,
-				LoginResponseData.swift,
+				Login/LoginResponseData.swift,
+				Login/SignUpData.swift,
+				Login/SignUpResponseData.swift,
 				PetProfile/CreatePetProfileRequestData.swift,
 				PetProfile/HomeProfileData.swift,
 				PetProfile/PetProfileData.swift,
@@ -229,6 +231,7 @@
 		48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AppState.swift,
 				DiagnosisSegment.swift,
 				DiagnosticResultAPITarget.swift,
 				PartItem.swift,

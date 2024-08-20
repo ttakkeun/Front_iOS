@@ -41,7 +41,7 @@ extension AuthAPITarget: APITargetType {
         
         switch self {
         case .refreshToken(let refresh):
-            headers["Authorization"] = "Bearer \(refresh)"
+            headers["RefreshToken"] = "Bearer \(refresh)"
         }
         
         return headers
