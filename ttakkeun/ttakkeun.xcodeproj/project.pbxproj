@@ -20,6 +20,7 @@
 		481C77B92C3A6C70005D60EB /* ttakkeun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ttakkeun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		481C77C32C3A6C71005D60EB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4835589F2C3D0A6B006AB282 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		48A575E02C6C85CB0083BC19 /* ttakkeun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ttakkeun.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -27,14 +28,18 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Diagnosis/AnswerButton.swift,
+				Diagnosis/CheckQnAComponent.swift,
+				Diagnosis/DiagnosisProductView.swift,
 				Diagnosis/DiagnosisTopbutton.swift,
 				Diagnosis/DiagnosticImages.swift,
 				Diagnosis/JournalListCard.swift,
 				Diagnosis/NotJournalList.swift,
-				Diagnosis/SelctCareButton.swift,
+				Diagnosis/SelectCareButton.swift,
 				ETC/CustomAlert.swift,
 				ETC/CustomNavigation.swift,
+				ETC/CustomTextEditor.swift,
 				ETC/CustomTextField.swift,
+				ETC/FloatingButton.swift,
 				ETC/MainButton.swift,
 				ETC/TopStatusBar.swift,
 				Home/HomeAINotRecommend.swift,
@@ -52,7 +57,10 @@
 				Profile/MakeProfileNameTag.swift,
 				Profile/ProfileSelect.swift,
 				Profile/VarietySearch.swift,
+				QnA/FloatingWrtieBtn.swift,
+				QnA/TipContent.swift,
 				QnA/TopTenQuestion.swift,
+				QnA/WriteCategory.swift,
 				Recommend/ProductSheetView.swift,
 				Schedule/CustomDiary.swift,
 				Schedule/DiarySelectSheet.swift,
@@ -80,6 +88,7 @@
 				"Fonts/SUIT-Thin.otf",
 				Icon.swift,
 				KeyBoardHide.swift,
+				KeyboardObserver.swift,
 				ShadowReuse.swift,
 				ttakkeunApp.swift,
 			);
@@ -89,10 +98,13 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CreateProfileView.swift,
+				Diagnosis/CheckQnAView.swift,
 				Diagnosis/DiagnosingView.swift,
 				Diagnosis/DiagnosisHeader.swift,
+				Diagnosis/DiagnosisResultView.swift,
 				Diagnosis/DiagnosisView.swift,
 				Diagnosis/JournalListView.swift,
+				Diagnosis/JournalQuestionView.swift,
 				Diagnosis/RegistDiagnosisFlowView.swift,
 				Diagnosis/RegistDiagnosisPageContents.swift,
 				HomeTab/CompactTodo.swift,
@@ -104,26 +116,39 @@
 				LoginView/LoginView.swift,
 				LoginView/Onboarding.json,
 				LoginView/OnboardingView.swift,
+				LoginView/SignupView.swift,
 				MyPage/MyPageDetailView.swift,
 				MyPage/MyPageView.swift,
 				ProfileView.swift,
-				QnaTab/QnaFAQView.swift,
-				QnaTab/QnaHeaderView.swift,
-				QnaTab/QnaTipsView.swift,
+				Qna/QnaFAQView.swift,
+				Qna/QnaHeaderView.swift,
+				Qna/QnaTipsView.swift,
+				Qna/QnaView.swift,
+				Qna/QnaWriteTipsView.swift,
+				Schedule/ScheduleView.swift,
+				Suggestion/SuggestionView.swift,
+				TabView/CustomTab.swift,
+				TabView/TabView.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
 		4863B2AA2C3D166000BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				ImagePicker/ImageHandling.swift,
 				ImagePicker/PetImagePicker.swift,
 				ImagePicker/ProfileImageRegistPicker.swift,
+				ImagePicker/QnaImagePicker.swift,
 				KeyChain/KeyChainManager.swift,
 				KeyChain/UserInfo.swift,
 				LoginManager/AppleLoginManager.swift,
 				LoginManager/AppleUserData.swift,
+				Navigation/DIContainer.swift,
+				Navigation/NavigationDestination.swift,
+				Navigation/NavigationRouter.swift,
+				Navigation/NavigationRoutingView.swift,
 				PetState.swift,
+				Protocol/ImageHandling.swift,
+				Protocol/ObservableObjectSettable.swift,
 				TokenRefresh/AccessTokenRefresher.swift,
 				TokenRefresh/APIManager.swift,
 				TokenRefresh/AuthAPITarget.swift,
@@ -141,6 +166,7 @@
 				JournalAPITarget.swift,
 				PetProfileAPITarget.swift,
 				ProductRecommendAPITarget.swift,
+				QnaTipsAPITarget.swift,
 				ScheduleAPITarget.swift,
 				TodoAPITarget.swift,
 				UserLoginAPITarget.swift,
@@ -151,16 +177,19 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AgreementViewModel.swift,
-				CreateProfileViewModel.swift,
 				CustomDiaryViewModel.swift,
 				Diagnostic/DiagnosticResultViewModel.swift,
 				Diagnostic/JournalListViewModel.swift,
 				HomeProfileCardViewModel.swift,
-				LoginViewModel.swift,
+				LoginOnBoarding/AppFlowViewModel.swift,
+				LoginOnBoarding/LoginViewModel.swift,
 				MyPageViewModel.swift,
 				ProductViewModel.swift,
-				ProfileCardViewModel.swift,
-				QnaViewModel.swift,
+				Profile/CreateProfileViewModel.swift,
+				Profile/ProfileCardViewModel.swift,
+				QnA/QnaTipsViewModel.swift,
+				QnA/QnaViewModel.swift,
+				QnA/QnaWriteTipsViewModel.swift,
 				RegistJournalViewModel.swift,
 				ScheduleViewModel.swift,
 			);
@@ -169,13 +198,17 @@
 		48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Diagnostic/DiagnosisData.swift,
 				Diagnostic/DiagnosticPoint.swift,
+				Journal/CheckJournalQnA.swift,
 				Journal/JournalListData.swift,
 				Journal/JournalQuestionsData.swift,
 				Journal/RegistJournalData.swift,
 				Login/AgreementData.swift,
 				Login/AgreementDetailData.swift,
-				LoginResponseData.swift,
+				Login/LoginResponseData.swift,
+				Login/SignUpData.swift,
+				Login/SignUpResponseData.swift,
 				PetProfile/CreatePetProfileRequestData.swift,
 				PetProfile/HomeProfileData.swift,
 				PetProfile/PetProfileData.swift,
@@ -184,8 +217,12 @@
 				Product/AIAndSearchProductData.swift,
 				QnA/CategoryQnaJsonData.json,
 				QnA/QnaFaqData.swift,
+				QnA/QnaHeartChangeData.swift,
+				QnA/QnaPostTipsData.swift,
+				QnA/QnaTipsData.swift,
 				QnA/TopTenQnaJsonData.json,
 				RecommendProductData.swift,
+				ResponseData.swift,
 				Schedule/ScheduleInquiryData.swift,
 				Schedule/TodoCompleteData.swift,
 				ToDo/CorrectionTodo.swift,
@@ -196,10 +233,12 @@
 		48DDC3262C43D1E00058EBFF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				AnswerValue.swift,
+				AppState.swift,
 				DiagnosisSegment.swift,
 				PartItem.swift,
 				ProfileType.swift,
+				TabCase.swift,
+				TipsCategorySegment.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -252,6 +291,7 @@
 		481C77BB2C3A6C70005D60EB /* ttakkeun */ = {
 			isa = PBXGroup;
 			children = (
+				48A575E02C6C85CB0083BC19 /* ttakkeun.entitlements */,
 				4835589F2C3D0A6B006AB282 /* Info.plist */,
 				4828552E2C4A5FD000A2DC80 /* Components */,
 				48DDC3232C43D1CF0058EBFF /* EnumFile */,
@@ -488,6 +528,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ttakkeun/ttakkeun.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ttakkeun/Preview Content\"";
@@ -518,6 +559,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ttakkeun/ttakkeun.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ttakkeun/Preview Content\"";

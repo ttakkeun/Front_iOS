@@ -10,10 +10,8 @@ import SwiftUI
 struct LoginView: View {
     
     @StateObject var viewModel: LoginViewModel
-    
-    init() {
-        self._viewModel = StateObject(wrappedValue: LoginViewModel())
-    }
+    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
+    @EnvironmentObject var container: DIContainer
     
     var body: some View {
         contetsView
@@ -22,18 +20,24 @@ struct LoginView: View {
     // MARK: - LogoView
     
     private var contetsView: some View {
-        VStack(alignment: .center, content: {
-            
-            Spacer().frame(height: 200)
-            
-            topLogoContents
-            
-            Spacer().frame(height: 180)
-            
-            loginBtnGroup
-            
-        })
-        .frame(maxWidth: .infinity, maxHeight: .infinity).ignoresSafeArea(.all)
+        NavigationStack(path: $container.navigationRouter.destinations) {
+            VStack(alignment: .center, content: {
+                
+                Spacer().frame(height: 200)
+                
+                topLogoContents
+                
+                Spacer().frame(height: 180)
+                
+                loginBtnGroup
+                
+            })
+            .frame(maxWidth: .infinity, maxHeight: .infinity).ignoresSafeArea(.all)
+            .navigationDestination(for: NavigationDestination.self) {
+                NavigationRoutingView(destination: $0)
+                    .environmentObject(appFlowViewModel)
+            }
+        }
     }
     
     /// 상단 로고
@@ -69,22 +73,11 @@ struct LoginView: View {
     
     /// 로그인 버튼 그룹
     private var loginBtnGroup: some View {
-        VStack(alignment: .center, spacing: 14, content: {
-            Button(action: {
-                Task {
-                    await viewModel.kakaoLoginBtn()
-                }
-                
-            }, label: {
-                Icon.kakaoLogin.image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 330, height: 44)
-            })
             /* Apple 로그인 */
             Button(action: {
                 Task {
                     await viewModel.appleLoginBtn()
+                    appFlowViewModel.onLoginSuccess(loginViewModel: viewModel)
                 }
             }, label: {
                 Icon.appleLogin.image
@@ -92,7 +85,6 @@ struct LoginView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 330, height: 44)
             })
-        })
     }
 }
 
@@ -102,7 +94,7 @@ struct LoginView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            LoginView()
+            LoginView(viewModel: LoginViewModel(container: DIContainer()))
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }
