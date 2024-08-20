@@ -63,6 +63,7 @@
 				QnA/WriteCategory.swift,
 				Recommend/ProductSheetView.swift,
 				Recommend/RecommendProduct.swift,
+				Recommend/RecommendSegment.swift,
 				Schedule/CustomDiary.swift,
 				Schedule/DiarySelectSheet.swift,
 				Schedule/TodoCompleteEach.swift,
@@ -237,6 +238,7 @@
 				DiagnosisSegment.swift,
 				PartItem.swift,
 				ProfileType.swift,
+				RecommendProductSegment.swift,
 				TabCase.swift,
 				TipsCategorySegment.swift,
 			);
