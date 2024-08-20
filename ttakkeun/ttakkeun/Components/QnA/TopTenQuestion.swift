@@ -137,13 +137,13 @@ struct TopTenQuestion: View {
         case .ear:
             Color.qnAEar
         case .eye:
-            Color.afterEye
+            Color.beforeEye
         case .hair:
-            Color.afterClaw
+            Color.beforeHair
         case .claw:
-            Color.afterEye
+            Color.beforeClaw
         case .tooth:
-            Color.afterTeeth
+            Color.beforeTeeth
         }
     }
 }

@@ -89,13 +89,13 @@ struct QnaFAQView: View {
         case .ear:
             return Color.qnAEar
         case .eye:
-            return Color.afterEye
+            return Color.beforeEye
         case .hair:
-            return Color.afterHair
+            return Color.beforeHair
         case .claw:
-            return Color.afterClaw
+            return Color.beforeClaw
         case .tooth:
-            return Color.afterTeeth
+            return Color.beforeTeeth
         }
     }
     

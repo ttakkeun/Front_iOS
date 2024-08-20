@@ -26,6 +26,7 @@ struct QnaTipsResponseData: Identifiable, Codable {
     var image_url: [String]?
     var created_at: String
     var recommend_count: Int?
+    var isLike: Bool
     
     private enum CodingKeys: String, CodingKey {
         case tip_id
@@ -37,5 +38,6 @@ struct QnaTipsResponseData: Identifiable, Codable {
         case image_url
         case created_at
         case recommend_count
+        case isLike
     }
 }

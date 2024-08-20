@@ -15,7 +15,7 @@ struct QnaView: View {
     @State private var isFloatingBtnPresented: Bool = false
     
     
-    
+    //MARK: - Contents
     var body: some View {
         ZStack {
             faqAndTipsSegmentSet

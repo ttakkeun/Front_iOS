@@ -84,7 +84,7 @@ extension QnaTipsAPITarget: APITargetType {
     
     var sampleData: Data {
         switch self {
-        case .getTips, .getAllTips, .getBestTips:
+        case .getAllTips:
             let json = """
             {
                 "isSuccess": true,
@@ -100,18 +100,8 @@ extension QnaTipsAPITarget: APITargetType {
                         "content": "귀는 자주 청소해야 합니다.",
                         "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
                         "created_at": "2024-08-18T08:00:00Z",
-                        "recommend_count": 15
-                    },
-                    {
-                        "tip_id": 2,
-                        "category": "EAR",
-                        "author": "박영희",
-                        "popular": false,
-                        "title": "귀 건강 관리",
-                        "content": "귀를 깨끗하게 유지하는 것이 중요합니다.",
-                        "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
-                        "created_at": "2024-08-09T10:30:00Z",
-                        "recommend_count": 10
+                        "recommend_count": 15,
+                        "isLike": true
                     },
                     {
                         "tip_id": 3,
@@ -122,7 +112,32 @@ extension QnaTipsAPITarget: APITargetType {
                         "content": "눈은 주기적으로 검사해야 합니다.",
                         "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
                         "created_at": "2024-08-08T12:00:00Z",
-                        "recommend_count": 25
+                        "recommend_count": 25,
+                        "isLike": false
+                    },
+                    {
+                        "tip_id": 4,
+                        "category": "HAIR",
+                        "author": "이민지",
+                        "popular": false,
+                        "title": "머리카락 관리법",
+                        "content": "머리카락은 주기적으로 트리트먼트를 해주면 좋습니다.",
+                        "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
+                        "created_at": "2024-07-22T09:00:00Z",
+                        "recommend_count": 5,
+                        "isLike": false
+                    },
+                    {
+                        "tip_id": 5,
+                        "category": "TOOTH",
+                        "author": "최현우",
+                        "popular": true,
+                        "title": "치아 건강을 위한 팁",
+                        "content": "하루에 두 번 양치질을 하고, 정기적으로 치과를 방문하세요.",
+                        "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
+                        "created_at": "2024-06-30T14:15:00Z",
+                        "recommend_count": 20,
+                        "isLike": true
                     }
                 ]
             }
@@ -138,8 +153,117 @@ extension QnaTipsAPITarget: APITargetType {
                 "result": {
                     "tip_id": 11,
                     "category": "EAR",
-                    "created_at": "2024-08-11T00:00:00Z"
+                    "created_at": "2024-08-11T00:00:00Z",
+                    "isLike": false
                 }
+            }
+            """
+            return Data(json.utf8)
+            
+        case .getBestTips:
+            let json = """
+            {
+                "isSuccess": true,
+                "code": "200",
+                "message": "Success",
+                "result": [
+                    {
+                        "tip_id": 1,
+                        "category": "EAR",
+                        "author": "홍길동",
+                        "popular": true,
+                        "title": "귀 청소하는 방법",
+                        "content": "귀는 자주 청소해야 합니다.",
+                        "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
+                        "created_at": "2024-08-18T08:00:00Z",
+                        "recommend_count": 15,
+                        "isLike": true
+                    },
+                    {
+                        "tip_id": 3,
+                        "category": "EYE",
+                        "author": "김철수",
+                        "popular": true,
+                        "title": "눈 건강 지키기",
+                        "content": "눈은 주기적으로 검사해야 합니다.",
+                        "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
+                        "created_at": "2024-08-08T12:00:00Z",
+                        "recommend_count": 25,
+                        "isLike": false
+                    },
+                    {
+                        "tip_id": 5,
+                        "category": "TOOTH",
+                        "author": "최현우",
+                        "popular": true,
+                        "title": "치아 건강을 위한 팁",
+                        "content": "하루에 두 번 양치질을 하고, 정기적으로 치과를 방문하세요.",
+                        "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
+                        "created_at": "2024-06-30T14:15:00Z",
+                        "recommend_count": 20,
+                        "isLike": true
+                    }
+                ]
+            }
+            """
+            return Data(json.utf8)
+            
+        case .getTips:
+            let json = """
+            {
+                "isSuccess": true,
+                "code": "200",
+                "message": "Success",
+                "result": [
+                    {
+                        "tip_id": 1,
+                        "category": "EAR",
+                        "author": "홍길동",
+                        "popular": true,
+                        "title": "귀 청소하는 방법",
+                        "content": "귀는 자주 청소해야 합니다.",
+                        "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
+                        "created_at": "2024-08-18T08:00:00Z",
+                        "recommend_count": 15,
+                        "isLike": true
+                    },
+                    {
+                        "tip_id": 210,
+                        "category": "EAR",
+                        "author": "박영희",
+                        "popular": false,
+                        "title": "귀 건강 관리",
+                        "content": "귀를 깨끗하게 유지하는 것이 중요합니다.",
+                        "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
+                        "created_at": "2024-08-09T10:30:00Z",
+                        "recommend_count": 10,
+                        "isLike": false
+                    },   
+                    {
+                        "tip_id": 5,
+                        "category": "TOOTH",
+                        "author": "최현우",
+                        "popular": true,
+                        "title": "치아 건강을 위한 팁",
+                        "content": "하루에 두 번 양치질을 하고, 정기적으로 치과를 방문하세요.",
+                        "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
+                        "created_at": "2024-06-30T14:15:00Z",
+                        "recommend_count": 20,
+                        "isLike": true
+                    },   
+                    {
+                        "tip_id": 5,
+                        "category": "CLAW",
+                        "author": "최현우",
+                        "popular": true,
+                        "title": "치아 건강을 위한 팁",
+                        "content": "하루에 두 번 양치질을 하고, 정기적으로 치과를 방문하세요.",
+                        "image_url": ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
+                        "created_at": "2024-06-30T14:15:00Z",
+                        "recommend_count": 20,
+                        "isLike": true
+                    }
+                ]
             }
             """
             return Data(json.utf8)

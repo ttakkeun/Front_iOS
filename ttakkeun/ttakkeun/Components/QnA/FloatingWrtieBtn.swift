@@ -12,8 +12,6 @@ struct FloatingWriteBtn: View {
                     floatingBtn
                         .position(x: geo.size.width * 0.85, y: geo.size.height * 0.85)
                     if isPresented {
-                        
-                        
                         clickedfloatingBtn(geo: geo)
                             .transition(.move(edge: .bottom).combined(with: .opacity))
                     }

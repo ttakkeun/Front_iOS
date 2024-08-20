@@ -14,15 +14,15 @@ struct TipContent: View {
     @ObservedObject var viewModel: QnaTipsViewModel
 
     @State private var isExpanded: Bool = false
-    @State private var isLike: Bool = false
-    @State private var totalLikes: Int = 0
+    @State private var isLike: Bool
+    @State private var totalLikes: Int
     
     //MARK: - Init
     init(data: QnaTipsResponseData, viewModel: QnaTipsViewModel) {
         self.data = data
         self.viewModel = viewModel
         
-        _isLike = State(initialValue: data.recommend_count ?? 0 > 0)
+        _isLike = State(initialValue: data.isLike)
         _totalLikes = State(initialValue: data.recommend_count ?? 0)
     }
     
@@ -65,7 +65,7 @@ struct TipContent: View {
                 .frame(width: 47, height: 23)
                 .background(RoundedRectangle(cornerRadius: 30).foregroundStyle(categoryColor))
             
-            if data.popular { // 인기 카테고리가 아니라, popular 값이 true일 때 "인기" 텍스트가 표시되도록 수정
+            if data.popular {
                 Text("인기")
                     .font(.Body4_medium)
                     .frame(width: 47, height: 23)
@@ -114,21 +114,22 @@ struct TipContent: View {
     // 하트와 하트 수
     private var heartBtn: some View {
         Button(action: {
-            isLike.toggle()
-            totalLikes += isLike ? 1 : -1
             Task {
                 await viewModel.patchHeartChange(tip_id: data.tip_id)
+                
                 DispatchQueue.main.async {
-                    isLike = viewModel.heartClicked
-                    totalLikes = viewModel.totalLikes
+                    if let updatedTip = viewModel.categoryTips[viewModel.selectedCategory]?.first(where: { $0.tip_id == data.tip_id }) {
+                        isLike = updatedTip.isLike
+                        totalLikes = updatedTip.recommend_count ?? 0
+                    }
                 }
             }
         }, label: {
-            HStack(spacing: 6){
+            HStack(spacing: 6) {
                 Image(systemName: isLike ? "heart.fill" : "heart")
-                    .foregroundColor(isLike ? .red : .gray)
+                    .foregroundColor(isLike ? .red : .gray600)
                 Text("\(totalLikes)")
-                    .foregroundColor(.gray600)
+                    .foregroundColor(isLike ? .red : .gray600)
             }
         })
     }
@@ -161,65 +162,65 @@ struct TipContent: View {
     
     /// 팁 관련 이미지
     @ViewBuilder
-       private var tipsImages: some View {
-           if let imageUrls = data.image_url, !imageUrls.isEmpty {
-               ScrollView(.horizontal, showsIndicators: false) {
-                   HStack(spacing: 10) {
-                       ForEach(imageUrls, id: \.self) { url in
-                           if let imageUrl = URL(string: url) {
-                               KFImage(imageUrl)
-                                   .placeholder {
-                                       ProgressView()
-                                           .frame(width: 100, height: 100)
-                                   }
-                                   .retry(maxCount: 2, interval: .seconds(2))
-                                   .onFailure { _ in
-                                       print("이미지 로드 실패")
-                                   }
-                                   .resizable()
-                                   .aspectRatio(contentMode: .fill)
-                                   .frame(width: 65, height: 65)
-                                   .clipShape(RoundedRectangle(cornerRadius: 10))
-                           }
-                       }
-                   }
-               }
-           }
-       }
-       
-       /// 첫 번째 이미지를 표시하고, 이미지가 2개 이상일 경우 개수를 표시하는 뷰
-       @ViewBuilder
-       private var tipsImageWithCount: some View {
-           if let imageUrls = data.image_url, !imageUrls.isEmpty {
-               ZStack(alignment: .bottomTrailing) {
-                   if let firstImageUrl = URL(string: imageUrls[0]) {
-                       KFImage(firstImageUrl)
-                           .placeholder {
-                               ProgressView()
-                                   .frame(width: 65, height: 65)
-                           }
-                           .retry(maxCount: 2, interval: .seconds(2))
-                           .onFailure { _ in
-                               print("이미지 로드 실패")
-                           }
-                           .resizable()
-                           .aspectRatio(contentMode: .fill)
-                           .frame(width: 65, height: 65)
-                           .clipShape(RoundedRectangle(cornerRadius: 10))
-                   }
-                   
-                   if imageUrls.count > 1 {
-                       Text("\(imageUrls.count)")
-                           .padding(.horizontal,2)
-                           .padding(4)
-                           .font(.Detail1_bold)
-                           .background(Color.gray800)
-                           .foregroundColor(.white)
-                           .clipShape(RoundedRectangle(cornerRadius: 10))
-                   }
-               }
-           }
-       }
+    private var tipsImages: some View {
+        if let imageUrls = data.image_url, !imageUrls.isEmpty {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 10) {
+                    ForEach(imageUrls, id: \.self) { url in
+                        if let imageUrl = URL(string: url) {
+                            KFImage(imageUrl)
+                                .placeholder {
+                                    ProgressView()
+                                        .frame(width: 100, height: 100)
+                                }
+                                .retry(maxCount: 2, interval: .seconds(2))
+                                .onFailure { _ in
+                                    print("이미지 로드 실패")
+                                }
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 65, height: 65)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    /// 첫 번째 이미지를 표시하고, 이미지가 2개 이상일 경우 개수를 표시하는 뷰
+    @ViewBuilder
+    private var tipsImageWithCount: some View {
+        if let imageUrls = data.image_url, !imageUrls.isEmpty {
+            ZStack(alignment: .bottomTrailing) {
+                if let firstImageUrl = URL(string: imageUrls[0]) {
+                    KFImage(firstImageUrl)
+                        .placeholder {
+                            ProgressView()
+                                .frame(width: 65, height: 65)
+                        }
+                        .retry(maxCount: 2, interval: .seconds(2))
+                        .onFailure { _ in
+                            print("이미지 로드 실패")
+                        }
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 65, height: 65)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+                
+                if imageUrls.count > 1 {
+                    Text("\(imageUrls.count)")
+                        .padding(.horizontal,2)
+                        .padding(4)
+                        .font(.Detail1_bold)
+                        .background(Color.gray800)
+                        .foregroundColor(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+            }
+        }
+    }
     
     /// 사용자 이름과 지난 시간
     private var userNameAndElapsedTime: some View {
@@ -273,13 +274,13 @@ struct TipContent: View {
         case .ear:
             Color.qnAEar
         case .eye:
-            Color.afterEye
+            Color.beforeEye
         case .hair:
-            Color.afterClaw
+            Color.beforeHair
         case .claw:
-            Color.afterEye
+            Color.beforeClaw
         case .tooth:
-            Color.afterTeeth
+            Color.beforeTeeth
         case .best:
             Color.primarycolor200
         default:
@@ -350,7 +351,8 @@ struct TipContent_Preview: PreviewProvider {
             image_url: ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg",
                         "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"],
             created_at: "2024-08-14T12:00:00Z",
-            recommend_count: 20
+            recommend_count: 20,
+            isLike: false
         )
         
         TipContent(data: sampleData, viewModel: QnaTipsViewModel())
