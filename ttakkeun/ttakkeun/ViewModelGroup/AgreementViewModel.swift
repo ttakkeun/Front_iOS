@@ -15,8 +15,6 @@ class AgreementViewModel: ObservableObject {
     @Published var selectedAgreement: AgreementData?
     
     private let provider: MoyaProvider<UserLoginAPITarget>
-    
-    let keyChainManager = KeyChainManager.standard
     var userInfo = UserInfo()
     private let keychain = KeyChainManager.standard
     

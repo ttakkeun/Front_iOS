@@ -26,7 +26,14 @@ struct VarietySearch: View {
     
     //MARK: - Contents
     var body: some View {
+        
+        Capsule()
+            .fill(Color.gray_300)
+            .frame(width: 43, height: 4)
+            .padding(.top, 10)
+        
         NavigationStack {
+            
             List {
                 ForEach(filteredVarieties, id: \.self) { item in
                     Button(action: {
@@ -50,5 +57,19 @@ struct VarietySearch: View {
             UIApplication.shared.hideKeyboard()
         })
         .font(.Body2_medium)
+    }
+}
+
+//MARK: - Preview
+struct VarietySearcView_Preview: PreviewProvider {
+    
+    static let devices = ["iPhone 11", "iphone 15 Pro"]
+    
+    static var previews: some View {
+        ForEach(devices, id: \.self) { device in
+            CreateProfileView(viewModel: CreateProfileViewModel())
+                .previewDevice(PreviewDevice(rawValue: device))
+                .previewDisplayName(device)
+        }
     }
 }
