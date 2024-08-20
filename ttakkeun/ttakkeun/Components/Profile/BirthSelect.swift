@@ -26,7 +26,7 @@ struct BirthSelect: View {
         return formatter
     }()
     
-    /// 현재 연도와 30년 전 연도 계산
+    /// 현재 연도와 25년 전 연도 계산
     private var currentYear: Int {
         Calendar.current.component(.year, from: Date())
     }
