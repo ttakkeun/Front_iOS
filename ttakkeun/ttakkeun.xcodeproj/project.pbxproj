@@ -63,6 +63,7 @@
 				QnA/WriteCategory.swift,
 				Recommend/ProductSheetView.swift,
 				Recommend/RecommendProduct.swift,
+				Recommend/RecommendProductbyAI.swift,
 				Recommend/RecommendSegment.swift,
 				Schedule/CustomDiary.swift,
 				Schedule/DiarySelectSheet.swift,

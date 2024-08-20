@@ -107,7 +107,7 @@ struct RecommendProduct: View {
     //TODO: - 상품이름 받아와서 텍스트 띄워야함
     /// 상품 이름
     private var title: some View {
-        Text(data.title)
+        Text(data.title.split(separator: "").joined(separator: "\u{200B}"))
             .font(.Body3_semibold)
             .foregroundStyle(Color.gray900)
             .multilineTextAlignment(.leading)
