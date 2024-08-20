@@ -17,6 +17,7 @@ struct BirthSelect: View {
     @Binding var birthDate: String
     @Binding var isBirthFilled: Bool
     
+    //MARK: - 날짜에 필요한 변수들
     ///연도 콤마 제거 Formatter
     private let yearFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -24,6 +25,14 @@ struct BirthSelect: View {
         formatter.usesGroupingSeparator = false
         return formatter
     }()
+    
+    /// 현재 연도와 30년 전 연도 계산
+    private var currentYear: Int {
+        Calendar.current.component(.year, from: Date())
+    }
+    private var startYear: Int {
+        currentYear - 30
+    }
     
     //MARK: - Contents
     /// 버튼 구조
@@ -37,7 +46,7 @@ struct BirthSelect: View {
                     updateBirthDate()
                 }
             ), label: Text("연도")) {
-                ForEach(1900...2024, id: \.self) { year in
+                ForEach(startYear...currentYear, id: \.self) { year in
                     Text("\(yearFormatter.string(from: NSNumber(value: year)) ?? "\(year)")년").tag(year)
                 }
             }
@@ -128,4 +137,19 @@ struct BirthSelect: View {
         }
     }
     
+}
+
+
+//MARK: - Preview
+struct BirthSelect_Preview: PreviewProvider {
+    
+    static let devices = ["iPhone 11", "iphone 15 Pro"]
+    
+    static var previews: some View {
+        ForEach(devices, id: \.self) { device in
+            CreateProfileView(viewModel: CreateProfileViewModel())
+                .previewDevice(PreviewDevice(rawValue: device))
+                .previewDisplayName(device)
+        }
+    }
 }
