@@ -11,9 +11,9 @@ import SwiftUI
 struct SignupView: View {
     @StateObject var viewModel: AgreementViewModel = AgreementViewModel()
     @EnvironmentObject var appFlowViewModel: AppFlowViewModel
-    
+    @EnvironmentObject var container: DIContainer
+        
     @Environment(\.dismiss) var dismiss
-    
     var signUpData: SignUpData
     
     init(signUpData: SignUpData) {
@@ -35,6 +35,7 @@ struct SignupView: View {
             
             registerBtn
         })
+        .navigationBarBackButtonHidden()
     }
     
     /// 로그인 후 넘겨받은 이메일 출력
@@ -145,10 +146,8 @@ struct SignupView: View {
                     
                     if viewModel.isAllMandatoryChecked {
                         await viewModel.signUp(token: signUpData.token, name: signUpData.name)
-                        if viewModel.isSignUp {
-                            dismiss()
-                            appFlowViewModel.onSignUpSuccess()
-                        }
+                        container.navigationRouter.pop()
+                        appFlowViewModel.onSignUpSuccess()
                     }
                 }
             },

@@ -18,7 +18,7 @@ class AppFlowViewModel: ObservableObject {
     
     /// 리프레시 통한 유저 정보 체크
     /// - Parameter completion: 유저 정보 채크 성공 여부
-    public func startAppFlow(completion: @escaping (Bool, Error?) -> Void) async {
+    public func startAppFlow(completion: @escaping (Bool, Error?) -> Void) {
         tokenProvider.refreshToken { [weak self] accessToken, error in
             guard self != nil else { return }
             
@@ -34,7 +34,7 @@ class AppFlowViewModel: ObservableObject {
                 // 유효한 토큰이 있을 경우 프로필 화면으로 이동
                 self?.userExistence = true
                 self?.appState = .profile
-                print("유저 존재하고 등록됨 -> 프로필 뷰 이동")
+                print("유저 존재하고 만료안된 사용자 -> 프로필 뷰 이동")
                 completion(true, nil)
             } else {
                 // 유효한 토큰이 없을 경우 로그인 화면으로 이동, 즉 리프레시 만료됨을 의미

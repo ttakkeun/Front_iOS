@@ -13,12 +13,12 @@ import Moya
 class AgreementViewModel: ObservableObject {
     @Published var agreements: [AgreementData] = []
     @Published var selectedAgreement: AgreementData?
-    @Published var isSignUp: Bool = false
     
     private let provider: MoyaProvider<UserLoginAPITarget>
     
     let keyChainManager = KeyChainManager.standard
-    
+    var userInfo = UserInfo()
+    private let keychain = KeyChainManager.standard
     
     //MARK: - INIT
     init(
@@ -62,12 +62,15 @@ class AgreementViewModel: ObservableObject {
     }
     
     public func signUp(token: String, name: String) async {
-        provider.request(.appleSignup(token: token, name: name)) { [weak self] result in
-            switch result {
-            case .success(let response):
-                self?.handlerSignUp(response: response)
-            case .failure(let error):
-                print("회원강립 네트워크 에러: \(error)")
+        return await withCheckedContinuation { continuation in
+            provider.request(.appleSignup(token: token, name: name)) { [weak self] result in
+                switch result {
+                case .success(let response):
+                    self?.handlerSignUp(response: response)
+                    continuation.resume(returning: ())
+                case .failure(let error):
+                    print("회원강립 네트워크 에러: \(error)")
+                }
             }
         }
     }
@@ -75,9 +78,14 @@ class AgreementViewModel: ObservableObject {
     private func handlerSignUp(response: Response) {
         do {
             let decodedData = try JSONDecoder().decode(ResponseData<SignUpResponseData>.self, from: response.data)
+            print(decodedData)
             if decodedData.isSuccess {
-                print("회원 가입 성공")
-                self.isSignUp = true
+                DispatchQueue.main.async {
+                    self.userInfo = UserInfo(accessToken: decodedData.result?.accessToken,
+                                             refreshToken: decodedData.result?.refreshToken)
+                    let saveData =  self.keychain.saveSession(self.userInfo, for: "userSession")
+                    print("회원 가입 성공: \(saveData)")
+                }
             }
         } catch {
             print("회원가입 디코더 에러: \(error)")

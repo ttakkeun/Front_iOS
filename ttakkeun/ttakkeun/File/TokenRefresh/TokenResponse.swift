@@ -12,5 +12,4 @@ import Foundation
 struct TokenResponseDetail: Codable {
     let accessToken: String
     let refreshToken: String
-    let email: String
 }

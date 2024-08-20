@@ -26,7 +26,7 @@ class ProfileCardViewModel: ObservableObject {
     
     // MARK: - Init
     
-    init(provider: MoyaProvider<PetProfileAPITarget> = APIManager.shared.testProvider(for: PetProfileAPITarget.self),
+    init(provider: MoyaProvider<PetProfileAPITarget> = APIManager.shared.createProvider(for: PetProfileAPITarget.self),
          petProfileData: PetProfileData? = nil,
          container: DIContainer
     ) {

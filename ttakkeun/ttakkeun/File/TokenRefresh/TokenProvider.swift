@@ -47,6 +47,7 @@ class TokenProvider: TokenProviding {
     
     /* 리프레시 토큰 전달하여 유저 정보 탐색 및 액세스 토큰 초기화 */
     func refreshToken(completion: @escaping (String?, Error?) -> Void) {
+
         
         guard let userInfo = keyChain.loadSession(for: "userSession"), let refreshToken = userInfo.refreshToken else {
             let error = NSError(domain: "ttakkeun.com", code: -2, userInfo: [NSLocalizedDescriptionKey: "User session or refresh token not found"])
@@ -55,6 +56,7 @@ class TokenProvider: TokenProviding {
             }
         
         provider.request(.refreshToken(refreshToken: refreshToken)) { result in
+            print("refresh: \(refreshToken)")
             switch result {
             case .success(let response):
                 do {
@@ -62,6 +64,7 @@ class TokenProvider: TokenProviding {
                     if tokenData.isSuccess {
                         self.accessToken = tokenData.result?.accessToken
                         self.refreshToken = tokenData.result?.refreshToken
+                        print("새로운 토큰 저장됨")
                         completion(self.accessToken, nil)
                     } else {
                         let error = NSError(domain: "example.com", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token Refresh failed: isSuccess false"])

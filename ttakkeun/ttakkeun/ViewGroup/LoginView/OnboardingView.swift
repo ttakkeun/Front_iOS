@@ -20,16 +20,16 @@ struct OnboardingView: View {
             
             
             LottieView(animation: .named("Onboarding"))
-                .playbackMode(.playing(.toProgress(1, loopMode: .loop)))
-        }
-        .onAppear {
-            Task {
-                await viewModel.startAppFlow { success, error in
-                    if let error = error {
-                        print("Error during app flow: \(error)")
+                .playbackMode(.playing(.toProgress(1, loopMode: .playOnce)))
+                .animationDidFinish {completed in
+                    if completed {
+                        viewModel.startAppFlow { success, error in
+                            if let error = error {
+                                print("최초 사용자 입니다.: \(error)")
+                            }
+                        }
                     }
                 }
-            }
         }
     }
 }

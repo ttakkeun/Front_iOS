@@ -70,9 +70,7 @@ class LoginViewModel: ObservableObject {
                 if decodedData.isSuccess {
                     DispatchQueue.main.async {
                         self.userInfo = UserInfo(accessToken: decodedData.result?.accessToken,
-                                                 refreshToken: decodedData.result?.refreshToken,
-                                                 email: decodedData.result?.email
-                        )
+                                                 refreshToken: decodedData.result?.refreshToken)
                         let saveData =  self.keychain.saveSession(self.userInfo, for: "userSession")
                         self.isLogin = true
                         print("키 체인 저장 완료 :\(saveData)")
