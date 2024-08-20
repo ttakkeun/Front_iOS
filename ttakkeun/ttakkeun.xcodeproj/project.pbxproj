@@ -62,6 +62,7 @@
 				QnA/TopTenQuestion.swift,
 				QnA/WriteCategory.swift,
 				Recommend/ProductSheetView.swift,
+				Recommend/RecommendProduct.swift,
 				Schedule/CustomDiary.swift,
 				Schedule/DiarySelectSheet.swift,
 				Schedule/TodoCompleteEach.swift,

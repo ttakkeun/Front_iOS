@@ -21,19 +21,19 @@ struct ProductSheetView: View {
     var body: some View {
         VStack(spacing: 28){
             
-            /*SheetView로 나올 때 화면이 잘리거나, 여백이 많은 경우가 생김*/
-            
             Capsule()
-                .fill(Color.gray_300)
+                .fill(Color.gray)
                 .frame(width: 38, height: 5)
                 .padding(.top, 10)
             
             productImage
-                .border(Color.gray_200)
+                .border(Color.gray)
             
             titleset
             
-            MainButton(btnText: "구매하러가기", width: 342, height: 59, action: {print("hello")}, color: .primaryColor_Main)
+            MainButton(btnText: "구매하러가기", width: 342, height: 59, action: {
+                print("구매하기 버튼 클릭됨")
+            }, color: .blue)
             
             Spacer()
         }
@@ -76,34 +76,35 @@ struct ProductSheetView: View {
     private var category: some View {
         HStack {
             Text("\(data.category2) > \(data.category3) > \(data.category4)")
-                .font(.Body3_semibold)
-                .foregroundStyle(Color.gray_400)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(Color.gray)
             
             Spacer()
             
-            Button(action:{ print("helloworld!")
+            Button(action:{
+                print("공유하기 버튼 클릭됨")
             }, label: {
                 Image(systemName: "square.and.arrow.up")
-                .foregroundStyle(Color.gray_400)}
-            )
+                    .foregroundColor(Color.gray)
+            })
         }
     }
     
     /// 타이틀
     private var title: some View {
-        Text(data.title.split(separator: "").joined(separator: "\u{200B}"))
+        Text(data.title)
             .frame(maxWidth: 325, alignment: .leading)
-            .font(.Body2_semibold)
-            .foregroundStyle(Color.gray_900)
+            .font(.system(size: 16, weight: .semibold))
+            .foregroundColor(Color.black)
             .multilineTextAlignment(.leading)
             .lineLimit(nil)
     }
     
     /// 기업명
     private var mallname: some View {
-        Text("\(data.mallName) >")
-            .font(.Body4_medium)
-            .foregroundStyle(Color.gray_400)
+        Text("\(data.brand) >")
+            .font(.system(size: 12, weight: .medium))
+            .foregroundColor(Color.gray)
     }
     
     /// 하트수와 가격
@@ -111,37 +112,51 @@ struct ProductSheetView: View {
         HStack{
             //하트버튼과 하트수
             Button(action: {
-                print("하트누르기")}
-                   , label: {
+                print("하트 버튼 클릭됨")
+            }, label: {
                 HStack{
                     Image(systemName: "heart.fill")
-                        .foregroundStyle(Color.red)
-                    Text("\(data.productHeartNum ?? 0)")
-                        .foregroundStyle(Color.red)
+                        .foregroundColor(Color.red)
+                    Text("\(data.total_likes)")
+                        .foregroundColor(Color.red)
                 }
             })
             Spacer()
             //가격
-            Text("\(data.lprice)원")
-                .font(.H3_bold)
+            Text("\(data.price)원")
+                .font(.system(size: 18, weight: .bold))
             
         }
         .frame(width: 342, height: 24)
+    }
 }
-    
-    //MARK: - Preview
-    struct ProductSheetView_Preview: PreviewProvider {
-        static var previews: some View {
-            ProductSheetView(data: RecommenProductResponseData(
-                title: "피부병 아토비 각질 비듬 예방 아껴주다 저자극 천연 고양이 샴푸 500ml(고양이 비듬, 턱드름 관리)",
-                image: "https://shopping-phinf.pstatic.net/main_3596342/35963422008.jpg",
-                lprice: 30000,
-                mallName: "아껴주다",
-                category2: "고양이 용품",
-                category3: "미용목욕",
-                category4: "샴푸, 린스",
-                productHeartNum: 304
-            ))
-        }
+
+//MARK: - Preview
+struct ProductSheetView_Preview: PreviewProvider {
+    static var previews: some View {
+        let sampleProduct = RecommenProductResponseData(
+            product_id: 1,
+            title: "피부병 아토비 각질 비듬 예방 아껴주다 저자극 천연 고양이 샴푸 500ml(고양이 비듬, 턱드름 관리)",
+            image: "https://shopping-phinf.pstatic.net/main_3596342/35963422008.jpg",
+            price: 30000,
+            brand: "아껴주다",
+            link: "https://www.example.com",
+            category1: "반려동물 용품",
+            category2: "고양이 용품",
+            category3: "미용목욕",
+            category4: "샴푸, 린스",
+            total_likes: 304,
+            isLike: true
+        )
+
+        let sampleResponse = ResponseData(
+            isSuccess: true,
+            code: "200",
+            message: "Success",
+            result: sampleProduct
+        )
+
+        ProductSheetView(data: sampleResponse.result!)
+            .previewLayout(.sizeThatFits)
     }
 }
