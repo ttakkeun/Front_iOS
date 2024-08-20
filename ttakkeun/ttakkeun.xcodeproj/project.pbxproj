@@ -183,6 +183,8 @@
 		48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AgreementViewModel.swift,
+				CustomDiaryViewModel.swift,
 				Diagnostic/DiagnosticResultViewModel.swift,
 				Diagnostic/JournalListViewModel.swift,
 				Diary/CustomDiaryViewModel.swift,
