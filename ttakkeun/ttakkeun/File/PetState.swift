@@ -16,6 +16,4 @@ class PetState: ObservableObject {
         self.petName = petName
         self.petId = petId
     }
-    
-    public
 }
