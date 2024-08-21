@@ -68,7 +68,7 @@ struct MyPageView: View {
             
             VStack(alignment: .center, spacing: 22, content: {
                 HStack {
-                    if let imageUrl = viewModel.profileData?.result.image,
+                    if let imageUrl = viewModel.profileData?.image,
                        let url = URL(string: imageUrl) {
                         KFImage(url)
                             .placeholder {
@@ -87,7 +87,7 @@ struct MyPageView: View {
                     
                     Spacer().frame(width: 15)
                     
-                    if let name = viewModel.profileData?.result.name {
+                    if let name = viewModel.profileData?.name {
                         Text(name)
                             .font(.H4_bold)
                             .foregroundStyle(Color.gray_900)

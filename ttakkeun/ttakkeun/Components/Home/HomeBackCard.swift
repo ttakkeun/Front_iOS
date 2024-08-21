@@ -25,7 +25,7 @@ struct HomeBackCard: View {
     @ViewBuilder
     private var contents: some View {
         VStack(alignment: .center, spacing: 29, content: {
-            if let data = viewModel.profileData?.result {
+            if let data = viewModel.profileData {
                 
                 HStack(content: {
                     Text("저는 이런 \(data.type.toKorean())에요!")
@@ -75,7 +75,7 @@ struct HomeBackCard: View {
     /// 왼쪽 프로필과 펫 이름, 생일 정보
     private var leftPetInfo: some View {
         VStack(alignment: .center, spacing: 17, content: {
-            ProfileImageCard(imageUrl: viewModel.profileData?.result.image, imageSize: 86, canEdit: false)
+            ProfileImageCard(imageUrl: viewModel.profileData?.image, imageSize: 86, canEdit: false)
             petName
         })
         .frame(width: 86)
@@ -84,7 +84,7 @@ struct HomeBackCard: View {
     /// 펫 이름과 생일 정보
     @ViewBuilder
     private var petName: some View {
-        if let data = viewModel.profileData?.result {
+        if let data = viewModel.profileData {
             makeLeftInfor(name: data.name, birth: data.birth)
         }
     }
@@ -108,7 +108,7 @@ struct HomeBackCard: View {
     /// 카드 뒷면 펫 정보
     private var myPetInfo: some View {
         VStack(alignment: .leading, spacing: 5, content: {
-            if let data = viewModel.profileData?.result {
+            if let data = viewModel.profileData {
                 makeRightInfo(text: "상태: \(data.neutralization ? "중성화 완료" : "중성화 미완료")")
                 makeRightInfo(text: "품종: \(data.variety)")
             }
@@ -118,7 +118,7 @@ struct HomeBackCard: View {
     /// 상단 펫 태그
     @ViewBuilder
     private var myPetTag: some View {
-        if let data = viewModel.profileData?.result {
+        if let data = viewModel.profileData {
             Text("내 \(data.type.toKorean()) 정보")
                 .frame(maxWidth: 90, maxHeight: 24)
                 .clipShape(.rect(cornerRadius: 25))

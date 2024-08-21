@@ -37,7 +37,7 @@ struct HomeFrontCard: View {
                 Spacer()
             })
             
-            ProfileImageCard(imageUrl: viewModel.profileData?.result.image)
+            ProfileImageCard(imageUrl: viewModel.profileData?.image)
             
             profileInfor
             
@@ -72,7 +72,7 @@ struct HomeFrontCard: View {
     /// 프로필 전면부 정보
     @ViewBuilder
     private var profileInfor: some View {
-        if let data = viewModel.profileData?.result {
+        if let data = viewModel.profileData {
             makeInfor(name: data.name, birth: data.birth)
         } else {
             makeInfor(name: "저장된 이름 불러오기 실패", birth: "저장된 생일 데이터 불러오기 실패")

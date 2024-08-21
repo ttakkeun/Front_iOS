@@ -37,8 +37,10 @@ struct HomeView: View {
             })
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             
-            HomeDragView(scheduleViewModel: scheduleViewModel, productViewModel: productViewModel)
-                .environmentObject(petState)
+            if let type = self.homeProfileCardViewModel.profileData?.type {
+                HomeDragView(scheduleViewModel: scheduleViewModel, productViewModel: productViewModel, profileType: type)
+                    .environmentObject(petState)
+            }
         }
     }
 }

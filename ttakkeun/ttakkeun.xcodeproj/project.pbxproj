@@ -219,7 +219,7 @@
 				Login/SignUpData.swift,
 				Login/SignUpResponseData.swift,
 				PetProfile/CreatePetProfileRequestData.swift,
-				PetProfile/HomeProfileData.swift,
+				PetProfile/HomeProfileResponseData.swift,
 				PetProfile/PetProfileData.swift,
 				PetProfile/PetProfileImageData.swift,
 				PetProfile/PetVarietyData.swift,

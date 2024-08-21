@@ -11,7 +11,7 @@ import Moya
 ///마이페이지 프로필 확인 뷰 모델
 @MainActor
 class MyPageViewModel: ObservableObject {
-    @Published var profileData: HomeProfileData?
+    @Published var profileData: HomeProfileResponseData?
     private let provider: MoyaProvider<PetProfileAPITarget>
     
     // MARK: - Init
@@ -58,9 +58,9 @@ class MyPageViewModel: ObservableObject {
     /// - Parameter response: 받아온 데이터의 Response 처리
     private func handleGetProfileInfo(response: Response) {
         do {
-            let decodedData = try JSONDecoder().decode(HomeProfileData.self, from: response.data)
+            let decodedData = try JSONDecoder().decode(ResponseData<HomeProfileResponseData>.self, from: response.data)
             DispatchQueue.main.async {
-                self.profileData = decodedData
+                self.profileData = decodedData.result
                 print("홈 프로필 카드 받아오기 성공")
             }
         }  catch {
