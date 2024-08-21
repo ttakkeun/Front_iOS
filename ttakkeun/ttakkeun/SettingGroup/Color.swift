@@ -86,5 +86,8 @@ extension Color {
     
     // MARK: - MyPage
     static let exit_Color = Color("exit") /* FF2C2C 100% */
+    
+    // MARK: - Suggestion
+    static let ProductBackground_Color = Color("ProductBackground")
 }
 

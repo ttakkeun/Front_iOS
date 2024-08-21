@@ -33,8 +33,8 @@ class TodoCheckViewModel: ObservableObject, @preconcurrency TodoCheckProtocol {
     
     /// 투두 데이터 조회
     /// - Parameter date: 조회 대상 날짜
-    public func getTodoData(date: DateRequestData) async {
-        diaryProvider.request(.getCalendar(dateData: date)) { [weak self] result in
+    public func getTodoData(date: DateRequestData, petID: Int) async {
+        diaryProvider.request(.getCalendar(dateData: date, petId: petID)) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.handleGetTodoData(response: response)

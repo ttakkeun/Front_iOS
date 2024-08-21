@@ -149,7 +149,7 @@ struct HomeDragView: View {
         })
         .onAppear {
             Task {
-                await scheduleViewModel.getScheduleData(currentDate: scheduleViewModel.inputDate)
+                await scheduleViewModel.getScheduleData(currentDate: scheduleViewModel.inputDate, petId: petState.petId)
             }
             
         }

@@ -50,8 +50,8 @@ class ScheduleViewModel: ObservableObject, @preconcurrency TodoCheckProtocol {
     
     /// 스케줄 일정 조회 API 호출 함수
     /// - Parameter currentDate: 현재 날짜 기준 전달
-    public func getScheduleData(currentDate: DateRequestData) async {
-        provider.request(.getCalendar(dateData: currentDate)) { [weak self] result in
+    public func getScheduleData(currentDate: DateRequestData, petId: Int) async {
+        provider.request(.getCalendar(dateData: currentDate, petId: petId)) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.handleScheduleResponse(response: response)
@@ -65,6 +65,10 @@ class ScheduleViewModel: ObservableObject, @preconcurrency TodoCheckProtocol {
     /// - Parameter response: API 호출 후, Response 데이터
     private func handleScheduleResponse(response: Response) {
         do {
+            if let jsonString = String(data: response.data, encoding: .utf8) {
+                       print("Received JSON: \(jsonString)")
+                   }
+            
             let decodedData = try JSONDecoder().decode(ResponseData<ScheduleInquiryResponseData>.self, from: response.data)
             if decodedData.isSuccess {
                 if let data = decodedData.result {
