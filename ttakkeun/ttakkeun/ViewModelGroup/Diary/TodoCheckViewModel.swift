@@ -34,14 +34,8 @@ class TodoCheckViewModel: ObservableObject, @preconcurrency TodoCheckProtocol {
     /// 투두 데이터 조회
     /// - Parameter date: 조회 대상 날짜
     public func getTodoData(date: DateRequestData) async {
-        diaryProvider.request(.getCalendar(dateData: date)) { [weak self] result in
-            switch result {
-            case .success(let response):
-                self?.handleGetTodoData(response: response)
-            case .failure(let error):
-                print("일정 탭 투두 조회 네트워크 에러: \(error)")
-            }
-        }
+        let sampleResponse = Response(statusCode: 200, data: TodoAPITarget.createTodo(data: CreateTodoData(category: partItem, todoContent: "Sample Todo")).sampleData)
+        handleGetTodoData(response: sampleResponse)
     }
     
     /// 투두 조회 API 핸들러

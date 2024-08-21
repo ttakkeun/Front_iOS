@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ScheduleView: View {
     var body: some View {
-        ScrollView(.vertical) {
+        ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .center, spacing: 25, content: {
                 TopStatusBar()
                 
@@ -18,8 +18,8 @@ struct ScheduleView: View {
                 todoList
                 
                 todoCompleteRate
-                
             })
+            .padding(.bottom, 80)
         }
     }
     
