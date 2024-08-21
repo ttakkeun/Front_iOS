@@ -30,7 +30,7 @@ struct CustomDiary: View {
             calendarGridView
                 .padding(.horizontal,23)
         }
-        .frame(maxWidth: 350, maxHeight: 296)
+        .frame(width: 350, height: 296)
         .background(Color.primarycolor_400)
         .clipShape(.rect(cornerRadius:20))
     }
