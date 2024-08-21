@@ -11,7 +11,7 @@ import Moya
 @MainActor
 class ScheduleViewModel: ObservableObject, @preconcurrency TodoCheckProtocol {
     @Published var inputDate: DateRequestData
-    @Published var scheduleData: ScheduleInquiry?
+    @Published var scheduleData: ScheduleInquiryResponseData?
     
     private let provider: MoyaProvider<ScheduleAPITarget>
     
@@ -32,7 +32,7 @@ class ScheduleViewModel: ObservableObject, @preconcurrency TodoCheckProtocol {
     
     // MARK: - Init
     
-    init(provider: MoyaProvider<ScheduleAPITarget> = APIManager.shared.testProvider(for: ScheduleAPITarget.self)) {
+    init(provider: MoyaProvider<ScheduleAPITarget> = APIManager.shared.createProvider(for: ScheduleAPITarget.self)) {
         self.provider = provider
         
         let currentDate = Date()
@@ -65,10 +65,14 @@ class ScheduleViewModel: ObservableObject, @preconcurrency TodoCheckProtocol {
     /// - Parameter response: API 호출 후, Response 데이터
     private func handleScheduleResponse(response: Response) {
         do {
-            let decodedData = try JSONDecoder().decode(ScheduleInquiry.self, from: response.data)
-            DispatchQueue.main.async {
-                self.processFetchData(decodedData.result)
-                print("캘린더 정보 조회 완료")
+            let decodedData = try JSONDecoder().decode(ResponseData<ScheduleInquiryResponseData>.self, from: response.data)
+            if decodedData.isSuccess {
+                if let data = decodedData.result {
+                    DispatchQueue.main.async {
+                        self.processFetchData(data)
+                        print("캘린더 정보 조회 완료")
+                    }
+                }
             }
         } catch {
             print("ToDo 캘린더 조회 디코더 에러: \(error)")

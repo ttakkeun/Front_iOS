@@ -12,25 +12,18 @@ struct HomeProfileCard: View {
     @ObservedObject var viewModel: HomeProfileCardViewModel
     @EnvironmentObject var petState: PetState
     
-    let petId: Int
-    
     // MARK: - Init
     
     init(
-        viewModel: HomeProfileCardViewModel,
-        petId: Int
+        viewModel: HomeProfileCardViewModel
     ) {
         self.viewModel = viewModel
-        self.petId = petId
     }
     
     
     // MARK: - Components
     var body: some View {
         homeProfileCard
-            .onAppear {
-                viewModel.getPetProfileInfo(petId: petId)
-            }
     }
     
     @ViewBuilder
@@ -53,7 +46,7 @@ struct HomeProfileCard: View {
 
 struct HomeProfileCard_Preview: PreviewProvider {
     static var previews: some View {
-        HomeProfileCard(viewModel: HomeProfileCardViewModel(), petId: 1)
+        HomeProfileCard(viewModel: HomeProfileCardViewModel())
     }
 }
 

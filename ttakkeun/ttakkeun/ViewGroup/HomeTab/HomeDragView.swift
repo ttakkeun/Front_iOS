@@ -163,7 +163,7 @@ struct HomeDragView: View {
         VStack(alignment: .leading, spacing: 16) {
             titleText(text: "\(petState.petName)를 위한 따끈 따끈 AI 추천 제품")
             
-            if let resultData = productViewModel.aiProductData?.result {
+            if let resultData = productViewModel.aiProductData {
                 ScrollView(.horizontal, showsIndicators: false, content: {
                     LazyHGrid(rows: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 241)), count: 1), spacing: 12, content: {
                         ForEach(resultData.prefix(4), id: \.self ) { data in
@@ -173,11 +173,6 @@ struct HomeDragView: View {
                     .frame(height: 92)
                     .padding(.horizontal, 5)
                 })
-                .onAppear {
-                    Task {
-                        await productViewModel.getAIProduct()
-                    }
-                }
             } else {
                 HStack {
                     Spacer()
@@ -190,7 +185,7 @@ struct HomeDragView: View {
         }
         .onAppear {
             Task {
-                await productViewModel.getAIProduct()
+                await productViewModel.getAIProduct(petId: petState.petId)
             }
         }
     }
@@ -200,7 +195,7 @@ struct HomeDragView: View {
         VStack(alignment: .leading, spacing: 16, content: {
             titleText(text:  "\(type) \(petState.petName)를 위한 추천 제품 TOP8")
             
-            if let resultData = productViewModel.userProductData?.result {
+            if let resultData = productViewModel.userProductData {
                 ScrollView(.horizontal, showsIndicators: false, content: {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 90), spacing: 12), count: 4), spacing: 11, content: {
                         ForEach(Array(resultData.prefix(8).enumerated()), id: \.element) { index, data in

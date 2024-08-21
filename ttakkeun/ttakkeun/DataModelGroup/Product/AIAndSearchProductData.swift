@@ -7,13 +7,6 @@
 
 import Foundation
 
-struct AIAndSearchProductData: Codable {
-    let isSuccess: Bool
-    let code: Int
-    let message: String
-    let result: [ProductDetailData]
-}
-
 struct ProductDetailData: Codable, Hashable {
     let productId: Int
     let title: String

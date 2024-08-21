@@ -161,7 +161,7 @@ struct HomeBackCard: View {
 
 struct HomeBackCard_PreView: PreviewProvider {
     static var previews: some View {
-        HomeProfileCard(viewModel: HomeProfileCardViewModel(), petId: 1)
+        HomeProfileCard(viewModel: HomeProfileCardViewModel())
             .previewLayout(.sizeThatFits)
     }
 }
