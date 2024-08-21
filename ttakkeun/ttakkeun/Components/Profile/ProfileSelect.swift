@@ -59,11 +59,15 @@ struct ProfileSelect: View {
     /// 펫 프로필 카드 정보
     private var havePet: some View {
         Button(action: {
-            self.petState.setId(data.pet_id)
-            self.petState.setName(data.name)
-            print("펫 아이디 : \(petState.petId)")
-            print("펫 이름 : \(petState.petName)")
-            self.appFlowViewModel.selectProfile()
+                self.petState.setId(data.pet_id)
+                self.petState.setName(data.name)
+                
+                print("펫 아이디 : \(petState.petId)")
+                print("펫 이름 : \(petState.petName)")
+            
+            withAnimation(.easeInOut(duration: 0.4)) {
+                self.appFlowViewModel.selectProfile()
+            }
         }, label: {
             VStack(alignment: .center, spacing: 28, content: {
                 

@@ -99,7 +99,7 @@ struct MyPageDetailView: View {
     ///반려동물 디테일 정보 카드
     private var petInfoDetail: some View {
         VStack(alignment: .leading, spacing: 18, content: {
-            if let data = viewModel.profileData?.result {
+            if let data = viewModel.profileData {
                 makeInfo(nametag: "이름", content: data.name, spacing: 72)
                 makeInfo(nametag: "반려", content: data.type.toKorean(), spacing: 72)
                 makeInfo(nametag: "품종", content: data.variety, spacing: 72)

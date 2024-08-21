@@ -17,15 +17,19 @@ struct HomeDragView: View {
     @ObservedObject var scheduleViewModel: ScheduleViewModel
     @ObservedObject var productViewModel: ProductViewModel
     @EnvironmentObject var petState: PetState
+    private var profileType: ProfileType
     
     init(
         scheduleViewModel: ScheduleViewModel,
-        productViewModel: ProductViewModel
+        productViewModel: ProductViewModel,
+        profileType: ProfileType
     ) {
         _offset = State(initialValue: 0)
         _lastoffset = State(initialValue: 0)
         self.scheduleViewModel = scheduleViewModel
         self.productViewModel = productViewModel
+        self.profileType = profileType
+        
     }
     
     // MARK: - Contents
@@ -34,7 +38,7 @@ struct HomeDragView: View {
         GeometryReader { geometry in
             
             let screenHeight = geometry.size.height
-            let minOffset: CGFloat = screenHeight * 0.45
+            let minOffset: CGFloat = screenHeight * 0.43
             let maxOffset: CGFloat = screenHeight * 0.06
             
             /* 임계값을 두어 드래그뷰를 위 아래로 조절한다. */
@@ -91,7 +95,7 @@ struct HomeDragView: View {
                 compactAIProduct
                 compactTopProduct
             })
-            .frame(width: 350)
+            .frame(width: 400)
             .padding(.horizontal, 10)
         }
     }
@@ -157,7 +161,7 @@ struct HomeDragView: View {
     @ViewBuilder
     private var compactAIProduct: some View {
         VStack(alignment: .leading, spacing: 16) {
-            titleText(text: "\(petState.petName)")
+            titleText(text: "\(petState.petName)를 위한 따끈 따끈 AI 추천 제품")
             
             if let resultData = productViewModel.aiProductData?.result {
                 ScrollView(.horizontal, showsIndicators: false, content: {
@@ -178,7 +182,7 @@ struct HomeDragView: View {
                 HStack {
                     Spacer()
                     
-                    HomeAINotRecommend()
+                    HomeNotRecommend(firstLine: "AI 추천 제품이 아직 없어요!", secondLine: "일지를 작성하고 AI 진단을 받으러 가볼까요?")
                     
                     Spacer()
                 }
@@ -193,20 +197,29 @@ struct HomeDragView: View {
     
     /// 따끈나끈 유저 추천 제품
     private var compactTopProduct: some View {
-        //TODO: - PetState 정보 수정할 것
         VStack(alignment: .leading, spacing: 16, content: {
-            titleText(text: "\(petState.petName)")
+            titleText(text:  "\(type) \(petState.petName)를 위한 추천 제품 TOP8")
             
             if let resultData = productViewModel.userProductData?.result {
                 ScrollView(.horizontal, showsIndicators: false, content: {
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 84), spacing: 6), count: 4), spacing: 11, content: {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 90), spacing: 12), count: 4), spacing: 11, content: {
                         ForEach(Array(resultData.prefix(8).enumerated()), id: \.element) { index, data in
                             HomeUserRecommendProduct(data: data, rank: index)
                         }
                     })
                     .frame(height: 331)
-                    .padding(.bottom, 30)
+                    .padding(.bottom, 80)
+                    .padding(.leading, 12)
                 })
+            } else {
+                HStack {
+                    Spacer()
+                    
+                    HomeNotRecommend(firstLine: "유저 추천 제품이 아직 없어요!", secondLine: "다른 유저들의 추천 제품을 기다려 주세요!")
+                    
+                    Spacer()
+                    
+                }
             }
         })
         .onAppear {
@@ -223,6 +236,15 @@ struct HomeDragView: View {
             .foregroundStyle(Color.gray_900)
     }
     
+    private var type: String {
+        switch self.profileType {
+        case .cat:
+            return "반려묘"
+        case .dog:
+            return "반려견"
+        }
+    }
+    
 }
 
 struct HomeDragView_Preview: PreviewProvider {
@@ -230,7 +252,7 @@ struct HomeDragView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            HomeDragView(scheduleViewModel: ScheduleViewModel(), productViewModel: ProductViewModel())
+            HomeDragView(scheduleViewModel: ScheduleViewModel(), productViewModel: ProductViewModel(), profileType: .cat)
                 .environmentObject(PetState(petName: "유아", petId: 1))
         }
     }

@@ -141,6 +141,7 @@
 		4863B2AA2C3D166000BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				ImagePicker/HomeProfilePatchImagePicker.swift,
 				ImagePicker/PetImagePicker.swift,
 				ImagePicker/ProfileImageRegistPicker.swift,
 				ImagePicker/QnaImagePicker.swift,
@@ -153,6 +154,7 @@
 				Navigation/NavigationRouter.swift,
 				Navigation/NavigationRoutingView.swift,
 				PetState.swift,
+				Protocol/HomePatchImage.swift,
 				Protocol/ImageHandling.swift,
 				Protocol/ObservableObjectSettable.swift,
 				Protocol/TodoCheckProtocol.swift,
@@ -219,7 +221,7 @@
 				Login/SignUpData.swift,
 				Login/SignUpResponseData.swift,
 				PetProfile/CreatePetProfileRequestData.swift,
-				PetProfile/HomeProfileData.swift,
+				PetProfile/HomeProfileResponseData.swift,
 				PetProfile/PetProfileData.swift,
 				PetProfile/PetProfileImageData.swift,
 				PetProfile/PetVarietyData.swift,

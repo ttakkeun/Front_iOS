@@ -8,7 +8,16 @@
 import SwiftUI
 
 /// AI 상품 없을 시 사용하는 컴포넌트
-struct HomeAINotRecommend: View {
+struct HomeNotRecommend: View {
+    
+    let firstLine: String
+    let secondLine: String
+    
+    init(firstLine: String, secondLine: String) {
+        self.firstLine = firstLine
+        self.secondLine = secondLine
+    }
+    
     var body: some View {
         notRecommendedView
     }
@@ -17,8 +26,8 @@ struct HomeAINotRecommend: View {
     
     private var notRecommendedView: some View {
         VStack(alignment: .center, spacing: 3, content: {
-            warningText(text: "AI 추천 제품이 아직 없어요!")
-            warningText(text: "일지를 작성하고 AI 진단을 받으러 가볼까요?")
+            warningText(text: firstLine)
+            warningText(text: secondLine)
         })
         .frame(width: 212, height: 32)
         .padding(.vertical, 31)
@@ -35,9 +44,4 @@ struct HomeAINotRecommend: View {
             .font(.Body4_medium)
             .foregroundStyle(Color.gray_400)
     }
-}
-
-#Preview {
-    HomeAINotRecommend()
-        .previewLayout(.sizeThatFits)
 }

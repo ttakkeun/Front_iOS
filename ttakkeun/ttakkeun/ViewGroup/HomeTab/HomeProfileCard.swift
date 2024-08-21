@@ -10,6 +10,8 @@ import SwiftUI
 struct HomeProfileCard: View {
     
     @ObservedObject var viewModel: HomeProfileCardViewModel
+    @EnvironmentObject var petState: PetState
+    
     let petId: Int
     
     // MARK: - Init
@@ -27,9 +29,7 @@ struct HomeProfileCard: View {
     var body: some View {
         homeProfileCard
             .onAppear {
-                Task {
-                    await viewModel.getPetProfileInfo(petId: petId)
-                }
+                viewModel.getPetProfileInfo(petId: petId)
             }
     }
     
@@ -43,6 +43,10 @@ struct HomeProfileCard: View {
             }
         }
         .animation(.bouncy(duration: 1.2), value: viewModel.isShowFront)
+        .sheet(isPresented: $viewModel.isImagePickerPresented, content: {
+            HomeProfilePatchImagePicker(imageHandler: viewModel)
+                .environmentObject(petState)
+        })
     }
         
 }
