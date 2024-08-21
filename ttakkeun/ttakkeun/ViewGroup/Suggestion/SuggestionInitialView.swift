@@ -50,7 +50,8 @@ struct SuggestionInitialView: View {
          }
          
      }
-
+    
+    /// 검색바
      private var searchBar: some View {
          HStack {
              if isSearching {
@@ -88,6 +89,9 @@ struct SuggestionInitialView: View {
          .padding(.top, isSearching ? 0 : 1)
      }
      
+    
+    
+    /// 검색버튼 함수
      private func performSearch() async {
          // 검색을 실제로 실행하는 로직을 여기에 구현합니다.
          print("검색 실행: \(searchText)")
@@ -97,6 +101,7 @@ struct SuggestionInitialView: View {
      }
     
     
+    /// 카테고리세그먼트, ai추천상품, all 추천상품
     private var Contents: some View {
         VStack(spacing: 24) {
             categorySegmentedControl
@@ -113,6 +118,7 @@ struct SuggestionInitialView: View {
     
     
     
+    /// 카테고리 세그먼트
     private var categorySegmentedControl: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
@@ -146,7 +152,8 @@ struct SuggestionInitialView: View {
             .padding(.horizontal, 25)
         }
     }
-
+    
+    /// ai상품 전체 셋
     private var aiProductSet: some View {
         VStack(spacing: -2){
             aiRecommendProductText
@@ -156,6 +163,7 @@ struct SuggestionInitialView: View {
         .padding(.top, 17)
     }
     
+    /// ai 추천상품 타이틀
     private var aiRecommendProductText: some View {
         HStack(spacing: 2){
             Icon.recommendDog.image
@@ -167,10 +175,12 @@ struct SuggestionInitialView: View {
         }
     }
     
+    /// ai추천상품
     private var aiRecommendProduct: some View {
         Group {
             if viewModel.aiProducts.isEmpty {
-                HomeAINotRecommend()
+                HomeNotRecommend(firstLine:
+                                    "1", secondLine: "2")
             } else {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
@@ -187,6 +197,7 @@ struct SuggestionInitialView: View {
         }
     }
     
+    /// 제품셋
     private var productSet: some View {
         VStack(spacing: 16){
             recommendText
@@ -194,6 +205,7 @@ struct SuggestionInitialView: View {
         }
     }
     
+    /// 추천 텍스트
     private var recommendText: some View {
         HStack{
             Text("랭킹별 추천상품")
@@ -204,6 +216,7 @@ struct SuggestionInitialView: View {
         }
     }
     
+    /// 추천상품
     private var recommendProduct: some View {
         VStack(spacing: 16) {
             let productsToShow = viewModel.selectedCategory == .all ? viewModel.products : viewModel.categoryProducts

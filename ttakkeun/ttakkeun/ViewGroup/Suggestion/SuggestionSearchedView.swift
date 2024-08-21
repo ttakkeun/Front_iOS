@@ -34,6 +34,7 @@ struct SuggestionSearchedView: View {
         }
     }
     
+    /// db추천상품 셋
     private var dbProductSet: some View {
         VStack(spacing: 0) {
             dbRecommendProductText
@@ -41,6 +42,7 @@ struct SuggestionSearchedView: View {
         }
     }
     
+    /// 네이버추천상품 셋
     private var naverProductSet: some View {
         VStack{
             naverRecommendText
@@ -49,6 +51,7 @@ struct SuggestionSearchedView: View {
     }
     
     
+    /// 따끈따끈 추천 상품
     private var dbRecommendProductText: some View {
         HStack(spacing: 2){
             Icon.recommendDog.image
@@ -62,6 +65,7 @@ struct SuggestionSearchedView: View {
     }
     
     
+    /// db추천상품
     private var dbRecommendProduct: some View {
         ScrollView(.vertical,showsIndicators: true) {
                VStack(spacing: 16) {
@@ -80,6 +84,7 @@ struct SuggestionSearchedView: View {
            .clipShape(RoundedRectangle(cornerRadius: 10))
        }
     
+    /// 외부검색상품텍스트
     private var naverRecommendText: some View {
         HStack{
             Text("외부 검색 상품")
