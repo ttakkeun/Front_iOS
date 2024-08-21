@@ -13,6 +13,7 @@ struct ToDoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
     @Binding var data: TodoList
     @ObservedObject var viewModel: ViewModel
     let parItem: PartItem
+    let checkAble: Bool
     
     
     // MARK: - Init
@@ -20,11 +21,13 @@ struct ToDoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
     init(
         data: Binding<TodoList>,
         viewModel: ViewModel,
-        partItem: PartItem
+        partItem: PartItem,
+        checkAble: Bool = false
     ) {
         self._data = data
         self.viewModel = viewModel
         self.parItem = partItem
+        self.checkAble = checkAble
     }
     
     var body: some View {
@@ -62,10 +65,20 @@ struct ToDoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
                     }
                 }
             })
+            if checkAble {
+                Button(action: {
+                    print("present 구현")
+                }, label: {
+                    Text(data.todoName)
+                        .font(.Body4_medium)
+                        .foregroundStyle(Color.gray_900)
+                })
+            } else {
+                Text(data.todoName)
+                    .font(.Body4_medium)
+                    .foregroundStyle(Color.gray_900)
+            }
             
-            Text(data.todoName)
-                .font(.Body4_medium)
-                .foregroundStyle(Color.gray_900)
         })
         .frame(maxWidth: 203, maxHeight: 16, alignment: .leading)
     }

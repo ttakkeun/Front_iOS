@@ -31,7 +31,7 @@ struct TodoCard: View {
             if !viewModel.todos.isEmpty {
                 VStack(alignment: .leading, spacing: 10, content: {
                     ForEach(viewModel.todos, id: \.id) { todo in
-                        ToDoCheckList(data: .constant(todo), viewModel: viewModel, partItem: partItem)
+                        ToDoCheckList(data: .constant(todo), viewModel: viewModel, partItem: partItem, checkAble: true)
                     }
                     if self.isAddingNewTodo {
                         self.newTodoInputField
