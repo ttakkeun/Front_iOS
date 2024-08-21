@@ -25,6 +25,7 @@ struct TodoCard: View {
     
     var body: some View {
         HStack(spacing: 24, content: {
+            
             self.todoCircle
             
             if !viewModel.todos.isEmpty {
@@ -41,10 +42,11 @@ struct TodoCard: View {
                     .font(.Body3_medium)
                     .foregroundStyle(Color.gray_400)
             }
+            
+            Spacer()
         })
-        .frame(width: 310)
-        .padding(.vertical, 18)
-        .padding(.leading, 8)
+        .frame(width: 336, height: 77)
+        .padding(.leading, 14)
         .clipShape(RoundedRectangle(cornerRadius: 20))
         .overlay(
             RoundedRectangle(cornerRadius: 20)

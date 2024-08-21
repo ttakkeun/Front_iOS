@@ -42,17 +42,17 @@ extension Color {
     static let fabPencil_Color = Color("FabPencil") /* #444444 100% */
     
     // MARK: - HomeTodo
-    static let beforeTeeth_Color = Color("BeforeTeeth") /* #CCB4FF 40% */
-    static let beforeClaw_Color = Color("BeforeClaw") /* #FFAE90 40% */
-    static let beforeEar_Color = Color("BeforeEar") /* #F5FC47 40% */
-    static let beforeEye_Color = Color("BeforeEye") /* #FFB84F 40% */
-    static let beforeHair_COlor = Color("BeforeHair") /* #9EBFFF 40% */
+    static let beforeTeeth_Color = Color("beforeTeeth") /* #CCB4FF 40% */
+    static let beforeClaw_Color = Color("beforeClaw") /* #FFAE90 40% */
+    static let beforeEar_Color = Color("beforeEar") /* #F5FC47 40% */
+    static let beforeEye_Color = Color("beforeEye") /* #FFB84F 40% */
+    static let beforeHair_COlor = Color("beforeHair") /* #9EBFFF 40% */
     
-    static let afterTeeth_Color = Color("AfterTeeth") /* #E3D8FB 100% */
-    static let afterClaw_Color = Color("AfterClaw") /* #FBD8CC 100% */
-    static let afterEar_Color = Color("AfterEar") /* #F3F6A8 100% */
-    static let afterEye_Color = Color("AfterEye") /* #F9E0BB 100% */
-    static let afterHair_Color = Color("AfterHair") /* #B2CAFA 100% */
+    static let afterTeeth_Color = Color("afterTeeth") /* #E3D8FB 100% */
+    static let afterClaw_Color = Color("afterClaw") /* #FBD8CC 100% */
+    static let afterEar_Color = Color("afterEar") /* #F3F6A8 100% */
+    static let afterEye_Color = Color("afterEye") /* #F9E0BB 100% */
+    static let afterHair_Color = Color("afterHair") /* #B2CAFA 100% */
     
     // MARK: - Tab
     static let unClickedTab_Color = Color("unclikedTab") /* #FFFFFF 50% */

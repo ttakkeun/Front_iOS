@@ -27,10 +27,12 @@ struct CustomDiary: View {
         VStack(alignment: .leading, spacing: 8) {
             headerView
                 .padding(.horizontal,23)
+                .padding(.top, 15)
             calendarGridView
                 .padding(.horizontal,23)
+                .padding(.bottom, 10)
         }
-        .frame(maxWidth: 350, maxHeight: 296)
+        .frame(maxWidth: 350, minHeight: 296)
         .background(Color.primarycolor_400)
         .clipShape(.rect(cornerRadius:20))
     }
