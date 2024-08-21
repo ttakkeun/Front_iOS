@@ -28,6 +28,11 @@ struct ttakkeunApp: App {
                 ProfileView(viewModel: ProfileCardViewModel(container: container))
                     .environmentObject(petState)
                     .environmentObject(container)
+                    .environmentObject(appFlowViewModel)
+            case .TabView:
+                TabView()
+                    .environmentObject(petState)
+                    .environmentObject(container)
             }
         }
     }
