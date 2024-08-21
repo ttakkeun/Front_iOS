@@ -29,7 +29,7 @@ struct ProductSheetView: View {
             Capsule()
                 .fill(Color.gray300)
                 .frame(width: 38, height: 5)
-                .padding(.top, 10)
+                .padding(.top, 20)
             
             productImage
                 .border(Color.gray200)
@@ -43,8 +43,10 @@ struct ProductSheetView: View {
                 }
             }, color: .primaryColorMain)
             
+            Spacer()
         }
         .frame(maxWidth: 394)
+        .padding(.bottom, -30)
     }
     
     /// 카테고리, 타이틀, 기업명, 하트, 가격 모음
