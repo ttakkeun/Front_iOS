@@ -44,6 +44,9 @@ enum Icon: String {
     case write = "write"
     case cancel = "cancel"
     case camera = "camera"
+    case plus = "plus"
+    case minus = "minus"
+    case basePlus = "basePlus"
     
     // MARK: - Schedule
     case downArrow = "downArrow"
@@ -74,6 +77,13 @@ enum Icon: String {
     case loadingBg = "loadingBg"
     case leftCat = "leftCat"
     case rightDog = "rightDog"
+    
+    // MARK: - DiagnosisResult
+    case top1 = "top1"
+    case top2 = "top2"
+    case top3 = "top3"
+    case top4 = "top4"
+    case top5 = "top5"
     
     // MARK: - Tab
     case diagnosis = "diagnosis"

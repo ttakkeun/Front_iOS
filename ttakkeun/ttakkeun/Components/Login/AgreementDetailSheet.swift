@@ -39,13 +39,28 @@ struct AgreementDetailSheet: View {
                             }
                         }
                         .padding(.bottom, 10)
-                        .padding(.horizontal, 15)
+                        .padding(.horizontal, 20)
                     }
                 }
                 .padding(.horizontal, 10)
             }
             .frame(maxHeight: .infinity)
             .ignoresSafeArea(.all)
+        }
+        .padding(.top, 20)
+    }
+}
+
+//MARK: - Preview
+struct AgreementDetailSheet_Preview: PreviewProvider {
+    
+    static let devices = ["iPhone 11", "iphone 15 Pro"]
+    
+    static var previews: some View {
+        ForEach(devices, id: \.self) { device in
+            AgreementView()
+                .previewDevice(PreviewDevice(rawValue: device))
+                .previewDisplayName(device)
         }
     }
 }

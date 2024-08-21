@@ -56,4 +56,9 @@ class AppFlowViewModel: ObservableObject {
     public func onSignUpSuccess() {
         appState = .profile
     }
+    
+    // 프로필 선택 시 탭뷰 전환
+    public func selectProfile() {
+        appState = .TabView
+    }
 }

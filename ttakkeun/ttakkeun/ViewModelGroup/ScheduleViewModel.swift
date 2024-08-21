@@ -9,9 +9,9 @@ import Foundation
 import Moya
 
 @MainActor
-class ScheduleViewModel: ObservableObject {
+class ScheduleViewModel: ObservableObject, @preconcurrency TodoCheckProtocol {
     @Published var inputDate: DateRequestData
-    @Published var scheduleData: ScheduleInquiry?
+    @Published var scheduleData: ScheduleInquiryResponseData?
     
     private let provider: MoyaProvider<ScheduleAPITarget>
     
@@ -32,7 +32,7 @@ class ScheduleViewModel: ObservableObject {
     
     // MARK: - Init
     
-    init(provider: MoyaProvider<ScheduleAPITarget> = APIManager.shared.testProvider(for: ScheduleAPITarget.self)) {
+    init(provider: MoyaProvider<ScheduleAPITarget> = APIManager.shared.createProvider(for: ScheduleAPITarget.self)) {
         self.provider = provider
         
         let currentDate = Date()
@@ -50,8 +50,8 @@ class ScheduleViewModel: ObservableObject {
     
     /// 스케줄 일정 조회 API 호출 함수
     /// - Parameter currentDate: 현재 날짜 기준 전달
-    public func getScheduleData(currentDate: DateRequestData) async {
-        provider.request(.getCalendar(dateData: currentDate)) { [weak self] result in
+    public func getScheduleData(currentDate: DateRequestData, petId: Int) async {
+        provider.request(.getCalendar(dateData: currentDate, petId: petId)) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.handleScheduleResponse(response: response)
@@ -65,10 +65,18 @@ class ScheduleViewModel: ObservableObject {
     /// - Parameter response: API 호출 후, Response 데이터
     private func handleScheduleResponse(response: Response) {
         do {
-            let decodedData = try JSONDecoder().decode(ScheduleInquiry.self, from: response.data)
-            DispatchQueue.main.async {
-                self.processFetchData(decodedData.result)
-                print("캘린더 정보 조회 완료")
+            if let jsonString = String(data: response.data, encoding: .utf8) {
+                       print("Received JSON: \(jsonString)")
+                   }
+            
+            let decodedData = try JSONDecoder().decode(ResponseData<ScheduleInquiryResponseData>.self, from: response.data)
+            if decodedData.isSuccess {
+                if let data = decodedData.result {
+                    DispatchQueue.main.async {
+                        self.processFetchData(data)
+                        print("캘린더 정보 조회 완료")
+                    }
+                }
             }
         } catch {
             print("ToDo 캘린더 조회 디코더 에러: \(error)")

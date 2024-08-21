@@ -13,6 +13,7 @@ struct ProfileSelect: View {
     
     let data: PetProfileResponseData
     @EnvironmentObject var petState: PetState
+    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     
     init(
         data: PetProfileResponseData
@@ -23,7 +24,7 @@ struct ProfileSelect: View {
     var body: some View {
         ZStack(alignment: .top, content: {
             bottomCard
-                .padding(.top, 86)
+                .padding(.top, 88)
             topImage
         })
     }
@@ -55,36 +56,18 @@ struct ProfileSelect: View {
         }
     }
     
-    /// 카드 생성하기
-    private var createProfilie: some View {
-        Button(action: {
-            print("새로운 가족 추가하기 버튼")
-        }, label: {
-            VStack(alignment: .center, spacing: 18, content: {
-                Text("새로운 가족 추가하기")
-                    .font(.suit(type: .bold, size: 16))
-                    .foregroundStyle(Color.gray_900)
-                Image(systemName: "plus")
-                    .resizable()
-                    .foregroundStyle(Color.black)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 12, height: 12)
-            })
-            .frame(width: 213, height: 286)
-            .background(Color.card003_Color)
-            .clipShape(.rect(cornerRadius: 20))
-            .shadow04()
-        })
-        
-    }
-    
     /// 펫 프로필 카드 정보
     private var havePet: some View {
         Button(action: {
-            petState.petId = data.pet_id
-            petState.petName = data.name
-            print("펫 아이디 : \(petState.petId)")
-            print("펫 이름 : \(petState.petName)")
+                self.petState.setId(data.pet_id)
+                self.petState.setName(data.name)
+                
+                print("펫 아이디 : \(petState.petId)")
+                print("펫 이름 : \(petState.petName)")
+            
+            withAnimation(.easeInOut(duration: 0.4)) {
+                self.appFlowViewModel.selectProfile()
+            }
         }, label: {
             VStack(alignment: .center, spacing: 28, content: {
                 
@@ -109,7 +92,8 @@ struct ProfileSelect: View {
     /// 펫 프로필 이미지
     @ViewBuilder
     private var petProfileImage: some View {
-        if let url = URL(string: data.image) {
+        if let image = data.image,
+           let url = URL(string: image) {
             KFImage(url)
                 .placeholder {
                     ProgressView()

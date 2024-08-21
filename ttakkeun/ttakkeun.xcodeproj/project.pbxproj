@@ -31,10 +31,12 @@
 				Diagnosis/CheckQnAComponent.swift,
 				Diagnosis/DiagnosisProductView.swift,
 				Diagnosis/DiagnosisTopbutton.swift,
+				Diagnosis/DiagnosisTower.swift,
 				Diagnosis/DiagnosticImages.swift,
 				Diagnosis/JournalListCard.swift,
 				Diagnosis/NotJournalList.swift,
 				Diagnosis/SelectCareButton.swift,
+				Diary/TodoCard.swift,
 				ETC/CustomAlert.swift,
 				ETC/CustomNavigation.swift,
 				ETC/CustomTextEditor.swift,
@@ -62,6 +64,9 @@
 				QnA/TopTenQuestion.swift,
 				QnA/WriteCategory.swift,
 				Recommend/ProductSheetView.swift,
+				Recommend/RecommendProduct.swift,
+				Recommend/RecommendProductbyAI.swift,
+				Recommend/RecommendSegment.swift,
 				Schedule/CustomDiary.swift,
 				Schedule/DiarySelectSheet.swift,
 				Schedule/TodoCompleteEach.swift,
@@ -101,6 +106,7 @@
 				Diagnosis/CheckQnAView.swift,
 				Diagnosis/DiagnosingView.swift,
 				Diagnosis/DiagnosisHeader.swift,
+				Diagnosis/DiagnosisResultDetailView.swift,
 				Diagnosis/DiagnosisResultView.swift,
 				Diagnosis/DiagnosisView.swift,
 				Diagnosis/JournalListView.swift,
@@ -112,6 +118,7 @@
 				HomeTab/HomeDragView.swift,
 				HomeTab/HomeProfileCard.swift,
 				HomeTab/HomeView.swift,
+				LoginView/AgreementView.swift,
 				LoginView/LoginView.swift,
 				LoginView/Onboarding.json,
 				LoginView/OnboardingView.swift,
@@ -134,6 +141,7 @@
 		4863B2AA2C3D166000BDA2B4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				ImagePicker/HomeProfilePatchImagePicker.swift,
 				ImagePicker/PetImagePicker.swift,
 				ImagePicker/ProfileImageRegistPicker.swift,
 				ImagePicker/QnaImagePicker.swift,
@@ -146,8 +154,10 @@
 				Navigation/NavigationRouter.swift,
 				Navigation/NavigationRoutingView.swift,
 				PetState.swift,
+				Protocol/HomePatchImage.swift,
 				Protocol/ImageHandling.swift,
 				Protocol/ObservableObjectSettable.swift,
+				Protocol/TodoCheckProtocol.swift,
 				TokenRefresh/AccessTokenRefresher.swift,
 				TokenRefresh/APIManager.swift,
 				TokenRefresh/AuthAPITarget.swift,
@@ -174,11 +184,12 @@
 		48D5D12D2C3E825500B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				AgreementViewModel.swift,
-				CustomDiaryViewModel.swift,
 				Diagnostic/DiagnosticResultViewModel.swift,
 				Diagnostic/JournalListViewModel.swift,
+				Diary/CustomDiaryViewModel.swift,
+				Diary/TodoCheckViewModel.swift,
 				HomeProfileCardViewModel.swift,
+				LoginOnBoarding/AgreementViewModel.swift,
 				LoginOnBoarding/AppFlowViewModel.swift,
 				LoginOnBoarding/LoginViewModel.swift,
 				MyPageViewModel.swift,
@@ -197,6 +208,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Diagnostic/DiagnosisData.swift,
+				Diagnostic/DiagnosisResultList.swift,
 				Diagnostic/DiagnosticPoint.swift,
 				Journal/CheckJournalQnA.swift,
 				Journal/JournalListData.swift,
@@ -208,7 +220,7 @@
 				Login/SignUpData.swift,
 				Login/SignUpResponseData.swift,
 				PetProfile/CreatePetProfileRequestData.swift,
-				PetProfile/HomeProfileData.swift,
+				PetProfile/HomeProfileResponseData.swift,
 				PetProfile/PetProfileData.swift,
 				PetProfile/PetProfileImageData.swift,
 				PetProfile/PetVarietyData.swift,
@@ -236,6 +248,7 @@
 				DiagnosticResultAPITarget.swift,
 				PartItem.swift,
 				ProfileType.swift,
+				RecommendProductSegment.swift,
 				TabCase.swift,
 				TipsCategorySegment.swift,
 			);
@@ -540,6 +553,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -571,6 +585,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

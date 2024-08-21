@@ -11,6 +11,7 @@ import SwiftUI
 struct TabView: View {
     
     @EnvironmentObject var petState: PetState
+    @EnvironmentObject var container: DIContainer
     @State private var selectedTab: TabCase = .home
     @State private var opacity = 0.0
     

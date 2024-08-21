@@ -8,13 +8,6 @@
 import Foundation
 
 /// 홈탭 - 프로필 카드 데이터
-struct HomeProfileData: Codable {
-    let isSuccess: Bool
-    let code: String
-    let message: String
-    let result: HomeProfileResponseData
-}
-
 /// 홈탭 - 프로필 카드 전면부, 후면부 사용 데이터
 struct HomeProfileResponseData: Codable {
     let name: String
@@ -23,4 +16,13 @@ struct HomeProfileResponseData: Codable {
     let variety: String
     let birth: String
     let neutralization: Bool
+    
+    enum CodingKeys: String, CodingKey {
+        case name = "petName"
+        case image = "petImageUrl"
+        case type = "petType"
+        case variety = "petVariety"
+        case birth
+        case neutralization
+    }
 }

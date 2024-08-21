@@ -8,15 +8,6 @@
 import Foundation
 
 // MARK: - Response
-
-/// 일정 - 캘린더 조회 데이터
-struct ScheduleInquiry: Codable {
-    let isSuccess: Bool
-    let code: String
-    let message: String
-    var result: ScheduleInquiryResponseData
-}
-
 /// 5가지 항목에 대한 투두 결과 response 데이터(현재 날짜만 가져옴)
 struct ScheduleInquiryResponseData: Codable {
     var date: String
@@ -28,11 +19,11 @@ struct ScheduleInquiryResponseData: Codable {
     
     enum CodingKeys: String, CodingKey {
         case date
-        case earTodo = "ear_todos"
-        case hairTodo = "hair_todos"
-        case clawTodo = "claw_todos"
-        case eyeTodo = "eye_todos"
-        case toothTodo = "tooth_todos"
+        case earTodo = "earTodos"
+        case hairTodo = "hairTodos"
+        case clawTodo = "clawTodos"
+        case eyeTodo = "eyeTodos"
+        case toothTodo = "teethTodos"
     }
 }
 
@@ -44,9 +35,9 @@ struct TodoList: Codable, Hashable, Identifiable {
     var todoStatus: Bool
     
     enum CodingKeys: String, CodingKey {
-        case todoID = "todo_id"
-        case todoName = "todo_name"
-        case todoStatus = "todo_status"
+        case todoID = "todoId"
+        case todoName = "todoName"
+        case todoStatus = "todoStatus"
     }
 }
 

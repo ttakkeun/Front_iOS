@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 /// 진단서 상세 내용 조회
 struct DiagnosisData: Codable, Identifiable {
     let id: Int

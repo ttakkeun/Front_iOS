@@ -11,7 +11,7 @@ import Moya
 /// 검색 추천 API Target
 enum ProductRecommendAPITarget {
     /// AI 추천 상품 API
-    case getAIRecommend
+    case getAIRecommend(petId: Int)
     /// 유저 추천 상품 API
     case getRankProduct(pageNum: Int)
 }
@@ -20,8 +20,8 @@ extension ProductRecommendAPITarget: APITargetType {
     
     var path: String {
         switch self {
-        case .getAIRecommend:
-            return "/product/ai"
+        case .getAIRecommend(let id):
+            return "/product/ai/\(id)"
         case .getRankProduct(let page):
             return "/product/rank/\(page)"
         }
