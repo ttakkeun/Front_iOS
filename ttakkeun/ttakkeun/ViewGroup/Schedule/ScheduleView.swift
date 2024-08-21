@@ -69,6 +69,16 @@ struct ScheduleView: View {
     }
 }
 
-#Preview {
-    ScheduleView()
+//MARK: - Preview
+struct ScheduleView_Preview: PreviewProvider {
+    
+    static let devices = ["iPhone 11", "iphone 15 Pro"]
+    
+    static var previews: some View {
+        ForEach(devices, id: \.self) { device in
+            ScheduleView()
+                .previewDevice(PreviewDevice(rawValue: device))
+                .previewDisplayName(device)
+        }
+    }
 }
