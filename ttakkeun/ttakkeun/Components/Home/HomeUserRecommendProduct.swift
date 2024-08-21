@@ -40,7 +40,7 @@ struct HomeUserRecommendProduct: View {
             productInfo
         })
         
-        .frame(width: 84, height: 150)
+        .frame(width: 84, height: 160)
     }
     
     /// 순위 표시 태그
@@ -91,7 +91,7 @@ struct HomeUserRecommendProduct: View {
         }
         
         VStack(alignment: .leading, spacing: 4, content: {
-            Text(data.title.split(separator: "").joined(separator: "\u{200B}"))
+            Text(stripHTMLTags(from: data.title).split(separator: "").joined(separator: "\u{200B}"))
                 .font(.suit(type: .medium, size: 10))
                 .foregroundStyle(Color.gray_900)
                 .lineLimit(nil)
@@ -105,6 +105,23 @@ struct HomeUserRecommendProduct: View {
                 .font(.suit(type: .regular, size: 8))
                 .foregroundStyle(Color.gray_400)
         })
+    }
+    
+    func stripHTMLTags(from htmlString: String) -> String {
+        guard let data = htmlString.data(using: .utf8) else { return htmlString }
+        
+        do {
+            let attributedString = try NSAttributedString(
+                data: data,
+                options: [.documentType: NSAttributedString.DocumentType.html,
+                          .characterEncoding: String.Encoding.utf8.rawValue],
+                documentAttributes: nil)
+            
+            return attributedString.string
+        } catch {
+            print("Failed to decode HTML entities: \(error)")
+            return htmlString
+        }
     }
 }
 

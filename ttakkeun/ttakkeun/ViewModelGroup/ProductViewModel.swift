@@ -10,22 +10,22 @@ import Moya
 
 @MainActor
 class ProductViewModel: ObservableObject {
-    @Published var aiProductData: AIAndSearchProductData?
-    @Published var userProductData: AIAndSearchProductData?
+    @Published var aiProductData: [ProductDetailData]?
+    @Published var userProductData: [ProductDetailData]?
     
     private var provider: MoyaProvider<ProductRecommendAPITarget>
     
     // MARK: - Init
     
-    init(provider: MoyaProvider<ProductRecommendAPITarget> = APIManager.shared.testProvider(for: ProductRecommendAPITarget.self)) {
+    init(provider: MoyaProvider<ProductRecommendAPITarget> = APIManager.shared.createProvider(for: ProductRecommendAPITarget.self)) {
         self.provider = provider
     }
     
     // MARK: - AI Product API Function
     
     /// AIProduct 조회 함수
-    public func getAIProduct() async {
-        provider.request(.getAIRecommend) { [weak self] result in
+    public func getAIProduct(petId: Int) async {
+        provider.request(.getAIRecommend(petId: petId)) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.handleAIProductResponse(response: response)
@@ -39,9 +39,13 @@ class ProductViewModel: ObservableObject {
     /// - Parameter response: response 값
     private func handleAIProductResponse(response: Response) {
         do {
-            let decodeData = try JSONDecoder().decode(AIAndSearchProductData.self, from: response.data)
-            DispatchQueue.main.async {
-                self.aiProductData = decodeData
+            let decodeData = try JSONDecoder().decode(ResponseData<[ProductDetailData]>.self, from: response.data)
+            if decodeData.isSuccess {
+                DispatchQueue.main.async {
+                    self.aiProductData = decodeData.result
+                }
+            } else {
+                print("AI 상품 조회 네트워크 오류: \(decodeData.message)")
             }
         } catch {
             print("AI 상품 조회 디코더 에러: \(error)")
@@ -67,10 +71,14 @@ class ProductViewModel: ObservableObject {
     /// - Parameter response: response 값
     private func handleUserProductResponse(response: Response) {
         do {
-            let decodedData = try JSONDecoder().decode(AIAndSearchProductData.self, from: response.data)
-            DispatchQueue.main.async {
-                self.userProductData = decodedData
-                print("유저 추천 제품 데이터 디코더 완료")
+            let decodedData = try JSONDecoder().decode(ResponseData<[ProductDetailData]>.self, from: response.data)
+            if decodedData.isSuccess {
+                DispatchQueue.main.async {
+                    self.userProductData = decodedData.result
+                    print("유저 추천 제품 데이터 디코더 완료")
+                }
+            } else {
+                print("유저 추천 제품 네트워크 에러: \(decodedData.message)")
             }
         } catch {
             print("유저 추천 상품 디코더 에러: \(error)")

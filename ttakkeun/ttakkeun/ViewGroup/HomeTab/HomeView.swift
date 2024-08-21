@@ -22,7 +22,23 @@ struct HomeView: View {
     }
     
     var body: some View {
-        contetns
+        if homeProfileCardViewModel.profileData != nil {
+            contetns
+        } else {
+            VStack {
+                Spacer()
+                
+                ProgressView()
+                    .frame(width: 120, height: 120)
+                
+                Spacer()
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .ignoresSafeArea(.all)
+            .onAppear {
+                homeProfileCardViewModel.getPetProfileInfo(petId: petState.petId)
+            }
+        }
     }
     
     // MARK: Contetns
@@ -31,7 +47,8 @@ struct HomeView: View {
         ZStack(alignment: .bottom) {
             VStack(alignment: .center, spacing: 14, content: {
                 TopStatusBar()
-                HomeProfileCard(viewModel: homeProfileCardViewModel, petId: petState.petId)
+                HomeProfileCard(viewModel: homeProfileCardViewModel)
+                    .environmentObject(petState)
                 
                 Spacer()
             })
@@ -44,8 +61,8 @@ struct HomeView: View {
         }
     }
 }
-
-// MARK: - Preview
+    
+    // MARK: - Preview
 struct HomeView_Preview: PreviewProvider {
     static let devices = ["iPhone 11", "iPhone 15 Pro"]
     
