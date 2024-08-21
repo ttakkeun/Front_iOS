@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TodoControlSheet: View {
+    
+    let todoName: String
     let isChecked: Bool
     
     //MARK: - 컴포넌트
@@ -30,7 +32,7 @@ struct TodoControlSheet: View {
     ///시트 내부 모든 내용
      private var contentsInSheet: some View {
          VStack(alignment: .center, spacing: 24, content: {
-             Text("면봉사기")
+             Text(todoName)
                  .font(.Body2_semibold)
                  .foregroundStyle(Color.gray_900)
              
