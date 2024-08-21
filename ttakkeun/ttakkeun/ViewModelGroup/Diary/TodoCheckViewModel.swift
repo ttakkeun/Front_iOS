@@ -16,7 +16,7 @@ class TodoCheckViewModel: ObservableObject, @preconcurrency TodoCheckProtocol {
     private let partItem: PartItem
     
     @Published var scheduleData: ScheduleInquiryResponseData?
-    @Published var todos: [TodoList] = [TodoList(todoID: 1, todoName: "asdas", todoStatus: false)]
+    @Published var todos: [TodoList] = [TodoList(todoID: 1, todoName: "머머하기", todoStatus: false), TodoList(todoID: 1, todoName: "이것도하기", todoStatus: false)]
     
     
     init(

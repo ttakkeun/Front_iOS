@@ -15,6 +15,8 @@ struct ToDoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
     let parItem: PartItem
     let checkAble: Bool
     
+    @State private var isSheetPresented = false
+    
     
     // MARK: - Init
     
@@ -31,7 +33,12 @@ struct ToDoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
     }
     
     var body: some View {
-        checkComponents
+        checkComponents.sheet(isPresented: $isSheetPresented) {
+            TodoControlSheet(isChecked: data.todoStatus)
+                .presentationDetents([.fraction(0.38)])
+                .presentationCornerRadius(30)
+                .padding(.top, 10)
+            }
     }
     
     // MARK: - Contents
@@ -67,7 +74,8 @@ struct ToDoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
             })
             if checkAble {
                 Button(action: {
-                    print("present 구현")
+                    ///텍스트 누르면 시트뷰 띄움
+                    isSheetPresented = true
                 }, label: {
                     Text(data.todoName)
                         .font(.Body4_medium)
