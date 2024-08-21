@@ -109,7 +109,8 @@ struct ProfileSelect: View {
     /// 펫 프로필 이미지
     @ViewBuilder
     private var petProfileImage: some View {
-        if let url = URL(string: data.image) {
+        if let image = data.image,
+           let url = URL(string: image) {
             KFImage(url)
                 .placeholder {
                     ProgressView()

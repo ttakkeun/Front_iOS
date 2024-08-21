@@ -19,6 +19,7 @@ struct NavigationRoutingView: View {
                 .environmentObject(container)
         case .createProfile:
             CreateProfileView()
+                .environmentObject(container)
         case .myPage:
             Text("마이페이잊")
         }

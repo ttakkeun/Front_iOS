@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - RequestData
-/// 펫 프로필 생성 데이터(리퀘스트 바디
+/// 펫 프로필 생성 데이터(리퀘스트 바디)
 struct CreatePetProfileRequestData: Codable {
     var name: String
     var type: ProfileType
@@ -18,17 +18,6 @@ struct CreatePetProfileRequestData: Codable {
 }
 
 // MARK: - ResponseData
-struct CreatePetProfileResponseData: Codable {
-    let isSuccess: Bool?
-    let code: String?
-    let message: String?
-    let result: PetDetailData?
-}
-
-struct PetDetailData: Codable {
-    let petID: Int
-    
-    enum CodingKeys: String, CodingKey {
-        case petID = "pet_id"
-    }
+struct PetProfileID: Codable {
+    let petId: Int
 }
