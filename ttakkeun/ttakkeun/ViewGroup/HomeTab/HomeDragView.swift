@@ -38,7 +38,7 @@ struct HomeDragView: View {
         GeometryReader { geometry in
             
             let screenHeight = geometry.size.height
-            let minOffset: CGFloat = screenHeight * 0.45
+            let minOffset: CGFloat = screenHeight * 0.43
             let maxOffset: CGFloat = screenHeight * 0.06
             
             /* 임계값을 두어 드래그뷰를 위 아래로 조절한다. */

@@ -37,7 +37,9 @@ struct HomeFrontCard: View {
                 Spacer()
             })
             
-            ProfileImageCard(imageUrl: viewModel.profileData?.image)
+            ProfileImageCard(imageUrl: viewModel.profileData?.image, action: {
+                self.viewModel.showImagePicker()
+            })
             
             profileInfor
             

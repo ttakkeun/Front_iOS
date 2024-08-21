@@ -16,4 +16,13 @@ struct HomeProfileResponseData: Codable {
     let variety: String
     let birth: String
     let neutralization: Bool
+    
+    enum CodingKeys: String, CodingKey {
+        case name = "petName"
+        case image = "petImageUrl"
+        case type = "petType"
+        case variety = "petVariety"
+        case birth
+        case neutralization
+    }
 }

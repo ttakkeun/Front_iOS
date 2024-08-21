@@ -75,7 +75,9 @@ struct HomeBackCard: View {
     /// 왼쪽 프로필과 펫 이름, 생일 정보
     private var leftPetInfo: some View {
         VStack(alignment: .center, spacing: 17, content: {
-            ProfileImageCard(imageUrl: viewModel.profileData?.image, imageSize: 86, canEdit: false)
+            ProfileImageCard(imageUrl: viewModel.profileData?.image, imageSize: 86, canEdit: false, action: {
+                
+            })
             petName
         })
         .frame(width: 86)
