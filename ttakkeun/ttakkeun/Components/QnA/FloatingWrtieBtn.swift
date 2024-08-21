@@ -23,7 +23,7 @@ struct FloatingWriteBtn: View {
                 }
             }
             .fullScreenCover(item: $selectedCategory) { category in
-                QnaWriteTipsView(viewModel: QnaWriteTipsViewModel(), category: category)
+                QnaWriteTipsView(viewModel: QnaWriteTipsViewModel(category: category), category: category)
             }
         }
     }

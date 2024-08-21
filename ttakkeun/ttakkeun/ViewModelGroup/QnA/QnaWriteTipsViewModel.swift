@@ -11,36 +11,31 @@ import Foundation
 import SwiftUI
 import Moya
 
-/// Tip내용을 공유하는 기능들이 모여있는 뷰모델
 @MainActor
 class QnaWriteTipsViewModel: ObservableObject, @preconcurrency ImageHandling {
-
-    @Published var requestData: QnaTipsRequestData? = QnaTipsRequestData(category: .all, title: "", content: "")
+    @Published var title: String = ""
+    @Published var content: String = ""
+    @Published var requestData: QnaTipsRequestData?
     @Published var responseData: QnaPostTipsData?
-    @Published var isTipsinputCompleted: Bool = false
+    @Published var isTipsInputCompleted: Bool = false
 
     private let provider: MoyaProvider<QnaTipsAPITarget>
+    private let category: TipsCategorySegment
 
     //MARK: - Init
-    init(isTipsinputCompleted: Bool = false,
-         provider:
-         MoyaProvider<QnaTipsAPITarget> =
-         APIManager.shared.testProvider(for: QnaTipsAPITarget.self)
-    ) {
-        self.isTipsinputCompleted = isTipsinputCompleted
+    init(category: TipsCategorySegment, provider: MoyaProvider<QnaTipsAPITarget> = APIManager.shared.createProvider(for: QnaTipsAPITarget.self)) {
+        self.category = category
+        self.requestData = QnaTipsRequestData(category: category, title: "", content: "")
         self.provider = provider
     }
 
     //MARK: - 텍스트필드 점검 함수
-    @Published var Title: Bool = false {
-        didSet { checkFilledStates() }
-    }
-    @Published var Content: Bool = false {
-        didSet { checkFilledStates() }
-    }
-
     func checkFilledStates() {
-        isTipsinputCompleted = (requestData?.title.isEmpty == false) && (requestData?.content.isEmpty == false)
+        isTipsInputCompleted = !title.isEmpty && !content.isEmpty
+        if isTipsInputCompleted {
+            requestData?.title = title
+            requestData?.content = content
+        }
     }
 
     //MARK: - AppendImage Function
@@ -72,9 +67,12 @@ class QnaWriteTipsViewModel: ObservableObject, @preconcurrency ImageHandling {
     //MARK: - API Function
     /// Tip내용 Post하는 함수
     func postTipsData() async {
-        guard let data = self.requestData else { return }
+        guard self.requestData != nil else { return }
 
-        provider.request(.createTipsContent(data: data)) { [weak self] result in
+        // 디버깅을 위한 로그 추가
+        print("POST Data: Title = \(title), Content = \(content), Category = \(category.rawValue)")
+
+        provider.request(.createTipsContent(content: content, title: title, category: category.rawValue)) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.handlerResponsePostTipsData(response: response)
@@ -89,10 +87,14 @@ class QnaWriteTipsViewModel: ObservableObject, @preconcurrency ImageHandling {
         }
     }
 
+
     /// Tip내용 핸들러 함수
     /// - Parameter response: API 호출 시 받게 되는 응답
     private func handlerResponsePostTipsData(response: Response) {
         do {
+            if let jsonString = String(data: response.data, encoding: .utf8) {
+                print("Received JSON: \(jsonString)")
+            }
             let decodedData = try JSONDecoder().decode(QnaPostTipsData.self, from: response.data)
             DispatchQueue.main.async {
                 self.responseData = decodedData
@@ -105,7 +107,7 @@ class QnaWriteTipsViewModel: ObservableObject, @preconcurrency ImageHandling {
 
     /// 선택한 이미지 전송하는 함수
     private func postImages() async {
-        guard let tipId = responseData?.result.tip_id else {
+        guard let tipId = responseData?.result?.tipId else {
             print("postImages() 실패: tip_id를 찾을 수 없음")
             return
         }

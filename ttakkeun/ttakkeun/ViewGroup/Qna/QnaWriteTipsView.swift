@@ -5,7 +5,7 @@ import Combine
 struct QnaWriteTipsView: View {
     
     @StateObject var viewModel: QnaWriteTipsViewModel
-    var category: TipsCategorySegment  
+    var category: TipsCategorySegment
     @Environment(\.dismiss) private var dismiss
     private let placeholder: String = "나만의 Tip을 작성해주세요!"
  
@@ -30,8 +30,8 @@ struct QnaWriteTipsView: View {
                     await viewModel.postTipsData()
                     dismiss()
                 }
-            }, color: viewModel.isTipsinputCompleted ? .primaryColor_Main : .gray200)
-            .disabled(!viewModel.isTipsinputCompleted)
+            }, color: viewModel.isTipsInputCompleted ? .primaryColor_Main : .gray200)
+            .disabled(!viewModel.isTipsInputCompleted)
         }
         .ignoresSafeArea(.keyboard)
     }
@@ -104,16 +104,15 @@ struct QnaWriteTipsView: View {
     /// 제목필드
     private var titleField: some View {
         ZStack(alignment: .leading) {
-            if viewModel.requestData?.title.isEmpty ?? true {
+            if viewModel.title.isEmpty {
                 Text("제목을 입력해주세요")
                     .font(.H3_semiBold)
                     .foregroundStyle(Color.gray200)
             }
             TextField("", text: Binding(
-                get: { viewModel.requestData?.title ?? "" },
+                get: { viewModel.title },
                 set: {
-                    viewModel.requestData?.title = $0
-                    viewModel.Title = !$0.isEmpty
+                    viewModel.title = $0
                     viewModel.checkFilledStates()
                 }
             ))
@@ -128,16 +127,15 @@ struct QnaWriteTipsView: View {
     /// 내용필드
     private var contentField: some View {
         TextEditor(text: Binding(
-            get: { viewModel.requestData?.content ?? "" },
+            get: { viewModel.content },
             set: {
-                viewModel.requestData?.content = $0
-                viewModel.Content = !$0.isEmpty
+                viewModel.content = $0
                 viewModel.checkFilledStates()
             }
         ))
         .padding(15)
         .background(alignment: .topLeading) {
-            if viewModel.requestData?.content.isEmpty ?? true {
+            if viewModel.content.isEmpty {
                 Text(placeholder)
                     .lineSpacing(10)
                     .padding(20)
@@ -152,7 +150,7 @@ struct QnaWriteTipsView: View {
         .scrollContentBackground(.hidden)
         .font(.Body4_medium)
         .overlay(alignment: .bottomTrailing) {
-            Text("\(viewModel.requestData?.content.count ?? 0) / 200")
+            Text("\(viewModel.content.count) / 200")
                 .font(.Body4_medium)
                 .foregroundColor(Color.gray400)
                 .padding(.trailing, 15)
@@ -163,9 +161,9 @@ struct QnaWriteTipsView: View {
                 .frame(height: 1)
                 .foregroundStyle(Color.checkBg),
             alignment: .top)
-        .onReceive(Just(viewModel.requestData?.content ?? "")) { newValue in
+        .onReceive(Just(viewModel.content)) { newValue in
             if newValue.count > 200 {
-                viewModel.requestData?.content = String(newValue.prefix(200))
+                viewModel.content = String(newValue.prefix(200))
             }
         }
         .frame(maxWidth: .infinity, maxHeight: 260)
@@ -212,7 +210,8 @@ struct QnaWriteTipsView: View {
                 showSelectedImage
             }
             .sheet(isPresented: $viewModel.isImagePickerPresented, content: {
-                        QnaImagePicker(imageHandler: viewModel as ImageHandling)})
+                QnaImagePicker(imageHandler: viewModel as ImageHandling)
+            })
         })
     }
     
@@ -257,15 +256,16 @@ struct QnaWriteTipsView: View {
 }
 
 // MARK: - Preview
-struct QnaWriteTipsView_Preview: PreviewProvider {
+//struct QnaWriteTipsView_Preview: PreviewProvider {
+//
+//    static let devices = ["iPhone 11", "iPhone 15 Pro"]
+//
+//    static var previews: some View {
+//        ForEach(devices, id: \.self) { device in
+//            QnaWriteTipsView(viewModel: QnaWriteTipsViewModel(category: .hair), category: .hair)
+//                .previewDevice(PreviewDevice(rawValue: device))
+//                .previewDisplayName(device)
+//        }
+//    }
+//}
 
-    static let devices = ["iPhone 11", "iPhone 15 Pro"]
-
-    static var previews: some View {
-        ForEach(devices, id: \.self) { device in
-            QnaWriteTipsView(viewModel: QnaWriteTipsViewModel(), category: .hair)
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewDisplayName(device)
-        }
-    }
-}

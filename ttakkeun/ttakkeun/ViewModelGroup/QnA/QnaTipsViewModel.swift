@@ -33,7 +33,7 @@ class QnaTipsViewModel: ObservableObject {
     private var hasMoreData = true
     
     //MARK: - Init
-    init(provider: MoyaProvider<QnaTipsAPITarget> = APIManager.shared.testProvider(for: QnaTipsAPITarget.self)) {
+    init(provider: MoyaProvider<QnaTipsAPITarget> = APIManager.shared.createProvider(for: QnaTipsAPITarget.self)) {
         self.provider = provider
         self.selectedCategory = .best
     }
@@ -80,12 +80,16 @@ class QnaTipsViewModel: ObservableObject {
     /// - Parameter response: API 호출 시 받게 되는 응답
     private func handlerResponseGetTipsData(response: Response) {
           do {
+              if let jsonString = String(data: response.data, encoding: .utf8) {
+                                    print("Received JSON: \(jsonString)")
+                                }
               let decodedData = try JSONDecoder().decode(QnaTipsData.self, from: response.data)
               DispatchQueue.main.async {
                   if self.categoryTips[self.selectedCategory] == nil {
                       self.categoryTips[self.selectedCategory] = []
                   }
                   self.categoryTips[self.selectedCategory]?.append(contentsOf: decodedData.result)
+
                   self.currentPage += 1
                   self.hasMoreData = decodedData.result.count == self.pageSize
                   print("Tips API 호출 성공 for category: \(self.selectedCategory)")
@@ -94,7 +98,6 @@ class QnaTipsViewModel: ObservableObject {
               print("카테고리 질문 디코더 에러: \(error)")
           }
       }
-  
     
     /// Patch로 하트 수 변경 요청하고 전체 하트 수와 변경값 받아오는 함수
     public func patchHeartChange(tip_id: Int) async {
@@ -115,12 +118,15 @@ class QnaTipsViewModel: ObservableObject {
     ///   - tip_id: 좋아요누른 팁의 id
     private func handlerResponsePatchHeartChange(response: Response, tip_id: Int) {
             do {
+                if let jsonString = String(data: response.data, encoding: .utf8) {
+                                      print("Received JSON: \(jsonString)")
+                                  }
                 let decodedData = try JSONDecoder().decode(QnaHeartChangeData.self, from: response.data)
                 DispatchQueue.main.async {
                     if var tips = self.categoryTips[self.selectedCategory] {
-                        if let index = tips.firstIndex(where: { $0.tip_id == tip_id }) {
-                            tips[index].recommend_count = decodedData.result.total_likes
-                            tips[index].isLike = decodedData.result.isLike
+                        if let index = tips.firstIndex(where: { $0.tipId == tip_id }) {
+                            tips[index].recommendCount = decodedData.result.totalLikes
+                            tips[index].isLike = decodedData.result.like
                             self.categoryTips[self.selectedCategory] = tips
                         }
                     }

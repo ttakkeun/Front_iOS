@@ -14,7 +14,7 @@ enum QnaTipsAPITarget {
     case getAllTips(page: Int, size: Int)
     case getBestTips(page: Int, size: Int)
     case sendTipsImage(tip_id: Int, images: [UIImage])
-    case createTipsContent(data: QnaTipsRequestData)
+    case createTipsContent(content: String, title: String, category: String)
     case heartChange(tip_id: Int)
 }
 
@@ -51,27 +51,32 @@ extension QnaTipsAPITarget: APITargetType {
     }
     
     var task: Task {
-           switch self {
-           case .getTips(let category, let page, let size):
-               return .requestParameters(parameters: ["category": category, "page": page, "size": size], encoding: URLEncoding.queryString)
-           case .getAllTips(let page, let size):
-               return .requestParameters(parameters: ["page": page, "size": size], encoding: URLEncoding.queryString)
-           case .getBestTips(let page, let size):
-               return .requestParameters(parameters: ["page": page, "size": size], encoding: URLEncoding.queryString)
-           case .createTipsContent(let data):
-               return .requestJSONEncodable(data)
-           case .sendTipsImage(_, let images):
-               var multipartData = [MultipartFormData]()
-               for (index, image) in images.enumerated() {
-                   if let imageData = image.jpegData(compressionQuality: 1.0) {
-                       multipartData.append(MultipartFormData(provider: .data(imageData), name: "images", fileName: "image\(index).jpg", mimeType: "image/jpg"))
-                   }
-               }
-               return .uploadMultipart(multipartData)
-           case .heartChange:
-               return .requestPlain
-           }
-       }
+        switch self {
+        case .getTips(let category, let page, let size):
+            return .requestParameters(parameters: ["category": category, "page": page, "size": size], encoding: URLEncoding.queryString)
+        case .getAllTips(let page, let size):
+            return .requestParameters(parameters: ["page": page, "size": size], encoding: URLEncoding.queryString)
+        case .getBestTips(let page, let size):
+            return .requestParameters(parameters: ["page": page, "size": size], encoding: URLEncoding.queryString)
+        case .createTipsContent(let content, let title, let category):
+                 let parameters: [String: Any] = [
+                     "content": content,
+                     "title": title,
+                     "category": category
+                 ]
+                 return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .sendTipsImage(_, let images):
+            var multipartData = [MultipartFormData]()
+            for (index, image) in images.enumerated() {
+                if let imageData = image.jpegData(compressionQuality: 1.0) {
+                    multipartData.append(MultipartFormData(provider: .data(imageData), name: "images", fileName: "image\(index).jpg", mimeType: "image/jpg"))
+                }
+            }
+            return .uploadMultipart(multipartData)
+        case .heartChange:
+            return .requestPlain
+        }
+    }
     
     var headers: [String : String]? {
         switch self {
@@ -81,6 +86,7 @@ extension QnaTipsAPITarget: APITargetType {
             return ["Content-Type": "multipart/form-data"]
         }
     }
+
     
     var sampleData: Data {
         switch self {

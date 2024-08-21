@@ -15,7 +15,7 @@ enum TipsCategorySegment: String, Codable, CaseIterable, Identifiable {
     case eye = "EYE"
     case hair = "HAIR"
     case claw = "CLAW"
-    case tooth = "TOOTH"
+    case tooth = "TEETH"
     case etc = "ETC"
     
     

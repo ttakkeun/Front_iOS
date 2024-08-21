@@ -9,35 +9,35 @@ import SwiftUI
 
 /// QnaTipsView에서 Get요청보내고 받을 데이터구조
 struct QnaTipsData: Codable {
-    var isSuccess: Bool
+    var isSuccess: Bool?
     var code: String
     var message: String
     var result: [QnaTipsResponseData]
 }
 
 struct QnaTipsResponseData: Identifiable, Codable {
-    var id = UUID()
-    var tip_id: Int
+    var id = UUID()  // 고유 ID를 위한 UUID
+    var tipId: Int
     var category: TipsCategorySegment
-    var author: String
-    var popular: Bool
     var title: String
     var content: String
-    var image_url: [String]?
-    var created_at: String
-    var recommend_count: Int?
+    var recommendCount: Int
+    var createdAt: String
+    var imageUrls: [String]?
+    var authorName: String
     var isLike: Bool
+    var isPopular: Bool?
     
     private enum CodingKeys: String, CodingKey {
-        case tip_id
+        case tipId
         case category
-        case author
-        case popular
         case title
         case content
-        case image_url
-        case created_at
-        case recommend_count
+        case recommendCount
+        case createdAt
+        case imageUrls
+        case authorName
         case isLike
+        case isPopular
     }
 }

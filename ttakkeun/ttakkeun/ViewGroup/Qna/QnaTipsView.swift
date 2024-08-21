@@ -8,22 +8,22 @@ import SwiftUI
 
 /// Qna탭중 Tips에 대한 뷰
 struct QnaTipsView: View {
-    
+
     @ObservedObject var viewModel: QnaTipsViewModel
     @State private var isLoading: Bool = true
-    
+
     //MARK: - Init
     init(viewModel: QnaTipsViewModel) {
         self.viewModel = viewModel
     }
-    
+
     //MARK: - Contents
     var body: some View {
         ZStack {
             VStack(alignment: .leading) {
                 categorySegment
                     .padding(.top, 16)
-                
+
                 if isLoading {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle())
@@ -34,7 +34,7 @@ struct QnaTipsView: View {
                     tipContents
                         .padding(.top, -5)
                 }
-                
+
                 Spacer()
             }
         }
@@ -45,7 +45,7 @@ struct QnaTipsView: View {
             refreshData()
         }
     }
-    
+
     /// 데이터 로드하는 함수
     private func loadData() {
         Task {
@@ -54,7 +54,7 @@ struct QnaTipsView: View {
             isLoading = false
         }
     }
-    
+
     /// 새로고침 함수
     private func refreshData() {
         Task {
@@ -63,7 +63,7 @@ struct QnaTipsView: View {
             isLoading = false
         }
     }
-    
+
     /// 카테고리 별로 나눈 segmented Control
     private var categorySegment: some View {
         let categories = TipsCategorySegment.allCases
@@ -93,7 +93,7 @@ struct QnaTipsView: View {
             .padding(.horizontal, 19)
         }
     }
-    
+
     // 전체랑 BEST에만 제목 넣기
     private var titleSet: some View {
         HStack {
@@ -103,14 +103,14 @@ struct QnaTipsView: View {
             }
         }
     }
-    
+
     /// 전체와 Best세그먼트 제목
     private var title: some View {
         Text("🔥\(viewModel.selectedCategory.toKorean())")
             .font(.H2_bold)
             .foregroundStyle(Color.gray900)
     }
-    
+
     /// 공유한 팁 내용들
     private var tipContents: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -118,11 +118,10 @@ struct QnaTipsView: View {
                 titleSet.frame(alignment: .leading)
 
                 if let tips = viewModel.categoryTips[viewModel.selectedCategory] {
-                    ForEach(tips.indices, id: \.self) { index in
-                        let tip = tips[index]
-                   
+                    ForEach(Array(tips.enumerated()), id: \.offset) { index, tip in
+
                         if viewModel.selectedCategory == .best || viewModel.selectedCategory == .all || tip.category.rawValue == viewModel.selectedCategory.rawValue {
-                            TipContent(data: tip, viewModel: viewModel)
+                            TipContent(data: tip)
                                 .onAppear {
                                     if index == tips.count - 1 {
                                         Task {
@@ -138,7 +137,6 @@ struct QnaTipsView: View {
         }
     }
 }
-
 
 //MARK: - Preview
 struct QnaTipsView_Preview: PreviewProvider {
