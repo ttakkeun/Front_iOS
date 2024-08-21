@@ -12,4 +12,5 @@ enum AppState {
     case onBoarding
     case login
     case profile
+    case TabView
 }

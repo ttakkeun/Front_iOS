@@ -12,6 +12,7 @@ struct ProfileView: View {
     @StateObject var viewModel: ProfileCardViewModel
     @EnvironmentObject var petState: PetState
     @EnvironmentObject var container: DIContainer
+    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     
     // MARK: - Contents
     
@@ -45,9 +46,6 @@ struct ProfileView: View {
                             ForEach(results, id: \.self) { data in
                                 profileReadView(geometry: geometry, data: data)
                                     .id(data.pet_id)
-                                    .onTapGesture {
-                                        self.petState.petId = data.pet_id
-                                    }
                             }
                             profileCreateView(geometry: geometry)
                                 .id("createProfile")
@@ -56,7 +54,7 @@ struct ProfileView: View {
                                 .id("createProfile")
                         }
                     })
-                    .padding(.top, 30)
+                    .padding(.top, 32)
                     .padding(.horizontal, (geometry.size.width - 200) / 2)
                 }
                 .scrollIndicators(.hidden)
@@ -124,6 +122,7 @@ struct ProfileView: View {
                 .scaleEffect(self.scaleValue(geometry: geometry, itemGeometry: item))
                 .animation(.easeOut, value: scaleValue(geometry: geometry, itemGeometry: item))
                 .environmentObject(petState)
+                .environmentObject(appFlowViewModel)
                 .onChange(of: self.isCentered(geometry: geometry, itemGeometry: item)) {
                     if self.isCentered(geometry: geometry, itemGeometry: item) {
                         viewModel.titleName = data.name
@@ -174,7 +173,7 @@ fileprivate struct ProfileCreateView: View {
         }, label: {
             ZStack(alignment: .top, content: {
                 createProfilie
-                    .padding(.top, 70)
+                    .padding(.top, 69)
                 topImage
             })
             .padding(.top, 28)
