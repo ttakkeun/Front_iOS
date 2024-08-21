@@ -38,21 +38,36 @@ struct ProfileView: View {
     
     private var scrollProfile: some View {
         GeometryReader { geometry in
-            ScrollView(.horizontal) {
-                HStack(spacing: 1, content: {
-                    if let results = viewModel.petProfileData?.result {
-                        ForEach(results, id: \.self) { data in
-                            profileReadView(geometry: geometry, data: data)
+            ScrollViewReader { proxy in
+                ScrollView(.horizontal) {
+                    HStack(spacing: 1, content: {
+                        if let results = viewModel.petProfileData?.result {
+                            ForEach(results, id: \.self) { data in
+                                profileReadView(geometry: geometry, data: data)
+                                    .id(data.pet_id)
+                                    .onTapGesture {
+                                        self.petState.petId = data.pet_id
+                                    }
+                            }
+                            profileCreateView(geometry: geometry)
+                                .id("createProfile")
+                        } else {
+                            profileCreateView(geometry: geometry)
+                                .id("createProfile")
                         }
-                        profileCreateView(geometry: geometry)
+                    })
+                    .padding(.top, 30)
+                    .padding(.horizontal, (geometry.size.width - 200) / 2)
+                }
+                .scrollIndicators(.hidden)
+                .onAppear {
+                    if let firstId = self.viewModel.petProfileData?.result.first?.pet_id {
+                        proxy.scrollTo(firstId, anchor: .center)
                     } else {
-                        profileCreateView(geometry: geometry)
+                        proxy.scrollTo("createProfile", anchor: .center)
                     }
-                })
-                .padding(.top, 30)
-                .padding(.horizontal, (geometry.size.width - 200) / 2)
+                }
             }
-            .scrollIndicators(.hidden)
         }
         .frame(maxWidth: .infinity, maxHeight: 446)
     }

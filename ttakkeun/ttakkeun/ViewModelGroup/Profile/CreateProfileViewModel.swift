@@ -14,21 +14,19 @@ import SwiftUI
 class CreateProfileViewModel: ObservableObject, @preconcurrency ImageHandling {
     
     @Published var requestData: CreatePetProfileRequestData? = CreatePetProfileRequestData(name: "", type: .dog, variety: "", birth: "", neutralization: false)
-    @Published var responseData: CreatePetProfileResponseData?
+    @Published var responseData: ResponseData<PetProfileID>?
     @Published var isProfileCompleted: Bool = false
+    @Published var isSuccessImage: Bool = false
     
     private let provider: MoyaProvider<PetProfileAPITarget>
     
-    //MARK: - INIT
     init(isProfileCompleted: Bool = false,
-         provider: MoyaProvider<PetProfileAPITarget> = APIManager.shared.testProvider(for: PetProfileAPITarget.self)
+         provider: MoyaProvider<PetProfileAPITarget> = APIManager.shared.createProvider(for: PetProfileAPITarget.self)
     ) {
         self.isProfileCompleted = isProfileCompleted
         self.provider = provider
     }
     
-    // MARK: - btnProperty
-    /// 시작하기 버튼 활성화 여부 판단
     @Published public var isNameFilled: Bool = false {
         didSet { checkFilledStates() }
     }
@@ -49,7 +47,6 @@ class CreateProfileViewModel: ObservableObject, @preconcurrency ImageHandling {
         isProfileCompleted = isNameFilled && isTypeFilled && isVarietyFilled && isNeutralizationFilled
     }
     
-    // MARK: - AppendImage Function
     func addImage(_ images: UIImage) {
         if !profileImage.isEmpty {
             profileImage.removeAll()
@@ -75,21 +72,67 @@ class CreateProfileViewModel: ObservableObject, @preconcurrency ImageHandling {
     
     var profileImage: [UIImage] = []
     
+    //MARK: - Profile Image API
     
-    //MARK: - API Function
-    //TODO: - API Function 작성 필요함
+    func patchPetProfileImage(id: Int, completion: @escaping (Bool) -> Void) {
+        provider.request(.editProfileImage(petId: id, images: profileImage)) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.handlePatchProfileImage(response: response, completion: completion)
+            case .failure(let error):
+                print("프로필 생성 시 사진 전달 네트워크 에러: \(error)")
+                completion(false)
+            }
+        }
+    }
     
-    /// 펫 프로필 등록 결과 받아오기 핸들러 함수
-    /// - Parameter response: API 호출 시 받게 되는 응답
-    private func petProfileHandleResponse(response: Response) {
+    private func handlePatchProfileImage(response: Response, completion: @escaping (Bool) -> Void) {
         do {
-            let decodedData = try JSONDecoder().decode(CreatePetProfileResponseData.self, from: response.data)
-            DispatchQueue.main.async {
-                self.responseData = decodedData /// Login에서 했던 것처럼 api response 각 응답(isSuccess, code, message, result, pet_id)을 CreatePetProfileResponseDate(isSuccess: decodedData.result.isSuccess, ...)처럼 각자 저장해줘야 하나?
-                print("펫 프로필 등록 성공: \(String(describing: self.responseData))")
+            let decodedData = try JSONDecoder().decode(ResponseData<PetProfileImageResponseData>.self, from: response.data)
+            if decodedData.isSuccess {
+                print("handlePatchProfileImage - 펫 프로필 사진 전달 성공: \(String(describing: decodedData.result?.petImageUrl))")
+                completion(true)
+            } else {
+                print("handlePatchProfileImage - 사진 전달 실패")
+                completion(false)
             }
         } catch {
-            print("펫 프로필 등록 디코더 에러: \(error)")
+            print("펫 프로필 사진 디코더 에러: \(error)")
+            completion(false)
+        }
+    }
+    
+    //MARK: - ProfileData Send API
+    public func sendPetProfileData(completion: @escaping (Bool) -> Void) {
+        guard let sendData = requestData else {
+            print("프로필 생성 전달 데이터 빈 값")
+            completion(false)
+            return
+        }
+        provider.request(.createProfile(data: sendData)) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.handlerPetProfileData(response: response, completion: completion)
+            case .failure(let error):
+                print("펫 프로필 데이터 네트워크 에러: \(error)")
+                completion(false)
+            }
+        }
+    }
+    
+    private func handlerPetProfileData(response: Response, completion: @escaping (Bool) -> Void) {
+        do {
+            let decodedData = try JSONDecoder().decode(ResponseData<PetProfileID>.self, from: response.data)
+            if decodedData.isSuccess, let id = decodedData.result?.petId {
+                print("펫 프로필 데이터 전달 성공, 펫 아이디: \(id)")
+                self.patchPetProfileImage(id: id, completion: completion)
+            } else {
+                print("펫 프로필 데이터 전달 실패: \(decodedData.message)")
+                completion(false)
+            }
+        } catch {
+            print("펫 프로필 데이터 디코더 에러: \(error)")
+            completion(false)
         }
     }
 }

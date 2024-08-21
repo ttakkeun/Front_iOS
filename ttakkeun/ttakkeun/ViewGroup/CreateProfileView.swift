@@ -10,7 +10,7 @@ import SwiftUI
 struct CreateProfileView: View {
     
     @StateObject var viewModel: CreateProfileViewModel = CreateProfileViewModel()
-    @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var container: DIContainer
     @State private var showingVarietySearch = false
     
     // MARK: - Contents
@@ -63,14 +63,14 @@ struct CreateProfileView: View {
         .toolbar {
             ToolbarItem(id: "back", placement: .topBarLeading, content: {
                 Button{
-                    dismiss()
-                       } label: {
-                           HStack {
-                               Image(systemName: "chevron.left")
-                                   .aspectRatio(contentMode: .fit)
-                               Text("뒤로가기")
-                           }
-                       }
+                    self.container.navigationRouter.pop()
+                } label: {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                            .aspectRatio(contentMode: .fit)
+                        Text("뒤로가기")
+                    }
+                }
             })
         }
     }
@@ -200,7 +200,7 @@ struct CreateProfileView: View {
                 BirthSelect(
                     birthDate: Binding(
                         get: { requestData.birth },
-                        set: { 
+                        set: {
                             viewModel.requestData?.birth = $0
                             viewModel.isBirthFilled = !$0.isEmpty
                         }
@@ -241,17 +241,21 @@ struct CreateProfileView: View {
     }
     
     /// 등록하기 버튼
-    //TODO: API 함수 액션 필요
     private var registerBtn: some View {
         MainButton(btnText: "등록하기", width: 330, height: 56, action: {
             if viewModel.isProfileCompleted {
-                print("프로필 등록 성공")
-            } else {
-                print("모든 필드를 입력해주세요.")
+                viewModel.sendPetProfileData { success in
+                    if success {
+                        DispatchQueue.main.async {
+                            self.container.navigationRouter.popToRootView()
+                        }
+                    }
+                }
             }
         }, color: Color.primaryColor_Main)
     }
 }
+
 
 
 //MARK: - Preview
