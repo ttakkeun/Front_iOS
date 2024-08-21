@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Kingfisher
+import UIKit
 
 /// AI 추천 제품 카드
 struct HomeAIRecommendProduct: View {
@@ -66,7 +67,7 @@ struct HomeAIRecommendProduct: View {
         
         
         VStack(alignment: .leading, spacing: 6) {
-            Text(data.title.split(separator: "").joined(separator: "\u{200B}"))
+            Text(stripHTMLTags(from: data.title).split(separator: "").joined(separator: "\u{200B}"))
                 .font(.suit(type: .semibold, size: 14))
                 .foregroundStyle(Color.gray_900)
                 .lineLimit(nil)
@@ -76,6 +77,23 @@ struct HomeAIRecommendProduct: View {
                 .foregroundStyle(Color.gray_900)
         }
         .frame(maxWidth: 137)
+    }
+    
+    func stripHTMLTags(from htmlString: String) -> String {
+        guard let data = htmlString.data(using: .utf8) else { return htmlString }
+        
+        do {
+            let attributedString = try NSAttributedString(
+                data: data,
+                options: [.documentType: NSAttributedString.DocumentType.html,
+                          .characterEncoding: String.Encoding.utf8.rawValue],
+                documentAttributes: nil)
+            
+            return attributedString.string
+        } catch {
+            print("Failed to decode HTML entities: \(error)")
+            return htmlString
+        }
     }
 }
 

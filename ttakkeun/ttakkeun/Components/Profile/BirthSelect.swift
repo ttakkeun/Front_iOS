@@ -26,7 +26,7 @@ struct BirthSelect: View {
         return formatter
     }()
     
-    /// 현재 연도와 25년 전 연도 계산
+    /// 현재 연도와 30년 전 연도 계산
     private var currentYear: Int {
         Calendar.current.component(.year, from: Date())
     }
@@ -40,14 +40,15 @@ struct BirthSelect: View {
         HStack(alignment: .center, spacing: 0, content: {
             ///연도 피커
             Picker(selection: Binding(
-                get: { selectedYear ?? Calendar.current.component(.year, from: Date()) },
+                get: { selectedYear },
                 set: {
                     selectedYear = $0
                     updateBirthDate()
                 }
             ), label: Text("연도")) {
+                Text("연도").tag(nil as Int?)
                 ForEach(startYear...currentYear, id: \.self) { year in
-                    Text("\(yearFormatter.string(from: NSNumber(value: year)) ?? "\(year)")년").tag(year)
+                    Text("\(yearFormatter.string(from: NSNumber(value: year)) ?? "\(year)")년").tag(year as Int?)
                 }
             }
             .pickerStyle(.menu)
@@ -66,14 +67,15 @@ struct BirthSelect: View {
             
             /// 월 피커
             Picker(selection: Binding(
-                get: { selectedMonth ?? Calendar.current.component(.month, from: Date()) },
+                get: { selectedMonth },
                 set: {
                     selectedMonth = $0
                     updateBirthDate()
                 }
             ), label: Text("월")) {
+                Text("월").tag(nil as Int?)
                 ForEach(1...12, id: \.self) { month in
-                    Text("\(month)월").tag(month)
+                    Text("\(month)월").tag(month as Int?)
                 }
             }
             .pickerStyle(MenuPickerStyle())
@@ -94,14 +96,15 @@ struct BirthSelect: View {
             
             /// 일 피커
             Picker(selection: Binding(
-                get: { selectedDay ?? Calendar.current.component(.day, from: Date()) },
+                get: { selectedDay },
                 set: {
                     selectedDay = $0
                     updateBirthDate()
                 }
             ), label: Text("일")) {
+                Text("일").tag(nil as Int?)
                 ForEach(1...31, id: \.self) { day in
-                    Text("\(day)일").tag(day)
+                    Text("\(day)일").tag(day as Int?)
                 }
             }
             .pickerStyle(MenuPickerStyle())

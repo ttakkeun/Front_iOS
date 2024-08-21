@@ -16,4 +16,16 @@ class PetState: ObservableObject {
         self.petName = petName
         self.petId = petId
     }
+    
+    /// 펫 아이디 수정 함수
+    /// - Parameter id: 펫 아이디 입력
+    public func setId(_ id: Int) {
+        self.petId = id
+    }
+    
+    /// 펫 이름 수정
+    /// - Parameter name: 펫 이름 입력
+    public func setName(_ name: String) {
+        self.petName = name
+    }
 }

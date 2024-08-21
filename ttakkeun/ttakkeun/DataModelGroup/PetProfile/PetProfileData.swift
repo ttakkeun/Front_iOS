@@ -8,18 +8,24 @@
 import Foundation
 
 ///  프로필 선택 뷰의 데이터
-struct PetProfileData: Codable {
-    let isSuccess: Bool
-    let code: String
-    let message: String
-    var result: [PetProfileResponseData]?
+///
+struct PetProfileResult: Codable {
+    var result: [PetProfileResponseData]
 }
 
 struct PetProfileResponseData: Codable, Hashable {
     var pet_id: Int
     var name: String
-    var image: String
+    var image: String?
     var type: ProfileType
     var birth: String
+    
+    enum CodingKeys: String, CodingKey {
+        case pet_id = "petId"
+        case name = "petName"
+        case image = "petImageUrl"
+        case type = "petType"
+        case birth
+    }
 }
 

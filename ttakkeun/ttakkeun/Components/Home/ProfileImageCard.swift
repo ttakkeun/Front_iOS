@@ -14,15 +14,18 @@ struct ProfileImageCard: View {
     let profileImageUrl: String?
     let imageSize: CGFloat
     let canEdit: Bool
+    let action: () -> Void
     
     init(
         imageUrl: String?,
         imageSize: CGFloat = 140,
-        canEdit: Bool = true
+        canEdit: Bool = true,
+        action: @escaping () -> Void
     ) {
         self.profileImageUrl = imageUrl
         self.imageSize = imageSize
         self.canEdit = canEdit
+        self.action = action
     }
     
     var body: some View {
@@ -69,7 +72,7 @@ struct ProfileImageCard: View {
     /// 프로필 사진 편집 버튼
     private var editProfileImage: some View {
         Button(action: {
-            print("hello")
+            action()
         }, label: {
             ZStack(alignment: .center, content: {
                 Circle()
