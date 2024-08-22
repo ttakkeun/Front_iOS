@@ -38,9 +38,14 @@ struct TodoCard: View {
                     }
                 })
             } else {
-                Text("Todo list를 만들어볼까요?")
-                    .font(.Body3_medium)
-                    .foregroundStyle(Color.gray_400)
+                
+                if self.isAddingNewTodo {
+                    self.newTodoInputField
+                } else {
+                    Text("Todo list를 만들어볼까요?")
+                        .font(.Body3_medium)
+                        .foregroundStyle(Color.gray_400)
+                }
             }
             
             Spacer()
