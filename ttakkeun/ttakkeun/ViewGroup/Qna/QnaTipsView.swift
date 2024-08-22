@@ -134,6 +134,7 @@ struct QnaTipsView: View {
                 }
             }
             .padding(.vertical, 27)
+            .padding(.bottom, 80)
         }
     }
 }

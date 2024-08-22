@@ -237,6 +237,7 @@ struct SuggestionInitialView: View {
                     }
             }
         }
+        .padding(.bottom, 80)
         .padding(.horizontal, 21)
     }
 }

@@ -193,6 +193,7 @@ struct QnaFAQView: View {
                 }
             }
         }
+        .padding(.bottom, 80)
     }
 }
 
