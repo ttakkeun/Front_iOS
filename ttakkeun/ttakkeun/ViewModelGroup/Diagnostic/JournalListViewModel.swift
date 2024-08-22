@@ -11,25 +11,33 @@ import Moya
 @MainActor
 class JournalListViewModel: ObservableObject {
     
-    @Published var journalListData: JournalListData? /* 일지 리스트 목록 조회 API */
-    @Published var page: Int = 0 /* 일지 목록 조회 페이징 */
-    @Published var selectedCnt: Int = 20 /* 일지 선택 갯수 */
+    @Published var journalListData: JournalListResponseData? /* 일지 리스트 목록 조회 API */
+    @Published var checkJournalQnAResponseData: CheckJournalQnAResponseData? /* 진단서 상세 내용 데이터 */
+    @Published var selectedCnt: Int = 0 /* 일지 선택 갯수 */
     @Published var isSelectionMode: Bool = false
     @Published var selectedItem: Set<Int> = [] /* 선택된 아이템 목록 */
-    @Published var selectCategory: PartItem = .ear /* 버튼 컨트롤러 카테고리 변경*/
-    @Published var isLoaadingPage: Bool = false /* 페이징 로딩 */
-    @Published var hasMoreData: Bool = true /* 데이터 가져올 것이 있는지 체크 */
+    @Published var selectCategory: PartItem = .ear/* 버튼 컨트롤러 카테고리 변경*/ {
+        didSet {
+            resetData()
+        }
+    }
+    @Published var currentPage: Int = 0
+    @Published var isLastPage: Bool = false // 마지막 페이지 확인
+    @Published var isLoadingDiag: Bool = false
     
     private let provider: MoyaProvider<JournalAPITarget>
     let petId: Int
+    let container: DIContainer
     
     // MARK: - Init
     init(
-        provider: MoyaProvider<JournalAPITarget> = APIManager.shared.testProvider(for: JournalAPITarget.self),
-        petId: Int
+        provider: MoyaProvider<JournalAPITarget> = APIManager.shared.createProvider(for: JournalAPITarget.self),
+        petId: Int,
+        container: DIContainer
     ) {
         self.provider = provider
         self.petId = petId
+        self.container = container
     }
     
     // MARK: - 일지 목록 조회 API
@@ -38,11 +46,10 @@ class JournalListViewModel: ObservableObject {
     /// - Parameters:
     ///   - petId: 일지 조회 시 사용되는 펫 아이디
     ///   - category: 일지 조회 시 사용되는 카테고리
-    public func getJournalList() async {
-        guard !isLoaadingPage, hasMoreData else { return }
-        isLoaadingPage = true
+    public func getJournalList(page: Int) {
         
-        provider.request(.getJournalList(petID: self.petId, category: selectCategory, page: self.page)) { [weak self] result in
+        provider.request(.getJournalList(petID: self.petId, category: selectCategory.rawValue, page: page)) { [weak self] result in
+            
             switch result {
             case .success(let response):
                 self?.handlerGetJournalList(response: response)
@@ -55,47 +62,58 @@ class JournalListViewModel: ObservableObject {
     /// 일지 조회 핸들러
     /// - Parameter response: 일지 조회 response
     private func handlerGetJournalList(response: Response) {
-        do {
-            let decodedData = try JSONDecoder().decode(JournalListData.self, from: response.data)
-            DispatchQueue.main.async {
-                if self.page == 0 {
-                    self.journalListData = decodedData
+            do {
+                let decodedData = try JSONDecoder().decode(ResponseData<JournalListResponseData>.self, from: response.data)
+                if decodedData.isSuccess {
+                    if let newRecords = decodedData.result?.recordList, !newRecords.isEmpty {
+                        if currentPage == 0 {
+                            self.journalListData = decodedData.result
+                        } else {
+                            self.journalListData?.recordList.append(contentsOf: newRecords)
+                        }
+                    } else {
+                        isLastPage = true
+                    }
                 } else {
-                    self.journalListData?.result.recordList.append(contentsOf: decodedData.result.recordList)
+                    print("일지 목록 조회 네트워크 오류: \(decodedData.message)")
                 }
-                if decodedData.result.recordList.isEmpty {
-                    self.hasMoreData = false
-                } else {
-                    self.page += 1
-                }
+            } catch {
+                print("일지 목록 조회 디코더 에러: \(error)")
             }
-        } catch {
-            print("일지 목록 조회 디코더 에러: \(error)")
         }
-    }
-    
-    /// 스크롤이 끝에 도달했을 때 더 많은 데이터를 불러온다.
-    public func loadMorePageData(for record: JournalRecord) async {
-        guard let lastRecord = journalListData?.result.recordList.last else { return }
-        
-        if record == lastRecord && !isLoaadingPage && hasMoreData {
-            await getJournalList()
-        }
-        
-    }
     
     // MARK: - 일지 삭제 API
     
     /// 일지 삭제 API
     /// - Parameter journalID: 선택한 일지 ID
     private func deleteJournalList(journalID: Int) async {
-        provider.request(.deleteJournalList(journalID: journalID)) { result in
+        provider.request(.deleteJournalList(journalID: journalID)) { [weak self] result in
             switch result {
             case .success(let response):
-                print("일지 삭제 성공: \(response)")
+                if let jsonString = String(data: response.data, encoding: .utf8) {
+                           print("Received JSON: \(jsonString)")
+                       }
+                
+                do {
+                    let decodeData = try JSONDecoder().decode(ResponseData<DiagnosisDelete>.self, from: response.data)
+                    if decodeData.isSuccess {
+                        self?.removeDeletedJournalFromList(journalID: journalID)
+                    } else {
+                        print("삭제 못함: \(decodeData.message)")
+                    }
+                } catch {
+                    print("일지 삭제 디코더 에러: \(error)")
+                }
             case .failure(let error):
                 print("일지 삭제 네트워크 오류 : \(error)")
             }
+        }
+    }
+    
+    private func removeDeletedJournalFromList(journalID: Int) {
+        if var journalList = journalListData?.recordList {
+            journalList.removeAll { $0.recordID == journalID }
+            journalListData?.recordList = journalList
         }
     }
     
@@ -109,20 +127,120 @@ class JournalListViewModel: ObservableObject {
     
     // MARK: - 일지 선택 Function
     
-    /// 선택버튼 누를 시 아이템 카운트 및 담기
-    /// - Parameter index: 일지 데이터 생성 index
-    public func toggleSelection(for index: Int) async {
-        if selectedItem.contains(index) {
-            selectedItem.remove(index)
-        } else {
-            selectedItem.insert(index)
-        }
-        selectedCnt = selectedItem.count
-    }
-    
     /// 전체 선택 취소 버튼 액션
     public func clearSelection() async {
         selectedItem.removeAll()
         selectedCnt = 0
+    }
+    
+    // MARK: - Paging
+    
+    /// 데이터를 초기화하고 첫 페이지 데이터를 로드
+       private func resetData() {
+           journalListData = nil
+           selectedItem.removeAll()
+           selectedCnt = 0
+           currentPage = 0
+           isLastPage = false
+           getJournalList(page: currentPage)
+       }
+    
+    // MARK: - 진단하기
+    
+    func createDiagPayload() -> CreateDiag {
+           let recordIDs = selectedItem.map { RecordID(record_id: $0) }
+           return CreateDiag(pet_id: petId, records: recordIDs)
+       }
+    
+    public func makeDiag(completion: @escaping (Bool) -> Void) {
+        
+        self.isLoadingDiag = true
+        
+        provider.request(.makeDiagnosis(data: createDiagPayload())) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.handlerMakeDiag(response: response, completion: completion)
+            case .failure(let error):
+                print("진단 생성 네트워크 에러:\(error)")
+            }
+        }
+    }
+    
+    private func handlerMakeDiag(response: Response, completion: @escaping (Bool) -> Void) {
+        do {
+            let decodedData = try JSONDecoder().decode(ResponseData<DiagResult>.self, from: response.data)
+            if decodedData.isSuccess {
+                if let data = decodedData.result?.products, let resultId = decodedData.result?.result_id {
+                    patchDiagnosis(resultId: resultId, products: data, completion: completion)
+                }
+            }
+        } catch {
+            print("진단 생성 디코더 에러")
+        }
+    }
+    
+    // MARK: - NaverShopping
+    
+    
+    private func patchDiagnosis(resultId: Int, products: [String], completion: @escaping (Bool) -> Void) {
+        provider.request(.updateContents(resultId: resultId, query: products)) { result in
+            switch result {
+            case .success(let reponse):
+                do {
+                    let decodedData = try JSONDecoder().decode(ResponseData<Product>.self, from: reponse.data)
+                    if decodedData.isSuccess {
+                        if let data = decodedData.result {
+                            print("진단 결과 상품 매칭 성공: \(data)")
+                            completion(true)
+                        }
+                    }
+                } catch {
+                    print("진단 결과 디코더 에러 :\(error)")
+                    completion(false)
+                }
+            case .failure(let error):
+                print("진단 결과 네트워크 에러: \(error)")
+                completion(false)
+            }
+        }
+    }
+    
+    // MARK: - 진단서 상세 내용 조회
+    public func getDetailQnA(recordId: Int, completion: @escaping(Bool) -> Void)  {
+        provider.request(.getDetailJournalQnA(petId: self.petId, recordId: recordId)) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.handlerDetailQnA(response: response)
+                completion(true)
+            case .failure(let error):
+                print("QnA 상세 조회 네트워크 에러: \(error)")
+                completion(false)
+            }
+        }
+    }
+    
+    /// QnA 상세 조회 핸들러
+    /// - Parameter response: Response 값
+    private func handlerDetailQnA(response: Response) {
+        do {
+            let decodedData = try JSONDecoder().decode(ResponseData<CheckJournalQnAResponseData>.self, from: response.data)
+            if decodedData.isSuccess {
+                DispatchQueue.main.async {
+                    self.checkJournalQnAResponseData = decodedData.result
+                }
+            } else {
+                print("QnA 상세 조회 실패: \(decodedData.message)")
+            }
+        } catch {
+            print("QnA 상세 조회 디코더 에러: \(error)")
+        }
+    }
+    
+    
+    
+    // MARK: -Navigation
+    
+    public func goToMakeDiagnosis() {
+        container.navigationRouter.push(to: .createDiagnosis(petId: petId))
     }
 }

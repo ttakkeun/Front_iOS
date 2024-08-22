@@ -10,8 +10,6 @@ import SwiftUI
 /// 진단하기 버튼 클릭 후, 진단 중 뷰
 struct DiagnosingView: View {
     
-    @ObservedObject var viewModel: DiagnosticResultViewModel
-    
     var body: some View {
         loadingView
     }

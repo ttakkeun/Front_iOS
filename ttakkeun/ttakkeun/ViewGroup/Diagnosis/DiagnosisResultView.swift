@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 일지 결과 뷰
 struct DiagnosisResultView: View {
     
     @ObservedObject var viewModel: DiagnosticResultViewModel

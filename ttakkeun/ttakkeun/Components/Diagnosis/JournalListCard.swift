@@ -89,7 +89,7 @@ struct JournalListCard: View {
     /// 시간 데이터 파일   
     private var formattedTime: String {
         let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = "HH:mm:ss"
+        inputFormatter.dateFormat = "HH:mm:ss.SSSSSS"
         
         let outputFormatter = DateFormatter()
         outputFormatter.dateFormat = "HH:mm"
@@ -133,13 +133,5 @@ struct JournalListCard: View {
         case .tooth:
             Color.beforeTeeth_Color
         }
-    }
-}
-
-struct JournalListCard_Preview: PreviewProvider {
-    static let devices = ["iPhone 11", "iPhone 15 Pro"]
-    
-    static var previews: some View {
-        DiagnosisView(petId: 0)
     }
 }

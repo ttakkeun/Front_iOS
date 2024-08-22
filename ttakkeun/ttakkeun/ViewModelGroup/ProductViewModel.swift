@@ -38,6 +38,11 @@ class ProductViewModel: ObservableObject {
     /// AI 상품 추천 Response 핸들러
     /// - Parameter response: response 값
     private func handleAIProductResponse(response: Response) {
+        
+        if let jsonString = String(data: response.data, encoding: .utf8) {
+                              print("Received JSON: \(jsonString)")
+                          }
+        
         do {
             let decodeData = try JSONDecoder().decode(ResponseData<[ProductDetailData]>.self, from: response.data)
             if decodeData.isSuccess {
