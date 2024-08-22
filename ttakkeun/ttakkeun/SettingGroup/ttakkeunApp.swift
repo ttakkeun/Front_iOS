@@ -13,6 +13,7 @@ struct ttakkeunApp: App {
     @StateObject var appFlowViewModel: AppFlowViewModel = AppFlowViewModel()
     @StateObject var petState: PetState = PetState()
     @StateObject var container: DIContainer = DIContainer()
+    @StateObject var tabBarVisibility: TabBarVisibilityManager = TabBarVisibilityManager()
     
     var body: some Scene {
         WindowGroup {
@@ -33,6 +34,7 @@ struct ttakkeunApp: App {
                 TabView()
                     .environmentObject(petState)
                     .environmentObject(container)
+                    .environmentObject(tabBarVisibility)
             }
         }
     }

@@ -13,7 +13,7 @@ enum PartItem: String, Codable, CaseIterable {
     case eye = "EYE"
     case hair = "HAIR"
     case claw = "CLAW"
-    case tooth = "TOOTH"
+    case tooth = "TEETH"
     
     /// 부위 항목 서버에서 영어로 돌려받는다. 그 결과를 뷰에 보이기 위해 한글로 전환
     /// - Returns: 번역된 한글 값 전달

@@ -72,7 +72,7 @@ struct DiagnosticImages: View {
         ZStack(alignment: .topLeading, content: {
             Image(uiImage: image)
                 .resizable()
-                .frame(width: 80, height: 80)
+                .frame(width: 80, height: 80    )
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)

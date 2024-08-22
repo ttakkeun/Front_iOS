@@ -70,7 +70,6 @@
 				Schedule/CustomDiary.swift,
 				Schedule/DiarySelectSheet.swift,
 				Schedule/TodoCompleteEach.swift,
-				Schedule/TodoControlSheet.swift,
 				Schedule/WeekBar.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -133,8 +132,6 @@
 				Qna/QnaView.swift,
 				Qna/QnaWriteTipsView.swift,
 				Schedule/ScheduleView.swift,
-				Suggestion/SuggestionInitialView.swift,
-				Suggestion/SuggestionSearchedView.swift,
 				Suggestion/SuggestionView.swift,
 				TabView/CustomTab.swift,
 				TabView/TabView.swift,
@@ -156,6 +153,7 @@
 				Navigation/NavigationDestination.swift,
 				Navigation/NavigationRouter.swift,
 				Navigation/NavigationRoutingView.swift,
+				Navigation/TabBarVisibilityManager.swift,
 				PetState.swift,
 				Protocol/HomePatchImage.swift,
 				Protocol/ImageHandling.swift,
@@ -174,7 +172,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				APIBaseURL.swift,
-				DiagnosticResultAPITarget.swift,
 				JournalAPITarget.swift,
 				PetProfileAPITarget.swift,
 				ProductRecommendAPITarget.swift,
@@ -193,29 +190,33 @@
 				Diary/CustomDiaryViewModel.swift,
 				Diary/TodoCheckViewModel.swift,
 				HomeProfileCardViewModel.swift,
-				LoginOnBoarding/AgreementViewModel.swift,
-				LoginOnBoarding/AppFlowViewModel.swift,
-				LoginOnBoarding/LoginViewModel.swift,
 				MyPageViewModel.swift,
 				ProductViewModel.swift,
 				Profile/CreateProfileViewModel.swift,
+				Profile/LoginOnBoarding/AgreementViewModel.swift,
+				Profile/LoginOnBoarding/AppFlowViewModel.swift,
+				Profile/LoginOnBoarding/LoginViewModel.swift,
 				Profile/ProfileCardViewModel.swift,
 				QnA/QnaTipsViewModel.swift,
 				QnA/QnaViewModel.swift,
 				QnA/QnaWriteTipsViewModel.swift,
 				RegistJournalViewModel.swift,
 				ScheduleViewModel.swift,
-				SuggestionViewModel.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
 		48D5D1352C3E83A000B2E6D5 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Diagnostic/CreateDiag.swift,
 				Diagnostic/DiagnosisData.swift,
+				Diagnostic/DiagnosisDelete.swift,
 				Diagnostic/DiagnosisResultList.swift,
 				Diagnostic/DiagnosticPoint.swift,
+				Diagnostic/EncodableRegistJournalData.swift,
+				Diagnostic/NaverShoppingData.swift,
 				Journal/CheckJournalQnA.swift,
+				Journal/CreateJournalResponse.swift,
 				Journal/JournalListData.swift,
 				Journal/JournalQuestionsData.swift,
 				Journal/RegistJournalData.swift,
@@ -250,6 +251,7 @@
 			membershipExceptions = (
 				AppState.swift,
 				DiagnosisSegment.swift,
+				DiagnosticResultAPITarget.swift,
 				PartItem.swift,
 				ProfileType.swift,
 				RecommendProductSegment.swift,
@@ -548,7 +550,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ttakkeun/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 8B8B4462NV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ttakkeun/Info.plist;
@@ -580,7 +582,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ttakkeun/Preview Content\"";
-				DEVELOPMENT_TEAM = SM37WHUJB5;
+				DEVELOPMENT_TEAM = 8B8B4462NV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ttakkeun/Info.plist;

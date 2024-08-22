@@ -34,7 +34,7 @@ struct DiagnosisHeader: View {
     
     /// 화면 전환 세그먼트 전환 헤더
     private var header: some View {
-        ZStack(alignment: .center) {
+        ZStack(alignment: .top) {
             
             Icon.diagnosisBackground.image
                 .resizable()
@@ -49,7 +49,8 @@ struct DiagnosisHeader: View {
     private var topSegmentGroup: some View {
         VStack(alignment: .leading, spacing: 18, content: {
             TopStatusBar()
-                .padding(.leading, 5)
+            
+            Spacer().frame(height: 3)
             
             selectedSegmentButton
             
@@ -59,6 +60,7 @@ struct DiagnosisHeader: View {
         .frame(width: 353, height: 121)
         .background(Color.clear)
         .padding(.horizontal, 15)
+        .padding(.top, 68)
     }
     
     /// 일지목록 및 진단결과 세그먼트 버튼
@@ -68,7 +70,7 @@ struct DiagnosisHeader: View {
             ForEach(DiagnosisSegment.allCases, id: \.self) { segment in
                 
                 Button(action: {
-                    withAnimation(.easeInOut(duration: 0.4)) {
+                    withAnimation(.easeInOut(duration: 0.1)) {
                         selectedSegment = segment
                     }
                 }, label: {

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// QnaTab 최상단에 있을 header
 struct QnaHeaderView: View {
     @Binding var selectedSegment: String
     
@@ -27,7 +28,8 @@ struct QnaHeaderView: View {
                 .foregroundColor(Color.gray200),
             alignment: .bottom)
     }
-
+    
+    /// Tips와 Faq 이동시켜주는 세그먼티드 컨트롤
     private var customSegmentedControl: some View {
         HStack(spacing: 0){
             ForEach(segments, id: \.self) { segment in
