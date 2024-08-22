@@ -66,17 +66,16 @@ class QnaWriteTipsViewModel: ObservableObject, @preconcurrency ImageHandling {
 
     //MARK: - API Function
     /// Tip내용 Post하는 함수
-    func postTipsData() async {
+    func postTipsData() {
         guard self.requestData != nil else { return }
 
         // 디버깅을 위한 로그 추가
         print("POST Data: Title = \(title), Content = \(content), Category = \(category.rawValue)")
 
-        provider.request(.createTipsContent(content: content, title: title, category: category.rawValue)) { [weak self] result in
+        postTipContent { [weak self] result in
             switch result {
             case .success(let response):
-                self?.handlerResponsePostTipsData(response: response)
-                if let images = self?.arrImages, !images.isEmpty {
+                self?.handlerResponsePostTipsData(response: response) {
                     _Concurrency.Task {
                         await self?.postImages()
                     }
@@ -87,10 +86,16 @@ class QnaWriteTipsViewModel: ObservableObject, @preconcurrency ImageHandling {
         }
     }
 
+    /// Tip내용을 POST 요청하는 함수
+    private func postTipContent(completion: @escaping (Result<Response, MoyaError>) -> Void) {
+        provider.request(.createTipsContent(content: content, title: title, category: category.rawValue)) { result in
+            completion(result)
+        }
+    }
 
     /// Tip내용 핸들러 함수
     /// - Parameter response: API 호출 시 받게 되는 응답
-    private func handlerResponsePostTipsData(response: Response) {
+    private func handlerResponsePostTipsData(response: Response, completion: @escaping () -> Void) {
         do {
             if let jsonString = String(data: response.data, encoding: .utf8) {
                 print("Received JSON: \(jsonString)")
@@ -99,6 +104,8 @@ class QnaWriteTipsViewModel: ObservableObject, @preconcurrency ImageHandling {
             DispatchQueue.main.async {
                 self.responseData = decodedData
                 print("Tips 데이터 포스트 성공")
+                print("Received tipId: \(String(describing: decodedData.result?.tipId))")
+                completion()
             }
         } catch {
             print("Tips 디코딩 에러: \(error)")
@@ -111,7 +118,7 @@ class QnaWriteTipsViewModel: ObservableObject, @preconcurrency ImageHandling {
             print("postImages() 실패: tip_id를 찾을 수 없음")
             return
         }
-        
+
         provider.request(.sendTipsImage(tip_id: tipId, images: arrImages)) { result in
             switch result {
             case .success(let response):
