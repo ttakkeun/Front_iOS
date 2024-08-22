@@ -150,12 +150,11 @@ class JournalListViewModel: ObservableObject {
     // MARK: - 진단하기
     
     func createDiagPayload() -> CreateDiag {
-           let recordIDs = selectedItem.map { RecordID(record_id: $0) }
-           return CreateDiag(pet_id: petId, records: recordIDs)
+           let recordID = selectedItem.map { RecordID(record_id: $0) }
+           return CreateDiag(pet_id: petId, records: recordID)
        }
     
     public func makeDiag(completion: @escaping (Bool) -> Void) {
-        
         self.isLoadingDiag = true
         
         provider.request(.makeDiagnosis(data: createDiagPayload())) { [weak self] result in
@@ -163,12 +162,19 @@ class JournalListViewModel: ObservableObject {
             case .success(let response):
                 self?.handlerMakeDiag(response: response, completion: completion)
             case .failure(let error):
+                self?.isLoadingDiag = false
                 print("진단 생성 네트워크 에러:\(error)")
             }
         }
     }
     
     private func handlerMakeDiag(response: Response, completion: @escaping (Bool) -> Void) {
+        
+        
+        if let jsonString = String(data: response.data, encoding: .utf8) {
+                   print("Received JSON: \(jsonString)")
+               }
+        
         do {
             let decodedData = try JSONDecoder().decode(ResponseData<DiagResult>.self, from: response.data)
             if decodedData.isSuccess {
@@ -179,6 +185,7 @@ class JournalListViewModel: ObservableObject {
             }
         } catch {
             print("진단 생성 디코더 에러")
+            self.isLoadingDiag = false
         }
     }
     
@@ -189,6 +196,12 @@ class JournalListViewModel: ObservableObject {
         provider.request(.updateContents(resultId: resultId, query: products)) { result in
             switch result {
             case .success(let reponse):
+                
+                if let jsonString = String(data: reponse.data, encoding: .utf8) {
+                           print("Received JSON: \(jsonString)")
+                       }
+                
+                
                 do {
                     let decodedData = try JSONDecoder().decode(ResponseData<Product>.self, from: reponse.data)
                     if decodedData.isSuccess {
@@ -199,10 +212,12 @@ class JournalListViewModel: ObservableObject {
                     }
                 } catch {
                     print("진단 결과 디코더 에러 :\(error)")
+                    self.isLoadingDiag = false
                     completion(false)
                 }
             case .failure(let error):
                 print("진단 결과 네트워크 에러: \(error)")
+                self.isLoadingDiag = false
                 completion(false)
             }
         }
@@ -253,6 +268,11 @@ class JournalListViewModel: ObservableObject {
     }
     
     private func handlerDetail(response: Response, completion: @escaping (Bool) -> Void) {
+        
+        if let jsonString = String(data: response.data, encoding: .utf8) {
+                   print("Received JSON: \(jsonString)")
+               }
+        
         do {
             let decodedData = try JSONDecoder().decode(ResponseData<DiagnosisData>.self, from: response.data)
             if decodedData.isSuccess {
@@ -261,6 +281,7 @@ class JournalListViewModel: ObservableObject {
             }
         } catch {
             print("진단 결과 디코더 에러: \(error)")
+            self.isLoadingDiag = false
             completion(false)
         }
     }

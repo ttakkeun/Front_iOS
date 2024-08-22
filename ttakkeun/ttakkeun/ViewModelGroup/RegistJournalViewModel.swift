@@ -58,7 +58,7 @@ class RegistJournalViewModel: ObservableObject, @preconcurrency ImageHandling {
                         completion(true)
                     } else {
                         self.sendImageMultiPart(recordId: id, completion: completion)
-                    }
+}                                                       
                 }
             }
             print("일정 생성 데이터 디코더 완료 : \(decodedData)")

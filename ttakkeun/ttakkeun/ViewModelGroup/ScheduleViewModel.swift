@@ -91,11 +91,12 @@ class ScheduleViewModel: ObservableObject, @preconcurrency TodoCheckProtocol {
     /// - Parameter data: response로 받아온 전체 데이터
     private func processFetchData(_ data: ScheduleInquiryResponseData) {
         DispatchQueue.main.async { [weak self] in
-            self?.earTodos = data.earTodo ?? []
-            self?.hairTodos = data.hairTodo ?? []
-            self?.clawTodos = data.clawTodo ?? []
-            self?.eyeTodos = data.eyeTodo ?? []
-            self?.toothTodos = data.toothTodo ?? []
+            guard let self = self else { return }
+            self.earTodos = data.earTodo ?? []
+            self.hairTodos = data.hairTodo ?? []
+            self.clawTodos = data.clawTodo ?? []
+            self.eyeTodos = data.eyeTodo ?? []
+            self.toothTodos = data.toothTodo ?? []
         }
     }
     
