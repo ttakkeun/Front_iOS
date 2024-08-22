@@ -28,7 +28,7 @@ struct JournalListView: View {
             }
         }
         .fullScreenCover(isPresented: $viewModel.isLoadingDiag, content: {
-            DiagnosingView()
+            DiagnosisResultDetailView(viewModel: viewModel)
         })
     }
     
@@ -114,7 +114,9 @@ struct JournalListView: View {
             } else {
                 viewModel.makeDiag { success in
                     if success {
-                        viewModel.isLoadingDiag = false
+                        viewModel.getDiagDetail { success in
+                            print("상세 결과 받아오기 성공")
+                        }
                     }
                 }
             }

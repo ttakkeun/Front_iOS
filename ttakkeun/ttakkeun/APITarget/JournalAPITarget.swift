@@ -19,6 +19,7 @@ enum JournalAPITarget {
     case sendRecordImage(recordID: Int, questionImages: [Int: [UIImage]])
     case makeDiagnosis(data: CreateDiag)
     case updateContents(resultId: Int, query: [String])
+    case getResultDiag(resultId: Int)
 }
 
 extension JournalAPITarget: APITargetType {
@@ -41,6 +42,8 @@ extension JournalAPITarget: APITargetType {
             return "/diagnose/loading"
         case .updateContents(let id, _):
             return "/diagnose/result/\(id)"
+        case .getResultDiag(let id):
+            return "/diagnose/result/\(id)"
         }
     }
     
@@ -62,6 +65,8 @@ extension JournalAPITarget: APITargetType {
             return .post
         case .updateContents:
             return .patch
+        case .getResultDiag:
+            return .get
         }
     }
     
@@ -108,6 +113,8 @@ extension JournalAPITarget: APITargetType {
             return .requestJSONEncodable(data)
         case .updateContents(_, let data):
             return .requestParameters(parameters: ["products": data], encoding: URLEncoding.default)
+        case .getResultDiag:
+            return .requestPlain
         }
     }
     
