@@ -54,7 +54,11 @@ class RegistJournalViewModel: ObservableObject, @preconcurrency ImageHandling {
             let decodedData = try JSONDecoder().decode(ResponseData<RecordId>.self, from: response.data)
             if decodedData.isSuccess {
                 if let id = decodedData.result?.recordID {
-                    self.sendImageMultiPart(recordId: id, completion: completion)
+                    if self.questionImages.isEmpty {
+                        completion(true)
+                    } else {
+                        self.sendImageMultiPart(recordId: id, completion: completion)
+                    }
                 }
             }
             print("일정 생성 데이터 디코더 완료 : \(decodedData)")

@@ -38,7 +38,7 @@ struct RegistDiagnosisFlowView: View {
         }
         
         .onDisappear {
-            withAnimation(.easeInOut(duration: 0.2)) {
+            withAnimation {
                 tabManager.isTabBarHidden = false
             }
         }
