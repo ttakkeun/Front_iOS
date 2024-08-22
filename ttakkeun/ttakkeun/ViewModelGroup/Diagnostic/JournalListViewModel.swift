@@ -13,6 +13,7 @@ class JournalListViewModel: ObservableObject {
     
     @Published var journalListData: JournalListResponseData? /* 일지 리스트 목록 조회 API */
     @Published var checkJournalQnAResponseData: CheckJournalQnAResponseData? /* 진단서 상세 내용 데이터 */
+    @Published var diagnosisData: DiagnosisData? /* 진단 결과 상세 내용 출력 */
     @Published var selectedCnt: Int = 0 /* 일지 선택 갯수 */
     @Published var isSelectionMode: Bool = false
     @Published var selectedItem: Set<Int> = [] /* 선택된 아이템 목록 */
@@ -24,6 +25,7 @@ class JournalListViewModel: ObservableObject {
     @Published var currentPage: Int = 0
     @Published var isLastPage: Bool = false // 마지막 페이지 확인
     @Published var isLoadingDiag: Bool = false
+    @Published var resultId: Int = 0
     
     private let provider: MoyaProvider<JournalAPITarget>
     let petId: Int
@@ -172,6 +174,7 @@ class JournalListViewModel: ObservableObject {
             if decodedData.isSuccess {
                 if let data = decodedData.result?.products, let resultId = decodedData.result?.result_id {
                     patchDiagnosis(resultId: resultId, products: data, completion: completion)
+                    self.resultId = resultId
                 }
             }
         } catch {
@@ -236,6 +239,31 @@ class JournalListViewModel: ObservableObject {
         }
     }
     
+    //MARK: - 진단 결과 상세 내용 조회
+    
+    public func getDiagDetail(completion: @escaping (Bool) -> Void) {
+        provider.request(.getResultDiag(resultId: self.resultId)) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.handlerDetail(response: response, completion: completion)
+            case .failure(let error):
+                print("진단 결과 네트워크 에러: \(error)")
+            }
+        }
+    }
+    
+    private func handlerDetail(response: Response, completion: @escaping (Bool) -> Void) {
+        do {
+            let decodedData = try JSONDecoder().decode(ResponseData<DiagnosisData>.self, from: response.data)
+            if decodedData.isSuccess {
+                self.diagnosisData = decodedData.result
+                completion(true)
+            }
+        } catch {
+            print("진단 결과 디코더 에러: \(error)")
+            completion(false)
+        }
+    }
     
     
     // MARK: -Navigation
