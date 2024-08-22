@@ -25,12 +25,13 @@ struct TodoCard: View {
     
     var body: some View {
         HStack(spacing: 24, content: {
+            
             self.todoCircle
             
             if !viewModel.todos.isEmpty {
                 VStack(alignment: .leading, spacing: 10, content: {
                     ForEach(viewModel.todos, id: \.id) { todo in
-                        ToDoCheckList(data: .constant(todo), viewModel: viewModel, partItem: partItem)
+                        ToDoCheckList(data: .constant(todo), viewModel: viewModel, partItem: partItem, checkAble: true)
                     }
                     if self.isAddingNewTodo {
                         self.newTodoInputField
@@ -46,10 +47,12 @@ struct TodoCard: View {
                         .foregroundStyle(Color.gray_400)
                 }
             }
+            
+            Spacer()
         })
-        .frame(width: 310)
+        .frame(width: 336)
+        .padding(.leading, 14)
         .padding(.vertical, 18)
-        .padding(.leading, 8)
         .clipShape(RoundedRectangle(cornerRadius: 20))
         .overlay(
             RoundedRectangle(cornerRadius: 20)

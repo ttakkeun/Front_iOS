@@ -70,6 +70,7 @@
 				Schedule/CustomDiary.swift,
 				Schedule/DiarySelectSheet.swift,
 				Schedule/TodoCompleteEach.swift,
+				Schedule/TodoControlSheet.swift,
 				Schedule/WeekBar.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -132,6 +133,8 @@
 				Qna/QnaView.swift,
 				Qna/QnaWriteTipsView.swift,
 				Schedule/ScheduleView.swift,
+				Suggestion/SuggestionInitialView.swift,
+				Suggestion/SuggestionSearchedView.swift,
 				Suggestion/SuggestionView.swift,
 				TabView/CustomTab.swift,
 				TabView/TabView.swift,
@@ -172,12 +175,12 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				APIBaseURL.swift,
-				DiagnosticResultAPITarget.swift,
 				JournalAPITarget.swift,
 				PetProfileAPITarget.swift,
 				ProductRecommendAPITarget.swift,
 				QnaTipsAPITarget.swift,
 				ScheduleAPITarget.swift,
+				SuggestionAPITarget.swift,
 				TodoAPITarget.swift,
 				UserLoginAPITarget.swift,
 			);
@@ -203,6 +206,7 @@
 				QnA/QnaWriteTipsViewModel.swift,
 				RegistJournalViewModel.swift,
 				ScheduleViewModel.swift,
+				SuggestionViewModel.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};
@@ -252,6 +256,7 @@
 			membershipExceptions = (
 				AppState.swift,
 				DiagnosisSegment.swift,
+				DiagnosticResultAPITarget.swift,
 				PartItem.swift,
 				ProfileType.swift,
 				RecommendProductSegment.swift,

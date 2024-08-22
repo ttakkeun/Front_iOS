@@ -13,6 +13,9 @@ struct ToDoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
     @Binding var data: TodoList
     @ObservedObject var viewModel: ViewModel
     let parItem: PartItem
+    let checkAble: Bool
+    
+    @State private var isSheetPresented = false
     
     
     // MARK: - Init
@@ -20,15 +23,22 @@ struct ToDoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
     init(
         data: Binding<TodoList>,
         viewModel: ViewModel,
-        partItem: PartItem
+        partItem: PartItem,
+        checkAble: Bool = false
     ) {
         self._data = data
         self.viewModel = viewModel
         self.parItem = partItem
+        self.checkAble = checkAble
     }
     
     var body: some View {
-        checkComponents
+        checkComponents.sheet(isPresented: $isSheetPresented) {
+            TodoControlSheet(todoName: data.todoName, isChecked: data.todoStatus)
+                .presentationDetents([.fraction(0.38)])
+                .presentationCornerRadius(30)
+                .padding(.top, 10)
+            }
     }
     
     // MARK: - Contents
@@ -62,10 +72,21 @@ struct ToDoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
                     }
                 }
             })
+            if checkAble {
+                Button(action: {
+                    ///텍스트 누르면 시트뷰 띄움
+                    isSheetPresented = true
+                }, label: {
+                    Text(data.todoName)
+                        .font(.Body4_medium)
+                        .foregroundStyle(Color.gray_900)
+                })
+            } else {
+                Text(data.todoName)
+                    .font(.Body4_medium)
+                    .foregroundStyle(Color.gray_900)
+            }
             
-            Text(data.todoName)
-                .font(.Body4_medium)
-                .foregroundStyle(Color.gray_900)
         })
         .frame(maxWidth: 203, maxHeight: 16, alignment: .leading)
     }

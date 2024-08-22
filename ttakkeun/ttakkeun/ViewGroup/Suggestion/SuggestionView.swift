@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct SuggestionView: View {
+    @StateObject private var viewModel = SuggestionViewModel()
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        SuggestionInitialView(viewModel: viewModel)
+            .background(Color.scheduleCard)
     }
 }
 
