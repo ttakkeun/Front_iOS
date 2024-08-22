@@ -177,6 +177,7 @@
 				ProductRecommendAPITarget.swift,
 				QnaTipsAPITarget.swift,
 				ScheduleAPITarget.swift,
+				SuggestionAPITarget.swift,
 				TodoAPITarget.swift,
 				UserLoginAPITarget.swift,
 			);

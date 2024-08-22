@@ -4,8 +4,6 @@
 //
 //  Created by 한지강 on 8/21/24.
 //
-
-
 import SwiftUI
 import Moya
 import Foundation
@@ -13,139 +11,243 @@ import Foundation
 /// 추천 상품 리스트를 관리하는 뷰모델
 @MainActor
 class SuggestionViewModel: ObservableObject {
-    
-    @Published var products: [RecommenProductResponseData] = [
-        RecommenProductResponseData(
-            product_id: 1,
-            title: "아껴주다 저자극 천연 고양이 샴푸 500ml",
-            image: "https://shopping-phinf.pstatic.net/main_3596342/35963422008.jpg",
-            price: 13000,
-            brand: "지강",
-            link: "https://smartstore.naver.com/main/products/7619827035",
-            category1: "지강",
-            category2: "지강",
-            category3: "지강",
-            category4: "지강",
-            total_likes: 123,
-            isLike: true
-        ),
-        RecommenProductResponseData(
-            product_id: 2,
-            title: "강아지용 무자극 천연 샴푸 500ml",
-            image: "https://shopping-phinf.pstatic.net/main_3596342/35963422009.jpg",
-            price: 15000,
-            brand: "지강",
-            link: "https://smartstore.naver.com/main/products/7619827036",
-            category1: "지강",
-            category2: "지강",
-            category3: "지강",
-            category4: "지강",
-            total_likes: 90,
-            isLike: false
-        )
-    ]
-    
-    @Published var aiProducts: [RecommenProductResponseData] = [
-        RecommenProductResponseData(
-            product_id: 3,
-            title: "AI 추천 저자극 천연 고양이 샴푸 500ml",
-            image: "https://shopping-phinf.pstatic.net/main_3596342/35963422010.jpg",
-            price: 14000,
-            brand: "지강",
-            link: "https://smartstore.naver.com/main/products/7619827037",
-            category1: "지강",
-            category2: "지강",
-            category3: "지강",
-            category4: "지강",
-            total_likes: 110,
-            isLike: true
-        ),
-        RecommenProductResponseData(
-            product_id: 4,
-            title: "AI 추천 저자극 천연 고양이 샴푸 500ml",
-            image: "https://shopping-phinf.pstatic.net/main_3596342/35963422010.jpg",
-            price: 14000,
-            brand: "지강",
-            link: "https://smartstore.naver.com/main/products/7619827037",
-            category1: "지강",
-            category2: "지강",
-            category3: "지강",
-            category4: "지강",
-            total_likes: 110,
-            isLike: true
-        ),
-        RecommenProductResponseData(
-            product_id: 5,
-            title: "AI 추천 저자극 천연 고양이 샴푸 500ml",
-            image: "https://shopping-phinf.pstatic.net/main_3596342/35963422010.jpg",
-            price: 14000,
-            brand: "지강",
-            link: "https://smartstore.naver.com/main/products/7619827037",
-            category1: "지강",
-            category2: "지강",
-            category3: "지강",
-            category4: "지강",
-            total_likes: 110,
-            isLike: true
-        )
-    ]
+
+    @Published var products: [RecommenProductResponseData] = []
+    @Published var aiProducts: [RecommenProductResponseData] = []
     @Published var categoryProducts: [RecommenProductResponseData] = []
-    @Published var selectedCategory: RecommendProductSegment = .all
     @Published var searchResults: (dbProducts: [RecommenProductResponseData], naverProducts: [RecommenProductResponseData])? = nil
+    @Published var selectedCategory: RecommendProductSegment = .all
+    
+    private let provider: MoyaProvider<SuggestionAPITarget>
+    
+    // MARK: - Init
+    init(provider: MoyaProvider<SuggestionAPITarget> = APIManager.shared.createProvider(for: SuggestionAPITarget.self)) {
+        self.provider = provider
+    }
   
-    //MARK: - API Function
-
-    /// 초기 화면 로딩 시 AI와 All 데이터를 가져오기 위한 함수
-      public func loadInitialData() async {
-          await getAiProducts()
-          await getAllProducts()
-      }
+    // MARK: - API Functions
     
-    /// 검색하면 키워드 를 path variable로 넣고 get요청받아야함
-    /// - Parameter keyword: 검색단어
-    public func performSearch(for keyword: String) async {
-         await getSearchedProductsByDB(for: keyword)
-        await getSearchedProductsByNaver(for: keyword)
+    public func loadInitialData() async {
+         // 초기 petId와 page 값을 0으로 설정
+         await getAiProducts(petId: 0)
+         await getRankedProducts(page: 0)
      }
-      
-      // TODO: - AI추천 상품을 가져오는 API 호출 함수
-      public func getAiProducts() async {
-          // API 호출 로직을 여기에 작성합니다.
-          // 예시: provider.request(.getAiProducts) { ... }
-          // 성공적으로 데이터를 받으면 self.aiProducts에 할당합니다.
-      }
-      
-      // TODO: - 전체 상품을 가져오는 API 호출 함수
-      public func getAllProducts() async {
-          // API 호출 로직을 여기에 작성합니다.
-          // 예시: provider.request(.getAllProducts) { ... }
-          // 성공적으로 데이터를 받으면 self.products에 할당합니다.
-      }
-      
-      // TODO: - 특정 카테고리의 상품을 가져오는 API 호출 함수
-      public func getCategoryProducts(for category: String) async {
-          // API 호출 로직을 여기에 작성합니다.
-          // category를 path variable로 사용하여 해당 카테고리 상품을 요청합니다.
-          // 성공적으로 데이터를 받으면 self.categoryProducts에 할당합니다.
-      }
-      
-      // TODO: - 하트 수 변경 API 호출 함수
-      public func patchHeartNum(for productId: Int) async {
-          // 하트 수 변경을 위한 API 호출 로직을 여기에 작성합니다.
-          // productId를 사용하여 특정 상품의 하트 수를 변경합니다.
-      }
-      
-      // TODO: - 따끈DB에 있는 검색결과 상품 가져오는 API 호출 함수
-      public func getSearchedProductsByDB(for keyWord: String) async {
-          // 따끈DB에서 검색결과를 가져오는 API 호출 로직을 여기에 작성합니다.
-          // searchText를 사용하여 검색된 상품 리스트를 가져옵니다.
-      }
-      
-      // TODO: - 네이버API 사용해 검색결과 상품 가져오는 API 호출 함수
-    public func getSearchedProductsByNaver(for keyWord: String) async {
-          // 네이버 API를 사용하여 검색결과를 가져오는 API 호출 로직을 여기에 작성합니다.
-          // searchText를 사용하여 검색된 상품 리스트를 가져옵니다.
-      }
-  }
     
+    public func performSearch(for keyword: String) async {
+           await getSearchedProductsByDB(for: keyword, page: 0)
+           await getSearchedProductsByNaver(for: keyword)
+       }
+    
+    public func getAiProducts(petId: Int) async {
+        let petId = 0
+        provider.request(.getAiProducts(petId: petId)) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.handleResponseForAiProducts(response: response)
+            case .failure(let error):
+                print("네트워크 오류: \(error)")
+            }
+        }
+    }
+    
+    public func getRankedProducts(page: Int) async {
+        let page = 0
+        provider.request(.getRankedProducts(page: page)) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.handleResponseForRankedProducts(response: response)
+            case .failure(let error):
+                print("네트워크 오류: \(error)")
+            }
+        }
+    }
+    
+    public func getCategoryProducts(for category: String, page: Int) async {
+        let page = 0
+        provider.request(.getTagRankingProducts(tag: category, page: page)) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.handleResponseForCategoryProducts(response: response)
+            case .failure(let error):
+                print("네트워크 오류: \(error)")
+            }
+        }
+    }
+    
+    public func toggleLikeProduct(for productId: Int, requestBody: ProductRequestDTO) async {
+        provider.request(.toggleLikeProduct(productId: productId, requestBody: requestBody)) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.handleResponseForToggleLike(response: response, productId: productId)
+            case .failure(let error):
+                print("네트워크 오류: \(error)")
+            }
+        }
+    }
+    
+    public func getSearchedProductsByDB(for keyword: String, page: Int) async {
+        let page = 0
+        provider.request(.getSearchProductsFromDB(keyword: keyword, page: page)) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.handleResponseForSearchDB(response: response)
+            case .failure(let error):
+                print("네트워크 오류: \(error)")
+            }
+        }
+    }
+    
+    public func getSearchedProductsByNaver(for keyword: String) async {
+        provider.request(.getSearchProductsFromNaver(keyword: keyword)) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.handleResponseForSearchNaver(response: response)
+            case .failure(let error):
+                print("네트워크 오류: \(error)")
+            }
+        }
+    }
+    
+    // MARK: - Response Handlers
+    
+    private func handleResponseForAiProducts(response: Response) {
+        if !responseIsJson(response: response) { return }
+        do {
+            if let jsonString = String(data: response.data, encoding: .utf8) {
+                print("Received JSON: \(jsonString)")
+            }
+            let decodedResponse = try JSONDecoder().decode(ResponseData<[RecommenProductResponseData]>.self, from: response.data)
+            DispatchQueue.main.async {
+                if let products = decodedResponse.result, !products.isEmpty {
+                    self.aiProducts = products
+                    print("AI 추천 상품 API 호출 성공")
+                } else {
+                    print("AI 추천 상품 API 호출 실패: No products found in result")
+                }
+            }
+        } catch {
+            print("AI 추천 상품 디코더 에러: \(error)")
+        }
+    }
 
+
+    private func handleResponseForRankedProducts(response: Response) {
+        if !responseIsJson(response: response) { return }
+        do {
+            if let jsonString = String(data: response.data, encoding: .utf8) {
+                                  print("Received JSON: \(jsonString)")
+                              }
+            let decodedResponse = try JSONDecoder().decode(ResponseData<[RecommenProductResponseData]>.self, from: response.data)
+            DispatchQueue.main.async {
+                if let products = decodedResponse.result {
+                    self.products = products
+                    print("랭킹별 상품 API 호출 성공")
+                } else {
+                    print("랭킹별 상품 API 호출 실패: No products found")
+                }
+            }
+        } catch {
+            print("랭킹별 상품 디코더 에러: \(error)")
+        }
+    }
+
+    private func handleResponseForCategoryProducts(response: Response) {
+        if !responseIsJson(response: response) { return }
+        do {
+            if let jsonString = String(data: response.data, encoding: .utf8) {
+                                  print("Received JSON: \(jsonString)")
+                              }
+            let decodedResponse = try JSONDecoder().decode(ResponseData<[RecommenProductResponseData]>.self, from: response.data)
+            DispatchQueue.main.async {
+                if let products = decodedResponse.result {
+                    self.categoryProducts = products
+                    print("카테고리 상품 API 호출 성공")
+                } else {
+                    print("카테고리 상품 API 호출 실패: No products found")
+                }
+            }
+        } catch {
+            print("카테고리 상품 디코더 에러: \(error)")
+        }
+    }
+
+    private func handleResponseForToggleLike(response: Response, productId: Int) {
+        if !responseIsJson(response: response) { return }
+        do {
+            if let jsonString = String(data: response.data, encoding: .utf8) {
+                                  print("Received JSON: \(jsonString)")
+                              }
+            let decodedResponse = try JSONDecoder().decode(ResponseData<LikeResponseDTO>.self, from: response.data)
+            DispatchQueue.main.async {
+                if let likeResponse = decodedResponse.result {
+                    if let index = self.products.firstIndex(where: { $0.product_id == productId }) {
+                        self.products[index].isLike = likeResponse.like
+                        self.products[index].total_likes = likeResponse.totalLikes
+                    }
+                    print("하트 변경 API 호출 성공")
+                } else {
+                    print("하트 변경 API 호출 실패: No like response found")
+                }
+            }
+        } catch {
+            print("하트 변경 디코더 에러: \(error)")
+        }
+    }
+
+    private func handleResponseForSearchDB(response: Response) {
+        if !responseIsJson(response: response) { return }
+        do {
+            if let jsonString = String(data: response.data, encoding: .utf8) {
+                                  print("Received JSON: \(jsonString)")
+                              }
+            let decodedResponse = try JSONDecoder().decode(ResponseData<[RecommenProductResponseData]>.self, from: response.data)
+            DispatchQueue.main.async {
+                if let products = decodedResponse.result {
+                    if self.searchResults != nil {
+                        self.searchResults!.dbProducts = products
+                    } else {
+                        self.searchResults = (dbProducts: products, naverProducts: [])
+                    }
+                    print("DB 검색 결과 API 호출 성공")
+                } else {
+                    print("DB 검색 결과 API 호출 실패: No products found")
+                }
+            }
+        } catch {
+            print("DB 검색 결과 디코더 에러: \(error)")
+        }
+    }
+
+    private func handleResponseForSearchNaver(response: Response) {
+        if !responseIsJson(response: response) { return }
+        do {
+            if let jsonString = String(data: response.data, encoding: .utf8) {
+                                  print("Received JSON: \(jsonString)")
+                              }
+            let decodedResponse = try JSONDecoder().decode(ResponseData<[RecommenProductResponseData]>.self, from: response.data)
+            DispatchQueue.main.async {
+                if let products = decodedResponse.result {
+                    if self.searchResults != nil {
+                        self.searchResults!.naverProducts = products
+                    } else {
+                        self.searchResults = (dbProducts: [], naverProducts: products)
+                    }
+                    print("네이버 검색 결과 API 호출 성공")
+                } else {
+                    print("네이버 검색 결과 API 호출 실패: No products found")
+                }
+            }
+        } catch {
+            print("네이버 검색 결과 디코더 에러: \(error)")
+        }
+    }
+
+    // Helper function to check if the response is JSON
+    private func responseIsJson(response: Response) -> Bool {
+        if let mimeType = response.response?.mimeType, mimeType != "application/json" {
+            print("Expected JSON but received \(mimeType): \(String(data: response.data, encoding: .utf8) ?? "")")
+            return false
+        }
+        return true
+    }
+}

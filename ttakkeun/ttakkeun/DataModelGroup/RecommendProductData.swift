@@ -9,18 +9,18 @@ import Foundation
 
 struct RecommenProductResponseData: Codable, Hashable, Identifiable {
     var id = UUID()
-    let product_id: Int
-    let title: String
-    let image: String
-    let price: Int
-    let brand: String
-    let link: String
-    let category1: String
-    let category2: String
-    let category3: String
-    let category4: String
-    let total_likes: Int
-    let isLike: Bool
+    var product_id: Int
+    var title: String
+    var image: String
+    var price: Int
+    var brand: String
+    var link: String
+    var category1: String
+    var category2: String
+    var category3: String
+    var category4: String
+    var total_likes: Int
+    var  isLike: Bool
     
     private enum CodingKeys: String, CodingKey {
         case product_id
@@ -38,4 +38,26 @@ struct RecommenProductResponseData: Codable, Hashable, Identifiable {
         
     }
 
+}
+
+struct ProductRequestDTO: Encodable {
+    let title: String
+    let image: String
+    let price: Int
+    let brand: String
+    let link: String
+    let category1: String
+    let category2: String
+    let category3: String
+    let category4: String
+}
+
+struct LikeResponseDTO: Codable {
+    let like: Bool
+    let totalLikes: Int
+    
+    private enum CodingKeys: String, CodingKey {
+        case like
+        case totalLikes = "total_likes"
+    }
 }

@@ -14,94 +14,107 @@ struct SuggestionInitialView: View {
     @State private var searchText: String = ""
     @State private var selectedProduct: RecommenProductResponseData? = nil
     
-    //MARK: - Init
+    // MARK: - Init
     init(viewModel: SuggestionViewModel) {
         self.viewModel = viewModel
     }
     
-    //MARK: - Contents
-     var body: some View {
-         VStack(spacing: 0) {
-             if !isSearching {
-                 TopStatusBar()
-                     .padding(.top, 10)
-                     .padding(.bottom, 20)
-                     .transition(.move(edge: .top).combined(with: .opacity))
-             }
-             ScrollView(.vertical, showsIndicators: false){
-                 VStack(spacing: 16) {
-                     searchBar
-                         .transition(.move(edge: .top).combined(with: .opacity))
-                     
-                     if !isSearching {
-                         Contents
-                     } else if let searchResults = viewModel.searchResults {
-                         SuggestionSearchedView(dbProducts: searchResults.dbProducts, naverProducts: searchResults.naverProducts)
-                     }
-                 }
-                 .frame(maxWidth: .infinity).ignoresSafeArea(.all)
-             }
-             .animation(.easeInOut(duration: 0.3), value: isSearching)
-         }
-         .sheet(item: $selectedProduct) { product in
-             ProductSheetView(data: product)
-                 .presentationDetents([.fraction(0.62)])
-                 .presentationDragIndicator(Visibility.hidden)
-         }
-         
-     }
+    // MARK: - Contents
+    var body: some View {
+        VStack(spacing: 0) {
+            TopStatusBar()
+                .padding(.top, 10)
+                .padding(.bottom, 20)
+            
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 16) {
+                    searchBar
+                        .padding(.top, 10)
+                    
+                    if isSearching {
+                        if let searchResults = viewModel.searchResults {
+                            SuggestionSearchedView(dbProducts: searchResults.dbProducts, naverProducts: searchResults.naverProducts)
+                        } else {
+                            Text("검색 결과가 없습니다.")
+                                .foregroundColor(.gray)
+                                .padding()
+                        }
+                    } else {
+                        Contents
+                    }
+                }
+                .frame(maxWidth: .infinity).ignoresSafeArea(.all)
+            }
+            .animation(.easeInOut(duration: 0.3), value: viewModel.selectedCategory)
+        }
+        .sheet(item: $selectedProduct) { product in
+            ProductSheetView(data: product)
+                .presentationDetents([.fraction(0.62)])
+                .presentationDragIndicator(Visibility.hidden)
+        }
+        .onAppear {
+            Task {
+                await viewModel.loadInitialData()
+            }
+        }
+    }
     
-    /// 검색바
-     private var searchBar: some View {
-         HStack {
-             if isSearching {
-                 Button(action: {
-                     isSearching = false
-                     searchText = ""
-                     viewModel.searchResults = nil
-                 }) {
-                     Icon.backBtn.image
-                         .foregroundStyle(Color.gray900)
-                 }
-             }
-             HStack{
-                 if !isSearching {
-                     Icon.glass.image
-                 }
-                 TextField(isSearching ? "" : "검색어를 입력하세요", text: $searchText)
-                     .onSubmit {
-                         Task {
-                             await performSearch()
-                         }
-                     }
-             }
-             .frame(width: 325, height: 24)
-             .padding(.horizontal, 12)
-             .padding(.vertical, 8)
-             .background(Color.white)
-             .clipShape(RoundedRectangle(cornerRadius: 20))
-             .overlay(RoundedRectangle(cornerRadius: 20)
-                 .stroke(Color.gray200, lineWidth: 1))
-             .onTapGesture {
-                 isSearching = true
-             }
-         }
-         .padding(.top, isSearching ? 0 : 1)
-     }
-     
+    private var searchBar: some View {
+          HStack {
+              if isSearching {
+                  Button(action: {
+                      isSearching = false
+                      searchText = ""
+                      viewModel.searchResults = nil
+                  }) {
+                      Icon.backBtn.image
+                          .foregroundColor(Color.gray900)
+                  }
+                  .padding(.horizontal, 10)
+                  .transition(.move(edge: .trailing))
+              }
+              
+              HStack {
+                  Icon.glass.image
+                      .foregroundColor(.gray)
+                      .padding(.leading, 5)
+                  
+                  TextField("검색어를 입력하세요", text: $searchText)
+              }
+              .frame(maxWidth: 314, maxHeight: 24)
+              .padding(.horizontal, 12)
+              .padding(.vertical, 10)
+              .background(Color.white)
+              .clipShape(RoundedRectangle(cornerRadius: 20))
+              .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray200))
+              .onSubmit {
+                  performSearch()
+              }
+              .onAppear {
+                  UIApplication.shared.hideKeyboard()
+              }
+              
+              if !searchText.isEmpty {
+                            Button(action: {
+                                // 텍스트 필드를 초기화하는 액션
+                                searchText = ""
+                            }) {
+                                Icon.imageRemove.image
+                                    .foregroundColor(Color.gray200)
+                                    .padding(.trailing, 10)
+                            }
+                        }
+          }
+      }
+    // 검색 실행
+    private func performSearch() {
+        isSearching = true
+        Task {
+            await viewModel.performSearch(for: searchText)
+        }
+    }
     
-    
-    /// 검색버튼 함수
-     private func performSearch() async {
-         // 검색을 실제로 실행하는 로직을 여기에 구현합니다.
-         print("검색 실행: \(searchText)")
-         await viewModel.performSearch(for: searchText)
-         // 검색 결과를 나타내는 뷰를 업데이트하려면 isSearching 상태를 true로 설정
-         isSearching = true
-     }
-    
-    
-    /// 카테고리세그먼트, ai추천상품, all 추천상품
+    // 카테고리 세그먼트, AI 추천상품, 전체 추천상품
     private var Contents: some View {
         VStack(spacing: 24) {
             categorySegmentedControl
@@ -116,9 +129,7 @@ struct SuggestionInitialView: View {
         }
     }
     
-    
-    
-    /// 카테고리 세그먼트
+    // 카테고리 세그먼트 컨트롤
     private var categorySegmentedControl: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
@@ -127,9 +138,9 @@ struct SuggestionInitialView: View {
                         viewModel.selectedCategory = category
                         Task {
                             if category == .all {
-                                await viewModel.getAllProducts()
+                                await viewModel.getRankedProducts(page: 1)
                             } else {
-                                // await viewModel.getCategoryProducts(for: category.rawValue)
+                                await viewModel.getCategoryProducts(for: category.rawValue, page: 1)
                             }
                         }
                     }) {
@@ -153,9 +164,9 @@ struct SuggestionInitialView: View {
         }
     }
     
-    /// ai상품 전체 셋
+    // AI 추천 상품 셋
     private var aiProductSet: some View {
-        VStack(spacing: -2){
+        VStack(spacing: -2) {
             aiRecommendProductText
                 .padding(.leading, 21)
             aiRecommendProduct
@@ -163,9 +174,9 @@ struct SuggestionInitialView: View {
         .padding(.top, 17)
     }
     
-    /// ai 추천상품 타이틀
+    // AI 추천 상품 텍스트
     private var aiRecommendProductText: some View {
-        HStack(spacing: 2){
+        HStack(spacing: 2) {
             Icon.recommendDog.image
                 .fixedSize()
             Text("따끈따끈 AI 최근 추천")
@@ -175,12 +186,11 @@ struct SuggestionInitialView: View {
         }
     }
     
-    /// ai추천상품
+    // AI 추천 상품 뷰
     private var aiRecommendProduct: some View {
         Group {
             if viewModel.aiProducts.isEmpty {
-                HomeNotRecommend(firstLine:
-                                    "1", secondLine: "2")
+                HomeNotRecommend(firstLine: "추천 상품이 없습니다", secondLine: "AI 추천 상품을 확인하세요.")
             } else {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
@@ -197,17 +207,17 @@ struct SuggestionInitialView: View {
         }
     }
     
-    /// 제품셋
+    // 제품 셋
     private var productSet: some View {
-        VStack(spacing: 16){
+        VStack(spacing: 16) {
             recommendText
             recommendProduct
         }
     }
     
-    /// 추천 텍스트
+    // 추천 텍스트
     private var recommendText: some View {
-        HStack{
+        HStack {
             Text("랭킹별 추천상품")
                 .padding(.leading, 21)
                 .font(.H4_bold)
@@ -216,29 +226,23 @@ struct SuggestionInitialView: View {
         }
     }
     
-    /// 추천상품
+    // 추천 상품 뷰
     private var recommendProduct: some View {
         VStack(spacing: 16) {
             let productsToShow = viewModel.selectedCategory == .all ? viewModel.products : viewModel.categoryProducts
             ForEach(productsToShow) { product in
-                RecommendProduct(
-                    data: product,
-                    rank: productsToShow.firstIndex(of: product) ?? 0
-                )
-                .onTapGesture {
-                    selectedProduct = product
-                }
+                RecommendProduct(data: product, rank: productsToShow.firstIndex(of: product) ?? 0)
+                    .onTapGesture {
+                        selectedProduct = product
+                    }
             }
         }
         .padding(.horizontal, 21)
     }
 }
 
-
-
-//MARK: - Preview
+// MARK: - Preview
 struct SuggestionInitialView_Preview: PreviewProvider {
-    
     static let devices = ["iPhone 11", "iPhone 15 Pro", "iPhone 15 Pro Max"]
     
     static var previews: some View {
