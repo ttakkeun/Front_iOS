@@ -10,6 +10,8 @@ import SwiftUI
 struct SuggestionInitialView: View {
     
     @ObservedObject var viewModel: SuggestionViewModel
+    @State private var isSearching: Bool = false
+    @State private var searchText: String = ""
     @State private var selectedProduct: RecommenProductResponseData? = nil
     
     // MARK: - Init
@@ -26,7 +28,20 @@ struct SuggestionInitialView: View {
             
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 16) {
-                    Contents
+                    searchBar
+                        .padding(.top, 10)
+                    
+                    if isSearching {
+                        if let searchResults = viewModel.searchResults {
+                            SuggestionSearchedView(dbProducts: searchResults.dbProducts, naverProducts: searchResults.naverProducts)
+                        } else {
+                            Text("검색 결과가 없습니다.")
+                                .foregroundColor(.gray)
+                                .padding()
+                        }
+                    } else {
+                        Contents
+                    }
                 }
                 .frame(maxWidth: .infinity).ignoresSafeArea(.all)
             }
@@ -41,6 +56,61 @@ struct SuggestionInitialView: View {
             Task {
                 await viewModel.loadInitialData()
             }
+        }
+    }
+    
+    private var searchBar: some View {
+          HStack {
+              if isSearching {
+                  Button(action: {
+                      isSearching = false
+                      searchText = ""
+                      viewModel.searchResults = nil
+                  }) {
+                      Icon.backBtn.image
+                          .foregroundColor(Color.gray900)
+                  }
+                  .padding(.horizontal, 10)
+                  .transition(.move(edge: .trailing))
+              }
+              
+              HStack {
+                  Icon.glass.image
+                      .foregroundColor(.gray)
+                      .padding(.leading, 5)
+                  
+                  TextField("검색어를 입력하세요", text: $searchText)
+              }
+              .frame(maxWidth: 314, maxHeight: 24)
+              .padding(.horizontal, 12)
+              .padding(.vertical, 10)
+              .background(Color.white)
+              .clipShape(RoundedRectangle(cornerRadius: 20))
+              .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.gray200))
+              .onSubmit {
+                  performSearch()
+              }
+              .onAppear {
+                  UIApplication.shared.hideKeyboard()
+              }
+              
+              if !searchText.isEmpty {
+                            Button(action: {
+                                // 텍스트 필드를 초기화하는 액션
+                                searchText = ""
+                            }) {
+                                Icon.imageRemove.image
+                                    .foregroundColor(Color.gray200)
+                                    .padding(.trailing, 10)
+                            }
+                        }
+          }
+      }
+    // 검색 실행
+    private func performSearch() {
+        isSearching = true
+        Task {
+            await viewModel.performSearch(for: searchText)
         }
     }
     

@@ -8,14 +8,13 @@
 import SwiftUI
 
 struct SuggestionView: View {
+    @StateObject private var viewModel = SuggestionViewModel()
 
-    
     var body: some View {
-        SuggestionInitialView(viewModel: SuggestionViewModel())
+        SuggestionInitialView(viewModel: viewModel)
+            .background(Color.scheduleCard)
     }
 }
-
-
 
 #Preview {
     SuggestionView()

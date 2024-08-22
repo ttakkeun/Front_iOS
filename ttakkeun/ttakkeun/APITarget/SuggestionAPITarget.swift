@@ -1,15 +1,16 @@
 //
-//  SuggestionAPITarget.swift
+//  ProductAPITarget.swift
 //  ttakkeun
 //
 //  Created by 한지강 on 8/21/24.
 //
 
 import Foundation
+import SwiftUI
 import Moya
 
 // MARK: - ProductAPITarget 정의
-enum ProductAPITarget {
+enum SuggestionAPITarget {
     case getAiProducts(petId: Int)
     case getRankedProducts(page: Int)
     case getTagRankingProducts(tag: String, page: Int)
@@ -18,22 +19,22 @@ enum ProductAPITarget {
     case toggleLikeProduct(productId: Int, requestBody: ProductRequestDTO)
 }
 
-extension ProductAPITarget: APITargetType {
+extension SuggestionAPITarget: APITargetType {
     
     var path: String {
         switch self {
         case .getAiProducts(let petId):
-            return "/ai/\(petId)"
+            return "/product/ai/\(petId)"
         case .getRankedProducts(let page):
-            return "/rank/\(page)"
+            return "/product/rank/\(page)"
         case .getTagRankingProducts(let tag, let page):
-            return "/tag/\(tag)/\(page)"
+            return "/product/tag/\(tag)/\(page)"
         case .getSearchProductsFromDB(let keyword, let page):
-            return "/search_db/\(keyword)/\(page)"
+            return "/product/search_db/\(keyword)/\(page)"
         case .getSearchProductsFromNaver(let keyword):
-            return "/search_naver/\(keyword)"
+            return "/product/search_naver/\(keyword)"
         case .toggleLikeProduct(let productId, _):
-            return "/like/\(productId)"
+            return "/product/like/\(productId)"
         }
     }
     
