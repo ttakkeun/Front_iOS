@@ -69,12 +69,14 @@ class ScheduleViewModel: ObservableObject, @preconcurrency TodoCheckProtocol {
                        print("Received JSON: \(jsonString)")
                    }
             
-            let decodedData = try JSONDecoder().decode(ResponseData<ScheduleInquiryResponseData>.self, from: response.data)
-            if decodedData.isSuccess {
-                if let data = decodedData.result {
-                    DispatchQueue.main.async {
-                        self.processFetchData(data)
-                        print("캘린더 정보 조회 완료")
+            let decodedData = try JSONDecoder().decode(ResponseData<ScheduleInquiryResponseData>?.self, from: response.data)
+            if let decodedData = decodedData {
+                if decodedData.isSuccess {
+                    if let data = decodedData.result {
+                        DispatchQueue.main.async {
+                            self.processFetchData(data)
+                            print("캘린더 정보 조회 완료")
+                        }
                     }
                 }
             }
