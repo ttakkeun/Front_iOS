@@ -77,17 +77,8 @@ struct JournalQuestionView: View {
     
     /// 질문에 해당하는 답변 조회
     private func loadQuestion() {
-        guard let answer1 = viewModel.inputData.answer1, let answer2 = viewModel.inputData.answer2, let answer3 = viewModel.inputData.answer3 else { return }
-        
-        switch questionIndex {
-        case 0:
-            selectionAnswer = answer1
-        case 1:
-            selectionAnswer = answer2
-        case 2:
-            selectionAnswer = answer3
-        default:
-            break
+        if let savedAnsers = viewModel.inputData.answers[question.questionID] {
+            selectionAnswer = savedAnsers
         }
     }
     
@@ -103,15 +94,7 @@ struct JournalQuestionView: View {
         } else {
             selectionAnswer = [answer.answerText]
         }
-        viewModel.updateAnswer(for: questionIndex, selectedAnswer: selectionAnswer)
+        viewModel.updateAnswer(for: question.questionID, selectedAnswer: selectionAnswer)
         print(viewModel.inputData)
-    }
-}
-
-
-struct JournalQuestionView_Preview: PreviewProvider {
-    static var previews: some View {
-        JournalQuestionView(viewModel: RegistJournalViewModel(petId: 0), question: QuestionDetailData(questionID: 1, questionText: "오늘 뭐하고 싶어요?", subtitle: "고르세요", answer: [AnswerDetailData(answerID: UUID(), answerText: "잠자기"), AnswerDetailData(answerID: UUID(), answerText: "책 읽기")]), allowMultiSelection: false, questionIndex: 0)
-            .previewLayout(.sizeThatFits)
     }
 }

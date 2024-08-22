@@ -26,7 +26,6 @@ class TokenProvider: TokenProviding {
             userInfo.accessToken = newValue
             if keyChain.saveSession(userInfo, for: "userSession") {
                 print("유저 액세스 토큰 갱신 됨")
-                print("액세스: \(userInfo.accessToken)")
             }
         }
     }

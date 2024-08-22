@@ -22,7 +22,7 @@ struct CheckQnAView: View {
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false, content: {
-            VStack(alignment: .center, content: {
+            VStack(alignment: .center, spacing: 38, content: {
                 CustomNavigation(
                     action: {
                         dismiss()
@@ -36,11 +36,9 @@ struct CheckQnAView: View {
                 topTtitle
                 
                 qnaContents
-                
-                if let text = data.etcString {
-                    etcStringView(text: text)
-                }
+
             })
+            .padding(.bottom, 60)
         })
     }
     
@@ -101,6 +99,11 @@ struct CheckQnAView: View {
             .padding(.horizontal, 15)
             .padding(.bottom, 25)
             .padding(.top, 15)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.clear)
+                    .stroke(Color.gray_200, lineWidth: 1)
+            )
         }
     
     // MARK: - bottomContents
@@ -110,6 +113,11 @@ struct CheckQnAView: View {
         VStack(spacing: 32, content: {
             ForEach(data.qnaList.indices, id: \.self) { index in
                 CheckQnAComponent(data: data.qnaList[index], dataIndex: index)
+            }
+            
+            
+            if let text = data.etcString {
+                etcStringView(text: text)
             }
             
             
@@ -144,11 +152,5 @@ struct CheckQnAView: View {
         }
         
         return outputFormatter.string(from: date)
-    }
-}
-
-struct CheckQnAView_Preview: PreviewProvider {
-    static var previews: some View {
-        CheckQnAView(data: CheckJournalQnAResponseData(category: .claw, date: "2024-06-23", time: "10:23", qnaList: [QnAListData(question: "털에 윤기가 잘 나고 있나요?", answer: [AnswerDetailData(answerText: "윤기가 나요")], image: ["https://upload.wikimedia.org/wikipedia/ko/4/4a/신짱구.png", "https://i.namu.wiki/i/hiLIForWFvqDCgVJD7oN0ZqSDlnOtE3AnvfNDVb3oO86cwel7kCRuXp_4AIdrH3xMwUinnRnF4HplO_SRW76PD2Y-wY4poC2FpNhYoZ1bZI_8iBN36sYxgDVEBdTmvf7aCAiUfNZQA-nG4x2yGOFdQ.webp"]), QnAListData(question: "평소보다 털빠짐이 심한가요?", answer: [AnswerDetailData(answerText: "털빠짐이 심해요")], image: nil), QnAListData(question: "집중적으로 핥거나 긁는 부위가 있나요?", answer: [AnswerDetailData(answerText: "해당부위가 있어요")], image: nil)], etcString: "나는 정말로 재밌게 하고 있따."))
     }
 }

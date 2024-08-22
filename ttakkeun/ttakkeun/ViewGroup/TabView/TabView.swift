@@ -12,6 +12,7 @@ struct TabView: View {
     
     @EnvironmentObject var petState: PetState
     @EnvironmentObject var container: DIContainer
+    @EnvironmentObject var tabBarVisibility: TabBarVisibilityManager 
     @State private var selectedTab: TabCase = .home
     @State private var opacity = 0.0
     
@@ -29,7 +30,10 @@ struct TabView: View {
                         .environmentObject(petState)
                         .tag(TabCase.home)
                 case .diagnosis:
-                    DiagnosisView(petId: petState.petId)
+                    DiagnosisView(petId: petState.petId, container: container)
+                        .environmentObject(petState)
+                        .environmentObject(container)
+                        .environmentObject(tabBarVisibility)
                         .tag(TabCase.diagnosis)
                 case .schedule:
                     ScheduleView()
@@ -42,7 +46,10 @@ struct TabView: View {
                         .tag(TabCase.qna)
                 }
             
-            CustomTab(selectedTab: $selectedTab)
+            if !tabBarVisibility.isTabBarHidden {
+                CustomTab(selectedTab: $selectedTab)
+                    .transition(.move(edge: .bottom))
+            }
         })
         .opacity(opacity)
         .onAppear {

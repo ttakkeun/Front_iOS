@@ -10,6 +10,7 @@ import SwiftUI
 
 struct NavigationRoutingView: View {
     @EnvironmentObject var container: DIContainer
+    @EnvironmentObject var tabManager: TabBarVisibilityManager
     @State var destination: NavigationDestination
     
     var body: some View {
@@ -22,6 +23,10 @@ struct NavigationRoutingView: View {
                 .environmentObject(container)
         case .myPage:
             Text("마이페이잊")
+        case .createDiagnosis(let petId):
+            RegistDiagnosisFlowView(petId: petId)
+                .environmentObject(container)
+                .environmentObject(tabManager)
         }
     }
 }

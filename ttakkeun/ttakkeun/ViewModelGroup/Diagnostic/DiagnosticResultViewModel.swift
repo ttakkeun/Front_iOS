@@ -49,7 +49,8 @@ class DiagnosticResultViewModel: ObservableObject {
         do {
             let decodedData = try JSONDecoder().decode(DiagnosticPoint.self, from: response.data)
             DispatchQueue.main.async {
-                self.point = decodedData.result.point
+                self.point = decodedData.result.point + 1
+                print("나의 포인트: \(self.point)")
                 print("진단 포인트 조회 완료")
             }
         } catch {

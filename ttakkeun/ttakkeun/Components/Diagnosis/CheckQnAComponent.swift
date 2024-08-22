@@ -32,6 +32,7 @@ struct CheckQnAComponent: View {
             Text("\(dataIndex + 1). \(data.question)")
                 .font(.Body1_bold)
                 .foregroundStyle(Color.gray_900)
+                .lineLimit(nil)
             
             selectedAnswer
             
@@ -46,6 +47,7 @@ struct CheckQnAComponent: View {
                 .fill(Color.clear)
                 .stroke(Color.gray_200)
         )
+        .frame(width: 344)
     }
     
     /// 일지 생성 시 선택했던 답변들 조회, 클릭 안되는 상태로 들어온다.
@@ -75,7 +77,7 @@ struct CheckQnAComponent: View {
                                     print("일지 답변 저장된 이미지 로딩 실패")
                                 }
                                 .resizable()
-                                .aspectRatio(contentMode: .fit)
+                                .aspectRatio(contentMode: .fill)
                                 .frame(width: 63, height: 63)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .overlay(
@@ -93,14 +95,14 @@ struct CheckQnAComponent: View {
         }
     }
     
-    private func answerTextComponents(answer: AnswerDetailData) -> some View {
+    private func answerTextComponents(answer: String) -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color.primarycolor_200)
                 .frame(width: 312, height: 65)
             
             HStack(alignment: .center, content: {
-                Text(answer.answerText)
+                Text(answer)
                     .font(.Body3_semibold)
                     .foregroundStyle(Color.gray_900)
                 
@@ -114,12 +116,5 @@ struct CheckQnAComponent: View {
             .frame(width: 264, height: 30)
         }
         .frame(width: 312, height: 65)
-    }
-}
-
-struct CheckQnAComponent_Preview: PreviewProvider {
-    static var previews: some View {
-        CheckQnAComponent(data: QnAListData(question: "털에 윤기가 잘 나고 있나요?", answer: [AnswerDetailData(answerID: UUID(), answerText: "윤기가 나요"),AnswerDetailData(answerID: UUID(), answerText: "윤기가 안 나요")], image: ["https://upload.wikimedia.org/wikipedia/ko/4/4a/신짱구.png", "https://i.namu.wiki/i/hiLIForWFvqDCgVJD7oN0ZqSDlnOtE3AnvfNDVb3oO86cwel7kCRuXp_4AIdrH3xMwUinnRnF4HplO_SRW76PD2Y-wY4poC2FpNhYoZ1bZI_8iBN36sYxgDVEBdTmvf7aCAiUfNZQA-nG4x2yGOFdQ.webp"]), dataIndex: 0)
-            .previewLayout(.sizeThatFits)
     }
 }
