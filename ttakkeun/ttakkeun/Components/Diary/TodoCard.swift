@@ -45,8 +45,9 @@ struct TodoCard: View {
             
             Spacer()
         })
-        .frame(width: 336, height: 77)
+        .frame(width: 336)
         .padding(.leading, 14)
+        .padding(.vertical, 18)
         .clipShape(RoundedRectangle(cornerRadius: 20))
         .overlay(
             RoundedRectangle(cornerRadius: 20)
