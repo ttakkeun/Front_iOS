@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct SuggestionView: View {
-    
-//    @StateObject var viewModel: SuggestionViewModel
+
     
     var body: some View {
-        Text("hello world!")
+        SuggestionInitialView(viewModel: SuggestionViewModel())
     }
 }
 
