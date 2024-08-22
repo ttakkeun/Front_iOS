@@ -10,12 +10,12 @@ import Charts
 
 struct DiagnosisResultDetailView: View {
     
-    @ObservedObject var viewModel: DiagnosticResultViewModel
+    @ObservedObject var viewModel: JournalListViewModel
     @Environment(\.dismiss) var dismiss
     
     @ViewBuilder
     var body: some View {
-        if let _ = viewModel.diagnosisDetailData {
+        if let _ = viewModel.diagnosisData {
             ScrollView(.vertical, showsIndicators: true) {
                 VStack(spacing: 24) {
                     self.topBackground
@@ -73,7 +73,7 @@ struct DiagnosisResultDetailView: View {
     /// 점수가 포함된 RectangleGraph
     @ViewBuilder
     private var graphRectangle: some View {
-        if let data = viewModel.diagnosisDetailData {
+        if let data = viewModel.diagnosisData {
             HStack(alignment: .center, spacing: 19, content: {
                 Text("총점")
                     .font(.Body2_semibold)
@@ -157,7 +157,7 @@ struct DiagnosisResultDetailView: View {
             DiagnosisProduct(data: AIProducts(title: "dsad", image: "Asad", lprice: 1234, brand: "Adad"))
             DiagnosisProduct(data: AIProducts(title: "dsad", image: "Asad", lprice: 1234, brand: "Adad"))
             
-            if let data = viewModel.diagnosisDetailData {
+            if let data = viewModel.diagnosisData {
                 VStack(spacing: 15, content: {
                     ForEach(data.products, id: \.self) { data in
                         DiagnosisProduct(data: data)
@@ -201,16 +201,6 @@ struct DiagnosisResultDetailView: View {
                         .frame(width: 257, height: 168)
                 })
             })
-        }
-    }
-}
-
-struct DiagnosisResultDetailView_Preview: PreviewProvider {
-    static let devices = ["iPhone 11", "iPhone 15 Pro"]
-    
-    static var previews: some View {
-        ForEach(devices, id: \.self) { device in
-            DiagnosisResultDetailView(viewModel: DiagnosticResultViewModel(petId: 0))
         }
     }
 }
