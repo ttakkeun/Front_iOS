@@ -9,8 +9,9 @@ import SwiftUI
 
 /// 일지 생성 뷰 전환 컨텐츠
 struct RegistDiagnosisPageContents: View {
-    
     @ObservedObject var viewModel: RegistJournalViewModel
+    @EnvironmentObject var container: DIContainer
+    @Environment(\.dismiss) var dismiss
     fileprivate let buttonList: [PartItem] = [.ear, .hair, .eye, .claw , .tooth]
     
     var body: some View {
@@ -48,8 +49,11 @@ struct RegistDiagnosisPageContents: View {
             MainButton(btnText: "다음", width: 339, height: 63, action: {
                 if viewModel.selectedPart != nil {
                     Task {
-                        viewModel.currentPage += 1
-                        await viewModel.getJournalQuestions()
+                        await viewModel.getJournalQuestions { success in
+                            if success {
+                                viewModel.currentPage += 1
+                            }
+                        }
                     }
                 }
             }, color: Color.primaryColorMain)
@@ -66,7 +70,7 @@ struct RegistDiagnosisPageContents: View {
                 JournalQuestionView(
                     viewModel: viewModel,
                     question: question,
-                    allowMultiSelection: true,
+                    allowMultiSelection: question.isDupe,
                     questionIndex: viewModel.currentPage - 2)
                 
                 Spacer()
@@ -100,8 +104,14 @@ struct RegistDiagnosisPageContents: View {
                 }
                 
                 Task {
-                    if viewModel.currentPage == 5 {
-                        await viewModel.postInputData()
+                    if viewModel.currentPage == 6 {
+                        await viewModel.postInputData { success in
+                            if success {
+                                dismiss()
+                            } else {
+                                container.navigationRouter.pop()
+                            }
+                        }
                     }
                 }
             }, color: Color.primaryColor_Main)

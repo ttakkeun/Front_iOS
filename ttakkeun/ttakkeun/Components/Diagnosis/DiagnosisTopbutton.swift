@@ -38,9 +38,6 @@ struct DiagnosisTopbutton: View {
                     withAnimation(.easeInOut(duration: 1.0)) {
                         journalListViewModel.isSelectionMode = true
                     }
-                    Task {
-                        await diagnosticResultViewModel.getDiagnosticPoint()
-                    }
                 }
             } else {
                 Spacer()
@@ -62,7 +59,11 @@ struct DiagnosisTopbutton: View {
                 } else {
                     Button(action: {
                         Task {
-                            await journalListViewModel.deleteSelecttedJournalList()
+                            withAnimation(.easeIn(duration: 0.2)) {
+                                Task {
+                                    await journalListViewModel.deleteSelecttedJournalList()
+                                }
+                            }
                         }
                     }, label: {
                         Icon.trash.image

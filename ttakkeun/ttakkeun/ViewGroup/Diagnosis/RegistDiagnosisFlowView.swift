@@ -8,29 +8,39 @@
 import SwiftUI
 
 struct RegistDiagnosisFlowView: View {
-    @Environment(\.dismiss) var dismiss
     @StateObject var viewModel: RegistJournalViewModel
+    @EnvironmentObject var container: DIContainer
+    @EnvironmentObject var tabManager: TabBarVisibilityManager
     
-    init(petState: PetState) {
-        self._viewModel = StateObject(wrappedValue: RegistJournalViewModel(petId: petState.petId))
+    init(petId: Int) {
+        self._viewModel = StateObject(wrappedValue: RegistJournalViewModel(petId: petId))
     }
     
     var body: some View {
         VStack(alignment: .center, content: {
             CustomNavigation(action: {
-                dismiss()
+                container.navigationRouter.pop()
             }, title: "일지 생성", currentPage: viewModel.currentPage, naviIcon: Image("close"), width: 14, height: 14)
             
-            Spacer()
+            Spacer().frame(height: 38)
             
             RegistDiagnosisPageContents(viewModel: viewModel)
+                .environmentObject(container)
             
-            Spacer()
+            Spacer().frame(height: 20)
         })
-        .frame(width: 355, height: 749)
+        .navigationBarBackButtonHidden()
+        .frame(width: 355, height: 820)
+        .onAppear {
+            withAnimation {
+                tabManager.isTabBarHidden = true
+            }
+        }
+        
+        .onDisappear {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                tabManager.isTabBarHidden = false
+            }
+        }
     }
-}
-
-#Preview {
-    RegistDiagnosisFlowView(petState: PetState())
 }

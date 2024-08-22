@@ -8,13 +8,6 @@
 import Foundation
 
 /// 카데고리 선택 시, 카테고리에 해당하는 질문과 답변을 받아온다.
-struct JournalQuestionsData: Codable {
-    let isSuccess: Bool
-    let code: String
-    let message: String
-    let result: JournalQuestionsDetailData
-}
-
 struct JournalQuestionsDetailData: Codable {
     let category: String
     let questions: [QuestionDetailData]
@@ -25,13 +18,15 @@ struct QuestionDetailData: Codable {
     let questionID: Int
     let questionText: String
     let subtitle: String
+    let isDupe: Bool
     let answer: [AnswerDetailData]
     
     enum CodingKeys: String, CodingKey {
-        case questionID = "question_Id"
-        case questionText = "question_text"
-        case answer = "answer_text"
-        case subtitle
+        case questionID = "questionId"
+        case questionText = "questionText"
+        case answer = "answers"
+        case subtitle = "descriptionText"
+        case isDupe
     }
 }
 

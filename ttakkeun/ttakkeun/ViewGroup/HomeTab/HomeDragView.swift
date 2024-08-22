@@ -197,12 +197,12 @@ struct HomeDragView: View {
             
             if let resultData = productViewModel.userProductData {
                 ScrollView(.horizontal, showsIndicators: false, content: {
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 90), spacing: 12), count: 4), spacing: 11, content: {
+                    LazyVGrid(columns: Array(repeating: GridItem(.fixed(90), spacing: 12), count: 4), spacing: 11, content: {
                         ForEach(Array(resultData.prefix(8).enumerated()), id: \.element) { index, data in
                             HomeUserRecommendProduct(data: data, rank: index)
                         }
                     })
-                    .frame(height: 331)
+                    .frame(width: 354, height: 331)
                     .padding(.bottom, 80)
                     .padding(.leading, 12)
                 })
