@@ -7,6 +7,10 @@
 
 import Foundation
 
+struct topProducts: Codable {
+    var products: [Product]
+}
+
 struct Product: Codable {
     var productId: Int
     var title: String

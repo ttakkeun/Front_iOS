@@ -29,6 +29,7 @@ struct JournalListView: View {
         }
         .fullScreenCover(isPresented: $viewModel.isLoadingDiag, content: {
             DiagnosisResultDetailView(viewModel: viewModel)
+                .frame(width: .infinity, height: .infinity)
         })
     }
     

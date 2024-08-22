@@ -92,7 +92,7 @@ extension JournalAPITarget: APITargetType {
                        if let imageData = image.jpegData(compressionQuality: 0.8) {
                            let multipartData = MultipartFormData(
                                provider: .data(imageData),
-                               name: "images",  // 서버에서 기대하는 필드 이름 (이 경우 "images")
+                               name: "images",
                                fileName: "image\(questionID)_\(index).jpg",
                                mimeType: "image/jpeg"
                            )
@@ -112,7 +112,7 @@ extension JournalAPITarget: APITargetType {
         case .makeDiagnosis(let data):
             return .requestJSONEncodable(data)
         case .updateContents(_, let data):
-            return .requestParameters(parameters: ["products": data], encoding: URLEncoding.default)
+            return .requestParameters(parameters: ["products": data], encoding: JSONEncoding.default)
         case .getResultDiag:
             return .requestPlain
         }

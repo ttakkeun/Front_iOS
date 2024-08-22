@@ -203,7 +203,7 @@ class JournalListViewModel: ObservableObject {
                 
                 
                 do {
-                    let decodedData = try JSONDecoder().decode(ResponseData<Product>.self, from: reponse.data)
+                    let decodedData = try JSONDecoder().decode(ResponseData<topProducts>.self, from: reponse.data)
                     if decodedData.isSuccess {
                         if let data = decodedData.result {
                             print("진단 결과 상품 매칭 성공: \(data)")

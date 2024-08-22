@@ -15,13 +15,13 @@ struct DiagnosisResultDetailView: View {
     
     @ViewBuilder
     var body: some View {
-        if let _ = viewModel.diagnosisData {
+        if let data = viewModel.diagnosisData {
             ScrollView(.vertical, showsIndicators: true) {
                 VStack(spacing: 24) {
                     self.topBackground
                     
-                    self.checkDetail("진단 결과", "data.detailValue")
-                    self.checkDetail("추후 결과법", "data.afterCare")
+                    self.checkDetail("진단 결과", data.detailValue)
+                    self.checkDetail("추후 결과법", data.afterCare)
                     
                     referrenceProduct
                     
@@ -33,14 +33,10 @@ struct DiagnosisResultDetailView: View {
                 }
                 .padding(.bottom, 30)
             }
-            .frame(maxHeight: .infinity)
+            .frame(minWidth: 393, maxWidth: 600)
             .ignoresSafeArea(.all)
         } else {
-            VStack {
-                LoadingView(width: 506, height: 686)
-                
-                Spacer()
-            }
+                LoadingView(width: 393, height: 600)
             .ignoresSafeArea(.all)
             .onAppear {
                 viewModel.objectWillChange.send()
@@ -151,12 +147,6 @@ struct DiagnosisResultDetailView: View {
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray_900)
             
-            DiagnosisProduct(data: AIProducts(title: "dsad", image: "Asad", lprice: 1234, brand: "Adad"))
-            DiagnosisProduct(data: AIProducts(title: "dsad", image: "Asad", lprice: 1234, brand: "Adad"))
-            DiagnosisProduct(data: AIProducts(title: "dsad", image: "Asad", lprice: 1234, brand: "Adad"))
-            DiagnosisProduct(data: AIProducts(title: "dsad", image: "Asad", lprice: 1234, brand: "Adad"))
-            DiagnosisProduct(data: AIProducts(title: "dsad", image: "Asad", lprice: 1234, brand: "Adad"))
-            
             if let data = viewModel.diagnosisData {
                 VStack(spacing: 15, content: {
                     ForEach(data.products, id: \.self) { data in
@@ -180,27 +170,45 @@ struct DiagnosisResultDetailView: View {
         }
         
         var body: some View {
-            ZStack(alignment: .center, content: {
+            VStack {
                 
-                Icon.loadingBg.image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: width, height: height)
-                
-                VStack(spacing: 24, content: {
+                ZStack(alignment: .center, content: {
                     
-                    Text("진단중!! \n잠시만 기다려주세요!!")
-                        .font(.H2_semibold)
-                        .foregroundStyle(Color.black)
-                        .multilineTextAlignment(.center)
-                        .lineSpacing(1.5)
+                    Icon.loadingBg.image
+                        .fixedSize()
                     
-                    Icon.bubbleLogo.image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 257, height: 168)
+                    VStack(spacing: 24, content: {
+                        
+                        Text("진단중!! \n잠시만 기다려주세요!!")
+                            .font(.H2_semibold)
+                            .foregroundStyle(Color.black)
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(1.5)
+                        
+                        Icon.bubbleLogo.image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 257, height: 168)
+                    })
                 })
-            })
+                
+                Spacer()
+            }
+            .frame(width: .infinity, height: .infinity)
+            .ignoresSafeArea(.all)
         }
+    }
+}
+
+struct DiagnosisResultDetailView_Preview: PreviewProvider {
+    
+    @State static var isLoadingPage: Bool = true
+    
+    static var previews: some View {
+        Text("헬로")
+            .fullScreenCover(isPresented: $isLoadingPage, content: {
+                DiagnosisResultDetailView(viewModel: JournalListViewModel(petId: 0, container: DIContainer()))
+                    .ignoresSafeArea(.all)
+            })
     }
 }
