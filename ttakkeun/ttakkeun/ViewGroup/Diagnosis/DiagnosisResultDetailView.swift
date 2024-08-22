@@ -29,6 +29,7 @@ struct DiagnosisResultDetailView: View {
                     
                     MainButton(btnText: "확인", width: 343, height: 63, action: {
                         dismiss()
+                        viewModel.diagnosisData = nil
                     }, color: Color.primaryColor_Main)
                 }
                 .padding(.bottom, 30)
