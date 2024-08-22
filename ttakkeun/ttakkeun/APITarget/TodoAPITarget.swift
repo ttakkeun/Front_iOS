@@ -82,6 +82,4 @@ extension TodoAPITarget: APITargetType {
     var headers: [String : String]? {
         return ["Content-Type": "application/json"]
     }
-    
-    
 }
