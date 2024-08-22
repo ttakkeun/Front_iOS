@@ -70,6 +70,7 @@
 				Schedule/CustomDiary.swift,
 				Schedule/DiarySelectSheet.swift,
 				Schedule/TodoCompleteEach.swift,
+				Schedule/TodoControlSheet.swift,
 				Schedule/WeekBar.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
@@ -132,6 +133,8 @@
 				Qna/QnaView.swift,
 				Qna/QnaWriteTipsView.swift,
 				Schedule/ScheduleView.swift,
+				Suggestion/SuggestionInitialView.swift,
+				Suggestion/SuggestionSearchedView.swift,
 				Suggestion/SuggestionView.swift,
 				TabView/CustomTab.swift,
 				TabView/TabView.swift,
@@ -202,6 +205,7 @@
 				QnA/QnaWriteTipsViewModel.swift,
 				RegistJournalViewModel.swift,
 				ScheduleViewModel.swift,
+				SuggestionViewModel.swift,
 			);
 			target = 481C77B82C3A6C70005D60EB /* ttakkeun */;
 		};

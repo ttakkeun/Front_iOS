@@ -9,12 +9,12 @@ import SwiftUI
 /// Qna탭에서 FAQ에 대한 뷰
 struct QnaFAQView: View {
     
-    @ObservedObject var viewModel: QnaViewModel
+    @StateObject var viewModel: QnaViewModel
     @State private var expandedQuestionIds: Set<UUID> = []
     
     //MARK: - Init
     init(viewModel: QnaViewModel) {
-          self._viewModel = ObservedObject(wrappedValue: viewModel)
+        self._viewModel = StateObject(wrappedValue: viewModel)
       }
     
     //MARK: - Contents
