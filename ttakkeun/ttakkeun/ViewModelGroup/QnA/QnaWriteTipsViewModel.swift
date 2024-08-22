@@ -66,30 +66,36 @@ class QnaWriteTipsViewModel: ObservableObject, @preconcurrency ImageHandling {
 
     //MARK: - API Function
     /// Tip내용 Post하는 함수
-    func postTipsData() {
+    func postTipsData() async {
         guard self.requestData != nil else { return }
 
-        // 디버깅을 위한 로그 추가
         print("POST Data: Title = \(title), Content = \(content), Category = \(category.rawValue)")
 
-        postTipContent { [weak self] result in
+        do {
+            let result = try await postTipContent()
             switch result {
             case .success(let response):
-                self?.handlerResponsePostTipsData(response: response) {
-                    _Concurrency.Task {
-                        await self?.postImages()
+                self.handlerResponsePostTipsData(response: response, completion: {
+                    if !self.arrImages.isEmpty {
+                        _Concurrency.Task {
+                            await self.postImages()
+                        }
                     }
-                }
+                })
             case .failure(let error):
-                print("네트워크 에러: \(error)")
+                print("Network error: \(error)")
             }
+        } catch {
+            print("Error posting data: \(error)")
         }
     }
 
-    /// Tip내용을 POST 요청하는 함수
-    private func postTipContent(completion: @escaping (Result<Response, MoyaError>) -> Void) {
-        provider.request(.createTipsContent(content: content, title: title, category: category.rawValue)) { result in
-            completion(result)
+
+    private func postTipContent() async throws -> Result<Response, MoyaError> {
+        return try await withCheckedThrowingContinuation { continuation in
+            provider.request(.createTipsContent(content: content, title: title, category: category.rawValue)) { result in
+                continuation.resume(with: .success(result))
+            }
         }
     }
 
