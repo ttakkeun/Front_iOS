@@ -35,7 +35,8 @@ struct RecommendProduct: View {
             imageAndRank
             titleAndPrice
         }
-        .frame(maxWidth: 343, maxHeight: 95)
+        .frame(maxWidth: 344, maxHeight: 95)
+        .padding(.horizontal, 3)
     }
     
     /// 사진이미지와 순위
@@ -98,8 +99,9 @@ struct RecommendProduct: View {
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray200)
+                        .stroke(Color.gray200, lineWidth: 1)
                 )
+                
             
         }
     }

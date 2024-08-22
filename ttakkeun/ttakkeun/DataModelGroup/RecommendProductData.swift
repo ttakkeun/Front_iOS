@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct RecommenProductResponseData: Codable, Hashable {
+struct RecommenProductResponseData: Codable, Hashable, Identifiable {
+    var id = UUID()
     let product_id: Int
     let title: String
     let image: String
@@ -20,4 +21,21 @@ struct RecommenProductResponseData: Codable, Hashable {
     let category4: String
     let total_likes: Int
     let isLike: Bool
+    
+    private enum CodingKeys: String, CodingKey {
+        case product_id
+        case title
+        case image
+        case price
+        case brand
+        case link
+        case category1
+        case category2
+        case category3
+        case category4
+        case total_likes
+        case isLike
+        
+    }
+
 }
