@@ -14,7 +14,7 @@ struct QnaFAQView: View {
     
     //MARK: - Init
     init(viewModel: QnaViewModel) {
-          self._viewModel = ObservedObject(wrappedValue: viewModel)
+        self._viewModel = ObservedObject(wrappedValue: viewModel)
       }
     
     //MARK: - Contents
