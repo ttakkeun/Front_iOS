@@ -9,5 +9,5 @@ import Foundation
 
 struct UserInfo: Codable {
     let name: String
-    let tokenInfo: TokenResponse
+    var tokenInfo: TokenResponse?
 }
