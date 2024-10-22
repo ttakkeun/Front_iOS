@@ -46,7 +46,7 @@ class TokenProvider: TokenProviding {
         guard let userInfo = keyChain.loadSession(for: "ttakkeunUser"), let refreshToken = userInfo.tokenInfo?.refreshToken else {
             let error = NSError(domain: "ttakkeun.com", code: -2, userInfo: [NSLocalizedDescriptionKey: "User session or refresh token not found"])
             completion(nil, error)
-                return
+            return
         }
         
         provider.request(.sendRefreshToken(refreshToken: refreshToken)) { result in
