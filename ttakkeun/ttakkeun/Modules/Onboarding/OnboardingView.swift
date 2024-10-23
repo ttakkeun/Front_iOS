@@ -23,7 +23,7 @@ struct OnboardingView: View {
                     if completed {
                         viewModel.stateAppFlow { success, error in
                             if let error = error {
-                                print("최초 사용자 혹은 등록된 유저 아님")
+                                print("최초 사용자 혹은 등록된 유저 아님: \(error)")
                             }
                         }
                     }
