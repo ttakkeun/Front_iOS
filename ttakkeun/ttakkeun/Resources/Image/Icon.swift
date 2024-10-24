@@ -15,6 +15,11 @@ enum Icon: String {
     case logoBackground = "logoBackground"
     case logo = "logo"
     
+    // MARK: - Profile
+    case profileCat = "profileCat"
+    case profileDog = "profileDog"
+    case togetherPet = "togetherPet"
+    
     var image: Image {
         return Image(self.rawValue)
     }
