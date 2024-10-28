@@ -11,6 +11,7 @@ import Kingfisher
 struct ProfileCard: View {
     
     @EnvironmentObject var appFlowViewModel: AppFlowViewModel
+    
     let data: PetProfileDetail
     let userState = UserState.shared
     

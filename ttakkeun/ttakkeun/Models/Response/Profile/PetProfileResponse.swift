@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct PetProfileResponse: Codable {
+struct PetProfileResponse: Codable, Hashable {
     var result: [PetProfileDetail]
 }
 
-struct PetProfileDetail: Codable {
+struct PetProfileDetail: Codable, Hashable{
     var petId: Int
     var name: String
     var image: String?

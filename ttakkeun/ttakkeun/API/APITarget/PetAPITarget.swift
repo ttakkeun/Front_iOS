@@ -7,10 +7,15 @@
 
 import Foundation
 import Moya
+import SwiftUI
 
 enum PetAPITarget {
     case getPetProfile
     case makePetProfile(petInfo: PetInfo)
+    case getSpecificPetProfile(petId: Int)
+    case patchPetProfile(petInfo: PetInfo)
+    case patchPetProfileImage(petId: Int, image: UIImage)
+    case deletePetProfile(petId: Int)
 }
 
 extension PetAPITarget: APITargetType {
@@ -20,28 +25,53 @@ extension PetAPITarget: APITargetType {
             return "/api/pet-profile/select"
         case .makePetProfile:
             return "/api/pet-profile/add"
+        case .getSpecificPetProfile(let petId):
+            return "/api/pet-profile/\(petId)"
+        case .patchPetProfile(let petId):
+            return "/api/pet-profile/edit/\(petId)"
+        case .patchPetProfileImage(let petId, _):
+            return "/api/pet-profile/\(petId)/image"
+        case .deletePetProfile(let petId):
+            return "/api/pet-profile/\(petId)"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getPetProfile:
+        case .getPetProfile, .getSpecificPetProfile:
             return .get
         case .makePetProfile:
             return .post
+        case .patchPetProfile, .patchPetProfileImage:
+            return .patch
+        case .deletePetProfile:
+            return .delete
         }
     }
     
     var task: Task {
         switch self {
-        case .getPetProfile:
+        case .getPetProfile, .getSpecificPetProfile, .deletePetProfile:
             return .requestPlain
-        case .makePetProfile(let petInfo):
+        case .makePetProfile(let petInfo), .patchPetProfile(let petInfo):
             return .requestJSONEncodable(petInfo)
+        case .patchPetProfileImage(_, let image):
+            var multipartData = [MultipartFormData]()
+            
+            if let imageData = image.jpegData(compressionQuality: 0.5) {
+                multipartData.append(MultipartFormData(provider: .data(imageData), name: "multipartFile", fileName: "multipartFile.jpeg", mimeType: "multipartFile/jpeg"))
+            }
+            
+            return .uploadMultipart(multipartData)
         }
     }
     
     var headers: [String : String]? {
-        return ["Content-Type": "application/json"]
+        switch self {
+        case .patchPetProfileImage:
+            return ["Content-Type": "multipart/form-data"]
+        default:
+            return ["Content-Type": "application/json"]
+        }
     }
 }
