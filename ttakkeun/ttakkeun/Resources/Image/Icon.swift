@@ -20,6 +20,13 @@ enum Icon: String {
     case profileDog = "profileDog"
     case togetherPet = "togetherPet"
     
+    // MARK: ETC
+    case glass = "glass"
+    
+    // MARK: - ProfileMake
+    case check = "check"
+    case uncheck = "uncheck"
+    
     var image: Image {
         return Image(self.rawValue)
     }

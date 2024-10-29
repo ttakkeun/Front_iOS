@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AppleUserInfo: Equatable, Hashable {
+struct SignUpData: Equatable, Hashable {
     let token: String
     let name: String
     let email: String
