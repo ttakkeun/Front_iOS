@@ -8,6 +8,6 @@
 import Foundation
 
 enum NavigationDestination: Hashable {
-    case signUp(appleUserData: AppleUserInfo)
+    case signUp(signUpData: SignUpData)
     case createProfile
 }
