@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CreateProfile: View {
+struct CreateProfileCard: View {
     
     @ObservedObject var viewModel: ProfileViewModel
     
@@ -52,6 +52,6 @@ struct CreateProfile: View {
 
 struct CrateProfile_Preview: PreviewProvider {
     static var previews: some View {
-        CreateProfile(viewModel: ProfileViewModel(container: DIContainer()))
+        CreateProfileCard(viewModel: ProfileViewModel(container: DIContainer()))
     }
 }

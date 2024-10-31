@@ -16,11 +16,15 @@ struct ProfileView: View {
     
     var body: some View {
         NavigationStack(path: $container.navigationRouter.destination) {
-            VStack(alignment: .center, spacing: 32, content: {
+            VStack(alignment: .center, content: {
+                
+                Spacer()
+                
                 topTitle
                 scollProfile
+                
+                Spacer()
             })
-            .frame(maxWidth: .infinity, maxHeight: .infinity).ignoresSafeArea(.all)
             .background(viewModel.backgroudColor)
             .task {
                 viewModel.updateBackgroundColor()
@@ -32,17 +36,19 @@ struct ProfileView: View {
     }
     
     private var topTitle: some View {
-        VStack(alignment: .center, spacing: 20, content: {
+        VStack(alignment: .center, spacing: 30, content: {
             Text("따끈")
                 .font(.santokki(type: .regular, size: 40))
                 .foregroundStyle(Color.gray900)
                 .frame(height: 48)
+            
+            
             Text(viewModel.isLastedCard ? "새로운 가족을 등록해주세요" : "안녕하세요! \n저는 \(viewModel.titleName) 입니다.")
                 .font(.H3_bold)
                 .foregroundStyle(Color.black)
                 .multilineTextAlignment(.center)
         })
-        .frame(maxHeight: 145, alignment: .top)
+        .frame(maxHeight: 133, alignment: .top)
     }
     
     private var scollProfile: some View {
@@ -75,6 +81,7 @@ struct ProfileView: View {
                 }
             }
         }
+        .frame(height: 438)
     }
 }
 
@@ -122,7 +129,7 @@ extension ProfileView {
     
     private func createProfileView(geometry: GeometryProxy) -> some View {
         GeometryReader { item in
-            CreateProfile(viewModel: viewModel)
+            CreateProfileCard(viewModel: viewModel)
                 .scaleEffect(self.scaleValue(geometry: geometry, itemGeometry: item))
                 .animation(.easeOut, value: self.scaleValue(geometry: geometry, itemGeometry: item))
                 .onChange(of: self.isCentered(geometry: geometry, itemGeometry: item)) {
@@ -133,5 +140,13 @@ extension ProfileView {
                 }
         }
         .frame(width: 200)
+    }
+}
+
+struct ProfileView_Preview: PreviewProvider {
+    static var previews: some View {
+        ProfileView(viewModel: ProfileViewModel(container: DIContainer()))
+            .environmentObject(DIContainer())
+            .environmentObject(AppFlowViewModel())
     }
 }

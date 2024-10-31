@@ -14,7 +14,7 @@ class ProfileViewModel: ObservableObject {
     var usedColor: [Color] = []
     @Published var backgroudColor: Color = .white
     
-    @Published var isLastedCard: Bool = false
+    @Published var isLastedCard: Bool = true
     @Published var titleName: String = ""
     @Published var petProfileResponse: PetProfileResponse?
     

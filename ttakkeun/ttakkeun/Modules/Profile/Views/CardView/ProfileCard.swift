@@ -50,6 +50,7 @@ struct ProfileCard: View {
                     print("펫 프로필 이미지 로딩 실패")
                 }
                 .resizable()
+                .aspectRatio(contentMode: .fill)
                 .frame(width: 112, height: 112)
                 .clipShape(Circle())
         }

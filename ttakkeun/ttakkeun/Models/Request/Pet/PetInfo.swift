@@ -8,9 +8,9 @@
 import Foundation
 
 struct PetInfo: Codable {
-    let name: String
-    let type: String
-    let variety: String
-    let birth: String
-    let neutralization: Bool
+    var name: String
+    var type: ProfileType
+    var variety: String
+    var birth: String
+    var neutralization: Bool
 }
