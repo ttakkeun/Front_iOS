@@ -12,7 +12,170 @@ struct MakeProfileView: View {
     @StateObject var viewModel: MakeProfileViewModel = MakeProfileViewModel()
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            
+            CustomNavigation(
+                action: {
+                    print("hello")
+                }, title: "프로필 생성", currentPage: nil)
+            
+            Spacer()
+            
+            profileImage
+            
+            Spacer().frame(height: 20)
+            
+            inputFieldGroup
+            
+            Spacer().frame(height: 72)
+            
+            registerBtn
+        }
+        .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
+    }
+    
+    private var inputFieldGroup: some View {
+        VStack(alignment: .center, spacing: 19, content: {
+            Group {
+                nameField
+                typeField
+                varietyField
+                birthField
+                neutralizationField
+            }
+        })
+    }
+    
+    @ViewBuilder
+    private var profileImage: some View {
+        VStack {
+            Button(action: {
+                viewModel.showImagePicker()
+            }, label: {
+                if viewModel.profileImage.isEmpty {
+                    Circle()
+                        .fill(Color.modal)
+                        .frame(width: 120, height: 120)
+                } else {
+                    if let image = viewModel.profileImage.first {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 120, height: 120)
+                            .clipShape(Circle())
+                    }
+                }
+            })
+        }
+    }
+    
+    private var nameField: some View {
+        VStack(alignment: .leading, spacing: 10, content: {
+            makeFieldTitle(fieldGroup: FieldGroup(title: "이름", mustMark: true, isFieldEnable: viewModel.isNameFieldFilled))
+            
+            makeNameTextField()
+        })
+        .frame(width: 331, height: 78, alignment: .leading)
+    }
+    
+    private var typeField: some View {
+        VStack(alignment: .leading, spacing: 10, content: {
+            makeFieldTitle(fieldGroup: FieldGroup(title: "반려동물 종류", mustMark: true, isFieldEnable: viewModel.isTypeFieldFilled))
+            
+            ProfileTwoButton(
+                firstButton: ButtonOption(
+                    textTitle: "강아지",
+                    action: {
+                        viewModel.requestData.type = .dog
+                        viewModel.isTypeFieldFilled = true
+                    }),
+                secondButton: ButtonOption(
+                    textTitle: "고양이",
+                    action: {
+                        viewModel.requestData.type = .cat
+                        viewModel.isTypeFieldFilled = true
+                    }))
+        })
+        .frame(width: 331, height: 74)
+    }
+    
+    private var varietyField: some View {
+        VStack(alignment: .leading, spacing: 10, content: {
+            makeFieldTitle(fieldGroup: FieldGroup(title: "품종", mustMark: true, isFieldEnable: viewModel.isVarietyFieldFilled))
+            
+            Button(action: {
+                viewModel.showingVarietySearch.toggle()
+            }, label: {
+                ZStack(alignment: .center, content: {
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.gray200)
+                        .frame(width: 331, height: 44)
+                        .foregroundStyle(Color.clear)
+                    HStack {
+                        Text(viewModel.requestData.variety.isEmpty == false ? viewModel.requestData.variety : "반려동물의 품종을 선택해주세요")
+                            .font(.Body3_semibold)
+                            .foregroundStyle(viewModel.requestData.variety.isEmpty == false ? Color.gray900 : Color.gray200)
+                        
+                        Spacer()
+                        
+                        Icon.bottomArrow.image
+                            .resizable()
+                            .frame(width: 16, height: 16)
+                    }
+                    .frame(width: 300, alignment: .leading)
+                })
+            })
+        })
+        .frame(width: 331, height: 74)
+    }
+    
+    private var birthField: some View {
+        VStack(alignment: .leading, spacing: 10, content: {
+            makeFieldTitle(fieldGroup: FieldGroup(title: "생년월일", mustMark: false, isFieldEnable: viewModel.isBirthFieldFilled))
+            
+            BirthSelect(
+                birthDate: Binding(
+                    get: { viewModel.requestData.birth },
+                    set: {
+                        viewModel.requestData.birth = $0
+                        viewModel.isBirthFieldFilled = !$0.isEmpty
+                    }
+                ),
+                isBirthFilled: $viewModel.isBirthFieldFilled)
+        })
+    }
+    
+    private var neutralizationField: some View {
+        VStack(alignment: .leading, spacing: 10, content: {
+            makeFieldTitle(fieldGroup: FieldGroup(title: "중성화여부", mustMark: true, isFieldEnable: viewModel.isNeutralizationFieldFilled))
+            
+            ProfileTwoButton(
+                firstButton: ButtonOption(
+                    textTitle: "예",
+                    action: {
+                        viewModel.requestData.neutralization = true
+                        viewModel.isNeutralizationFieldFilled = true
+                    }), secondButton: ButtonOption(
+                        textTitle: "아니오",
+                        action: {
+                            viewModel.requestData.neutralization = false
+                            viewModel.isNeutralizationFieldFilled = false
+                        }
+                    ))
+        })
+        .frame(width: 331, height: 74)
+    }
+    
+    private var registerBtn: some View {
+        MainButton(
+            btnText: "등록하기",
+            width: 330,
+            height: 56,
+            action: {
+                // TODO: - 등록하기 버튼 함수 작성
+                print("등록하기 버튼")
+            },
+            color: viewModel.isProfileCompleted ? Color.mainPrimary : Color.gray200)
     }
 }
 

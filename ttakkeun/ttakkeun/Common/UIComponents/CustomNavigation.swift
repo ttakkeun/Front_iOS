@@ -26,9 +26,9 @@ struct CustomNavigation: View {
         action: @escaping () -> Void,
         title: String?,
         currentPage: Int?,
-        naviIcon: Image,
-        width: CGFloat,
-        height: CGFloat
+        naviIcon: Image = Image(systemName: "xmark"),
+        width: CGFloat = 14,
+        height: CGFloat = 14
     ) {
         self.action = action
         self.title = title
@@ -50,7 +50,7 @@ struct CustomNavigation: View {
             })
             
             if let title = self.title {
-                Spacer()
+                Spacer().frame(width: 115)
                 
                 Text(title)
                     .font(.H3_bold)
@@ -74,4 +74,8 @@ struct CustomNavigation: View {
         })
         .frame(width: 353, height: 20)
     }
+}
+
+#Preview {
+    MakeProfileView()
 }
