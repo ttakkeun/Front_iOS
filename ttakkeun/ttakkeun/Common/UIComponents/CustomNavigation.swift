@@ -50,11 +50,12 @@ struct CustomNavigation: View {
             })
             
             if let title = self.title {
-                Spacer().frame(width: 115)
+                Spacer().frame(width: 118)
                 
                 Text(title)
                     .font(.H3_bold)
                     .foregroundStyle(Color.black)
+                    .frame(width: 93, alignment: .center)
                 
             } else {
                 Spacer()

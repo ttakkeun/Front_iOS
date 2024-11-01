@@ -41,15 +41,15 @@ struct SignUpView: View {
             Spacer()
             
             MainButton(btnText: "완료",
-                       width: 339,
-                       height: 63,
+                       width: 330,
+                       height: 56,
                        action: {
                 print("click")
             },
                        color: viewModel.isAllMandatoryChecked ? Color.mainPrimary : Color.gray200)
             .disabled(!viewModel.isAllMandatoryChecked)
         })
-        .frame(height: 749)
+        .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
         .navigationBarBackButtonHidden()
     }
     

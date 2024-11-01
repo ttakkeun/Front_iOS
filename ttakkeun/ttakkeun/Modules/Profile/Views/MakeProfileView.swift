@@ -53,15 +53,18 @@ struct MakeProfileView: View {
                 viewModel.showImagePicker()
             }, label: {
                 if viewModel.profileImage.isEmpty {
-                    Circle()
-                        .fill(Color.modal)
+                    Image(systemName: "person.circle.fill")
+                        .resizable()
                         .frame(width: 120, height: 120)
+                        .aspectRatio(contentMode: .fill)
+                        .tint(Color.gray300)
                 } else {
                     if let image = viewModel.profileImage.first {
                         Image(uiImage: image)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 120, height: 120)
+                            .shadow02()
                             .clipShape(Circle())
                     }
                 }
