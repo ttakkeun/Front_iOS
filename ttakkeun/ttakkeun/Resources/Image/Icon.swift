@@ -26,6 +26,7 @@ enum Icon: String {
     // MARK: - ProfileMake
     case check = "check"
     case uncheck = "uncheck"
+    case bottomArrow = "bottomArrow"
     
     var image: Image {
         return Image(self.rawValue)

@@ -10,6 +10,8 @@ import SwiftUI
 
 class MakeProfileViewModel: ObservableObject {
     
+    @Published var showingVarietySearch = false
+    
     // MARK: - Field
     
     @Published var requestData: PetInfo = PetInfo(name: "", type: .dog, variety: "", birth: "", neutralization: false)

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 final class DataFormatter {
     static let shared = DataFormatter()
@@ -21,5 +22,12 @@ final class DataFormatter {
         } else {
             return dateString
         }
+    }
+    
+    public func yearFormatter() -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .none
+        formatter.usesGroupingSeparator = false
+        return formatter
     }
 }
