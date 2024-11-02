@@ -28,6 +28,13 @@ enum Icon: String {
     case uncheck = "uncheck"
     case bottomArrow = "bottomArrow"
     
+    // MARK: - Tab
+    case home = "home"
+    case diagnosis = "diagnosis"
+    case schedule = "schedule"
+    case suggestion = "suggestion"
+    case qna = "qna"
+    
     var image: Image {
         return Image(self.rawValue)
     }

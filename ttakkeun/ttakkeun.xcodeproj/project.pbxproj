@@ -23,6 +23,7 @@
 		482FBC502CC95E1100BB964B /* Exceptions for "ttakkeun" folder in "ttakkeun" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				API/Util/Secret.xcconfig,
 				Info.plist,
 			);
 			target = 482FB9782CC9588E00BB964B /* ttakkeun */;
@@ -112,7 +113,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					482FB9782CC9588E00BB964B = {
 						CreatedOnToolsVersion = 16.0;

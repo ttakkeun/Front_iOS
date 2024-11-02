@@ -39,7 +39,7 @@ struct CustomPicker: View {
         .tint(.clear)
         .overlay(content: {
             Text(selectedValue == nil ? title : "\(title == "연도" ? (DataFormatter.shared.yearFormatter().string(from: NSNumber(value: selectedValue!)) ?? "\(selectedValue!)") : "\(selectedValue!)")\(title == "연도" ? "년" : title == "월" ? "월" : "일")")
-                .foregroundStyle(Color.gray400)
+                .foregroundStyle(selectedValue == nil ? Color.gray400 : Color.black)
                 .font(.Body3_medium)
                 .frame(width: 110, height: 44)
 

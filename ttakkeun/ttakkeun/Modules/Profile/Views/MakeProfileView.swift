@@ -10,13 +10,14 @@ import SwiftUI
 struct MakeProfileView: View {
     
     @StateObject var viewModel: MakeProfileViewModel = MakeProfileViewModel()
+    @EnvironmentObject var container: DIContainer
     
     var body: some View {
         VStack {
             
             CustomNavigation(
                 action: {
-                    print("hello")
+                    container.navigationRouter.pop()
                 }, title: "프로필 생성", currentPage: nil)
             
             Spacer()
@@ -32,6 +33,16 @@ struct MakeProfileView: View {
             registerBtn
         }
         .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
+        .onAppear {
+            UIApplication.shared.hideKeyboard()
+        }
+        .sheet(isPresented: $viewModel.showingVarietySearch) {
+            VarietySearchView(viewModel: viewModel)
+                .presentationDragIndicator(Visibility.visible)
+        }
+        .sheet(isPresented: $viewModel.isImagePickerPresented, content: {
+            ImagePicker(imageHandler: viewModel, selectedLimit: 1)
+        })
     }
     
     private var inputFieldGroup: some View {
@@ -221,6 +232,14 @@ fileprivate struct FieldGroup {
     let isFieldEnable: Bool
 }
 
-#Preview {
-    MakeProfileView()
+struct MakeProfileView_Preview: PreviewProvider {
+    static let devices = ["iPhone 11", "iphone 15 Pro"]
+    
+    static var previews: some View {
+        ForEach(devices, id: \.self) { device in
+            MakeProfileView()
+                .previewDevice(PreviewDevice(rawValue: device))
+                .previewDisplayName(device)
+        }
+    }
 }
