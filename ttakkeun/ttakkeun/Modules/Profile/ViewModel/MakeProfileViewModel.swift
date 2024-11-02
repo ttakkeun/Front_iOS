@@ -10,7 +10,17 @@ import SwiftUI
 
 class MakeProfileViewModel: ObservableObject {
     
+    // MARK: - Search
+    
     @Published var showingVarietySearch = false
+    @Published var searchVariety: String = ""
+    var filteredVarieties: [PetVarietyData] {
+        if searchVariety.isEmpty {
+            return PetVarietyData.allCases
+        } else {
+            return PetVarietyData.allCases.filter { $0.rawValue.contains(searchVariety) }
+        }
+    }
     
     // MARK: - Field
     
