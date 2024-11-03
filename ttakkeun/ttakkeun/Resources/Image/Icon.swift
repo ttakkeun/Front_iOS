@@ -22,6 +22,8 @@ enum Icon: String {
     
     // MARK: ETC
     case glass = "glass"
+    case setting = "setting"
+    case alarm = "alarm"
     
     // MARK: - ProfileMake
     case check = "check"
@@ -34,6 +36,9 @@ enum Icon: String {
     case schedule = "schedule"
     case suggestion = "suggestion"
     case qna = "qna"
+    
+    // MARK: - Home
+    case changeCard = "changeCard"
     
     var image: Image {
         return Image(self.rawValue)

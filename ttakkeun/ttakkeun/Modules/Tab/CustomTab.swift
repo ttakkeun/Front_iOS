@@ -23,14 +23,11 @@ struct CustomTab: View {
                 
             }
         }
-        .frame(height: 90)
-        .ignoresSafeArea(.all)
-        .background {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.white)
-                .shadow(color: .black.opacity(0.15), radius: 8, y: 2)
-        }
-        .padding(.horizontal)
+        .frame(height: 85)
+        .ignoresSafeArea(.keyboard)
+        .background(Color.white)
+        .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
+        .shadow(color: .black.opacity(0.25), radius: 4.05, x: 0, y: -2)
     }
     
     private func makeTabButton(_ tab: TabCase) -> Button<some View> {
@@ -49,19 +46,11 @@ struct CustomTab: View {
                     .font(.Detail1_bold)
                     .foregroundStyle(selectedTab == tab ? Color.gray900 : Color.gray400)
             })
+            .padding(.bottom, 10)
         })
     }
 }
 
-struct CustomTab_Preview: PreviewProvider {
-    static let devices = ["iPhone 11", "iPhone 16 Pro"]
-    
-    static var previews: some View {
-        ForEach(devices, id: \.self) { device in
-            CustomTab(selectedTab: .constant(.home))
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewDisplayName(device)
-        }
-        
-    }
+#Preview {
+    TabView()
 }
