@@ -14,7 +14,7 @@ struct HomeProfileResponseData: Codable {
     let type: ProfileType
     let variety: String
     let birth: String
-    let neutralization: String
+    let neutralization: Bool
     
     enum CodingKeys: String, CodingKey {
         case name = "petName"

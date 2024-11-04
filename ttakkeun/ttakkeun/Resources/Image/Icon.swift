@@ -39,6 +39,14 @@ enum Icon: String {
     
     // MARK: - Home
     case changeCard = "changeCard"
+    case pencil = "pencil"
+    
+    // MARK: - Todo
+    case homeClaw = "homeClaw"
+    case homeEar = "homeEar"
+    case homeEye = "homeEye"
+    case homeHair = "homeHair"
+    case homeTeeth = "homeTeeth"
     
     var image: Image {
         return Image(self.rawValue)

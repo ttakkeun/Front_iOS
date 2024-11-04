@@ -43,11 +43,7 @@ struct ProfileCardFront: View {
         .padding(.leading, 25)
         .padding(.trailing, 23)
         .padding(.bottom, 20)
-        .frame(width: 354, height: 260)
-        .background(Color.white.opacity(0.5))
-        .clipShape(RoundedRectangle(cornerRadius: 20))
-        .shadow03()
-        .transition(.blurReplace)
+        .modifier(CustomCardModifier())
     }
     
     
@@ -55,25 +51,10 @@ struct ProfileCardFront: View {
     @ViewBuilder
     private var profileInfo: some View {
         if let data = viewModel.profileData {
-            makeInfo(name: data.name, birth: data.birth)
+            PetInfoTitle(name: data.name, birth: data.birth)
         } else {
-            makeInfo(name: "저장된 이름 불러오지 못했습니다.", birth: "저장된 생일 데이터 불러오지 못했습니다.")
+            PetInfoTitle(name: "저장된 이름 불러오지 못했습니다.", birth: "저장된 생일 데이터 불러오지 못했습니다.")
         }
-    }
-}
-
-extension ProfileCardFront {
-    func makeInfo(name: String, birth: String) -> some View {
-        VStack(alignment: .center, spacing: 2, content: {
-            Text(name)
-                .font(.Body3_medium)
-                .foregroundStyle(Color.gray900)
-            
-            Text(DataFormatter.shared.formattedData(from: birth))
-                .font(.Body3_semibold)
-                .foregroundStyle(Color.gray400)
-        })
-        .padding(.top, 10)
     }
 }
 

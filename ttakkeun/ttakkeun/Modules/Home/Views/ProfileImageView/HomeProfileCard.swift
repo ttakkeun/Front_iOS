@@ -12,7 +12,7 @@ struct HomeProfileCard: View {
     @StateObject var viewModel: HomeProfileCardViewModel
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        homeProfileCard
     }
     
     @ViewBuilder
@@ -25,5 +25,11 @@ struct HomeProfileCard: View {
             }
         }
         .animation(.bouncy(duration: 1.2), value: viewModel.isShowFront)
+    }
+}
+
+struct HomeProfileCard_Preview: PreviewProvider {
+    static var previews: some View {
+        HomeProfileCard(viewModel: HomeProfileCardViewModel())
     }
 }
