@@ -22,11 +22,11 @@ struct TodoCircle: View {
             if isBefore {
                 Circle()
                     .fill(beforeSetColor(partItem: self.partItem))
-                    .frame(width: 50, height: 50)
+                    .frame(width: 51, height: 51)
             } else {
                 Circle()
                     .fill(afterSetColor(partItem: self.partItem))
-                    .frame(width: 50, height: 50)
+                    .frame(width: 51, height: 51)
             }
             setIcon(partItem: self.partItem)
                 .fixedSize()

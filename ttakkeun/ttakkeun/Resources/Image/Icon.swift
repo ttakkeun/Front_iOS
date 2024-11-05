@@ -47,6 +47,9 @@ enum Icon: String {
     case homeEye = "homeEye"
     case homeHair = "homeHair"
     case homeTeeth = "homeTeeth"
+    case unCheckBox = "unCheckBox"
+    case checkBox = "checkBox"
+    case checkV = "checkV"
     
     var image: Image {
         return Image(self.rawValue)
