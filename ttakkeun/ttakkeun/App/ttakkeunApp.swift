@@ -11,7 +11,9 @@ import SwiftUI
 struct ttakkeunApp: App {
     var body: some Scene {
         WindowGroup {
-            MakeProfileView()
+            LoginView()
+                .environmentObject(DIContainer())
+                .environmentObject(AppFlowViewModel())
         }
     }
 }

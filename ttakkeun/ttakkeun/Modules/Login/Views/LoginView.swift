@@ -9,6 +9,8 @@ import SwiftUI
 
 struct LoginView: View {
     
+    let apple = AppleLoginManager()
+    
     @EnvironmentObject var container: DIContainer
     @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     
@@ -22,7 +24,7 @@ struct LoginView: View {
                 Spacer().frame(height: 180)
                 
                 Button(action: {
-                    print("apple Login")
+                    apple.signWithApple()
                 }, label: {
                     Icon.appleLogin.image
                         .resizable()

@@ -19,4 +19,13 @@ enum ProfileType: String, Codable {
             return "강아지"
         }
     }
+    
+    func forProcutCard() -> String {
+        switch self {
+        case .cat:
+            return "반려묘"
+        case .dog:
+            return "반려견"
+        }
+    }
 }

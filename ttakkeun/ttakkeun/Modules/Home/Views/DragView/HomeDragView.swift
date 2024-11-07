@@ -37,7 +37,7 @@ struct HomeDragView: View {
                     .padding(.top, 10)
                     .padding(.bottom, 5)
                 
-                Text("hello")
+                compactComponents
                 
                 Spacer()
             }
@@ -73,6 +73,17 @@ struct HomeDragView: View {
             }
         }
         .animation(.interactiveSpring(), value: offset)
+    }
+    
+    private var compactComponents: some View {
+        ScrollView(.vertical, content: {
+            VStack(alignment: .leading, spacing: 40, content: {
+                HomeTodo()
+                HomeAIProduct()
+                HomeTop(petType: profileType)
+            })
+            .safeAreaPadding(EdgeInsets(top: 0, leading: 19, bottom: 0, trailing: 20))
+        })
     }
 }
 

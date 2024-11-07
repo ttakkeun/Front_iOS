@@ -30,4 +30,27 @@ final class DataFormatter {
         formatter.usesGroupingSeparator = false
         return formatter
     }
+    
+    public func stripHTMLTags(from htmlString: String) -> String {
+        guard let data = htmlString.data(using: .utf8) else { return htmlString }
+        
+        do {
+            let attributedString = try NSAttributedString(
+                data: data,
+                options: [.documentType: NSAttributedString.DocumentType.html,
+                          .characterEncoding: String.Encoding.utf8.rawValue],
+                documentAttributes: nil)
+            
+            return attributedString.string
+        } catch {
+            print("Failed to decode HTML entities: \(error)")
+            return htmlString
+        }
+    }
+    
+    public func formattedPrice(from price: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter.string(from: NSNumber(value: price)) ?? ""
+    }
 }

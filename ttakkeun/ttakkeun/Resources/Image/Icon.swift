@@ -51,6 +51,10 @@ enum Icon: String {
     case checkBox = "checkBox"
     case checkV = "checkV"
     
+    // MARK: - Recommend
+    case topRank = "topRank"
+    case bottomRank = "bottomRank"
+    
     var image: Image {
         return Image(self.rawValue)
     }
