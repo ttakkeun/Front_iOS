@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeTodo: View {
     
-    @StateObject var viewModel: ScheduleViewModel = ScheduleViewModel()
+    @StateObject var viewModel: ScheduleViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16, content: {
@@ -70,8 +70,4 @@ struct HomeTodo: View {
         })
         .scrollIndicators(.visible)
     }
-}
-
-#Preview {
-    HomeTodo()
 }

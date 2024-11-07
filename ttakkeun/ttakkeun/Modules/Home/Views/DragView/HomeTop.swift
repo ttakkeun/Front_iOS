@@ -9,12 +9,18 @@ import SwiftUI
 
 struct HomeTop: View {
     
-    @StateObject var viewModel: RecommendViewModel = RecommendViewModel()
-    let petType: ProfileType
+    @StateObject var viewModel: RecommendViewModel
+    let petType: ProfileType?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16, content: {
-            Text("\(petType.forProcutCard()) \(UserState.shared.getPetName())를 위한 추천 제품 TOP8")
+            Group {
+                if let type = petType {
+                    Text("\(type.forProcutCard()) \(UserState.shared.getPetName())를 위한 추천 제품 TOP8")
+                } else {
+                    Text("\(UserState.shared.getPetName())를 위한 추천 제품 TOP8")
+                }
+            }
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
             

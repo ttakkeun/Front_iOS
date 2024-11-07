@@ -13,13 +13,12 @@ struct HomeDragView: View {
     @State private var lastOffset: CGFloat
     @GestureState private var dragOffset: CGFloat = 0
     
+    @ObservedObject var viewModel: HomeViewModel
     
-    private var profileType: ProfileType
-    
-    init(profileType: ProfileType) {
+    init(viewModel: HomeViewModel) {
         _offset = State(initialValue: 0)
         _lastOffset = State(initialValue: 0)
-        self.profileType = profileType
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -37,7 +36,7 @@ struct HomeDragView: View {
                     .padding(.top, 10)
                     .padding(.bottom, 5)
                 
-                compactComponents
+                compactComponents(petType: viewModel.homeProfileCardViewModel.profileData?.type)
                 
                 Spacer()
             }
@@ -75,20 +74,14 @@ struct HomeDragView: View {
         .animation(.interactiveSpring(), value: offset)
     }
     
-    private var compactComponents: some View {
+    private func compactComponents(petType: ProfileType?) -> some View {
         ScrollView(.vertical, content: {
             VStack(alignment: .leading, spacing: 40, content: {
-                HomeTodo()
-                HomeAIProduct()
-                HomeTop(petType: profileType)
+                HomeTodo(viewModel: viewModel.scheduleViewModel)
+                HomeAIProduct(viewModel: viewModel.recommendViewModel)
+                HomeTop(viewModel: viewModel.recommendViewModel, petType: viewModel.homeProfileCardViewModel.profileData?.type)
             })
             .safeAreaPadding(EdgeInsets(top: 0, leading: 19, bottom: 0, trailing: 20))
         })
-    }
-}
-
-struct HomeDragView_Previvew: PreviewProvider {
-    static var previews: some View {
-        HomeDragView(profileType: .cat)
     }
 }
