@@ -10,4 +10,6 @@ import Foundation
 class DiagnosingViewModel: ObservableObject {
     @Published var journalListViewModel: JournalListViewModel = JournalListViewModel()
     @Published var diagnosticViewModel: DiagnosticResultViewModel = DiagnosticResultViewModel()
+    
+    @Published var diagnosingValue: DiagnosingValue = DiagnosingValue(selectedSegment: .journalList, selectedPartItem: .ear)
 }

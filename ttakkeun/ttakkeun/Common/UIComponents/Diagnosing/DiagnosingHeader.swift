@@ -23,10 +23,8 @@ struct DiagnosingHeader: View {
             
             itemsButton
         })
-        .frame(width: 353, height: 121)
+        .frame(width: 353, height: 78, alignment: .leading)
         .background(Color.clear)
-        .padding(.horizontal, 15)
-        .padding(.top, 68)
     }
     
     private var itemsButton: some View {
@@ -51,7 +49,7 @@ struct DiagnosingHeader: View {
                 })
             }
         })
-        .padding(.leading, 7)
+        .padding(.leading, 10)
     }
 }
 

@@ -57,6 +57,8 @@ enum Icon: String {
     
     // MARK: - Diagnosing
     case trash = "trash"
+    case pen = "pen"
+    case noJournal = "noJournal"
     
     var image: Image {
         return Image(self.rawValue)

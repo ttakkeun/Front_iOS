@@ -4,7 +4,6 @@
 //
 //  Created by 정의찬 on 11/7/24.
 //
-
 import SwiftUI
 
 struct CustomSegment<T: SegmentType & CaseIterable>: View {

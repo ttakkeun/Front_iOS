@@ -9,18 +9,50 @@ import SwiftUI
 
 struct DiagnosingActionBar: View {
     
-    @ObservedObject var viewModel: DiagnosingViewModel
+    @ObservedObject var viewModel: JournalListViewModel
     
     var body: some View {
-        cancelButton
+        HStack(content: {
+            
+            if viewModel.isSelectionMode {
+                selectedCount
+                
+                Spacer()
+            } else {
+                Spacer()
+            }
+            
+            rightAction
+        })
+        .frame(maxWidth: 340)
+        .padding(.top, 6)
+    }
+    
+    private var rightAction: some View {
+        HStack(spacing: 7, content: {
+            if !viewModel.isSelectionMode {
+                searchButton
+            } else {
+                trashButton
+            }
+            
+            cancelOrSelectButton
+        })
+        .frame(maxWidth: 102)
     }
     
     
     private var selectedCount: some View {
-            Text("\(viewModel.journalListViewModel.selectedCnt)장 선택됨")
-                .frame(maxWidth: 120)
+        Text("\(viewModel.selectedCnt)장 선택됨")
+                .frame(maxWidth: 120, alignment: .leading)
                 .font(.Body3_medium)
                 .foregroundStyle(Color.gray900)
+                .transition(.opacity)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 0.7)) {
+                        viewModel.isSelectionMode = true
+                    }
+                }
     }
     
     private var searchButton: some View {
@@ -55,21 +87,22 @@ struct DiagnosingActionBar: View {
         })
     }
     
-    private var cancelButton: some View {
+    private var cancelOrSelectButton: some View {
         Button(action: {
-            if !viewModel.journalListViewModel.isSelectionMode {
+            if !viewModel.isSelectionMode {
                 withAnimation(.easeInOut) {
-                    viewModel.journalListViewModel.isSelectionMode = true
+                    viewModel.isSelectionMode = true
+                    print(viewModel.isSelectionMode)
                 }
             } else {
                 withAnimation(.easeInOut) {
-                    viewModel.journalListViewModel.isSelectionMode = false
+                    viewModel.isSelectionMode = false
                     
                     // TODO: - 취소 버튼 액션 필요
                 }
             }
         }, label: {
-            Text(viewModel.journalListViewModel.isSelectionMode ? "취소" : "선택")
+            Text(viewModel.isSelectionMode ? "취소" : "선택")
                 .font(.Body4_medium)
                 .foregroundStyle(Color.gray900)
                 .frame(width: 21, height: 16)
@@ -84,7 +117,10 @@ struct DiagnosingActionBar: View {
 }
 
 struct DiagnosingActionBar_Preview: PreviewProvider {
+    
+    @StateObject static var viewModel: DiagnosingViewModel = DiagnosingViewModel()
+    
     static var previews: some View {
-        DiagnosingActionBar(viewModel: DiagnosingViewModel())
+        DiagnosingActionBar(viewModel: viewModel.journalListViewModel)
     }
 }

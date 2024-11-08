@@ -32,11 +32,12 @@ struct HomeView: View {
         ZStack(alignment: .bottom, content: {
             VStack(alignment: .center, spacing: 14, content: {
                 TopStatusBar()
-                    .safeAreaPadding(EdgeInsets(top: 7, leading: 0, bottom: 0, trailing: 0))
+                
                 HomeProfileCard(viewModel: viewModel.homeProfileCardViewModel)
                 
                 Spacer()
             })
+            .border(Color.red)
             HomeDragView(viewModel: viewModel)
         })
         .background(Color.mainPrimary)
