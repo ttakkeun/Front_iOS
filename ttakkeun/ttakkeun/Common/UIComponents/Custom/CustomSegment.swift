@@ -16,7 +16,7 @@ struct CustomSegment<T: SegmentType & CaseIterable>: View {
         HStack(spacing: 16, content: {
             ForEach(Array(T.allCases), id: \.self) { segment in
                 Button(action: {
-                    withAnimation(.easeInOut(duration: 0.1)) {
+                    withAnimation(.easeInOut(duration: 0.4)) {
                         selectedSegment = segment
                     }
                 }, label: {
@@ -31,6 +31,10 @@ struct CustomSegment<T: SegmentType & CaseIterable>: View {
             Text(segment.title)
                 .font(selectedSegment == segment ? .Body2_bold : .Body2_regular)
                 .foregroundStyle(selectedSegment == segment ? Color.gray900 : Color.gray400)
+            
+            Capsule()
+                .fill(Color.clear)
+                .frame(width: 73, height: 2)
             
             if selectedSegment == segment {
                 ZStack {

@@ -55,6 +55,9 @@ enum Icon: String {
     case topRank = "topRank"
     case bottomRank = "bottomRank"
     
+    // MARK: - Diagnosing
+    case trash = "trash"
+    
     var image: Image {
         return Image(self.rawValue)
     }

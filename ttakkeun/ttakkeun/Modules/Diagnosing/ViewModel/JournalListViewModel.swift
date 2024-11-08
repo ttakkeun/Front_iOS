@@ -9,4 +9,7 @@ import Foundation
 
 class JournalListViewModel: ObservableObject {
     
+    @Published var isSelectionMode: Bool = false
+    @Published var selectedCnt: Int = 0
+    
 }
