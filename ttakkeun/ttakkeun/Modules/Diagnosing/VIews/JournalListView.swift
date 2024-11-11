@@ -8,26 +8,49 @@
 import SwiftUI
 
 struct JournalListView: View {
+    
+    @ObservedObject var viewModel: JournalListViewModel
+    
     var body: some View {
-        EmptyJournalList
+        GeometryReader { geo in
+            ZStack {
+                journalList
+                makeJournalListBtn
+                    .position(x: geo.size.width * 0.75, y: geo.size.height * 0.88)
+            }
+            .border(Color.red)
+        }
     }
     
-    private var makeJournalList: some View {
-        Button(action: {
-            //TODO: - DIContainer 네비게이션 이동
-        }, label: {
-            
-            ZStack {
-                Circle()
-                    .fill(Color.mainPrimary)
-                    .frame(width: 67, height: 67)
-                
-                Icon.pen.image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 32, height: 27)
+    @ViewBuilder
+    private var journalList: some View {
+        if let data = viewModel.journalListData?.recordList {
+            if data.isEmpty {
+                EmptyJournalList
+            } else {
+                ScrollView(.vertical, content: {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 102), spacing: 20), count: 3), spacing: 28, content: {
+                        ForEach(data, id: \.self) { record in
+                            JournalListCard(cardData: JournalListCardData(data: record, part: viewModel.journalListData?.category ?? .ear), isSelected: Binding(get: {
+                                viewModel.selectedItem.contains(record.recordID)
+                            }, set: {
+                                isSelected in
+                                if isSelected {
+                                    viewModel.selectedItem.insert(record.recordID)
+                                } else {
+                                    viewModel.selectedItem.remove(record.recordID)
+                                }
+                                viewModel.selectedCnt = viewModel.selectedItem.count
+                            }))
+                        }
+                    })
+                    .padding(.bottom, 110)
+                })
+                .frame(maxWidth: .infinity)
             }
-        })
+        } else {
+            EmptyJournalList
+        }
     }
     
     private var EmptyJournalList: some View {
@@ -46,8 +69,57 @@ struct JournalListView: View {
             Spacer()
         })
     }
+    
+    private var makeJournalListBtn: some View {
+        Button(action: {
+            if !viewModel.isSelectionMode {
+                print("선택된 모드 아닐 때")
+            } else {
+                print("선택된 모드일 때")
+            }
+        }, label: {
+            HStack(alignment: .center, spacing: 5, content: {
+                changeIcon()
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 18, height: 18)
+                
+                changeText()
+                    .font(.Body3_medium)
+                    .foregroundStyle(Color.gray900)
+            })
+            .padding(10)
+            .background {
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color.primarycolor400)
+                    .shadow03()
+            }
+            .animation(.easeInOut, value: viewModel.isSelectionMode)
+        })
+    }
 }
 
-#Preview {
-    JournalListView()
+extension JournalListView {
+    func changeIcon() -> Image {
+        if viewModel.isSelectionMode {
+            Icon.aiPen.image
+        } else {
+            Icon.pen.image
+        }
+    }
+    
+    func changeText() -> Text {
+        if viewModel.isSelectionMode {
+            Text("따끈 AI 진단하기")
+        } else {
+            Text("따끈 일지 생성하기")
+        }
+    }
+}
+
+
+struct JournalListView_Preview: PreviewProvider {
+    static var previews: some View {
+        JournalListView(viewModel: JournalListViewModel())
+    }
 }

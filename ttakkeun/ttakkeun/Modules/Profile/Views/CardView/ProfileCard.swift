@@ -61,7 +61,7 @@ struct ProfileCard: View {
             Text(data.name)
                 .font(.Body1_bold)
                 .foregroundStyle(Color.gray900)
-            Text(DataFormatter.shared.formattedData(from: data.birth))
+            Text(DataFormatter.shared.formattedDate(from: data.birth))
                 .font(.Body4_medium)
                 .foregroundStyle(Color.subProfile)
         })
