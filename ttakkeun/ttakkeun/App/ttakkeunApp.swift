@@ -9,11 +9,12 @@ import SwiftUI
 
 @main
 struct ttakkeunApp: App {
+    
+    @State var value = DiagnosingValue(selectedSegment: .journalList, selectedPartItem: .claw)
+    
     var body: some Scene {
         WindowGroup {
-            LoginView()
-                .environmentObject(DIContainer())
-                .environmentObject(AppFlowViewModel())
+            Text("hello")
         }
     }
 }

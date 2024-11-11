@@ -24,6 +24,7 @@ enum Icon: String {
     case glass = "glass"
     case setting = "setting"
     case alarm = "alarm"
+    case camera = "camera"
     
     // MARK: - ProfileMake
     case check = "check"
@@ -54,6 +55,20 @@ enum Icon: String {
     // MARK: - Recommend
     case topRank = "topRank"
     case bottomRank = "bottomRank"
+    
+    // MARK: - Diagnosing
+    case trash = "trash"
+    case pen = "pen"
+    case aiPen = "aiPen"
+    case noJournal = "noJournal"
+    case answerCheck = "answerCheck"
+    case answerNotCheck = "answerNotCheck"
+    case buttonClaw = "buttonClaw"
+    case buttonEar = "buttonEar"
+    case buttonEye = "buttonEye"
+    case buttonHair = "buttonHair"
+    case buttonTeeth = "buttonTeeth"
+    case imageRemove = "imageRemove"
     
     var image: Image {
         return Image(self.rawValue)

@@ -23,7 +23,7 @@ struct PetInfoTitle: View {
                 .font(.Body3_medium)
                 .foregroundStyle(Color.gray900)
             
-            Text(DataFormatter.shared.formattedData(from: birth))
+            Text(DataFormatter.shared.formattedDate(from: birth))
                 .font(.Body3_semibold)
                 .foregroundStyle(Color.gray400)
         })

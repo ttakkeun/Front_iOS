@@ -11,7 +11,7 @@ import SwiftUI
 final class DataFormatter {
     static let shared = DataFormatter()
     
-    public func formattedData(from dateString: String) -> String {
+    public func formattedDate(from dateString: String) -> String {
         let inputFormatter = DateFormatter()
         inputFormatter.dateFormat = "yyyy-MM-dd"
         
@@ -21,6 +21,19 @@ final class DataFormatter {
             return outputFormatter.string(from: date)
         } else {
             return dateString
+        }
+    }
+    
+    public func formattedTime(from timeString: String) -> String {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "HH:mm:ss.SSSSSS"
+        
+        if let date = inputFormatter.date(from: timeString) {
+            let outputFormatter = DateFormatter()
+            outputFormatter.dateFormat = "HH:mm"
+            return outputFormatter.string(from: date)
+        } else {
+            return timeString
         }
     }
     
