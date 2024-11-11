@@ -17,8 +17,12 @@ struct JournalListView: View {
                 journalList
                 makeJournalListBtn
                     .position(x: geo.size.width * 0.75, y: geo.size.height * 0.88)
+                if viewModel.showAiDiagnosing {
+                    CustomAlert(alertText: self.alertText(), aiCount: viewModel.aiPoint ,alertAction: AlertAction(showAlert: $viewModel.showAiDiagnosing, yes: {
+                        print("네 진행하겠습니다.")
+                    }))
+                }
             }
-            .border(Color.red)
         }
     }
     
@@ -75,7 +79,7 @@ struct JournalListView: View {
             if !viewModel.isSelectionMode {
                 print("선택된 모드 아닐 때")
             } else {
-                print("선택된 모드일 때")
+                viewModel.showAiDiagnosing.toggle()
             }
         }, label: {
             HStack(alignment: .center, spacing: 5, content: {
@@ -114,6 +118,13 @@ extension JournalListView {
         } else {
             Text("따끈 일지 생성하기")
         }
+    }
+    
+    func alertText() -> Text {
+        let baseText = "선택된 \(viewModel.selectedItem.count)개의 일지로 \n따끈 AI 진단을 진행하시겠습니까? \n"
+        let aiCountText = "(현재 가능한 횟수 : \(viewModel.aiPoint)회)"
+        
+        return Text(baseText) + Text(aiCountText).foregroundStyle(Color.red).font(.Body5_semiBold)
     }
 }
 
