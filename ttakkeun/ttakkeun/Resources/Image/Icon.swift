@@ -70,6 +70,10 @@ enum Icon: String {
     case buttonTeeth = "buttonTeeth"
     case imageRemove = "imageRemove"
     
+    // MARK: - MyPage
+    case tips = "tips"
+    case scrap = "scrap"
+    
     var image: Image {
         return Image(self.rawValue)
     }
