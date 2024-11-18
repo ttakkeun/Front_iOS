@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MyPageView: View {
+    
     var body: some View {
         VStack(alignment: .center, spacing: 37, content: {
             CustomNavigation(action: { print("hello world") },
@@ -18,6 +19,8 @@ struct MyPageView: View {
                              height: 16)
             
             myInfo
+            
+            myPageInfo
         })
     }
     
@@ -58,7 +61,7 @@ struct MyPageView: View {
                     .frame(width: 78, height: 31)
                     .background(content: {
                         RoundedRectangle(cornerRadius: 40)
-                            .fill(.primarycolor300)
+                            .fill(Color.primarycolor300)
                     })
             })
         })
@@ -71,7 +74,34 @@ struct MyPageView: View {
             makeButton(text: "내가 쓴 tips", image: Icon.tips.image, action: {print("내가 쓴 tips 버튼 눌림")})
             makeButton(text: "내가 스크랩한 tips", image: Icon.scrap.image, action: {print("내가 스크랩한 tips 버튼 눌림")})
         })
-        
+    }
+    
+    /// 아래 myPage 기능들
+    private var myPageInfo: some View {
+        VStack(alignment: .center, spacing: 21,content: {
+            ///앱 정보 박스
+            MyPageInfoBox(myPageInfo: MyPageInfo(
+                title: "앱 정보",
+                firstBtn: BtnInfo(name: "알림 설정", action: { print("알림 설정 버튼 눌림") }),
+                secondBtn: BtnInfo(name: "이용약관 및 정책", action: { print("이용약관 및 정책 버튼 눌림") }), thirdBtn: nil
+            ), versionInfo: "v1.0.0")
+            
+            ///이용정보 박스
+            MyPageInfoBox(myPageInfo: MyPageInfo(
+                title: "이용 정보",
+                firstBtn: BtnInfo(name: "공지사항", action: { print("공지사항 버튼 눌림") }),
+                secondBtn: BtnInfo(name: "문의하기", action: { print("문의하기 버튼 눌림") }),
+                thirdBtn: BtnInfo(name: "신고하기", action: { print("신고하기 버튼 눌림")})
+            ))
+            
+            ///계정 박스
+            MyPageInfoBox(myPageInfo: MyPageInfo(
+                title: "계정",
+                firstBtn: BtnInfo(name: "로그아웃하기", action: { print("로그아웃하기 버튼 눌림") }),
+                secondBtn: BtnInfo(name: "프로필 삭제하기", action: { print("프로필 삭제하기 버튼 눌림") }),
+                thirdBtn: BtnInfo(name: "탈퇴하기", action: { print("탈퇴하기 버튼 눌림")})
+            ))
+        })
     }
 }
 
@@ -104,7 +134,7 @@ extension MyPageView {
 //MARK: - Preview
 struct MyPageView_Preview: PreviewProvider {
     
-    static let devices = ["iPhone 11", "iPhone 15 Pro"]
+    static let devices = ["iPhone 11", "iPhone 16 Pro"]
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
