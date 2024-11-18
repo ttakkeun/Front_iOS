@@ -10,10 +10,10 @@ import SwiftUI
 struct CustomAlert: View {
     
     let alertText: Text
-    let aiCount: Int
+    let aiCount: Int?
     let alertAction: AlertAction
     
-    init(alertText: Text, aiCount: Int, alertAction: AlertAction) {
+    init(alertText: Text, aiCount: Int?, alertAction: AlertAction) {
         self.alertText = alertText
         self.aiCount = aiCount
         self.alertAction = alertAction

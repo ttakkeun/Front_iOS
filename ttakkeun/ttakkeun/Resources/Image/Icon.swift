@@ -69,6 +69,8 @@ enum Icon: String {
     case buttonHair = "buttonHair"
     case buttonTeeth = "buttonTeeth"
     case imageRemove = "imageRemove"
+    case leftCat = "leftCat"
+    case rightDog = "rightDog"
     
     var image: Image {
         return Image(self.rawValue)

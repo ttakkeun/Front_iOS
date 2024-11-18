@@ -10,15 +10,18 @@ import SwiftUI
 struct JournalAnswerButton: View {
     
     @Binding var isSelected: Bool
+    let paddingValue: [CGFloat]
     let data: AnswerDetailData
     let onSelect: () -> Void
     
     init(
         isSelected: Binding<Bool>,
+        paddingValue: [CGFloat] = [29, 28, 28, 24],
         data: AnswerDetailData,
         _ onSelect: @escaping () -> Void
     ) {
         self._isSelected = isSelected
+        self.paddingValue = paddingValue
         self.data = data
         self.onSelect = onSelect
     }
@@ -53,9 +56,10 @@ struct JournalAnswerButton: View {
             }
         })
         .frame(width: 301, height: 30)
-        .padding([.leading, .bottom], 28)
-        .padding(.top, 29)
-        .padding(.trailing, 24)
+        .padding(.top, paddingValue[0])
+        .padding(.bottom, paddingValue[1])
+        .padding(.leading, paddingValue[2])
+        .padding(.trailing, paddingValue[3])
         .background {
             RoundedRectangle(cornerRadius: 10)
                 .fill(isSelected ? Color.primarycolor200 : Color.answerBg)
