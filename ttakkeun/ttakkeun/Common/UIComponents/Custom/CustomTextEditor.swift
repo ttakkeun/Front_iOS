@@ -24,7 +24,7 @@ struct CustomTextEditor: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .padding(.vertical, 25)
+            .padding(.vertical, 20)
             .padding(.horizontal, 17)
             .background(alignment: .topLeading, content: {
                 if text.isEmpty {
@@ -65,5 +65,17 @@ struct CustomTextEditor: ViewModifier {
 extension TextEditor {
     func customStyleEditor(text: Binding<String>, placeholder: String, maxTextCount: Int) -> some View {
         self.modifier(CustomTextEditor(text: text, placeholder: placeholder, maxTextCount: maxTextCount))
+    }
+}
+
+struct CustomTextEditor_Preview: PreviewProvider {
+    
+    @State static var inputText = ""
+    
+    static var previews: some View {
+        TextEditor(text: $inputText)
+            .customStyleEditor(text: $inputText, placeholder: "자세히 적어주세요! 정확한 진단 결과를 받아볼 수 있어요!", maxTextCount: 150)
+            .frame(width: 347, height: 204)
+            .previewLayout(.sizeThatFits)
     }
 }

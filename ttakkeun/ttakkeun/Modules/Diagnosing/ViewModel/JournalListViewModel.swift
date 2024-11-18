@@ -10,7 +10,9 @@ import Foundation
 class JournalListViewModel: ObservableObject {
     @Published var isSelectionMode: Bool = true
     @Published var selectedCnt: Int = 0
+    
     @Published var journalListData: JournalListResponse?
+    @Published var journalResultData: JournalResultResponse?
     
     @Published var selectedItem: Set<Int> = []
     @Published var showDetailJournalList: Bool = false

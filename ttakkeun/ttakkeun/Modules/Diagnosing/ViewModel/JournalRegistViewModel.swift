@@ -14,7 +14,7 @@ class JournalRegistViewModel: ObservableObject {
     @Published var selectedPart: PartItem?
     
     @Published var getQuestions: JournalQuestionResponse?
-    @Published var selectedAnswerData: SelectedAnswerData
+    @Published var selectedAnswerData: SelectedAnswerRequest
     
     @Published var isImagePickerPresented: Bool = false
     @Published var questionImages: [Int: [UIImage]] = [:]

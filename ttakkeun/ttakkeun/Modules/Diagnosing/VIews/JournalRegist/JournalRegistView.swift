@@ -8,8 +8,21 @@
 import SwiftUI
 
 struct JournalRegistView: View {
+    @StateObject var viewModel: JournalRegistViewModel
+    
+    init() {
+        self._viewModel = StateObject(wrappedValue: .init(petID: UserState.shared.getPetId()))
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(alignment: .center, spacing: 38, content: {
+            CustomNavigation(action: {
+                print("디스미스 처리")
+            }, title: nil, currentPage: viewModel.currentPage)
+            
+            JournalRegistContents(viewModel: viewModel)
+        })
+        .navigationBarBackButtonHidden(true)
     }
 }
 
