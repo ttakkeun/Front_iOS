@@ -104,6 +104,6 @@ extension JournalRegistImages {
 
 struct JournalRegistImages_Preview: PreviewProvider {
     static var previews: some View {
-        JournalRegistImages(viewModel: JournalRegistViewModel())
+        JournalRegistImages(viewModel: JournalRegistViewModel(petID: .init(5)))
     }
 }

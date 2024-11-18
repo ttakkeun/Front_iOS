@@ -14,9 +14,14 @@ class JournalRegistViewModel: ObservableObject {
     @Published var selectedPart: PartItem?
     
     @Published var getQuestions: JournalQuestionResponse?
+    @Published var selectedAnswerData: SelectedAnswerData
     
     @Published var isImagePickerPresented: Bool = false
     @Published var questionImages: [Int: [UIImage]] = [:]
+    
+    init(petID: Int) {
+        selectedAnswerData = .init(petId: petID)
+    }
     
     var selectedImageCount: Int {
         guard let questionID = currentQuestion?.questionID else { return 0 }
@@ -28,6 +33,9 @@ class JournalRegistViewModel: ObservableObject {
         return getQuestion.question[currentPage - 2]
     }
     
+    func updateAnswer(for questionID: Int, selectedAnswer: [String]) {
+        selectedAnswerData.answers[questionID] = selectedAnswer
+    }
 }
 
 extension JournalRegistViewModel: ImageHandling {
