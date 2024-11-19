@@ -14,7 +14,9 @@ struct JournalAnswerResult: View {
     let data: QnAListData
     let index: Int
     
-    init(data: QnAListData, index: Int) {
+    init(data: QnAListData,
+         index: Int
+    ) {
         self.data = data
         self.index = index
     }
@@ -27,14 +29,7 @@ struct JournalAnswerResult: View {
             
             selectedAnswerImage
         })
-        .padding(.top, 20)
-        .padding(.bottom, 24)
-        .padding(.horizontal, 15)
-        .background {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.white)
-                .stroke(Color.gray200, lineWidth: 1)
-        }
+        .modifier(JournalResultBoxModifier())
         .frame(width: 312)
     }
     
@@ -50,6 +45,7 @@ struct JournalAnswerResult: View {
             ForEach(data.answer, id: \.self) { answer in
                 JournalAnswerButton(isSelected: .constant(true),
                                     paddingValue: [18, 17, 24, 24],
+                                    width: 264,
                                     data: AnswerDetailData(answerText: answer),
                                     { print("nil") })
                     .disabled(true)

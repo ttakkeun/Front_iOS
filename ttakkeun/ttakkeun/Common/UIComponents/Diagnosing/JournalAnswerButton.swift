@@ -11,17 +11,20 @@ struct JournalAnswerButton: View {
     
     @Binding var isSelected: Bool
     let paddingValue: [CGFloat]
+    let width: CGFloat
     let data: AnswerDetailData
     let onSelect: () -> Void
     
     init(
         isSelected: Binding<Bool>,
         paddingValue: [CGFloat] = [29, 28, 28, 24],
+        width: CGFloat = 301,
         data: AnswerDetailData,
         _ onSelect: @escaping () -> Void
     ) {
         self._isSelected = isSelected
         self.paddingValue = paddingValue
+        self.width = width
         self.data = data
         self.onSelect = onSelect
     }
@@ -55,7 +58,7 @@ struct JournalAnswerButton: View {
                     .frame(width: 30, height: 30)
             }
         })
-        .frame(width: 301, height: 30)
+        .frame(width: width, height: 30)
         .padding(.top, paddingValue[0])
         .padding(.bottom, paddingValue[1])
         .padding(.leading, paddingValue[2])

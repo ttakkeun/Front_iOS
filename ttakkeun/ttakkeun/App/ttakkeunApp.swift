@@ -14,7 +14,7 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            Text("hello")
+            DiagnosingView(viewModel: DiagnosticResultViewModel())
         }
     }
 }

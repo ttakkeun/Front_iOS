@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 진단 목록 뷰
 struct JournalListView: View {
     
     @ObservedObject var viewModel: JournalListViewModel

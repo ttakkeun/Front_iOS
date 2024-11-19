@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct DiagnosingView: View {
+/// 진단 목록 및 진단결과
+struct DiagnosticsView: View {
     
     @StateObject var viewModel: DiagnosingViewModel = .init()
     
@@ -26,5 +27,5 @@ struct DiagnosingView: View {
 }
 
 #Preview {
-    DiagnosingView()
+    DiagnosticsView()
 }
