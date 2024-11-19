@@ -9,5 +9,6 @@ import Foundation
 
 class DiagnosticResultViewModel: ObservableObject {
     
+    @Published var diagnosticResolutionData: DiagnosticResolutionResponse?
     
 }

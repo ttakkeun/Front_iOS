@@ -10,8 +10,6 @@ import SwiftUI
 /// 진단 중 화면
 struct DiagnosingView: View {
     
-    @ObservedObject var viewModel: DiagnosticResultViewModel
-    
     var body: some View {
         ZStack(alignment: .top, content: {
             Icon.diagnosingBg.image
@@ -42,6 +40,6 @@ struct DiagnosingView: View {
 
 struct DiagnosingView_Preview: PreviewProvider {
     static var previews: some View {
-        DiagnosingView(viewModel: DiagnosticResultViewModel())
+        DiagnosingView()
     }
 }

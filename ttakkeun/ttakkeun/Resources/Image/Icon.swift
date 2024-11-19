@@ -73,6 +73,7 @@ enum Icon: String {
     case rightDog = "rightDog"
     case diagnosingBg = "diagnosingBg"
     case bubbleLogo = "bubbleLogo"
+    case diagnosisTopBg = "diagnosisTopBg"
     
     var image: Image {
         return Image(self.rawValue)
