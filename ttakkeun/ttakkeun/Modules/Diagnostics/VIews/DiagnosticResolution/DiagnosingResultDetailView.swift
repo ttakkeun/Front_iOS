@@ -46,6 +46,7 @@ struct DiagnosingResultDetailView: View {
                 ProgressView(label: {
                     LoadingDotsText(text: "조금만 기다려주세요! \n진단 결과를 준비하고 있어요 😊")
                 })
+                .controlSize(.large)
                 
                 Spacer()
                 

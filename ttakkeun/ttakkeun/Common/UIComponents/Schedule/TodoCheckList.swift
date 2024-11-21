@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 투두 박스 내부에서 쓰이는 체크 리스트 항목
 struct TodoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
     
     @Binding var data: TodoList

@@ -75,6 +75,12 @@ enum Icon: String {
     case bubbleLogo = "bubbleLogo"
     case diagnosisTopBg = "diagnosisTopBg"
     
+    // MARK: - Schedule
+    case downArrow = "downArrow"
+    case todoPlus = "todoPlus"
+    case plus = "plus"
+    case minus = "minus"
+    
     var image: Image {
         return Image(self.rawValue)
     }

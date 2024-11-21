@@ -16,8 +16,7 @@ struct JournalResultCheckView: View {
         VStack(alignment: .center, content: {
             
             Capsule()
-                .frame(width: 50, height: 4)
-                .foregroundStyle(Color.gray400)
+                .modifier(CapsuleModifier())
             
             Spacer().frame(height: 10)
             
@@ -33,11 +32,13 @@ struct JournalResultCheckView: View {
                 ProgressView(label: {
                     LoadingDotsText(text: "일지 체크리스트 데이터를 받아오고 있습니다!! \n잠시만 기다려주세요")
                 })
+                .controlSize(.large)
                 
                 Spacer()
             }
         })
         .safeAreaPadding(EdgeInsets(top: 10, leading: 24, bottom: 20, trailing: 25))
+        .clipShape(.rect(topLeadingRadius: 10, topTrailingRadius: 10))
     }
 }
 

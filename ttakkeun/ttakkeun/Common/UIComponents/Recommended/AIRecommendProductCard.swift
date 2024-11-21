@@ -34,7 +34,7 @@ struct AIRecommendProductCard: View {
             KFImage(url)
                 .placeholder {
                     ProgressView()
-                        .frame(width: 100, height: 100)
+                        .controlSize(.regular)
                 }.retry(maxCount: 2, interval: .seconds(2))
                 .onFailure{ _ in
                     print("AI 추천 상품 이미지 로딩 실패")

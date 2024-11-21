@@ -23,7 +23,7 @@ struct DiagnosticAIProduct: View {
                 KFImage(url)
                     .placeholder {
                         ProgressView()
-                            .frame(width: 100, height: 100)
+                            .controlSize(.regular)
                     }.retry(maxCount: 2, interval: .seconds(2))
                     .resizable()
                     .frame(width: 95, height: 95)

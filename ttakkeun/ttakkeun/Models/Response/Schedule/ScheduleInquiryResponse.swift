@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ScheduleInquiryResponseData: Codable {
+struct ScheduleInquiryResponse: Codable {
     var date: String
     var earTodo: [TodoList]?
     var hairTodo: [TodoList]?

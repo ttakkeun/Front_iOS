@@ -44,7 +44,7 @@ struct ProfileCard: View {
             KFImage(url)
                 .placeholder {
                     ProgressView()
-                        .frame(width: 120, height: 120)
+                        .controlSize(.regular)
                 }.retry(maxCount: 2, interval: .seconds(2))
                 .onFailure { _ in
                     print("펫 프로필 이미지 로딩 실패")

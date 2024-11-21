@@ -74,7 +74,7 @@ struct JournalRegistContents: View {
                 ProgressView(label: {
                     LoadingDotsText(text: "질문 데이터를 불러오고 있습니다!! \n잠시만 기다려주세요")
                 })
-                .progressViewStyle(.circular)
+                .controlSize(.large)
                 
                 Spacer()
             }

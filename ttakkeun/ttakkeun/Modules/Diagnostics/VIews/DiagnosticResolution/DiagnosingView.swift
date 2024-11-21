@@ -24,6 +24,7 @@ struct DiagnosingView: View {
                 ProgressView(label: {
                     LoadingDotsText(text: "AI가 데이터를 분석 중입니다... \n잠시만 기다려주세요! ")
                 })
+                .controlSize(.large)
                 
                 Icon.bubbleLogo.image
                     .resizable()
