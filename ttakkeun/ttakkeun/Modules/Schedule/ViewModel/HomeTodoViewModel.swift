@@ -1,5 +1,5 @@
 //
-//  ScheduleViewModel.swift
+//  HomeTodoViewModel.swift
 //  ttakkeun
 //
 //  Created by 정의찬 on 11/4/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ScheduleViewModel: ObservableObject, TodoCheckProtocol {
+class HomeTodoViewModel: ObservableObject, TodoCheckProtocol {
     @Published var earTodos: [TodoList] = []
     @Published var hairTodos: [TodoList] = []
     @Published var clawTodos: [TodoList] = []

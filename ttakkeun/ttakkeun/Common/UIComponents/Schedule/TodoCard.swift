@@ -18,17 +18,17 @@ struct TodoCard: View {
     
     var body: some View {
         HStack(content: {
-            todoCicle
-            
-            Spacer().frame(width: 20)
-            
-            if !viewModel.todos.isEmpty {
-                todoCheckList
-            } else {
-                notTOdoChecList
-            }
-            
-            Spacer()
+                todoCicle
+                
+                Spacer().frame(width: 20)
+                
+                if !viewModel.todos.isEmpty {
+                    todoCheckList
+                } else {
+                    notTOdoChecList
+                }
+                
+                Spacer()
         })
         .frame(width: 318)
         .padding(.leading, 14)

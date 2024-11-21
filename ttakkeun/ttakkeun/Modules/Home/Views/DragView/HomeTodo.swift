@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeTodo: View {
     
-    @StateObject var viewModel: ScheduleViewModel
+    @StateObject var viewModel: HomeTodoViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16, content: {
