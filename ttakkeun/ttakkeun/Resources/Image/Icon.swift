@@ -86,6 +86,9 @@ enum Icon: String {
     case soso = "soso"
     case smile = "smile"
     case heart = "heart"
+    case anotherIcon = "anotherIcon"
+    case againIcon = "againIcon"
+    case replaceIcon = "replaceIcon"
     
     var image: Image {
         return Image(self.rawValue)

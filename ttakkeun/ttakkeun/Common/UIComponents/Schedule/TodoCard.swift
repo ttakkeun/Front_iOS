@@ -79,31 +79,36 @@ struct TodoCard: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
             })
+            .disabled(viewModel.isAddingNewTodo == true ? true : false)
         })
     }
     
     private var newTodoInputField: some View {
         HStack {
             Icon.unCheckBox.image
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 17, height: 17)
+                .fixedSize()
             
-            TextField("내용을 입력해주세요!!" ,text: $viewModel.newTodoText)
-                .onSubmit {
-                    addNewTodo()
-                }
-                .textFieldStyle(PlainTextFieldStyle())
-                .font(.Body4_medium)
-                .foregroundStyle(Color.gray900)
-                .tint(Color.black)
+            VStack(spacing: 0, content: {
+                TextField("내용을 입력해주세요!!" ,text: $viewModel.newTodoText)
+                    .onSubmit {
+                        addNewTodo()
+                    }
+                    .textFieldStyle(PlainTextFieldStyle())
+                    .font(.Body4_medium)
+                    .foregroundStyle(Color.gray900)
+                    .tint(Color.black)
+                
+                Divider()
+                    .frame(height: 2)
+                    .background(Color.mainPrimary)
+            })
             
             Spacer()
             
             HStack(spacing: 8, content: {
                 makeButton(action: addNewTodo, image: Icon.plus.image)
                 
-                makeButton(action: viewModel.isAddingNewTodoToggle, image: Icon.minus.image)
+                makeButton(action: minustTodo, image: Icon.minus.image)
             })
         }
         .frame(width: 240)
@@ -111,6 +116,12 @@ struct TodoCard: View {
 }
 
 extension TodoCard {
+    
+    func minustTodo() {
+        viewModel.isAddingNewTodoToggle()
+        viewModel.newTodoText = ""
+    }
+    
     func addNewTodo() {
         guard !viewModel.newTodoText.isEmpty else { return }
         

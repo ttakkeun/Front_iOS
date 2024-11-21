@@ -48,6 +48,5 @@ class TodoCheckViewModel: ObservableObject, TodoCheckProtocol {
     
     func isAddingNewTodoToggle() {
         self.isAddingNewTodo.toggle()
-        print(isAddingNewTodo)
     }
 }

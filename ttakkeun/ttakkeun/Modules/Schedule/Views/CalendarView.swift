@@ -28,6 +28,10 @@ struct CalendarView: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.primarycolor500)
         }
+        .sheet(isPresented: $viewModel.showDatePickerView, content: {
+            DatePickerSheetView(selectedDate: $viewModel.selectedDate, showDatePickerView: $viewModel.showDatePickerView)
+                .presentationDetents([.fraction(0.3)])
+        })
     }
     
     // MARK: - DiaryHeaderTitle

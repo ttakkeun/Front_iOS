@@ -11,7 +11,7 @@ import SwiftUI
 struct CapsuleModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .frame(width: 50, height: 4)
-            .foregroundStyle(Color.gray400)
+            .frame(width: 40, height: 5)
+            .foregroundStyle(Color.gray200)
     }
 }

@@ -51,7 +51,7 @@ struct DatePickerSheetView: View {
             
             completeButton
         })
-        .safeAreaPadding(EdgeInsets(top: 10, leading: 0, bottom: 20, trailing: 0))
+        .safeAreaPadding(EdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0))
         .background(Color.white)
         .frame(height: 250)
         .clipShape(.rect(topLeadingRadius: 10, topTrailingRadius: 10))
@@ -63,7 +63,7 @@ struct DatePickerSheetView: View {
                 Picker("Year", selection: $selectedYear, content: {
                     ForEach(years, id: \.self) { year in
                         Text(formattedYear(from: year))
-                            .font(.Body5_medium)
+                            .font(.Body4_medium)
                             .foregroundStyle(Color.gray900)
                             .tag(year)
                         
@@ -73,7 +73,7 @@ struct DatePickerSheetView: View {
                 Picker("Month", selection: $selectedMonth, content: {
                     ForEach(month, id: \.self) { month in
                         Text("\(month)월")
-                            .font(.Body5_medium)
+                            .font(.Body4_medium)
                             .foregroundStyle(Color.gray900)
                             .tag(month)
                     }
