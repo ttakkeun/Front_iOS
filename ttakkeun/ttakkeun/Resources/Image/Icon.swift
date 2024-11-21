@@ -80,6 +80,12 @@ enum Icon: String {
     case todoPlus = "todoPlus"
     case plus = "plus"
     case minus = "minus"
+    case neutral = "neutral"
+    case sad = "sad"
+    case hinghing = "hinghing"
+    case soso = "soso"
+    case smile = "smile"
+    case heart = "heart"
     
     var image: Image {
         return Image(self.rawValue)
