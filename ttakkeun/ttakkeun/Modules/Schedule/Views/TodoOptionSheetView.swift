@@ -18,7 +18,6 @@ struct TodoOptionSheetView: View {
         .safeAreaPadding(EdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0))
         .clipShape(UnevenRoundedRectangle(topLeadingRadius: 10, topTrailingRadius: 10))
         .frame(width: 394, height: 340)
-        .border(Color.red)
     }
     
     private var mainContents: some View {
@@ -88,7 +87,7 @@ extension TodoOptionSheetView {
     func setColor(_ type: TodoOptionBtn) -> Color {
         switch type {
         case .modify:
-            return Color.scheduleBg
+            return Color.completionFront
         case .remove:
             return Color.postBg
         }
