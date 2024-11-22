@@ -100,6 +100,7 @@ struct CustomTextField: View {
                 Icon.glass.image
                     .resizable()
                     .frame(width: 24, height: 24)
+                    .padding(.leading, 15)
             }
             if text.isEmpty && !isTextFocused {
                 Text(placeholder)

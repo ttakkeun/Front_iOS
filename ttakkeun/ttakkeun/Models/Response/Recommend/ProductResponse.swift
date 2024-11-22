@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct ProductResponse: Codable, Hashable {
+struct ProductResponse: Codable, Hashable, Identifiable {
+    let id = UUID()
     let productId: Int
     let title: String
     let image: String
@@ -18,8 +19,8 @@ struct ProductResponse: Codable, Hashable {
     let category2: String?
     let category3: String?
     let category4: String?
-    let totalLike: Int?
-    let likeStatus: Bool
+    var totalLike: Int?
+    var likeStatus: Bool
     
     
     enum CodingKeys: String, CodingKey {

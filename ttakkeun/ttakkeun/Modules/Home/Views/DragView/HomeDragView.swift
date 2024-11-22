@@ -78,8 +78,8 @@ struct HomeDragView: View {
         ScrollView(.vertical, content: {
             VStack(alignment: .leading, spacing: 40, content: {
                 HomeTodo(viewModel: viewModel.homeTodoViewModel)
-                HomeAIProduct(viewModel: viewModel.recommendViewModel)
-                HomeTop(viewModel: viewModel.recommendViewModel, petType: viewModel.homeProfileCardViewModel.profileData?.type)
+                HomeAIProduct(viewModel: viewModel.homeRecommendViewModel)
+                HomeTop(viewModel: viewModel.homeRecommendViewModel, petType: viewModel.homeProfileCardViewModel.profileData?.type)
             })
             .safeAreaPadding(EdgeInsets(top: 0, leading: 19, bottom: 0, trailing: 20))
         })

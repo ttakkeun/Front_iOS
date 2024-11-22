@@ -55,6 +55,7 @@ enum Icon: String {
     // MARK: - Recommend
     case topRank = "topRank"
     case bottomRank = "bottomRank"
+    case recommendDog = "recommendDog"
     
     // MARK: - Diagnosing
     case trash = "trash"

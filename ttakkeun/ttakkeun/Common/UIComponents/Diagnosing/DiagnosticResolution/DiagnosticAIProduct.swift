@@ -33,9 +33,10 @@ struct DiagnosticAIProduct: View {
                             .fill(Color.clear)
                             .stroke(Color.gray200)
                     )
+            }
                 
                 VStack(alignment: .leading, spacing: 10, content: {
-                    Text(data.title.split(separator: "").joined(separator: "\u{200B}"))
+                    Text(DataFormatter.shared.stripHTMLTags(from: data.title).split(separator: "").joined(separator: "\u{200B}"))
                         .font(.Body3_semibold)
                         .foregroundStyle(Color.gray900)
                         .lineLimit(2)
@@ -51,7 +52,6 @@ struct DiagnosticAIProduct: View {
                         .font(.Body5_medium)
                         .foregroundStyle(Color.gray600)
                 })
-            }
         })
         .frame(width: 353, height: 95, alignment: .leading)
     }
