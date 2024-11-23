@@ -21,7 +21,7 @@ struct RecommendView: View {
                 
                 topController
                 
-                if viewModel.selectedCategory == .all {
+                if viewModel.productViewModel.selectedCategory == .all {
                     Spacer().frame(height: 2)
                     aiRecommendGroup
                     
@@ -41,10 +41,13 @@ struct RecommendView: View {
     
     private var topController: some View {
         VStack(alignment: .center, spacing: 17, content: {
-            CustomTextField(text: $viewModel.searchText, placeholder: "검색어를 입력해주세요.", cornerRadius: 20, showGlass: true, maxWidth: 360, maxHeight: 40)
-                .onSubmit {
-                    print("hello")
-                }
+            Button(action: {
+                viewModel.searachViewModel.isSearchActive.toggle()
+            }, label: {
+                CustomTextField(text: $viewModel.searachViewModel.searchText, placeholder: "검색어를 입력해주세요.", cornerRadius: 20, showGlass: true, maxWidth: 360, maxHeight: 40)
+                    .disabled(true)
+            })
+            
             
             topSegmentedControl
         })
@@ -87,7 +90,7 @@ struct RecommendView: View {
     
     @ViewBuilder
     private var recommendProducts: some View {
-        if let datas = viewModel.aiProducts {
+        if let datas = viewModel.productViewModel.aiProducts {
             ScrollView(.horizontal, content: {
                 HStack(spacing: 10, content: {
                     ForEach(datas.prefix(10), id: \.self) { data in
@@ -115,9 +118,9 @@ struct RecommendView: View {
     
     private var rankRecommendedProducts: some View {
         VStack(spacing: 16, content: {
-            if !viewModel.recommendProducts.isEmpty  {
-                ForEach(Array(viewModel.recommendProducts.enumerated()), id: \.offset) { index, product in
-                    RankRecommendation(data: $viewModel.recommendProducts[index], rank: index)
+            if !viewModel.productViewModel.recommendProducts.isEmpty  {
+                ForEach(Array(viewModel.productViewModel.recommendProducts.enumerated()), id: \.offset) { index, product in
+                    RankRecommendation(data: $viewModel.productViewModel.recommendProducts[index], rank: index)
                 }
             } else {
                 Spacer()
@@ -139,7 +142,7 @@ extension RecommendView {
     func makeButton(part: ExtendPartItem) -> some View {
         Button(action: {
             withAnimation(.easeInOut(duration: 0.1)) {
-                viewModel.selectedCategory = part
+                viewModel.productViewModel.selectedCategory = part
             }
         }, label: {
             Text(part.toKorean())
@@ -147,10 +150,10 @@ extension RecommendView {
                 .padding(.vertical, 6)
                 .padding(.horizontal, 24)
                 .font(.Body2_medium)
-                .foregroundStyle(viewModel.selectedCategory == part ? Color.gray900 : Color.gray600)
+                .foregroundStyle(viewModel.productViewModel.selectedCategory == part ? Color.gray900 : Color.gray600)
                 .background {
                     RoundedRectangle(cornerRadius: 24)
-                        .fill(viewModel.selectedCategory == part ? Color.primarycolor200 : Color.clear)
+                        .fill(viewModel.productViewModel.selectedCategory == part ? Color.primarycolor200 : Color.clear)
                         .stroke(Color.gray700, lineWidth: 1)
                 }
         })
