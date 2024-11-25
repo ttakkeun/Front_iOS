@@ -37,7 +37,7 @@ struct RecommendView: View {
         .matchedGeometryEffect(id: "aiRecommendGroup", in: animationNamespace)
     }
     
-    // MARK: -Top Controller
+    // MARK: - Top Controller
     
     private var topController: some View {
         VStack(alignment: .center, spacing: 17, content: {

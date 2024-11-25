@@ -13,7 +13,7 @@ class SearchViewModel: ObservableObject {
     
     @Published var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "RecentSearches") ?? []
     @Published var searchText: String = ""
-    @Published var searchResults: [String] = []
+    @Published var realTimeSearchResult: [ProductResponse]?
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -23,27 +23,17 @@ class SearchViewModel: ObservableObject {
             .removeDuplicates()
             .sink { [weak self] query in
                 guard !query.isEmpty else {
-                    self?.searchResults = []
+                    self?.realTimeSearchResult = nil
                     return
                 }
                 self?.fetchSearchResults(for: query)
-                self?.saveSearchTerm(query)
             }
             .store(in: &cancellables)
     }
     
     
     func fetchSearchResults(for query: String) {
-        // 예시 API URL
-        let urlString = "https://example.com/api/search?query=\(query)"
-        guard let url = URL(string: urlString) else { return }
-
-        URLSession.shared.dataTaskPublisher(for: url)
-            .map { $0.data }
-            .decode(type: [String].self, decoder: JSONDecoder())
-            .replaceError(with: [])
-            .receive(on: DispatchQueue.main)
-            .assign(to: &$searchResults)
+        print(searchText)
     }
     
     func saveSearchTerm(_ query: String) {

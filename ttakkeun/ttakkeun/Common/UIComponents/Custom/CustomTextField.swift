@@ -72,26 +72,40 @@ struct CustomTextField: View {
     }
     
     private var inputOutLineTextField: some View {
-        TextField("", text: $text, axis: .horizontal)
-            .frame(width: maxWidth , height: maxHeight)
-            .font(.suit(type: .medium, size: fontSize))
-            .foregroundStyle(Color.black)
-            .focused($isTextFocused)
-            .padding(.leading, padding)
-            .background(Color.clear)
-            .clipShape(.rect(cornerRadius: cornerRadius))
-            .overlay(content: {
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .inset(by: 0.5)
-                    .stroke(Color.gray200, lineWidth: 1)
-                    .frame(width: maxWidth)
-            })
-            .onTapGesture {
-                if !isTextFocused {
-                    text = ""
-                    isTextFocused = true
+        ZStack(alignment: .trailing, content: {
+            TextField("", text: $text, axis: .horizontal)
+                .frame(width: maxWidth , height: maxHeight)
+                .font(.suit(type: .medium, size: fontSize))
+                .foregroundStyle(Color.black)
+                .focused($isTextFocused)
+                .padding(.leading, padding)
+                .background(Color.clear)
+                .clipShape(.rect(cornerRadius: cornerRadius))
+                .overlay(content: {
+                    RoundedRectangle(cornerRadius: cornerRadius)
+                        .inset(by: 0.5)
+                        .stroke(Color.gray200, lineWidth: 1)
+                        .frame(width: maxWidth)
+                })
+                .onTapGesture {
+                    if !isTextFocused {
+                        text = ""
+                        isTextFocused = true
+                    }
                 }
+            
+            if text.count > 0 {
+                Button(action: {
+                    self.text.removeAll()
+                }, label: {
+                    Icon.deleteText.image
+                        .resizable()
+                        .frame(width: 23, height: 24)
+                        .aspectRatio(contentMode: .fit)
+                })
+                .padding(.trailing, 21)
             }
+        })
     }
     
     private var placeholderInField: some View {
@@ -111,6 +125,8 @@ struct CustomTextField: View {
                     .padding(.leading, 15)
                     .padding(.vertical, 13)
             }
+            
+            Spacer().frame(width: 10)
         })
         .frame(width: maxWidth, height: maxHeight, alignment: .leading)
         .onTapGesture {

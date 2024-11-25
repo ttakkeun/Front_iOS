@@ -12,9 +12,10 @@ struct RecentSearchView: View {
     @ObservedObject var viewModel: SearchViewModel
     
     var body: some View {
-        VStack(alignment: .center, spacing: 12, content: {
+        VStack(alignment: .leading, spacing: 12, content: {
             recentSearches
         })
+        .modifier(SearchViewModifier())
     }
     
     @ViewBuilder

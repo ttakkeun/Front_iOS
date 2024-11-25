@@ -25,6 +25,7 @@ enum Icon: String {
     case setting = "setting"
     case alarm = "alarm"
     case camera = "camera"
+    case deleteText = "deleteText"
     
     // MARK: - ProfileMake
     case check = "check"

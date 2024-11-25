@@ -12,11 +12,17 @@ struct RecommendSearchView: View {
     @ObservedObject var viewModel: SearchViewModel
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 17, content: {
+        VStack(alignment: .leading, spacing: 5, content: {
             topControl
-            RecentSearchView(viewModel: viewModel)
+            
+            Divider()
+                .padding(.top, 3)
+                .foregroundStyle(Color.gray300)
+            
+            Spacer()
+            
+            RealTiemSearchView(viewModel: viewModel)
         })
-        .safeAreaPadding(EdgeInsets(top: 0, leading: 21, bottom: 0, trailing: 21))
     }
     
     private var topControl: some View {
@@ -30,6 +36,7 @@ struct RecommendSearchView: View {
             
             CustomTextField(text: $viewModel.searchText, placeholder: "검색어를 입력하세요.", cornerRadius: 20, padding: 23, maxWidth: 319, maxHeight: 40)
         })
+        .modifier(SearchViewModifier())
     }
 }
 
