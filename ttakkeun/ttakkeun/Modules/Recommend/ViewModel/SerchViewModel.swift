@@ -10,10 +10,16 @@ import Combine
 
 class SearchViewModel: ObservableObject {
     @Published var isSearchActive: Bool = false
+    @Published var isShowingSearchResult: Bool = false
+    @Published var isShowingRealTimeResults: Bool = false
     
     @Published var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "RecentSearches") ?? []
+    
     @Published var searchText: String = ""
     @Published var realTimeSearchResult: [ProductResponse]?
+    
+    @Published var naverData: [ProductResponse] = []
+    @Published var localDbData: [ProductResponse] = []
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -21,19 +27,38 @@ class SearchViewModel: ObservableObject {
         $searchText
             .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
             .removeDuplicates()
-            .sink { [weak self] query in
-                guard !query.isEmpty else {
-                    self?.realTimeSearchResult = nil
-                    return
+            .sink { [weak self] newValue in
+                guard let self = self else { return }
+                if newValue.isEmpty {
+                    self.realTimeSearchResult = nil
+                } else {
+                    self.fetchRealTimeResults(for: newValue)
                 }
-                self?.fetchSearchResults(for: query)
             }
             .store(in: &cancellables)
     }
     
+    func fetchRealTimeResults(for query: String) {
+        isShowingRealTimeResults = true
+        print("실시간 검색 데이터 받아옴: \(query)")
+    }
     
     func fetchSearchResults(for query: String) {
-        print(searchText)
+        print("검색 결과 받아옴: \(query)")
+    }
+    
+    func handleSearchTextChange(_ newValue: String, _ oldValue: String) {
+        if newValue.isEmpty {
+            self.isShowingSearchResult = false
+            self.isShowingRealTimeResults = false
+        } else if oldValue.isEmpty {
+            self.isShowingRealTimeResults = false
+            self.isShowingSearchResult = false
+        } else {
+            self.isShowingSearchResult = false
+            self.isShowingRealTimeResults = true
+            self.fetchRealTimeResults(for: newValue)
+        }
     }
     
     func saveSearchTerm(_ query: String) {

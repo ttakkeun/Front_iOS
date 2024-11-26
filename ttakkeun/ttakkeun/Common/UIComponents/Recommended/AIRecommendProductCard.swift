@@ -43,6 +43,7 @@ struct AIRecommendProductCard: View {
                 .aspectRatio(contentMode: .fill)
                 .frame(maxWidth: 62, maxHeight: 64)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
+                .padding(5)
         }
     }
     

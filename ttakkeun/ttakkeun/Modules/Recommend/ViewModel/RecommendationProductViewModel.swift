@@ -9,6 +9,6 @@ import Foundation
 
 class RecommendationProductViewModel: ObservableObject {
     @Published var selectedCategory: ExtendPartItem = .all
-    @Published var aiProducts: [ProductResponse]?
+    @Published var aiProducts: [ProductResponse] = []
     @Published var recommendProducts: [ProductResponse] = []
 }

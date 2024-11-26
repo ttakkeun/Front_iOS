@@ -39,6 +39,7 @@ struct RankRecommendation: View {
                 .resizable()
                 .frame(width: 95, height: 95)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
+                .padding(5)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.clear)
@@ -79,53 +80,14 @@ struct RankRecommendation: View {
             
             Spacer().frame(height: 9)
             
-            HStack {
-                Spacer()
-                
-                likeButton
-            }
+            LikeButton(data: $data)
         })
         .frame(width: 236, height: 95)
     }
-    
-    private var likeButton: some View {
-        Button(action: {
-            withAnimation(.easeInOut(duration: 0.2)) {
-                toggleLike()
-            }
-        }, label: {
-            HStack(spacing: 4, content: {
-                Group {
-                    Image(systemName: data.likeStatus ? "suit.heart.fill" : "suit.heart")
-                        .resizable()
-                        .renderingMode(.template)
-                        .frame(width: 18, height: 17)
-                    
-                    Text(countText(count: data.totalLike ?? 0))
-                        .frame(width: 40, alignment: .leading)
-                        .multilineTextAlignment(.leading)
-                        .font(.Body3_medium)
-                }
-                .foregroundStyle(data.likeStatus ? Color.removeBtn : Color.gray600)
-            })
-        })
-        
+}
+
+struct RankRecommendation_Preview: PreviewProvider {
+    static var previews: some View {
+        RankRecommendation(data: .constant(ProductResponse(productId: 1, title: "아모스 녹차실감 산뜻한 타입 지성 모발용 <b>샴푸</b> 500g", image: "https://shopping-phinf.pstatic.net/main_2099178/20991784508.20191001111748.jpg", price: 8780, brand: "아모스", purchaseLink: "https://search.shopping.naver.com/catalog/20991784508", category1: "화장품/미용", category2: "헤어케어", category3: "샴푸", category4: "", totalLike: 9, likeStatus: false)), rank: 1)
     }
-    
-    func countText(count: Int) -> String {
-        if count > 999 {
-            return "999+"
-        } else {
-            return String(count)
-        }
-    }
-    
-    func toggleLike() {
-        data.likeStatus.toggle()
-            if data.likeStatus {
-                data.totalLike = (data.totalLike ?? 0) + 1
-            } else {
-                data.totalLike = max(0, (data.totalLike ?? 0) - 1) // 최소 0
-            }
-        }
 }

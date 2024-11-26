@@ -20,6 +20,7 @@ struct CustomTextField: View {
     let showGlass: Bool
     let maxWidth: CGFloat
     let maxHeight: CGFloat
+    let onSubmit: (() -> Void)?
     
     // MARK: - Init
     
@@ -43,7 +44,8 @@ struct CustomTextField: View {
         padding: CGFloat = 15,
         showGlass: Bool = false,
         maxWidth: CGFloat = 341,
-        maxHeight: CGFloat = 44
+        maxHeight: CGFloat = 44,
+        onSubmit: (() -> Void)? = nil
     ) {
         self.keyboardType = keyboardType
         self._text = text
@@ -54,6 +56,7 @@ struct CustomTextField: View {
         self.showGlass = showGlass
         self.maxWidth = maxWidth
         self.maxHeight = maxHeight
+        self.onSubmit = onSubmit
     }
     
     var body: some View {
@@ -92,6 +95,9 @@ struct CustomTextField: View {
                         text = ""
                         isTextFocused = true
                     }
+                }
+                .onSubmit {
+                    onSubmit?()
                 }
             
             if text.count > 0 {

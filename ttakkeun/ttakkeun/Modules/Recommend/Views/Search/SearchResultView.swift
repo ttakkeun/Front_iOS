@@ -8,11 +8,74 @@
 import SwiftUI
 
 struct SearchResultView: View {
+    
+    @ObservedObject var viewModel: SearchViewModel
+    
+    let padding: CGFloat = 25
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView(.vertical, content: {
+            VStack(alignment: .leading, spacing: 27, content: {
+                naverSearchResultGroup
+                
+                localSearchResultGroup
+            })
+            .modifier(SearchViewModifier())
+        })
+    }
+    
+    private var naverSearchResultGroup: some View {
+        VStack(alignment: .leading, spacing: 16, content: {
+            Text("외부 검색 상품")
+                .font(.H4_bold)
+                .foregroundStyle(Color.gray900)
+            
+            naverSearchResult
+        })
+    }
+    
+    @ViewBuilder
+    private var naverSearchResult: some View {
+        if !viewModel.naverData.isEmpty {
+            ScrollView(.horizontal, content: {
+                HStack(spacing: 10, content: {
+                    ForEach($viewModel.naverData, id: \.id) { data in
+                        Text("hello")
+                    }
+                })
+                .padding(.horizontal, padding)
+            })
+            
+        } else {
+            warningText(type: .naver)
+        }
+    }
+    
+    private var localSearchResultGroup: some View {
+        VStack(alignment: .leading, spacing: 0, content: {
+            AIRecommendTitle(padding: 5, title: "앱 내 검색 결과")
+            
+            localSearchResult
+        })
+    }
+    
+    @ViewBuilder
+    private var localSearchResult: some View {
+        if !viewModel.localDbData.isEmpty {
+            LazyVGrid(columns: Array(repeating: GridItem(.fixed(162)), count: 2), spacing: 10 , content: {
+                ForEach($viewModel.localDbData, id: \.self) { data in
+                    InAppSearchResult(data: data)
+                }
+            })
+        } else {
+            warningText(type: .local)
+        }
     }
 }
 
-#Preview {
-    SearchResultView()
+extension SearchResultView {
+    func warningText(type: SearchType) -> some View {
+        Text(type.rawValue)
+            .modifier(ProductWarningModifier())
+    }
 }

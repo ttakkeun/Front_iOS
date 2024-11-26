@@ -10,6 +10,7 @@ import SwiftUI
 struct RecentSearchView: View {
     
     @ObservedObject var viewModel: SearchViewModel
+    var onItemClick: (String) -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12, content: {
@@ -59,7 +60,7 @@ struct RecentSearchView: View {
 extension RecentSearchView {
     func makeSearchText(_ text: String) -> some View {
         Button(action: {
-            viewModel.searchText = text
+            self.onItemClick(text)
         }, label: {
             HStack(spacing: 10, content: {
                 Icon.glass.image
@@ -84,10 +85,3 @@ extension RecentSearchView {
         })
     }
 }
-
-struct RecentSearchView_Preview: PreviewProvider {
-    static var previews: some View {
-        RecentSearchView(viewModel: SearchViewModel())
-    }
-}
-

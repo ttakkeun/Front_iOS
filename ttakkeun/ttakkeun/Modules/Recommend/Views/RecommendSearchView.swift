@@ -16,14 +16,25 @@ struct RecommendSearchView: View {
             topControl
             
             Divider()
-                .padding(.top, 3)
-                .foregroundStyle(Color.gray300)
+                .padding(.top, 5)
+                .foregroundStyle(Color.gray200)
             
             Spacer()
             
-            RealTiemSearchView(viewModel: viewModel)
+            if viewModel.isShowingSearchResult {
+                SearchResultView(viewModel: viewModel)
+            } else if viewModel.isShowingRealTimeResults {
+                RealTiemSearchView(viewModel: viewModel, onItemClick: { selectedText in
+                    performSearch(with: selectedText)
+                })
+            }  else {
+                RecentSearchView(viewModel: viewModel, onItemClick: { selectedText in
+                    performSearch(with: selectedText)
+                })
+            }
         })
     }
+    
     
     private var topControl: some View {
         HStack(spacing: 24, content: {
@@ -34,9 +45,22 @@ struct RecommendSearchView: View {
                     .foregroundStyle(Color.black)
             })
             
-            CustomTextField(text: $viewModel.searchText, placeholder: "검색어를 입력하세요.", cornerRadius: 20, padding: 23, maxWidth: 319, maxHeight: 40)
+            CustomTextField(text: $viewModel.searchText, placeholder: "검색어를 입력하세요.", cornerRadius: 20, padding: 23, maxWidth: 319, maxHeight: 40, onSubmit: {
+                performSearch(with: viewModel.searchText)
+            })
+            .onChange(of: viewModel.searchText) { newValue, oldValue in
+                viewModel.handleSearchTextChange(newValue, oldValue)
+            }
         })
         .modifier(SearchViewModifier())
+    }
+    
+    private func performSearch(with text: String) {
+        guard !text.isEmpty else { return }
+        viewModel.searchText = text
+        viewModel.fetchSearchResults(for: text)
+        viewModel.isShowingSearchResult = true
+        viewModel.saveSearchTerm(text)
     }
 }
 

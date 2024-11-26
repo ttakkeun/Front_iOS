@@ -11,12 +11,13 @@ import Kingfisher
 struct RealTiemSearchView: View {
     
     @ObservedObject var viewModel: SearchViewModel
+    var onItemClick: (String) -> Void
     
     var body: some View {
         VStack(spacing: 12, content: {
             if let data = viewModel.realTimeSearchResult {
                 ForEach(data, id: \.self) { data in
-                    makeSearchingResultButtoon(data: data)
+                    makeSearchingResultButton(data: data)
                 }
             } else {
                 notRealtTimeSearchResult
@@ -47,11 +48,10 @@ struct RealTiemSearchView: View {
 }
 
 extension RealTiemSearchView {
-    func makeSearchingResultButtoon(data: ProductResponse) -> some View {
+    func makeSearchingResultButton(data: ProductResponse) -> some View {
         Button(action: {
             viewModel.saveSearchTerm(data.title)
-            
-            //TODO: - 물건 이름 입력 후 클릭 했으니, 관련 상품 데이터 조회 할 수 있도록 해야 함, 클릭한 이름 물건으로 데이터 조회 다시 시도
+            self.onItemClick(data.title)
         }, label: {
             HStack(spacing: 10, content: {
                 makeSearchingImage(image: data.image)
@@ -76,8 +76,8 @@ extension RealTiemSearchView {
     }
     
     func makeProductInfo(infoText: (String, Int)) -> some View {
-        VStack(spacing: 4, content: {
-            Text(infoText.0)
+        VStack(alignment: .leading, spacing: 4, content: {
+            Text(DataFormatter.shared.stripHTMLTags(from: infoText.0).split(separator: "").joined(separator: "\u{200B}"))
                 .font(.Body4_extrabold)
                 .foregroundStyle(Color.gray900)
             
