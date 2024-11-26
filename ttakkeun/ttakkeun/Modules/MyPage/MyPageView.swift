@@ -45,7 +45,7 @@ struct MyPageView: View {
                 Text("날아가는 붕붕이")
 //                Text(\(UserState.shared.getUserName()))
                     .font(.H4_bold)
-                Text("534re@kakaocom") // 여기 @랑 .이 같이 들어가면 출력이 안돼요..
+                Text(verbatim: "534re@kakao.com") // 여기 @랑 .이 같이 들어가면 출력이 안돼요..
 //                Text(\(UserState.shared.getUserName()))
                     .font(.Body4_semibold)
             })
