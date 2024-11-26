@@ -55,7 +55,7 @@ struct UserRecommendProductCard: View {
             KFImage(url)
                 .placeholder {
                     ProgressView()
-                        .frame(width: 100, height: 100)
+                        .controlSize(.regular)
                 }.retry(maxCount: 2, interval: .seconds(2))
                 .onFailure { _ in
                     print("반료동물 추천 제품 이미지 로당 실패")

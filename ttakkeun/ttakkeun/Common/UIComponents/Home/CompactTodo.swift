@@ -9,10 +9,10 @@ import SwiftUI
 
 struct CompactTodo: View {
     
-    @ObservedObject var viewModel: ScheduleViewModel
+    @ObservedObject var viewModel: HomeTodoViewModel
     var partItem: PartItem
     
-    init(viewModel: ScheduleViewModel, partItem: PartItem) {
+    init(viewModel: HomeTodoViewModel, partItem: PartItem) {
         self.viewModel = viewModel
         self.partItem = partItem
     }
@@ -85,6 +85,6 @@ extension CompactTodo {
 
 struct CompactTodo_Preview: PreviewProvider {
     static var previews: some View {
-        CompactTodo(viewModel: ScheduleViewModel(), partItem: .ear)
+        CompactTodo(viewModel: HomeTodoViewModel(), partItem: .ear)
     }
 }

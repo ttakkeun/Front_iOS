@@ -77,7 +77,7 @@ struct HomeDragView: View {
     private func compactComponents(petType: ProfileType?) -> some View {
         ScrollView(.vertical, content: {
             VStack(alignment: .leading, spacing: 40, content: {
-                HomeTodo(viewModel: viewModel.scheduleViewModel)
+                HomeTodo(viewModel: viewModel.homeTodoViewModel)
                 HomeAIProduct(viewModel: viewModel.recommendViewModel)
                 HomeTop(viewModel: viewModel.recommendViewModel, petType: viewModel.homeProfileCardViewModel.profileData?.type)
             })

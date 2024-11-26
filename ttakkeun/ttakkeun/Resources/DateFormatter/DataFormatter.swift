@@ -24,6 +24,13 @@ final class DataFormatter {
         }
     }
     
+    public func formatDateForAPI(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.timeZone = TimeZone.current
+        return formatter.string(from: date)
+    }
+    
     public func formattedTime(from timeString: String) -> String {
         let inputFormatter = DateFormatter()
         inputFormatter.dateFormat = "HH:mm:ss.SSSSSS"
@@ -41,6 +48,13 @@ final class DataFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .none
         formatter.usesGroupingSeparator = false
+        return formatter
+    }
+    
+    
+    public func monthFormatter() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
         return formatter
     }
     

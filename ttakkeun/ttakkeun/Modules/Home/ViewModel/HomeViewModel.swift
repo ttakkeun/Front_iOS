@@ -9,6 +9,6 @@ import Foundation
 
 class HomeViewModel: ObservableObject {
     @Published var homeProfileCardViewModel = HomeProfileCardViewModel()
-    @Published var scheduleViewModel: ScheduleViewModel = ScheduleViewModel()
+    @Published var homeTodoViewModel: HomeTodoViewModel = HomeTodoViewModel()
     @Published var recommendViewModel: RecommendViewModel = RecommendViewModel()
 }

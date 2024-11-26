@@ -71,6 +71,24 @@ enum Icon: String {
     case imageRemove = "imageRemove"
     case leftCat = "leftCat"
     case rightDog = "rightDog"
+    case diagnosingBg = "diagnosingBg"
+    case bubbleLogo = "bubbleLogo"
+    case diagnosisTopBg = "diagnosisTopBg"
+    
+    // MARK: - Schedule
+    case downArrow = "downArrow"
+    case todoPlus = "todoPlus"
+    case plus = "plus"
+    case minus = "minus"
+    case neutral = "neutral"
+    case sad = "sad"
+    case hinghing = "hinghing"
+    case soso = "soso"
+    case smile = "smile"
+    case heart = "heart"
+    case anotherIcon = "anotherIcon"
+    case againIcon = "againIcon"
+    case replaceIcon = "replaceIcon"
     
     // MARK: - MyPage
     case tips = "tips"
