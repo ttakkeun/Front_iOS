@@ -15,6 +15,9 @@ class SearchViewModel: ObservableObject {
     @Published var searchText: String = ""
     @Published var realTimeSearchResult: [ProductResponse]?
     
+    @Published var naverData: [ProductResponse] = []
+    @Published var localDbData: [ProductResponse] = []
+    
     private var cancellables = Set<AnyCancellable>()
     
     init() {

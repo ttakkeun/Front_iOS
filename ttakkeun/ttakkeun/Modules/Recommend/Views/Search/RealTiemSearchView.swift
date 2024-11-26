@@ -76,7 +76,7 @@ extension RealTiemSearchView {
     }
     
     func makeProductInfo(infoText: (String, Int)) -> some View {
-        VStack(spacing: 4, content: {
+        VStack(alignment: .leading, spacing: 4, content: {
             Text(infoText.0)
                 .font(.Body4_extrabold)
                 .foregroundStyle(Color.gray900)

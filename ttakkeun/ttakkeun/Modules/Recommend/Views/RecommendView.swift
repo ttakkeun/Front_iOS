@@ -71,21 +71,9 @@ struct RecommendView: View {
     @ViewBuilder
     private var aiRecommendGroup: some View {
         VStack(alignment: .leading, spacing: -1, content: {
-            aiRecommendTitle
+            AIRecommendTitle(padding: padding, title: "따끈따끈 AI 최근 추천")
             recommendProducts
         })
-    }
-    
-    private var aiRecommendTitle: some View {
-        HStack(spacing: 4, content: {
-            
-            Icon.recommendDog.image
-                .fixedSize()
-            Text("따끈따끈 AI 최근 추천")
-                .font(.H4_bold)
-                .foregroundStyle(Color.gray900)
-        })
-        .padding(.leading, padding)
     }
     
     @ViewBuilder
@@ -93,8 +81,8 @@ struct RecommendView: View {
         if let datas = viewModel.productViewModel.aiProducts {
             ScrollView(.horizontal, content: {
                 HStack(spacing: 10, content: {
-                    ForEach(datas.prefix(10), id: \.self) { data in
-                        RecentRecommendation(data: data)
+                    ForEach(datas, id: \.self) { data in
+                        RecentRecommendation(data: data, type: .localDB)
                     }
                 })
                 .padding(.horizontal, padding)
