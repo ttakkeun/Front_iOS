@@ -7,10 +7,17 @@
 
 import SwiftUI
 
+/// 마이페이지 메인화면 인포버튼 들어간 박스들(재사용하기 위해서)
 struct MyPageInfoBox: View {
     let myPageInfo: MyPageInfo
     let versionInfo: String?
 
+    //MARK: - Init
+    
+    /// Description
+    /// - Parameters:
+    ///   - myPageInfo: 해당 박스에 들어가는 정보듦
+    ///   - versionInfo: 앱 버전(선택 사항)
     init(myPageInfo: MyPageInfo, versionInfo: String? = nil) {
         self.myPageInfo = myPageInfo
         self.versionInfo = versionInfo
@@ -71,6 +78,7 @@ struct MyPageInfoBox: View {
     }
 }
 
+//MARK: - Preview
 struct MypageInfoBox_Preview: PreviewProvider {
     static var previews: some View {
         let myPageInfo = MyPageInfo(

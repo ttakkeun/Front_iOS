@@ -24,6 +24,7 @@ struct MyPageView: View {
         })
     }
     
+    //MARK: - Compoents
     /// 내 프로필과 콘텐츠들(프로필, 내가 쓴 tips, 스크랩한 tips)
     private var myInfo: some View {
         VStack(alignment: .center, spacing: 17, content: {
@@ -71,6 +72,7 @@ struct MyPageView: View {
     /// tips 버튼들(내가 쓴 tips, 내가 스크랩한 tips)
     private var tipsBtns: some View {
         HStack(alignment: .center, spacing: 13, content: {
+            //TODO: 버튼 액션 필요(해당 페이지로 넘어가야 함)
             makeButton(text: "내가 쓴 tips", image: Icon.tips.image, action: {print("내가 쓴 tips 버튼 눌림")})
             makeButton(text: "내가 스크랩한 tips", image: Icon.scrap.image, action: {print("내가 스크랩한 tips 버튼 눌림")})
         })
@@ -82,6 +84,7 @@ struct MyPageView: View {
             ///앱 정보 박스
             MyPageInfoBox(myPageInfo: MyPageInfo(
                 title: "앱 정보",
+                //TODO: 버튼 액션 필요(해당 페이지로 넘어가야 함)
                 firstBtn: BtnInfo(name: "알림 설정", action: { print("알림 설정 버튼 눌림") }),
                 secondBtn: BtnInfo(name: "이용약관 및 정책", action: { print("이용약관 및 정책 버튼 눌림") }), thirdBtn: nil
             ), versionInfo: "v1.0.0")
@@ -89,6 +92,7 @@ struct MyPageView: View {
             ///이용정보 박스
             MyPageInfoBox(myPageInfo: MyPageInfo(
                 title: "이용 정보",
+                //TODO: 버튼 액션 필요(해당 페이지로 넘어가야 함)
                 firstBtn: BtnInfo(name: "공지사항", action: { print("공지사항 버튼 눌림") }),
                 secondBtn: BtnInfo(name: "문의하기", action: { print("문의하기 버튼 눌림") }),
                 thirdBtn: BtnInfo(name: "신고하기", action: { print("신고하기 버튼 눌림")})
@@ -97,6 +101,7 @@ struct MyPageView: View {
             ///계정 박스
             MyPageInfoBox(myPageInfo: MyPageInfo(
                 title: "계정",
+                //TODO: 버튼 액션 필요(해당 페이지로 넘어가야 함)
                 firstBtn: BtnInfo(name: "로그아웃하기", action: { print("로그아웃하기 버튼 눌림") }),
                 secondBtn: BtnInfo(name: "프로필 삭제하기", action: { print("프로필 삭제하기 버튼 눌림") }),
                 thirdBtn: BtnInfo(name: "탈퇴하기", action: { print("탈퇴하기 버튼 눌림")})
