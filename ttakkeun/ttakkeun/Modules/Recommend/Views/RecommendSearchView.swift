@@ -29,7 +29,7 @@ struct RecommendSearchView: View {
                 })
             }  else {
                 RecentSearchView(viewModel: viewModel, onItemClick: { selectedText in
-                    performSearch(with: selectedText)
+                    performManualSearch(with: selectedText)
                 })
             }
         })
@@ -57,10 +57,15 @@ struct RecommendSearchView: View {
     
     private func performSearch(with text: String) {
         guard !text.isEmpty else { return }
-        viewModel.searchText = text
         viewModel.fetchSearchResults(for: text)
         viewModel.isShowingSearchResult = true
         viewModel.saveSearchTerm(text)
+    }
+    
+    private func performManualSearch(with text: String) {
+        guard !text.isEmpty else { return }
+        viewModel.isManualSearch = true
+        viewModel.fetchSearchResults(for: text)
     }
 }
 

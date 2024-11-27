@@ -12,6 +12,7 @@ class SearchViewModel: ObservableObject {
     @Published var isSearchActive: Bool = false
     @Published var isShowingSearchResult: Bool = false
     @Published var isShowingRealTimeResults: Bool = false
+    @Published var isManualSearch: Bool = false
     
     @Published var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "RecentSearches") ?? []
     
@@ -29,10 +30,17 @@ class SearchViewModel: ObservableObject {
             .removeDuplicates()
             .sink { [weak self] newValue in
                 guard let self = self else { return }
-                if newValue.isEmpty {
-                    self.realTimeSearchResult = nil
+                
+                if self.isManualSearch {
+                    self.fetchSearchResults(for: newValue)
+                    self.isManualSearch = false
+                    return
                 } else {
-                    self.fetchRealTimeResults(for: newValue)
+                    if newValue.isEmpty {
+                        self.realTimeSearchResult = nil
+                    } else {
+                        self.fetchRealTimeResults(for: newValue)
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -44,7 +52,9 @@ class SearchViewModel: ObservableObject {
     }
     
     func fetchSearchResults(for query: String) {
+        self.isShowingSearchResult = true
         print("검색 결과 받아옴: \(query)")
+        self.searchText = query
     }
     
     func handleSearchTextChange(_ newValue: String, _ oldValue: String) {
