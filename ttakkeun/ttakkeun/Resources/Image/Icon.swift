@@ -25,6 +25,7 @@ enum Icon: String {
     case setting = "setting"
     case alarm = "alarm"
     case camera = "camera"
+    case deleteText = "deleteText"
     
     // MARK: - ProfileMake
     case check = "check"
@@ -55,6 +56,7 @@ enum Icon: String {
     // MARK: - Recommend
     case topRank = "topRank"
     case bottomRank = "bottomRank"
+    case recommendDog = "recommendDog"
     
     // MARK: - Diagnosing
     case trash = "trash"

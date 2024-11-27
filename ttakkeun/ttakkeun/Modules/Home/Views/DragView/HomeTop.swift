@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeTop: View {
     
-    @StateObject var viewModel: RecommendViewModel
+    @StateObject var viewModel: HomeRecommendViewModel
     let petType: ProfileType?
     
     var body: some View {
@@ -46,6 +46,6 @@ struct HomeTop: View {
 
 struct HomeTop_Preview: PreviewProvider {
     static var previews: some View {
-        HomeTop(viewModel: RecommendViewModel(), petType: .cat)
+        HomeTop(viewModel: HomeRecommendViewModel(), petType: .cat)
     }
 }
