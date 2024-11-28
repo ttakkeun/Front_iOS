@@ -14,7 +14,7 @@ struct FAQView: View {
     
     var body: some View {
         ScrollView(.vertical, content: {
-            VStack(content: {
+            VStack(spacing: 25, content: {
                 topTenQuestionGroup
                 
                 Divider()
@@ -69,6 +69,7 @@ struct FAQView: View {
                     TopTenQuestionCard(data: question, index: index)
                 }
             })
+            .padding(.vertical, 15)
             .padding(.horizontal, 14)
         })
         .frame(height: 156)

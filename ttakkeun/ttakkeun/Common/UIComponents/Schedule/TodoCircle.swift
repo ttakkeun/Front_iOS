@@ -28,26 +28,8 @@ struct TodoCircle: View {
                     .fill(partItem.toAfterColor())
                     .frame(width: 51, height: 51)
             }
-            setIcon(partItem: self.partItem)
+            partItem.toImage()
                 .fixedSize()
-        }
-    }
-}
-
-extension TodoCircle {
-    
-    func setIcon(partItem: PartItem) -> Image {
-        switch partItem {
-        case .ear:
-            return Icon.homeEar.image
-        case .eye:
-            return Icon.homeEye.image
-        case .hair:
-            return Icon.homeHair.image
-        case .claw:
-            return Icon.homeClaw.image
-        case .teeth:
-            return Icon.homeTeeth.image
         }
     }
 }

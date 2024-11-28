@@ -12,17 +12,16 @@ struct RecommendView: View {
     @StateObject var viewModel: RecommendationViewModel = .init()
     @Namespace private var animationNamespace
     
-    let padding: CGFloat = 25
+    let padding: CGFloat = 20
     
     var body: some View {
         ScrollView(.vertical, content: {
-            VStack(spacing: 17, content: {
+            VStack(spacing: 24, content: {
                 TopStatusBar()
                 
                 topController
                 
                 if viewModel.productViewModel.selectedCategory == .all {
-                    Spacer().frame(height: 2)
                     aiRecommendGroup
                     
                 }
@@ -99,6 +98,7 @@ struct RecommendView: View {
             Text("랭킹별 추천 상품")
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
+                .padding(.leading, padding)
             
             rankRecommendedProducts
         })
@@ -111,14 +111,19 @@ struct RecommendView: View {
                     RankRecommendation(data: $viewModel.productViewModel.recommendProducts[index], rank: index)
                 }
             } else {
-                Spacer()
-                
                 ProgressView {
-                    LoadingDotsText(text: "추천 상품을 받아오는 중입니다. 잠시만 기다려 주세요!")
+                    Text("추천 상품을 받아오는 중입니다. 잠시만 기다려 주세요!")
+                        .multilineTextAlignment(.center)
+                        .lineSpacing(2.5)
+                        .font(.Body3_medium)
                 }
                 .controlSize(.large)
-                
-                Spacer()
+                .padding(.vertical, 31)
+                .padding(.horizontal, 69)
+                .background {
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.gray300, lineWidth: 1)
+                }
             }
         })
         .padding(.horizontal, 4.5)
