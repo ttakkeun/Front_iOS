@@ -15,7 +15,6 @@ struct DiagnosingValue {
 struct DiagnosingHeader: View {
     
     @Binding var diagnosingValue: DiagnosingValue
-    @Namespace var name
     
     var body: some View {
         VStack(alignment: .leading, spacing: 21, content: {

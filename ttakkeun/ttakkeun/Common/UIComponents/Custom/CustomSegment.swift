@@ -8,6 +8,7 @@ import SwiftUI
 
 struct CustomSegment<T: SegmentType & CaseIterable>: View {
     
+    @State private var segmentWidth: [T: CGFloat] = [:]
     @Binding var selectedSegment: T
     @Namespace var name
     
@@ -30,16 +31,24 @@ struct CustomSegment<T: SegmentType & CaseIterable>: View {
             Text(segment.title)
                 .font(selectedSegment == segment ? .Body2_bold : .Body2_regular)
                 .foregroundStyle(selectedSegment == segment ? Color.gray900 : Color.gray400)
+                .background(
+                    GeometryReader { geo in
+                        Color.clear
+                            .onAppear {
+                                segmentWidth[segment] = geo.size.width
+                            }
+                    }
+                )
             
             Capsule()
                 .fill(Color.clear)
-                .frame(width: 73, height: 2)
+                .frame(width: segmentWidth[segment] ?? 0, height: 2)
             
             if selectedSegment == segment {
                 ZStack {
                     Capsule()
                         .fill(Color.gray600)
-                        .frame(width: 73, height: 2)
+                        .frame(width: segmentWidth[segment] ?? 0, height: 2)
                         .matchedGeometryEffect(id: "Tab", in: name)
                 }
             }
