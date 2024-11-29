@@ -13,22 +13,23 @@ struct ScheduleView: View {
     
     
     var body: some View {
-        ScrollView(.vertical, content: {
-            VStack(alignment: .center, spacing: 19, content: {
-                
-                TopStatusBar()
-                
-                CalendarView()
-                
-                Spacer().frame(height: 8)
-                
-                todoList
-                
-                Spacer().frame(height: 6)
-                
-                todoCompletionRate
+        VStack(alignment: .center, spacing: 0, content: {
+            TopStatusBar()
+            
+            ScrollView(.vertical, content: {
+                VStack(alignment: .center, spacing: 24, content: {
+                    
+                    CalendarView()
+                    
+                    Spacer().frame(height: 3)
+                    
+                    todoList
+                    
+                    todoCompletionRate
+                })
+                .padding(.top, 5)
+                .padding(.bottom, 110)
             })
-            .padding(.bottom, 110)
         })
         .background(Color.scheduleBg)
     }

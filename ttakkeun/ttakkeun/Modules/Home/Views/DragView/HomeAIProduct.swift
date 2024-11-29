@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeAIProduct: View {
     
-    @StateObject var viewModel: RecommendViewModel
+    @StateObject var viewModel: HomeRecommendViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16, content: {
@@ -40,6 +40,6 @@ struct HomeAIProduct: View {
 
 struct HomeAIProductt_Preview: PreviewProvider {
     static var previews: some View {
-        HomeAIProduct(viewModel: RecommendViewModel())
+        HomeAIProduct(viewModel: HomeRecommendViewModel())
     }
 }

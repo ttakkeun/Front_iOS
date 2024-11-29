@@ -7,7 +7,7 @@
 
 import Foundation
 
-class RecommendViewModel: ObservableObject {
+class HomeRecommendViewModel: ObservableObject {
     @Published var aiProduct: [ProductResponse]?
     @Published var userProduct: [ProductResponse]?
 }

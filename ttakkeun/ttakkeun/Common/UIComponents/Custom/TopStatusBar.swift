@@ -9,15 +9,21 @@ import SwiftUI
 
 struct TopStatusBar: View {
     var body: some View {
-        HStack {
-            leftHStack()
+        VStack(spacing: 3, content: {
+            HStack {
+                leftHStack()
+                
+                Spacer()
+                
+                rightHStack()
+            }
+            .safeAreaPadding(EdgeInsets(top: 7, leading: 0, bottom: 0, trailing: 0))
+            .frame(width: 353)
             
-            Spacer()
-            
-            rightHStack()
-        }
-        .safeAreaPadding(EdgeInsets(top: 7, leading: 0, bottom: 0, trailing: 0))
-        .frame(width: 353)
+            Divider()
+                .background(Color.gray200)
+                .frame(height: 1)
+        })
     }
     
     private func leftHStack() -> HStack<some View> {
