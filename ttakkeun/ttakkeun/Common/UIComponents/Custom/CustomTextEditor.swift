@@ -12,6 +12,7 @@ struct CustomTextEditor: ViewModifier {
     @Binding var text: String
     let placeholder: String
     let maxTextCount: Int
+    let strokeColor: Color
     
     init(text: Binding<String>,
          placeholder: String,
@@ -20,6 +21,19 @@ struct CustomTextEditor: ViewModifier {
         self._text = text
         self.placeholder = placeholder
         self.maxTextCount = maxTextCount
+        self.strokeColor = Color.gray200
+    }
+    
+    init(
+        text: Binding<String>,
+        placeholder: String,
+        maxTextCount: Int,
+        strokeColor: Color
+    ) {
+        self._text = text
+        self.placeholder = placeholder
+        self.maxTextCount = maxTextCount
+        self.strokeColor = strokeColor
     }
     
     func body(content: Content) -> some View {
@@ -56,7 +70,7 @@ struct CustomTextEditor: ViewModifier {
             })
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.gray200, lineWidth: 1)
+                    .stroke(strokeColor, lineWidth: 1)
                     .fill(Color.clear)
             )
     }
@@ -65,6 +79,10 @@ struct CustomTextEditor: ViewModifier {
 extension TextEditor {
     func customStyleEditor(text: Binding<String>, placeholder: String, maxTextCount: Int) -> some View {
         self.modifier(CustomTextEditor(text: text, placeholder: placeholder, maxTextCount: maxTextCount))
+    }
+    
+    func customStyleTipsEditor(text: Binding<String>, placeholder: String, maxTextCount: Int, border: Color) -> some View {
+        self.modifier(CustomTextEditor(text: text, placeholder: placeholder, maxTextCount: maxTextCount, strokeColor: border))
     }
 }
 

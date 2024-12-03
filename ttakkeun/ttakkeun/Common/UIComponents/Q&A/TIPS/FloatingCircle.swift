@@ -11,10 +11,7 @@ import FloatingButton
 struct FloatingCircle: View {
     
     @Binding var isShowFloating: Bool
-    
     @State private var selectedFloatingMenu: ExtendPartItem? = nil
-    @Namespace var aniamtion
-    let positionX: CGFloat = 0.85
     
     var body: some View {
         
@@ -35,6 +32,10 @@ struct FloatingCircle: View {
             }
             .padding(.bottom, 80)
         }
+        .onTapGesture {
+            isShowFloating.toggle()
+        }
+        .background(isShowFloating ? Color.btnBg.opacity(0.6) : Color.clear)
     }
     
     private var floatingMainBtn: some View {
@@ -75,7 +76,7 @@ extension FloatingCircle {
 
 struct FloatingButton_Preview: PreviewProvider {
     
-    @State static var isShowFloating: Bool = false
+    @State static var isShowFloating: Bool = true
     
     static var previews: some View {
         FloatingCircle(isShowFloating: $isShowFloating)
