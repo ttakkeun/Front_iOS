@@ -18,11 +18,11 @@ class AuthRepository: AuthRepositoryProtocol {
         self.authService = authService
     }
     
-    func loginWithApple(identityToken: String) -> AnyPublisher<TokenResponse, Moya.MoyaError> {
-        return authService.appleLogin(identityToken: identityToken)
+    func loginWithApple(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, Moya.MoyaError> {
+        return authService.appleLogin(signUpRequest: signUpRequest)
     }
     
-    func signUpWithApple(signUpRequest: SignUpRequest) -> AnyPublisher<TokenResponse, Moya.MoyaError> {
+    func signUpWithApple(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, Moya.MoyaError> {
         return authService.signUpAppleLogin(signUpRequest: signUpRequest)
     }
 }

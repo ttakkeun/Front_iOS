@@ -8,6 +8,6 @@
 import Foundation
 
 enum NavigationDestination: Hashable {
-    case signUp(signUpData: SignUpData)
+    case signUp(singUpRequest: SignUpRequest) // 회원가입 페이지 이동
     case createProfile
 }

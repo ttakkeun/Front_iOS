@@ -9,22 +9,24 @@ import SwiftUI
 
 struct SignUpView: View {
     
-    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
-    @Environment(\.dismiss) var dismiss
-    @StateObject var viewModel: SignUpViewModel = SignUpViewModel()
+    @EnvironmentObject var container: DIContainer
     
-    var signUpData: SignUpData
+    @StateObject var viewModel: SignUpViewModel
+    
+    @State var signUpRequest: SignUpRequest
     
     init(
-        signUpData: SignUpData
-        //        container: DIContainer
+        singUpRequest: SignUpRequest,
+        container: DIContainer,
+        appFlowViewModel: AppFlowViewModel
     ) {
-        self.signUpData = signUpData
+        self.signUpRequest = singUpRequest
+        self._viewModel = StateObject(wrappedValue: SignUpViewModel(container: container, appFlowViewModel: appFlowViewModel))
     }
     
     var body: some View {
         VStack(alignment: .center, spacing: 43, content: {
-            CustomNavigation(action: { dismiss() },
+            CustomNavigation(action: { container.navigationRouter.pop() },
                              title: "본인확인",
                              currentPage: nil,
                              naviIcon: Image(systemName: "xmark"),
@@ -44,7 +46,9 @@ struct SignUpView: View {
                        width: 330,
                        height: 56,
                        action: {
-                print("click")
+                if viewModel.isAllMandatoryChecked {
+                    viewModel.signUp(signUpRequet: returnSignUpData())
+                }
             },
                        color: viewModel.isAllMandatoryChecked ? Color.mainPrimary : Color.gray200)
             .disabled(!viewModel.isAllMandatoryChecked)
@@ -54,11 +58,11 @@ struct SignUpView: View {
     }
     
     private var emailField: some View {
-        makeUserInfo(text: "이메일", placeholder: "이메일을 입력해주세요")
+        makeUserInfo(title: "이메일", placeholder: "이메일을 입력해주세요", value: $viewModel.userEmail)
     }
     
     private var nicknameField: some View {
-        makeUserInfo(text: "닉네임", placeholder: "앱 내에서 사용할 회원님의 닉네임을 지어주세요.")
+        makeUserInfo(title: "닉네임", placeholder: "앱 내에서 사용할 회원님의 닉네임을 지어주세요.", value: $viewModel.userNickname)
     }
     
     private var agreementPart: some View {
@@ -132,11 +136,11 @@ struct SignUpView: View {
 
 extension SignUpView {
     
-    func makeUserInfo(text: String, placeholder: String) -> VStack<some View> {
+    func makeUserInfo(title: String, placeholder: String, value: Binding<String>) -> VStack<some View> {
         return VStack(alignment: .leading, spacing: 10, content: {
-            makeTitle(text: text)
+            makeTitle(text: title)
             
-            CustomTextField(text: .constant(""), placeholder: placeholder)
+            CustomTextField(text: value, placeholder: placeholder)
         })
     }
     
@@ -150,11 +154,7 @@ extension SignUpView {
         return ischecked ? Icon.check.image : Icon.uncheck.image
     }
     
-}
-
-struct SignUpView_Preview: PreviewProvider {
-    static var previews: some View {
-        SignUpView(signUpData: SignUpData(token: "11", name: "google", email: "google.com"))
-            .environmentObject(AppFlowViewModel())
+    func returnSignUpData() -> SignUpRequest {
+        return SignUpRequest(identityToken: signUpRequest.identityToken, email: viewModel.userEmail, name: viewModel.userNickname)
     }
 }

@@ -11,6 +11,6 @@ import CombineMoya
 import Moya
 
 protocol AuthUseCaseProtocol {
-    func executeAppleLogin(identityToken: String) -> AnyPublisher<TokenResponse, MoyaError>
-    func executeSignUpApple(signUpRequest: SignUpRequest) -> AnyPublisher<TokenResponse, MoyaError>
+    func executeAppleLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError>
+    func executeSignUpApple(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError>
 }

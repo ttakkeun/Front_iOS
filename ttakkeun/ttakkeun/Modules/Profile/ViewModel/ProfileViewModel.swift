@@ -16,9 +16,7 @@ class ProfileViewModel: ObservableObject {
     
     @Published var isLastedCard: Bool = true
     @Published var titleName: String = ""
-    @Published var petProfileResponse: PetProfileResponse? = PetProfileResponse(result: [PetProfileDetail(petId: 1, name: "제옹", type: .cat, birth: "2014"), PetProfileDetail(petId: 2, name: "소피", type: .cat, birth: "2014")])
-    
-    
+    @Published var petProfileResponse: PetProfileResponse?
     
     let container: DIContainer
     

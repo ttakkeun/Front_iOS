@@ -9,13 +9,12 @@ import SwiftUI
 import Lottie
 
 struct OnboardingView: View {
+    
+    @EnvironmentObject var viewModel: AppFlowViewModel
+    
     var body: some View {
-        
-        @EnvironmentObject var viewModel: AppFlowViewModel
-        
         ZStack() {
             RadialGradient(colors: [Color.onBoarding, .white], center: .center, startRadius: 0, endRadius: 260)
-            
             
             LottieView(animation: .named("Onboarding"))
                 .playbackMode(.playing(.toProgress(1, loopMode: .playOnce)))
@@ -28,7 +27,6 @@ struct OnboardingView: View {
                         }
                     }
                 }
-            
         }
     }
 }

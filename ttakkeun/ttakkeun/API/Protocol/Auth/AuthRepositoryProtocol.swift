@@ -11,6 +11,6 @@ import Combine
 import Moya
 
 protocol AuthRepositoryProtocol {
-    func loginWithApple(identityToken: String) -> AnyPublisher<TokenResponse, MoyaError>
-    func signUpWithApple(signUpRequest: SignUpRequest) -> AnyPublisher<TokenResponse, MoyaError>
+    func loginWithApple(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError>
+    func signUpWithApple(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError>
 }

@@ -10,7 +10,7 @@ import Moya
 
 enum AuthAPITarget {
     case sendRefreshToken(refreshToken: String)
-    case appleLogin(identyToken: String)
+    case appleLogin(signUpRequest: SignUpRequest)
     case signUpAppleLogin(signUpRequest: SignUpRequest)
 }
 
@@ -19,11 +19,11 @@ extension AuthAPITarget: APITargetType {
     var path: String {
         switch self {
         case .sendRefreshToken:
-            return "api/auth/refresh"
+            return "/auth/refresh"
         case .appleLogin:
-            return "/api/auth/apple/login"
+            return "/auth/apple/login"
         case .signUpAppleLogin:
-            return "/api/auth/apple/signup"
+            return "/auth/apple/signup"
         }
     }
     
@@ -42,23 +42,24 @@ extension AuthAPITarget: APITargetType {
         switch self {
         case .sendRefreshToken:
             return .requestPlain
-        case .appleLogin(let identyToken):
-            return .requestParameters(parameters: ["identityToken": identyToken], encoding: JSONEncoding.default)
+        case .appleLogin(let signUpData):
+            return .requestJSONEncodable(signUpData)
         case .signUpAppleLogin(let signUpData):
             return .requestJSONEncodable(signUpData)
         }
     }
     
-    var headers: [String : String]? {
-        var headers = ["Content-Type": "application/json"]
-        
-        switch self {
-        case .sendRefreshToken(let refresh):
-            headers["RefreshToken"] = "Bearer \(refresh)"
-        default:
-            break
+        var headers: [String : String]? {
+            var headers = ["Content-Type": "application/json"]
+    
+            switch self {
+            case .sendRefreshToken(let refresh):
+                headers["RefreshToken"] = "Bearer \(refresh)"
+            default:
+                break
+            }
+    
+            return headers
         }
-        
-        return headers
-    }
+    
 }

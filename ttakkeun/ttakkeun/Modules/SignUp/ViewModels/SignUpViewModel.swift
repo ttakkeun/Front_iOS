@@ -6,10 +6,24 @@
 //
 
 import Foundation
+import Combine
 
 class SignUpViewModel: ObservableObject {
     @Published var agreements: [AgreementData] = AgreementDetailData.loadAgreements()
     @Published var selectedAgreement: AgreementData?
+    @Published var tokenResponse: TokenResponse? = nil
+    
+    @Published var userEmail: String = ""
+    @Published var userNickname: String = ""
+    
+    let container: DIContainer
+    let appFlowViewModel: AppFlowViewModel
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(container: DIContainer, appFlowViewModel: AppFlowViewModel) {
+        self.container = container
+        self.appFlowViewModel = appFlowViewModel
+    }
     
     public func toggleCheck(for item: AgreementData) {
         if let index = agreements.firstIndex(where: { $0.id == item.id }) {
@@ -30,5 +44,55 @@ class SignUpViewModel: ObservableObject {
     
     var isAllMandatoryChecked: Bool {
         agreements.filter { $0.isMandatory }.allSatisfy { $0.isChecked }
+    }
+    
+    
+    private func saveKeyChain(responseData: TokenResponse?) {
+        if let responseData = responseData {
+            let userInfo = UserInfo(accessToken: responseData.accessToken, refreshToken: responseData.refreshToken)
+            let success = KeyChainManager.standard.saveSession(userInfo, for: "ttakkeunUser")
+            print("회원 가입 후 로그인 성공: \(success)")
+        }
+    }
+    
+    private func saveUserInfo() {
+        UserState.shared.setUserName(userNickname)
+        UserState.shared.setUserEmail(userEmail)
+    }
+}
+
+// MARK: - SignUp
+
+extension SignUpViewModel {
+    public func signUp(signUpRequet: SignUpRequest) {
+        container.useCaseProvider.authUseCase.executeSignUpApple(signUpRequest: signUpRequet)
+            .tryMap { responseData -> ResponseData<TokenResponse> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("Apple SignUp Finished")
+                case .failure(let failure):
+                    print("Apple SignUp Faield: \(failure)")
+                }
+            }, receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                self.tokenResponse = responseData.result
+                saveKeyChain(responseData: tokenResponse)
+                saveUserInfo()
+                container.navigationRouter.pop()
+                appFlowViewModel.onSignUpSuccess()
+                
+            })
+            .store(in: &cancellables)
     }
 }

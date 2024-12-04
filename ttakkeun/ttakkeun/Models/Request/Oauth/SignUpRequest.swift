@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct SignUpRequest: Codable {
-    let identyToken: String
-    let userName: String
+struct SignUpRequest: Codable, Equatable, Hashable {
+    let identityToken: String
+    var email: String
+    var name: String
 }

@@ -29,10 +29,11 @@ struct ProfileView: View {
             .task {
                 viewModel.updateBackgroundColor()
             }
+            .navigationDestination(for: NavigationDestination.self) {
+                NavigationRoutingView(destination: $0)
+                    .environmentObject(container)
+            }
         }
-//        .navigationDestination(for: NavigationDestination.self) {
-//            // TODO: - NavigationRoutingView 필요
-//        }
     }
     
     private var topTitle: some View {

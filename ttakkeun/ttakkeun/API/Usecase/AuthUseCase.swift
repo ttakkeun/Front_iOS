@@ -17,13 +17,13 @@ class AuthUseCase: AuthUseCaseProtocol {
         self.repository = repository
     }
     
-    func executeAppleLogin(identityToken: String) -> AnyPublisher<TokenResponse, MoyaError> {
-        return repository.loginWithApple(identityToken: identityToken)
+    func executeAppleLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
+        return repository.loginWithApple(signUpRequest: signUpRequest)
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }
     
-    func executeSignUpApple(signUpRequest: SignUpRequest) -> AnyPublisher<TokenResponse, MoyaError> {
+    func executeSignUpApple(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
         return repository.signUpWithApple(signUpRequest: signUpRequest)
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()

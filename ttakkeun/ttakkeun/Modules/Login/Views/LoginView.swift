@@ -9,14 +9,14 @@ import SwiftUI
 
 struct LoginView: View {
     
-    let apple = AppleLoginManager()
-    
     @EnvironmentObject var container: DIContainer
     @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     
+    @StateObject var viewModel: LoginViewModel
+    
     var body: some View {
-        NavigationStack(path: $container.navigationRouter.destination, root: {
-            VStack(alignment: .center, content: {
+        NavigationStack(path: $container.navigationRouter.destination) {
+            VStack(alignment: .center) {
                 Spacer().frame(height: 200)
                 
                 topLogoContents
@@ -24,15 +24,20 @@ struct LoginView: View {
                 Spacer().frame(height: 180)
                 
                 Button(action: {
-                    apple.signWithApple()
+                    viewModel.appleLogin()
                 }, label: {
                     Icon.appleLogin.image
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 330, height: 44)
                 })
-            })
-        })
+            }
+            .navigationDestination(for: NavigationDestination.self) { destination in
+                NavigationRoutingView(destination: destination)
+                    .environmentObject(container)
+                    .environmentObject(appFlowViewModel)
+            }
+        }
     }
     
     private var topLogoContents: some View {
@@ -70,9 +75,8 @@ struct LoginView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            LoginView()
+            LoginView(viewModel: LoginViewModel(container: DIContainer(), appFlowViewModel: AppFlowViewModel()))
                 .environmentObject(DIContainer())
-                .environmentObject(AppFlowViewModel())
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }
