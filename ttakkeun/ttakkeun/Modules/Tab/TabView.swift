@@ -12,17 +12,14 @@ struct TabView: View {
     @State private var selectedTab: TabCase = .home
     @State private var opacity = 0.0
     
+    @EnvironmentObject var container: DIContainer
+    
     var body: some View {
         NavigationStack {
             VStack {
                 switch selectedTab {
                 case .home:
-                    VStack(spacing: 8, content: {
-                        TopStatusBar()
-                        Text("hello")
-                        
-                        Spacer()
-                    })
+                    HomeView(container: container)
                 case .diagnosis:
                     Text("diag")
                 case .schedule:
@@ -45,4 +42,5 @@ struct TabView: View {
 
 #Preview {
     TabView()
+        .environmentObject(DIContainer())
 }

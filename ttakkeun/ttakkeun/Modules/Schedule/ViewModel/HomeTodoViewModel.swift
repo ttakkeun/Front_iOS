@@ -8,6 +8,14 @@
 import Foundation
 
 class HomeTodoViewModel: ObservableObject, TodoCheckProtocol {
+    
+    let container: DIContainer
+    
+    init(container: DIContainer) {
+        self.container = container
+    }
+    
+    
     @Published var earTodos: [TodoList] = []
     @Published var hairTodos: [TodoList] = []
     @Published var clawTodos: [TodoList] = []

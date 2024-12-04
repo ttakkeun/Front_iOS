@@ -7,6 +7,8 @@
 
 import Foundation
 import SwiftUI
+import Combine
+import CombineMoya
 
 class ProfileViewModel: ObservableObject {
     
@@ -17,8 +19,10 @@ class ProfileViewModel: ObservableObject {
     @Published var isLastedCard: Bool = true
     @Published var titleName: String = ""
     @Published var petProfileResponse: PetProfileResponse?
+    @Published var isLoading: Bool = true
     
     let container: DIContainer
+    private var cancellalbes = Set<AnyCancellable>()
     
     init(container: DIContainer) {
         self.container = container
@@ -39,5 +43,46 @@ class ProfileViewModel: ObservableObject {
         withAnimation(.easeInOut(duration: 0.5)) {
         self.backgroudColor = newColor
         }
+    }
+    
+    public func goToCreateProfile() {
+        container.navigationRouter.push(to: .createProfile)
+    }
+}
+
+// MARK: - GetPetProfile
+
+extension ProfileViewModel {
+    public func getPetProfile() {
+        isLoading = true
+        
+        container.useCaseProvider.petProfileUseCase.executegetPetProfile()
+            .tryMap { responseData -> ResponseData<PetProfileResponse> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                print("getProfileServerResponse: \(responseData)")
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                self.isLoading = false
+                
+                switch completion {
+                case .finished:
+                    print("Get PetProfile Complete")
+                case .failure(let failure):
+                    print("Get PetProfile Failure: \(failure)")
+                }
+            }, receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                self.petProfileResponse = responseData.result
+            })
+            .store(in: &cancellalbes)
     }
 }

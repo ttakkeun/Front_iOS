@@ -34,21 +34,9 @@ struct VarietySearchView: View {
             )
             .font(.Body2_medium)
         }
+        
         .onAppear(perform: {
             UIApplication.shared.hideKeyboard()
         })
-    }
-}
-
-struct VarietySearcView_Preview: PreviewProvider {
-    
-    static let devices = ["iPhone 11", "iphone 15 Pro"]
-    
-    static var previews: some View {
-        ForEach(devices, id: \.self) { device in
-            VarietySearchView(viewModel: MakeProfileViewModel())
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewDisplayName(device)
-        }
     }
 }

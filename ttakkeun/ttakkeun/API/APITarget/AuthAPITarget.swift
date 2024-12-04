@@ -9,9 +9,9 @@ import Foundation
 import Moya
 
 enum AuthAPITarget {
-    case sendRefreshToken(refreshToken: String)
-    case appleLogin(signUpRequest: SignUpRequest)
-    case signUpAppleLogin(signUpRequest: SignUpRequest)
+    case sendRefreshToken(refreshToken: String) // Refresh 재발급
+    case appleLogin(signUpRequest: SignUpRequest) // 애플 로그인 시도
+    case signUpAppleLogin(signUpRequest: SignUpRequest) // 애플 회원 가입
 }
 
 extension AuthAPITarget: APITargetType {
@@ -19,11 +19,11 @@ extension AuthAPITarget: APITargetType {
     var path: String {
         switch self {
         case .sendRefreshToken:
-            return "/auth/refresh"
+            return "/api/auth/refresh"
         case .appleLogin:
-            return "/auth/apple/login"
+            return "/api/auth/apple/login"
         case .signUpAppleLogin:
-            return "/auth/apple/signup"
+            return "/api/auth/apple/signup"
         }
     }
     

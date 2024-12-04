@@ -8,7 +8,13 @@
 import Foundation
 
 class HomeViewModel: ObservableObject {
-    @Published var homeProfileCardViewModel = HomeProfileCardViewModel()
-    @Published var homeTodoViewModel: HomeTodoViewModel = HomeTodoViewModel()
-    @Published var homeRecommendViewModel: HomeRecommendViewModel = HomeRecommendViewModel()
+    @Published var homeProfileCardViewModel: HomeProfileCardViewModel
+    @Published var homeTodoViewModel: HomeTodoViewModel
+    @Published var homeRecommendViewModel: HomeRecommendViewModel
+    
+    init(container: DIContainer) {
+        self._homeProfileCardViewModel = .init(wrappedValue: .init(container: container))
+        self._homeTodoViewModel = .init(wrappedValue: .init(container: container))
+        self._homeRecommendViewModel = .init(wrappedValue: .init(container: container))
+    }
 }

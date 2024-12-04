@@ -106,10 +106,11 @@ struct CustomTextField: View {
                 }, label: {
                     Icon.deleteText.image
                         .resizable()
-                        .frame(width: 23, height: 24)
+                        .frame(width: 19, height: 20)
                         .aspectRatio(contentMode: .fit)
                 })
                 .padding(.trailing, 21)
+                .padding(.top, 2)
             }
         })
     }

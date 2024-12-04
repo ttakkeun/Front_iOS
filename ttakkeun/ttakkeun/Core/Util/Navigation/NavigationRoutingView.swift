@@ -19,7 +19,7 @@ struct NavigationRoutingView: View {
             SignUpView(singUpRequest: signUpRequest, container: container, appFlowViewModel: appFlowViewModel)
                 .environmentObject(container)
         case .createProfile:
-            MakeProfileView()
+            MakeProfileView(container: container)
                 .environmentObject(container)
         }
     }

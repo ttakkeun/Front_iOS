@@ -10,11 +10,11 @@ import Moya
 import SwiftUI
 
 enum PetAPITarget {
-    case getPetProfile
-    case makePetProfile(petInfo: PetInfo)
+    case getPetProfile // 프로필 뷰 전체 조회
+    case makePetProfile(petInfo: PetInfo) // 반려동물 프로필 생성
     case getSpecificPetProfile(petId: Int)
     case patchPetProfile(petInfo: PetInfo)
-    case patchPetProfileImage(petId: Int, image: UIImage)
+    case patchPetProfileImage(petId: Int, image: UIImage) // 반려동물 프로필 이미지 생성
     case deletePetProfile(petId: Int)
 }
 

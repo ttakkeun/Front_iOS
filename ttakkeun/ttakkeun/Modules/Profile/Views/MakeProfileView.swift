@@ -9,30 +9,34 @@ import SwiftUI
 
 struct MakeProfileView: View {
     
-    @StateObject var viewModel: MakeProfileViewModel = MakeProfileViewModel()
+    @StateObject var viewModel: MakeProfileViewModel
     @EnvironmentObject var container: DIContainer
+    
+    init(container: DIContainer) {
+        self._viewModel = StateObject(wrappedValue: .init(container: container))
+    }
     
     var body: some View {
         VStack {
-            
             CustomNavigation(
                 action: {
                     container.navigationRouter.pop()
                 }, title: "프로필 생성", currentPage: nil)
             
-            Spacer()
+            Spacer().frame(height: 20)
             
             profileImage
             
-            Spacer().frame(height: 20)
+            Spacer().frame(height: 25)
             
             inputFieldGroup
             
-            Spacer().frame(height: 72)
+            Spacer()
             
             registerBtn
         }
-        .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
+        .safeAreaPadding(EdgeInsets(top: 7, leading: 0, bottom: 20, trailing: 0))
+        .navigationBarBackButtonHidden(true)
         .onAppear {
             UIApplication.shared.hideKeyboard()
         }
@@ -46,7 +50,7 @@ struct MakeProfileView: View {
     }
     
     private var inputFieldGroup: some View {
-        VStack(alignment: .center, spacing: 19, content: {
+        VStack(alignment: .center, spacing: 20, content: {
             Group {
                 nameField
                 typeField
@@ -64,7 +68,7 @@ struct MakeProfileView: View {
                 viewModel.showImagePicker()
             }, label: {
                 if viewModel.profileImage.isEmpty {
-                    Image(systemName: "person.circle.fill")
+                    Image(systemName: "questionmark.circle.fill")
                         .resizable()
                         .frame(width: 120, height: 120)
                         .aspectRatio(contentMode: .fill)
@@ -186,8 +190,9 @@ struct MakeProfileView: View {
             width: 330,
             height: 56,
             action: {
-                // TODO: - 등록하기 버튼 함수 작성
-                print("등록하기 버튼")
+                if viewModel.isProfileCompleted {
+                    viewModel.makePetProfile()
+                }
             },
             color: viewModel.isProfileCompleted ? Color.mainPrimary : Color.gray200)
     }
@@ -230,16 +235,4 @@ fileprivate struct FieldGroup {
     let title: String
     let mustMark: Bool
     let isFieldEnable: Bool
-}
-
-struct MakeProfileView_Preview: PreviewProvider {
-    static let devices = ["iPhone 11", "iphone 15 Pro"]
-    
-    static var previews: some View {
-        ForEach(devices, id: \.self) { device in
-            MakeProfileView()
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewDisplayName(device)
-        }
-    }
 }

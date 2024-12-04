@@ -9,7 +9,11 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @StateObject var viewModel: HomeViewModel = HomeViewModel()
+    @StateObject var viewModel: HomeViewModel
+    
+    init(container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+    }
     
     var body: some View {
         // TODO: - 데이터 로딩 적재 대기 걸어두기
@@ -42,8 +46,4 @@ struct HomeView: View {
         })
         .background(Color.mainPrimary)
     }
-}
-
-#Preview {
-    HomeView()
 }

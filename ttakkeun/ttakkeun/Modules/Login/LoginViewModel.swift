@@ -58,7 +58,7 @@ extension LoginViewModel {
                 guard let _ = responseData.result else {
                     throw APIError.emptyResult
                 }
-                print("server: \(responseData)")
+                print("LoginServer: \(responseData)")
                 return responseData
             }
             .receive(on: DispatchQueue.main)
@@ -69,7 +69,6 @@ extension LoginViewModel {
                 switch completion {
                 case .finished:
                     print("Apple Login Completed")
-                    
                 case .failure(let failure):
                     print("Apple Login Failed: \(failure)")
                     isLogin = false

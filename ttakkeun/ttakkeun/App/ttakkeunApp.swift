@@ -29,6 +29,7 @@ struct ttakkeunApp: App {
                     .environmentObject(appFlowViewModel)
             case .tabView:
                 TabView()
+                    .environmentObject(container)
             }
         }
     }

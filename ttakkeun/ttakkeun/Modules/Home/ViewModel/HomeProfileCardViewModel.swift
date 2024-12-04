@@ -10,4 +10,10 @@ import Foundation
 class HomeProfileCardViewModel: ObservableObject {
     @Published var isShowFront: Bool = true
     @Published var profileData: HomeProfileResponseData?
+    
+    let container: DIContainer
+    
+    init(container: DIContainer) {
+        self.container = container
+    }
 }

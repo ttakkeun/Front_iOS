@@ -9,13 +9,16 @@ import Foundation
 
 protocol UseCaseProtocol {
     var authUseCase: AuthUseCase { get set }
+    var petProfileUseCase: PetProfileUseCase { get set }
 }
 
 class UseCaseProvider: UseCaseProtocol {
     
-     var authUseCase: AuthUseCase
+    var authUseCase: AuthUseCase
+    var petProfileUseCase: PetProfileUseCase
     
     init() {
         self.authUseCase = AuthUseCase()
+        self.petProfileUseCase = PetProfileUseCase()
     }
 }
