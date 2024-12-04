@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct BirthSelect: View {
-    
     @State private var selectedYear: Int?
     @State private var selectedMonth: Int?
     @State private var selectedDay: Int?
@@ -17,11 +16,14 @@ struct BirthSelect: View {
     @Binding var isBirthFilled: Bool
     
     init(selectedYear: Int? = nil, selectedMonth: Int? = nil, selectedDay: Int? = nil, birthDate: Binding<String>, isBirthFilled: Binding<Bool>) {
-        self.selectedYear = selectedYear
-        self.selectedMonth = selectedMonth
-        self.selectedDay = selectedDay
         self._birthDate = birthDate
         self._isBirthFilled = isBirthFilled
+        
+        // 초기값 설정
+        let parsedDate = Self.parseBirthDate(birthDate.wrappedValue)
+        self._selectedYear = State(initialValue: parsedDate.year)
+        self._selectedMonth = State(initialValue: parsedDate.month)
+        self._selectedDay = State(initialValue: parsedDate.day)
     }
     
     var body: some View {
@@ -34,7 +36,6 @@ struct BirthSelect: View {
                 .frame(width: 1, height: 44)
                 .background(Color.gray200)
             
-            
             CustomPicker(selectedValue: $selectedMonth, title: "월",
                          range: Array(1...12).map { $0 },
                          updateAction: { updateBirthDate() })
@@ -42,7 +43,6 @@ struct BirthSelect: View {
             Divider()
                 .frame(width: 1, height: 44)
                 .background(Color.gray200)
-            
             
             CustomPicker(selectedValue: $selectedDay, title: "일",
                          range: dayRange(), updateAction: { updateBirthDate() })
@@ -56,7 +56,6 @@ struct BirthSelect: View {
 }
 
 extension BirthSelect {
-    
     func currentYear() -> Int {
         Calendar.current.component(.year, from: Date())
     }
@@ -88,13 +87,12 @@ extension BirthSelect {
             isBirthFilled = false
         }
     }
-}
-
-struct BirthSelect_Preview: PreviewProvider {
     
-    @State static var birthDate: String = ""
-    
-    static var previews: some View {
-        BirthSelect(birthDate: .constant(birthDate), isBirthFilled: .constant(false))
+    static func parseBirthDate(_ birthDate: String) -> (year: Int?, month: Int?, day: Int?) {
+        let components = birthDate.split(separator: "-").map { Int($0) }
+        guard components.count == 3 else {
+            return (nil, nil, nil)
+        }
+        return (year: components[0], month: components[1], day: components[2])
     }
 }

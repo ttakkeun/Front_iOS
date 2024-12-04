@@ -9,12 +9,13 @@ import SwiftUI
 
 struct ProfileTwoButton: View {
     
-    @State private var selectedButton: String? = nil
+    @Binding var selectedButton: String?
     
     var firstButton: ButtonOption
     var secondButton: ButtonOption
     
-    init(firstButton: ButtonOption, secondButton: ButtonOption) {
+    init(selectedButton: Binding<String?>, firstButton: ButtonOption, secondButton: ButtonOption) {
+        self._selectedButton = selectedButton
         self.firstButton = firstButton
         self.secondButton = secondButton
     }
@@ -60,10 +61,4 @@ struct ProfileTwoButton: View {
 struct ButtonOption {
     let textTitle: String
     let action: () -> Void
-}
-
-struct ProfileTwoButton_Preview: PreviewProvider {
-    static var previews: some View {
-        ProfileTwoButton(firstButton: ButtonOption(textTitle: "예", action: { print("yes") } ), secondButton: ButtonOption(textTitle: "아니오", action: { print("no") }))
-    }
 }

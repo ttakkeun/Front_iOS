@@ -13,13 +13,16 @@ struct TabView: View {
     @State private var opacity = 0.0
     
     @EnvironmentObject var container: DIContainer
+    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     
     var body: some View {
-        NavigationStack {
-            VStack {
+        NavigationStack(path: $container.navigationRouter.destination) {
+            ZStack(alignment: .bottom) {
                 switch selectedTab {
                 case .home:
                     HomeView(container: container)
+                        .environmentObject(container)
+                        .environmentObject(appFlowViewModel)
                 case .diagnosis:
                     Text("diag")
                 case .schedule:
@@ -29,8 +32,6 @@ struct TabView: View {
                 case .qna:
                     Text("qna")
                 }
-                
-                Spacer()
                 
                 CustomTab(selectedTab: $selectedTab)
             }
@@ -43,4 +44,5 @@ struct TabView: View {
 #Preview {
     TabView()
         .environmentObject(DIContainer())
+        .environmentObject(AppFlowViewModel())
 }

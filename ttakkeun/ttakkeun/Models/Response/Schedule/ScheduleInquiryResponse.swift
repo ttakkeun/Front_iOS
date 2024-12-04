@@ -9,11 +9,11 @@ import Foundation
 
 struct ScheduleInquiryResponse: Codable {
     var date: String
-    var earTodo: [TodoList]?
-    var hairTodo: [TodoList]?
-    var clawTodo: [TodoList]?
-    var eyeTodo: [TodoList]?
-    var toothTodo: [TodoList]?
+    var earTodo: [TodoList]
+    var hairTodo: [TodoList]
+    var clawTodo: [TodoList]
+    var eyeTodo: [TodoList]
+    var toothTodo: [TodoList]
     
     enum CodingKeys: String, CodingKey {
         case date

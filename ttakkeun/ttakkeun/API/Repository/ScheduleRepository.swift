@@ -1,0 +1,25 @@
+//
+//  ScheduleRepository.swift
+//  ttakkeun
+//
+//  Created by 정의찬 on 12/5/24.
+//
+
+import Foundation
+import CombineMoya
+import Combine
+import Moya
+import SwiftUI
+
+class ScheduleRepository: ScheduleRepositoryProtocol {
+    
+    private let scheduleService: ScheduleServiceProtocol
+    
+    init(scheduleService: ScheduleServiceProtocol = ScheduleService()) {
+        self.scheduleService = scheduleService
+    }
+    
+    func getTodoSchedule(petId: Int, todoDateRequest: TodoDateRequest) -> AnyPublisher<ResponseData<ScheduleInquiryResponse>, MoyaError> {
+        return scheduleService.getTodoScheduleData(petId: petId, todoDateRequest: todoDateRequest)
+    }
+}

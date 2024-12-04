@@ -12,7 +12,7 @@ struct ProfileCardBack: View {
     @ObservedObject var viewModel: HomeProfileCardViewModel
     
     var body: some View {
-        VStack(alignment: .center, spacing: 29, content: {
+        VStack(alignment: .leading, content: {
             if let data = viewModel.profileData {
                 myPetTag(data: data)
                 
@@ -20,12 +20,12 @@ struct ProfileCardBack: View {
                 
             } else {
                 
+                Spacer().frame(height: 60)
+                
+                ProgressView(label: { LoadingDotsText(text: "데이터를 받아오지 못했습니다") })
+                    .controlSize(.regular)
+                
                 Spacer()
-                
-                ProgressView()
-                    .frame(width: 120, height: 120)
-                
-                
             }
             
             HStack(content: {
@@ -41,48 +41,54 @@ struct ProfileCardBack: View {
                 })
             })
         })
-        .padding(.top, 15)
-        .padding(.leading, 16)
-        .padding(.bottom, 20)
+        .frame(width: 320)
+        .padding(.top, 13)
+        .padding(.leading, 25)
+        .padding(.bottom, 23)
         .padding(.trailing, 18)
         .modifier(CustomCardModifier())
+        
     }
     
     @ViewBuilder
     private func myPetTag(data: HomeProfileResponseData) -> some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 5) {
             Text("내 \(data.type.toKorean()) 정보")
-                .frame(maxWidth: 90, maxHeight: 24)
-                .clipShape(.rect(cornerRadius: 25))
                 .font(.suit(type: .semibold, size: 10))
                 .foregroundStyle(Color.gray900)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 25)
+                .frame(width: 69, height: 16)
+                .padding(.vertical, 6)
+                .padding(.horizontal, 11)
+                .background {
+                    RoundedRectangle(cornerRadius: 40)
                         .fill(Color.clear)
-                        .stroke(Color.primarycolor700)
-                )
+                        .stroke(Color.gray900)
+                }
             
-            Icon.pencil.image
-                .renderingMode(.template)
-                .resizable()
-                .frame(width: 12, height: 12)
-                .foregroundStyle(Color.black)
-            
-            Spacer()
+            Button(action: {
+                viewModel.goToEditPetProfile()
+            }, label: {
+                Icon.pencil.image
+                    .renderingMode(.template)
+                    .resizable()
+                    .frame(width: 18, height: 18)
+                    .foregroundStyle(Color.black)
+                    .padding()
+            })
         }
     }
     
     private func myPetInfo(data: HomeProfileResponseData) -> some View {
-        HStack(alignment: .center, spacing: 32, content: {
+        HStack(alignment: .top, spacing: 24, content: {
             leftInfo(data: data)
             rightInfo(data: data)
         })
-        .frame(height: 132)
+        .frame(width: 320)
     }
     
     @ViewBuilder
     private func leftInfo(data: HomeProfileResponseData) -> some View {
-        VStack(alignment: .center, spacing: 17, content: {
+        VStack(alignment: .center, spacing: 14, content: {
             ProfileImage(profileImageUrl: data.image, imageSize: 86)
             
             PetInfoTitle(name: data.name, birth: data.birth)
@@ -94,17 +100,18 @@ struct ProfileCardBack: View {
             makeRightInfo(text: "상태 : \(data.neutralization ? "중성화 완료" : "중성화 미완료")")
             makeRightInfo(text: "품종: \(data.variety)")
         })
+        .padding(.top, 10)
     }
     
     func makeRightInfo(text: String) -> some View {
         Text(text)
-            .font(.Body4_medium)
+            .font(.Body3_medium)
             .foregroundStyle(Color.gray900)
     }
 }
 
 struct ProfileCardBack_Preview: PreviewProvider {
     static var previews: some View {
-        ProfileCardBack(viewModel: HomeProfileCardViewModel())
+        ProfileCardBack(viewModel: HomeProfileCardViewModel(container: DIContainer()))
     }
 }

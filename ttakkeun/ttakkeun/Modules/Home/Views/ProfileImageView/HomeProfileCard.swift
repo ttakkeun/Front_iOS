@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeProfileCard: View {
     
-    @StateObject var viewModel: HomeProfileCardViewModel
+    @ObservedObject var viewModel: HomeProfileCardViewModel
     
     var body: some View {
         homeProfileCard
@@ -30,6 +30,6 @@ struct HomeProfileCard: View {
 
 struct HomeProfileCard_Preview: PreviewProvider {
     static var previews: some View {
-        HomeProfileCard(viewModel: HomeProfileCardViewModel())
+        HomeProfileCard(viewModel: HomeProfileCardViewModel(container: DIContainer()))
     }
 }

@@ -25,7 +25,7 @@ class PetProfileUseCase: PetProfileUseCaseProtocol {
     }
     
     func executePatchPetProfileImage(petId: Int, image: UIImage) -> AnyPublisher<ResponseData<PatchPetImageResponse>, MoyaError> {
-        return repository.patchPetProfile(petId: petId, image: image)
+        return repository.patchPetProfileImage(petId: petId, image: image)
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }
@@ -33,6 +33,18 @@ class PetProfileUseCase: PetProfileUseCaseProtocol {
     func executegetPetProfile() -> AnyPublisher<ResponseData<PetProfileResponse>, MoyaError> {
         return repository.getPetProfile()
             .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executeSpecificPetProfile(petId: Int) -> AnyPublisher<ResponseData<HomeProfileResponseData>, MoyaError> {
+        return repository.getSpecificPetProfile(petId: petId)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func excutePatchPetProfile(petId: Int, PetInfo: PetInfo) -> AnyPublisher<ResponseData<EditProfileResponse>, MoyaError> {
+        return repository.patchPetProfile(petId: petId, petInfo: PetInfo)
+            .mapError { $0 as MoyaError}
             .eraseToAnyPublisher()
     }
 }

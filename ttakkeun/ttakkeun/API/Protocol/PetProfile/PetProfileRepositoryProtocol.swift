@@ -14,7 +14,11 @@ import SwiftUI
 protocol PetProfileRepositoryProtocol {
     func makePetProfile(petInfo: PetInfo) -> AnyPublisher<ResponseData<MakePetProfileResponse>, MoyaError>
     
-    func patchPetProfile(petId: Int, image: UIImage) -> AnyPublisher<ResponseData<PatchPetImageResponse>, MoyaError>
+    func patchPetProfileImage(petId: Int, image: UIImage) -> AnyPublisher<ResponseData<PatchPetImageResponse>, MoyaError>
     
     func getPetProfile() -> AnyPublisher<ResponseData<PetProfileResponse>, MoyaError>
+    
+    func getSpecificPetProfile(petId: Int) -> AnyPublisher<ResponseData<HomeProfileResponseData>, MoyaError>
+    
+    func patchPetProfile(petId: Int, petInfo: PetInfo) -> AnyPublisher<ResponseData<EditProfileResponse>, MoyaError>
 }

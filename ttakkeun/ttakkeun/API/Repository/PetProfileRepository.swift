@@ -23,11 +23,19 @@ class PetProfileRepository: PetProfileRepositoryProtocol {
         return petProfileService.makePetProfileData(petInfo: petInfo)
     }
     
-    func patchPetProfile(petId: Int, image: UIImage) -> AnyPublisher<ResponseData<PatchPetImageResponse>, MoyaError> {
+    func patchPetProfileImage(petId: Int, image: UIImage) -> AnyPublisher<ResponseData<PatchPetImageResponse>, MoyaError> {
         return petProfileService.patchPetProfileImageData(petId: petId, image: image)
     }
     
     func getPetProfile() -> AnyPublisher<ResponseData<PetProfileResponse>, MoyaError> {
         return petProfileService.getPetProfileData()
+    }
+    
+    func getSpecificPetProfile(petId: Int) -> AnyPublisher<ResponseData<HomeProfileResponseData>, MoyaError> {
+        return petProfileService.getSpecificPetProfileData(petId: petId)
+    }
+    
+    func patchPetProfile(petId: Int, petInfo: PetInfo) -> AnyPublisher<ResponseData<EditProfileResponse>, MoyaError> {
+        return petProfileService.patchPetProfile(petId: petId, petInfo: petInfo)
     }
 }

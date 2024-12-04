@@ -13,37 +13,67 @@ struct HomeDragView: View {
     @State private var lastOffset: CGFloat
     @GestureState private var dragOffset: CGFloat = 0
     
-    @ObservedObject var viewModel: HomeViewModel
+    @ObservedObject var homeProfileCardViewModel: HomeProfileCardViewModel
+    @ObservedObject var homeRecommendViewModel: HomeRecommendViewModel
+    @ObservedObject var homeTodoViewModel: HomeTodoViewModel
     
-    init(viewModel: HomeViewModel) {
+    init(
+        homeProfileCardViewModel: HomeProfileCardViewModel,
+        homeRecommendViewModel: HomeRecommendViewModel,
+        homeTodoViewModel: HomeTodoViewModel
+    ) {
         _offset = State(initialValue: 0)
         _lastOffset = State(initialValue: 0)
-        self.viewModel = viewModel
+        self.homeProfileCardViewModel = homeProfileCardViewModel
+        self.homeRecommendViewModel = homeRecommendViewModel
+        self.homeTodoViewModel = homeTodoViewModel
     }
     
     var body: some View {
+        
+        if homeRecommendViewModel.aiRecommendIsLoading ||
+                   homeRecommendViewModel.userRecommendIsLoading ||
+                   homeTodoViewModel.todoIsLoading {
+            loadingView
+        } else {
+            bottomDrag
+        }
+    }
+    
+    private var loadingView: some View {
+        VStack {
+            Spacer()
+            ProgressView("잠시만 기다려주세요...")
+                .progressViewStyle(CircularProgressViewStyle())
+                .controlSize(.large)
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
+        .ignoresSafeArea()
+    }
+    
+    private var bottomDrag: some View {
         GeometryReader { geometry in
             
             let screenHeight = geometry.size.height
-            let minOffset: CGFloat = screenHeight * 0.43
-            let maxOffset: CGFloat = screenHeight * 0.06
+            let minOffset: CGFloat = screenHeight * 0.45
+            let maxOffset: CGFloat = screenHeight * 0.07
             
-            /* 임계값을 두어 드래그뷰를 위 아래로 조절한다. */
-            VStack(alignment: .center, spacing: 21) {
+            VStack(alignment: .center, spacing: 13) {
                 Image(systemName: offset == minOffset ? "chevron.up" : "chevron.down")
                     .resizable()
                     .frame(width: 38, height: 15)
                     .padding(.top, 10)
                     .padding(.bottom, 5)
                 
-                compactComponents(petType: viewModel.homeProfileCardViewModel.profileData?.type)
+                compactComponents(petType: homeProfileCardViewModel.profileData?.type)
                 
                 Spacer()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.white)
-            .clipShape(.rect(topLeadingRadius: 30, topTrailingRadius: 30))
-            .shadow03()
+            .clipShape(RoundedRectangle(cornerRadius: 30))
+            .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
             .offset(y: offset + dragOffset)
             .gesture(
                 DragGesture()
@@ -57,31 +87,38 @@ struct HomeDragView: View {
                             state = value.translation.height
                         }
                     })
-                    .onEnded({ value in
+                    .onEnded { value in
                         let threshold: CGFloat = 50
-                        if value.translation.height < -threshold {
-                            offset = maxOffset
-                        } else {
-                            offset = minOffset
+                        withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.5, blendDuration: 0.2)) {
+                            if value.translation.height < -threshold {
+                                offset = maxOffset
+                            } else {
+                                offset = minOffset
+                            }
                         }
                         lastOffset = offset
-                    })
+                    }
             )
             .onAppear {
-                self.offset = minOffset
+                offset = screenHeight
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    withAnimation(.spring(response: 1.4, dampingFraction: 0.8)) {
+                        offset = minOffset
+                    }
+                }
             }
         }
-        .animation(.interactiveSpring(), value: offset)
     }
     
     private func compactComponents(petType: ProfileType?) -> some View {
         ScrollView(.vertical, content: {
-            VStack(alignment: .leading, spacing: 40, content: {
-                HomeTodo(viewModel: viewModel.homeTodoViewModel)
-                HomeAIProduct(viewModel: viewModel.homeRecommendViewModel)
-                HomeTop(viewModel: viewModel.homeRecommendViewModel, petType: viewModel.homeProfileCardViewModel.profileData?.type)
+            VStack(alignment: .leading, spacing: 24, content: {
+                HomeTodo(viewModel: homeTodoViewModel)
+                HomeAIProduct(viewModel: homeRecommendViewModel)
+                HomeTop(viewModel: homeRecommendViewModel, petType: homeProfileCardViewModel.profileData?.type)
             })
             .safeAreaPadding(EdgeInsets(top: 0, leading: 19, bottom: 0, trailing: 20))
+            .padding(.bottom, 80)
         })
     }
 }

@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct PetInfo: Codable {
+struct PetInfo: Codable, Equatable, Hashable {
     var name: String
-    var type: ProfileType
+    var type: ProfileType?
     var variety: String
     var birth: String
-    var neutralization: Bool
+    var neutralization: Bool?
 }

@@ -29,13 +29,14 @@ class MakeProfileViewModel: ObservableObject {
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
     
-    init(container: DIContainer) {
+    init(container: DIContainer
+    ) {
         self.container = container
     }
     
     // MARK: - Field
     
-    @Published var requestData: PetInfo = PetInfo(name: "", type: .dog, variety: "", birth: "", neutralization: false)
+    @Published var requestData: PetInfo = PetInfo(name: "", type: nil, variety: "", birth: "", neutralization: nil)
     
     @Published var isProfileCompleted: Bool = false
     
@@ -148,33 +149,37 @@ extension MakeProfileViewModel {
     
     // MARK: - patchPetProfileImage
     
-    private func patchPetProfileImage(petId: Int) {
-        container.useCaseProvider.petProfileUseCase.executePatchPetProfileImage(petId: petId, image: getImages()[0])
-            .tryMap { responseData -> ResponseData<PatchPetImageResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+    public func patchPetProfileImage(petId: Int) {
+        if !getImages().isEmpty {
+            container.useCaseProvider.petProfileUseCase.executePatchPetProfileImage(petId: petId, image: getImages()[0])
+                .tryMap { responseData -> ResponseData<PatchPetImageResponse> in
+                    if !responseData.isSuccess {
+                        throw APIError.serverError(message: responseData.message, code: responseData.code)
+                    }
+                    
+                    guard let _ = responseData.result else {
+                        throw APIError.emptyResult
+                    }
+                    print("server: \(responseData)")
+                    return responseData
                 }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                print("server: \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    print("Patch PetProfile Image Complete")
-                case .failure(let failure):
-                    print("Patch PetProfile Image Failure: \(failure)")
-                }
-            }, receiveValue: { [weak self] patchPetProfileResponse in
-                guard let self = self else { return }
-                handleProfileImageUrlResponse(imageUrl: patchPetProfileResponse.result?.petImageUrl)
-                container.navigationRouter.pop()
-            })
-            .store(in: &cancellables)
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { completion in
+                    switch completion {
+                    case .finished:
+                        print("Patch PetProfile Image Complete")
+                        self.container.navigationRouter.pop()
+                    case .failure(let failure):
+                        print("Patch PetProfile Image Failure: \(failure)")
+                    }
+                }, receiveValue: { [weak self] patchPetProfileResponse in
+                    guard let self = self else { return }
+                    handleProfileImageUrlResponse(imageUrl: patchPetProfileResponse.result?.petImageUrl)
+                })
+                .store(in: &cancellables)
+        } else {
+            self.container.navigationRouter.pop()
+        }
     }
     
     private func handleProfileImageUrlResponse(imageUrl: String?) {
