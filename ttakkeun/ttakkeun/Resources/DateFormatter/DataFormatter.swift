@@ -80,4 +80,50 @@ final class DataFormatter {
         formatter.numberStyle = .decimal
         return formatter.string(from: NSNumber(value: price)) ?? ""
     }
-}
+    
+    public func maskUserName(_ name: String) -> String {
+        let nameParts = name.split(separator: " ")
+        
+        if nameParts.count == 1 {
+            let firstPart = nameParts[0]
+            
+            if firstPart.count == 2 {
+                let first = firstPart.prefix(1)
+                return "\(first)*"
+            } else if firstPart.count > 2 {
+                let first = firstPart.prefix(1)
+                let remaining = firstPart.dropFirst().dropFirst()
+                return "\(first)*\(remaining)"
+            } else {
+                return String(firstPart)
+            }
+        } else if nameParts.count > 1 {
+            let firstName = nameParts.first ?? ""
+            let lastName = nameParts.dropFirst().joined(separator: " ")
+            
+            let maskedLastName = String(repeating: "*", count: lastName.count)
+            return "\(firstName) \(maskedLastName)"
+        }
+        return name
+    }
+
+    /// 서버 시간(UTC)을 받아 현재 한국 시간(KST)과 비교하여 경과 시간을 반환
+    func convertToKoreanTime(from serverTime: String) -> String {
+        // 1. ISO8601DateFormatter 설정
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        isoFormatter.timeZone = TimeZone(secondsFromGMT: 0) // UTC 기준으로 해석
+
+        // 2. 서버 시간 문자열 → Date 변환
+        guard let serverDate = isoFormatter.date(from: serverTime) else {
+            return "알 수 없음" // 형식이 잘못된 경우 처리
+        }
+
+        // 3. 한국 시간(KST)으로 변환
+        let koreanTimeZone = TimeZone(identifier: "Asia/Seoul")!
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd HH:mm" // 원하는 포맷 설정
+        dateFormatter.timeZone = koreanTimeZone
+
+        return dateFormatter.string(from: serverDate) // 한국 시간 문자열 반환
+    }}

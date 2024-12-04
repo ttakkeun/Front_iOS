@@ -18,7 +18,6 @@ struct TipsSegment: View {
                     makeSegment(segment)
                 }
             })
-            .padding(.horizontal, 19)
             .padding(.vertical, 10)
         })
         .scrollIndicators(.hidden)

@@ -49,7 +49,7 @@ struct JournalListView: View {
                             }))
                         }
                     })
-                    .padding(.bottom, 110)
+                    .padding(.bottom, 80)
                 })
                 .frame(maxWidth: .infinity)
             }

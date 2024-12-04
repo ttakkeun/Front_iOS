@@ -14,9 +14,9 @@ class TipsWriteViewModel: ObservableObject, ImageHandling {
     @Published var textContents: String = ""
     @Published private var isShowTipsWriteView: Bool = false
     
-    let category: PartItem?
+    let category: ExtendPartItem
     
-    init(category: PartItem?) {
+    init(category: ExtendPartItem) {
         self.category = category
     }
     

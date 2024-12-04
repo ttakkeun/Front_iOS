@@ -36,7 +36,7 @@ struct WriteTipsView: View {
     }
     
     private var categoryTitle: some View {
-        Text(viewModel.category?.toKorean() ?? "기타")
+        Text(viewModel.category.toKorean())
             .frame(width: 30, height: 20)
             .font(.Body2_semibold)
             .foregroundStyle(Color.gray900)
@@ -44,7 +44,7 @@ struct WriteTipsView: View {
             .padding(.horizontal, 22)
             .background {
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(viewModel.category?.toAfterColor() ?? Color.clear)
+                    .fill(viewModel.category.afterToColor())
             }
     }
     
@@ -73,6 +73,6 @@ extension WriteTipsView {
 
 struct WriteTipsView_Preview: PreviewProvider {
     static var previews: some View {
-        WriteTipsView(viewModel: TipsWriteViewModel(category: .hair))
+        WriteTipsView(viewModel: TipsWriteViewModel(category: .part(.ear)))
     }
 }

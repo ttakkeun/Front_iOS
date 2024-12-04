@@ -92,6 +92,9 @@ enum Icon: String {
     case againIcon = "againIcon"
     case replaceIcon = "replaceIcon"
     
+    // MARK: - QnA
+    case bottomRightTag = "bottomRightTag"
+    
     var image: Image {
         return Image(self.rawValue)
     }
