@@ -58,7 +58,8 @@ struct SignUpView: View {
     }
     
     private var emailField: some View {
-        makeUserInfo(title: "이메일", placeholder: "이메일을 입력해주세요", value: $viewModel.userEmail)
+        makeUserInfo(title: "이메일", placeholder: signUpRequest.email, value: .constant(""))
+            .disabled(true)
     }
     
     private var nicknameField: some View {
@@ -155,6 +156,6 @@ extension SignUpView {
     }
     
     func returnSignUpData() -> SignUpRequest {
-        return SignUpRequest(identityToken: signUpRequest.identityToken, email: viewModel.userEmail, name: viewModel.userNickname)
+        return SignUpRequest(identityToken: signUpRequest.identityToken, email: signUpRequest.email, name: viewModel.userNickname)
     }
 }

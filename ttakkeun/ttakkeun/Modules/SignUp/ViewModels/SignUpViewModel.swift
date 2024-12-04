@@ -55,9 +55,9 @@ class SignUpViewModel: ObservableObject {
         }
     }
     
-    private func saveUserInfo() {
-        UserState.shared.setUserName(userNickname)
-        UserState.shared.setUserEmail(userEmail)
+    private func saveUserInfo(signUpRequest: SignUpRequest) {
+        UserState.shared.setUserName(signUpRequest.name)
+        UserState.shared.setUserEmail(signUpRequest.email)
     }
 }
 
@@ -88,7 +88,7 @@ extension SignUpViewModel {
                 guard let self = self else { return }
                 self.tokenResponse = responseData.result
                 saveKeyChain(responseData: tokenResponse)
-                saveUserInfo()
+                saveUserInfo(signUpRequest: signUpRequet)
                 container.navigationRouter.pop()
                 appFlowViewModel.onSignUpSuccess()
                 
