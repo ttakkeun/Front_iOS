@@ -1,5 +1,5 @@
 //
-//  JournalRegistImages.swift
+//  RegistAlbumImageView.swift
 //  ttakkeun
 //
 //  Created by 정의찬 on 11/11/24.
@@ -7,75 +7,74 @@
 
 import SwiftUI
 
-struct JournalRegistImages: View {
+struct RegistAlbumImageView<ViewModel: ImageHandling & ObservableObject>: View {
     
-    @ObservedObject var viewModel: JournalRegistViewModel
+    @ObservedObject var viewModel: ViewModel
+    
+    let maxImageCount: Int
+    let titleText: String
+    let subTitleText: String
+    
+    init(
+        viewModel: ViewModel,
+        maxImageCount: Int = 5,
+        titleText: String,
+        subTitleText: String
+    ) {
+        self.viewModel = viewModel
+        self.maxImageCount = maxImageCount
+        self.titleText = titleText
+        self.subTitleText = subTitleText
+    }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 5, content: {
-            Text("사진을 등록해주시면 \n따끈 AI 진단에서 더 정확한 결과를 받을 수 있어요")
+        VStack(alignment: .leading, spacing: 8, content: {
+            Text(titleText)
                 .font(.Body3_medium)
                 .foregroundStyle(Color.gray900)
-                .frame(height: 36)
+                .lineSpacing(2)
             
-            Text("최대 5장")
+            Text(subTitleText)
                 .font(.Body5_medium)
                 .foregroundStyle(Color.gray400)
             
-            Spacer().frame(height: 8)
+            Spacer().frame(height: 2)
             
             cameraAlbum
         })
         .frame(maxWidth: 355, alignment: .leading)
         .sheet(isPresented: $viewModel.isImagePickerPresented, content: {
-            ImagePicker(imageHandler: viewModel, selectedLimit: (5 - viewModel.selectedImageCount))
+            ImagePicker(imageHandler: viewModel, selectedLimit: (maxImageCount - viewModel.selectedImageCount))
         })
     }
     
     private var cameraAlbum: some View {
         HStack(alignment: .top, spacing: 4, content: {
-            cameraButton
+            CameraButton(cameraText: Text("\(viewModel.selectedImageCount) / \(maxImageCount)"), action: {
+                if viewModel.selectedImageCount <= maxImageCount - 1 {
+                    viewModel.showImagePicker()
+                }
+            })
             showSelectedImage
-        })
-    }
-    
-    private var cameraButton: some View {
-        Button(action: {
-            if viewModel.selectedImageCount <= 4 {
-                viewModel.showImagePicker()
-            }
-        }, label: {
-            ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.answerBg)
-                    .stroke(Color.gray200)
-                    .frame(width: 80, height: 80)
-                VStack(alignment: .center, spacing: 5, content: {
-                    Icon.camera.image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 47, height: 47)
-                    
-                    Text("\(viewModel.selectedImageCount) / 5")
-                        .font(.Body5_medium)
-                        .foregroundStyle(Color.gray400)
-                })
-            }
         })
     }
     
     private var showSelectedImage: some View {
         ScrollView(.horizontal, content: {
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 75)), count: 3), content: {
+            LazyVGrid(columns: Array(repeating: GridItem(.fixed(80), spacing: 10) ,count: 3), spacing: 10, content: {
                 ForEach(0..<viewModel.getImages().count, id: \.self) { index in
                     imageAddAndRemove(for: index, image: viewModel.getImages()[index])
                 }
             })
+            .frame(alignment: .topLeading)
+            .padding(.top, 5)
+            .padding(.bottom, 8)
+            .padding(.horizontal, 3)
         })
     }
 }
 
-extension JournalRegistImages {
+extension RegistAlbumImageView {
     func imageAddAndRemove(for index: Int, image: UIImage) -> some View {
         ZStack(alignment: .topLeading, content: {
             Image(uiImage: image)
@@ -98,12 +97,6 @@ extension JournalRegistImages {
                     .padding([.horizontal, .vertical], -3)
             })
         })
-        .frame(width: 87, height: 86)
-    }
-}
-
-struct JournalRegistImages_Preview: PreviewProvider {
-    static var previews: some View {
-        JournalRegistImages(viewModel: JournalRegistViewModel(petID: .init(5)))
+        .frame(width: 80, height: 80)
     }
 }

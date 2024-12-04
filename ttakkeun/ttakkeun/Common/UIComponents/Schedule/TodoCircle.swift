@@ -21,62 +21,15 @@ struct TodoCircle: View {
         ZStack(alignment: .center) {
             if isBefore {
                 Circle()
-                    .fill(beforeSetColor(partItem: self.partItem))
+                    .fill(partItem.toColor())
                     .frame(width: 51, height: 51)
             } else {
                 Circle()
-                    .fill(afterSetColor(partItem: self.partItem))
+                    .fill(partItem.toAfterColor())
                     .frame(width: 51, height: 51)
             }
-            setIcon(partItem: self.partItem)
+            partItem.toImage()
                 .fixedSize()
-        }
-    }
-}
-
-extension TodoCircle {
-    func beforeSetColor(partItem: PartItem) -> Color {
-        switch partItem {
-        case .ear:
-            return Color.beforeEar
-        case .eye:
-            return Color.beforeEye
-        case .hair:
-            return Color.beforeHair
-        case .claw:
-            return Color.beforeClaw
-        case .teeth:
-            return Color.beforeTeeth
-        }
-    }
-    
-    func afterSetColor(partItem: PartItem) -> Color {
-        switch partItem {
-        case .ear:
-            return Color.afterEar
-        case .eye:
-            return Color.afterEye
-        case .hair:
-            return Color.afterHair
-        case .claw:
-            return Color.afterClaw
-        case .teeth:
-            return Color.afterTeeth
-        }
-    }
-    
-    func setIcon(partItem: PartItem) -> Image {
-        switch partItem {
-        case .ear:
-            return Icon.homeEar.image
-        case .eye:
-            return Icon.homeEye.image
-        case .hair:
-            return Icon.homeHair.image
-        case .claw:
-            return Icon.homeClaw.image
-        case .teeth:
-            return Icon.homeTeeth.image
         }
     }
 }

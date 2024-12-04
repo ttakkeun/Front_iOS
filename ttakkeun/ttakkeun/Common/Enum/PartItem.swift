@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 /// 따끈에 사용되는 5가지 부위 항목
 enum PartItem: String, Codable, CaseIterable {
@@ -29,6 +30,51 @@ enum PartItem: String, Codable, CaseIterable {
             return "발톱"
         case .teeth:
             return "이빨"
+        }
+    }
+    
+    func toColor() -> Color {
+        switch self {
+        case .ear:
+            Color.beforeEar
+        case .eye:
+            Color.beforeEye
+        case .hair:
+            Color.beforeHair
+        case .claw:
+            Color.beforeClaw
+        case .teeth:
+            Color.beforeTeeth
+        }
+    }
+    
+    func toAfterColor() -> Color {
+        switch self {
+        case .ear:
+            return Color.afterEar
+        case .eye:
+            return Color.afterEye
+        case .hair:
+            return Color.afterHair
+        case .claw:
+            return Color.afterClaw
+        case .teeth:
+            return Color.afterTeeth
+        }
+    }
+    
+    func toImage() -> Image {
+        switch self {
+        case .ear:
+            return Icon.homeEar.image
+        case .eye:
+            return Icon.homeEye.image
+        case .hair:
+            return Icon.homeHair.image
+        case .claw:
+            return Icon.homeClaw.image
+        case .teeth:
+            return Icon.homeTeeth.image
         }
     }
 }

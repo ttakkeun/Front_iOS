@@ -72,26 +72,9 @@ struct JournalListCard: View {
     
     private var topPostit: some View {
         RoundedRectangle(cornerRadius: 4)
-            .fill(stickerColor())
+            .fill(cardData.part.toColor())
             .frame(width: 49, height: 14)
             .shadow02()
-    }
-}
-
-extension JournalListCard {
-    func stickerColor() -> Color {
-        switch cardData.part {
-        case .ear:
-            Color.beforeEar
-        case .eye:
-            Color.beforeEye
-        case .hair:
-            Color.beforeHair
-        case .claw:
-            Color.beforeClaw
-        case .teeth:
-            Color.beforeTeeth
-        }
     }
 }
 

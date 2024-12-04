@@ -38,7 +38,7 @@ struct JournalQuestionView: View {
             
             Spacer().frame(height: 24)
             
-            JournalRegistImages(viewModel: viewModel)
+            RegistAlbumImageView(viewModel: viewModel, titleText: "사진을 등록해주시면 \n따끈 AI 진단에서 더 정확한 결과를 받을 수 있어요", subTitleText: "최대 5장")
         })
     }
 }
@@ -86,5 +86,12 @@ extension JournalQuestionView {
         }
         
         viewModel.updateAnswer(for: question.questionID, selectedAnswer: selectedAnswer)
+    }
+}
+
+
+struct JournalQuestionView_Preview: PreviewProvider {
+    static var previews: some View {
+        JournalQuestionView(viewModel: JournalRegistViewModel(petID: 1), question: QuestionDetailData(questionID: 0, questionText: "111", subtitle: "2222", isDupe: true, answer: [AnswerDetailData(answerID: UUID(), answerText: "ggg")]), allowMultiSelection: false)
     }
 }
