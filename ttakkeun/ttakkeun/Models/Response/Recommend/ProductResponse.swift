@@ -13,7 +13,7 @@ struct ProductResponse: Codable, Hashable, Identifiable {
     let title: String
     let image: String
     let price: Int
-    let brand: String
+    let brand: String?
     let purchaseLink: String
     let category1: String?
     let category2: String?

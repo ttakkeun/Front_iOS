@@ -28,15 +28,15 @@ class TodoCheckViewModel: ObservableObject, TodoCheckProtocol {
         
         switch partItem {
         case .ear:
-            todos = data.earTodo ?? []
+            todos = data.earTodo
         case .eye:
-            todos = data.eyeTodo ?? []
+            todos = data.eyeTodo
         case .hair:
-            todos = data.hairTodo ?? []
+            todos = data.hairTodo
         case .claw:
-            todos = data.clawTodo ?? []
+            todos = data.clawTodo
         case .teeth:
-            todos = data.toothTodo ?? []
+            todos = data.toothTodo
         }
     }
     

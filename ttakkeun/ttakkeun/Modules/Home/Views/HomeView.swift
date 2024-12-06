@@ -9,41 +9,68 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @StateObject var viewModel: HomeViewModel
+    @EnvironmentObject var container: DIContainer
+    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
+    
+    @StateObject var homeProfileViewModel: HomeProfileCardViewModel
+    @StateObject var homeTodoViewModel: HomeTodoViewModel
+    @StateObject var homeRecommendViewModel: HomeRecommendViewModel
     
     init(container: DIContainer) {
-        self._viewModel = .init(wrappedValue: .init(container: container))
+        self._homeProfileViewModel = .init(wrappedValue: .init(container: container))
+        self._homeTodoViewModel = .init(wrappedValue: .init(container: container))
+        self._homeRecommendViewModel = .init(wrappedValue: .init(container: container))
     }
     
     var body: some View {
-        // TODO: - 데이터 로딩 적재 대기 걸어두기
-            contents
-//            VStack {
-//                Spacer()
-//                
-//                ProgressView()
-//                
-//                Text("\(UserState.shared.getPetName())에 대한 정보를 로딩 중입니다.")
-//                    .font(.Body4_medium)
-//                    .foregroundStyle(Color.gray400)
-//                
-//                Spacer()
-//            }
-//            .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-    
-    private var contents: some View {
         ZStack(alignment: .bottom, content: {
             VStack(alignment: .center, spacing: 14, content: {
-                TopStatusBar()
+                TopStatusBar(showDivider: false)
                 
-                HomeProfileCard(viewModel: viewModel.homeProfileCardViewModel)
+                HomeProfileCard(viewModel: homeProfileViewModel)
                 
                 Spacer()
             })
-            .border(Color.red)
-            HomeDragView(viewModel: viewModel)
+            
+                HomeDragView(homeProfileCardViewModel: homeProfileViewModel,
+                             homeRecommendViewModel: homeRecommendViewModel,
+                             homeTodoViewModel: homeTodoViewModel)
         })
+        .task {
+            homeProfileViewModel.getSpecificProfile()
+            homeTodoViewModel.getTodoSchedule()
+            homeRecommendViewModel.getAIProduct()
+            homeRecommendViewModel.getUserProduct()
+        }
         .background(Color.mainPrimary)
+        .onDisappear {
+            homeProfileViewModel.profileData = nil
+            homeRecommendViewModel.aiProduct = nil
+            homeRecommendViewModel.userProduct = nil
+        }
+        .navigationDestination(for: NavigationDestination.self) { destination in
+            NavigationRoutingView(destination: destination)
+                .environmentObject(container)
+                .environmentObject(appFlowViewModel)
+        }
     }
+    
+    @ViewBuilder
+    private var contents: some View {
+        if homeTodoViewModel.todoIsLoading || homeRecommendViewModel.userRecommendIsLoading || homeRecommendViewModel.aiRecommendIsLoading {
+            ZStack {
+                Color.white
+                    .ignoresSafeArea()
+                
+                VStack {
+                    
+                    ProgressView()
+                }
+            }
+        }
+    }
+}
+
+#Preview {
+    HomeView(container: DIContainer())
 }

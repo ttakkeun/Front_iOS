@@ -54,7 +54,7 @@ struct AIRecommendProductCard: View {
                 .foregroundStyle(Color.gray900)
                 .lineLimit(2)
                 .lineSpacing(1.5)
-                .truncationMode(.middle)
+//                .truncationMode(.tail)
             
             Text("\(DataFormatter.shared.formattedPrice(from: data.price))원")
                 .font(.Body2_bold)

@@ -8,6 +8,13 @@
 import SwiftUI
 
 struct TopStatusBar: View {
+    
+    let showDivider: Bool
+    
+    init(showDivider: Bool = true) {
+        self.showDivider = showDivider
+    }
+    
     var body: some View {
         VStack(spacing: 3, content: {
             HStack {
@@ -20,9 +27,11 @@ struct TopStatusBar: View {
             .safeAreaPadding(EdgeInsets(top: 7, leading: 0, bottom: 0, trailing: 0))
             .frame(width: 353)
             
-            Divider()
-                .background(Color.gray200)
-                .frame(height: 1)
+            if showDivider {
+                Divider()
+                    .background(Color.gray200)
+                    .frame(height: 1)
+            }
         })
     }
     

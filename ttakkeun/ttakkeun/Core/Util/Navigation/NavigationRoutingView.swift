@@ -21,6 +21,10 @@ struct NavigationRoutingView: View {
         case .createProfile:
             MakeProfileView(container: container)
                 .environmentObject(container)
+            
+        case .editPetProfile(let petInfo, let image):
+            EditProfileView(container: container,
+                            editPetInfo: petInfo, image: image)
         }
     }
 }

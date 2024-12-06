@@ -13,36 +13,45 @@ struct ProfileCardFront: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 5, content: {
-            HStack(content: {
-                Text("PET CARD")
-                    .font(.Body4_extrabold)
-                    .foregroundStyle(Color.gray400)
-                
-                Spacer()
-            })
             
-            ProfileImage(profileImageUrl: viewModel.profileData?.image)
-            
-            profileInfo
-            
-            HStack(content: {
-                
-                Spacer()
-                
-                Button(action: {
-                    viewModel.isShowFront.toggle()
-                }, label: {
-                    Icon.changeCard.image
-                        .resizable()
-                        .frame(width: 16, height: 16)
+            if !viewModel.profileIsLoading {
+                HStack(content: {
+                    Text("PET CARD")
+                        .font(.Body4_extrabold)
+                        .foregroundStyle(Color.gray400)
+                    
+                    Spacer()
                 })
-            })
+                
+                ProfileImage(profileImageUrl: viewModel.profileData?.image)
+                
+                profileInfo
+                
+                HStack(content: {
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        viewModel.isShowFront.toggle()
+                    }, label: {
+                        Icon.changeCard.image
+                            .resizable()
+                            .frame(width: 16, height: 16)
+                    })
+                })
+            } else {
+                Spacer()
+                
+                ProgressView()
+                
+                Spacer()
+            }
         })
-        
+        .frame(width: 320, height: 232)
         .padding(.top, 13)
         .padding(.leading, 25)
         .padding(.trailing, 23)
-        .padding(.bottom, 20)
+        .padding(.bottom, 18)
         .modifier(CustomCardModifier())
     }
     
@@ -61,7 +70,7 @@ struct ProfileCardFront: View {
 
 struct ProfileCardFront_Preview: PreviewProvider {
     static var previews: some View {
-        ProfileCardFront(viewModel: HomeProfileCardViewModel())
+        ProfileCardFront(viewModel: HomeProfileCardViewModel(container: DIContainer()))
             .background(Color.mainPrimary)
     }
 }

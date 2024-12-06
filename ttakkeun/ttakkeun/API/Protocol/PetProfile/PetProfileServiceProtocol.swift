@@ -17,4 +17,8 @@ protocol PetProfileServiceProtocol {
     func patchPetProfileImageData(petId: Int, image: UIImage) -> AnyPublisher<ResponseData<PatchPetImageResponse>, MoyaError>
     
     func getPetProfileData() -> AnyPublisher<ResponseData<PetProfileResponse>, MoyaError>
+    
+    func getSpecificPetProfileData(petId: Int) -> AnyPublisher<ResponseData<HomeProfileResponseData>, MoyaError>
+    
+    func patchPetProfile(petId: Int, petInfo: PetInfo) -> AnyPublisher<ResponseData<EditProfileResponse>, MoyaError>
 }

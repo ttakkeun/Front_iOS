@@ -20,13 +20,12 @@ struct PetInfoTitle: View {
     var body: some View {
         VStack(alignment: .center, spacing: 2, content: {
             Text(name)
-                .font(.Body3_medium)
+                .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
             
             Text(DataFormatter.shared.formattedDate(from: birth))
                 .font(.Body3_semibold)
                 .foregroundStyle(Color.gray400)
         })
-        .padding(.top, 10)
     }
 }

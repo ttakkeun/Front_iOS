@@ -104,9 +104,11 @@ struct ProductSheetView: View {
                 .multilineTextAlignment(.leading)
                 .lineSpacing(2)
             
-            Text("\(data.brand) >")
-                .font(.Body4_medium)
-                .foregroundStyle(Color.gray400)
+            if let brand = data.brand {
+                Text("\(brand) >")
+                    .font(.Body4_medium)
+                    .foregroundStyle(Color.gray400)
+            }
         })
     }
     

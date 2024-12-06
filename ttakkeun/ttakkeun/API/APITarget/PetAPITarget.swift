@@ -12,8 +12,8 @@ import SwiftUI
 enum PetAPITarget {
     case getPetProfile // 프로필 뷰 전체 조회
     case makePetProfile(petInfo: PetInfo) // 반려동물 프로필 생성
-    case getSpecificPetProfile(petId: Int)
-    case patchPetProfile(petInfo: PetInfo)
+    case getSpecificPetProfile(petId: Int) // 특정 반려동물 프로필 조회(홈탭)
+    case patchPetProfile(petId: Int, petInfo: PetInfo) // 반려동물 프로필 수정
     case patchPetProfileImage(petId: Int, image: UIImage) // 반려동물 프로필 이미지 생성
     case deletePetProfile(petId: Int)
 }
@@ -27,7 +27,7 @@ extension PetAPITarget: APITargetType {
             return "/api/pet-profile/add"
         case .getSpecificPetProfile(let petId):
             return "/api/pet-profile/\(petId)"
-        case .patchPetProfile(let petId):
+        case .patchPetProfile(let petId, _):
             return "/api/pet-profile/edit/\(petId)"
         case .patchPetProfileImage(let petId, _):
             return "/api/pet-profile/\(petId)/image"
@@ -53,7 +53,7 @@ extension PetAPITarget: APITargetType {
         switch self {
         case .getPetProfile, .getSpecificPetProfile, .deletePetProfile:
             return .requestPlain
-        case .makePetProfile(let petInfo), .patchPetProfile(let petInfo):
+        case .makePetProfile(let petInfo), .patchPetProfile(_, let petInfo):
             return .requestJSONEncodable(petInfo)
         case .patchPetProfileImage(_, let image):
             var multipartData = [MultipartFormData]()

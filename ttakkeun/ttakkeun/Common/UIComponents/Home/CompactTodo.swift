@@ -85,6 +85,6 @@ extension CompactTodo {
 
 struct CompactTodo_Preview: PreviewProvider {
     static var previews: some View {
-        CompactTodo(viewModel: HomeTodoViewModel(), partItem: .ear)
+        CompactTodo(viewModel: HomeTodoViewModel(container: DIContainer()), partItem: .ear)
     }
 }

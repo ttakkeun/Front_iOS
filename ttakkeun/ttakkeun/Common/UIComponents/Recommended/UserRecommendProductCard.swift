@@ -82,9 +82,11 @@ struct UserRecommendProductCard: View {
                     .font(.Body4_medium)
                     .foregroundStyle(Color.gray900)
                 
-                Text(data.brand)
-                    .font(.Detail2_regular)
-                    .foregroundStyle(Color.gray400)
+                if let brand = data.brand {
+                    Text(brand)
+                        .font(.Detail2_regular)
+                        .foregroundStyle(Color.gray400)
+                }
             })
         })
     }

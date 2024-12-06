@@ -17,7 +17,7 @@ struct ProfileImage: View {
     
     init(
         profileImageUrl: String?,
-        imageSize: CGFloat = 140
+        imageSize: CGFloat = 120
     ) {
         self.profileImageUrl = profileImageUrl
         self.imageSize = imageSize
@@ -36,6 +36,7 @@ struct ProfileImage: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: imageSize, height: imageSize)
+                .clipShape(Circle())
                 .shadow05()
         } else {
             loadingFaieldImage
@@ -58,7 +59,7 @@ struct ProfileImage: View {
             makeImage()
             
             Text("이미지를 \n불러오지 못했습니다.")
-                .font(.Body3_semibold)
+                .font(.Body5_medium)
                 .foregroundStyle(Color.white)
                 .multilineTextAlignment(.center)
         }

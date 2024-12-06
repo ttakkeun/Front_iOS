@@ -17,14 +17,15 @@ struct HomeTodo: View {
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
             
-            if viewModel.earTodos.isEmpty && viewModel.hairTodos.isEmpty && viewModel.clawTodos.isEmpty && viewModel.eyeTodos.isEmpty && viewModel.teethTodos.isEmpty {
+            if !viewModel.todoIsLoading {
                 
-                notTodo
-                
-            } else {
-                
-                todoScrollView
-                
+                if viewModel.earTodos.isEmpty && viewModel.hairTodos.isEmpty && viewModel.clawTodos.isEmpty && viewModel.eyeTodos.isEmpty && viewModel.teethTodos.isEmpty {
+                    
+                    notTodo
+                    
+                } else {
+                    todoScrollView
+                }
             }
         })
     }

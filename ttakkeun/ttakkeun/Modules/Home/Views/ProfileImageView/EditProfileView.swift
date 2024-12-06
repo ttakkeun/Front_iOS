@@ -6,16 +6,18 @@
 //
 
 import SwiftUI
+import Kingfisher
 
-struct MakeProfileView: View {
+struct EditProfileView: View {
     
-    @StateObject var viewModel: MakeProfileViewModel
+    @StateObject var viewModel: EditProfileViewModel
     @EnvironmentObject var container: DIContainer
     
-    
-    init(container: DIContainer
+    init(container: DIContainer,
+         editPetInfo: PetInfo = PetInfo(name: "", type: .dog, variety: "", birth: "", neutralization: false),
+         image: String
     ) {
-        self._viewModel = StateObject(wrappedValue: .init(container: container))
+        self._viewModel = StateObject(wrappedValue: .init(container: container, editPetInfo: editPetInfo, image: image))
     }
     
     var body: some View {
@@ -70,11 +72,17 @@ struct MakeProfileView: View {
                 viewModel.showImagePicker()
             }, label: {
                 if viewModel.profileImage.isEmpty {
-                    Image(systemName: "questionmark.circle.fill")
-                        .resizable()
-                        .frame(width: 120, height: 120)
-                        .aspectRatio(contentMode: .fill)
-                        .tint(Color.gray300)
+                    if let url = URL(string: viewModel.imageUrl) {
+                        KFImage(url)
+                            .placeholder {
+                                ProgressView()
+                                    .controlSize(.regular)
+                            }.retry(maxCount: 2, interval: .seconds(2))
+                            .resizable()
+                            .frame(width: 120, height: 120)
+                            .aspectRatio(contentMode: .fill)
+                            .clipShape(Circle())
+                    }
                 } else {
                     if let image = viewModel.profileImage.first {
                         Image(uiImage: image)
@@ -91,7 +99,15 @@ struct MakeProfileView: View {
     
     private var nameField: some View {
         VStack(alignment: .leading, spacing: 10, content: {
-            makeFieldTitle(fieldGroup: FieldGroup(title: "이름", mustMark: true, isFieldEnable: viewModel.isNameFieldFilled))
+            makeFieldTitle(fieldGroup: FieldGroup(title: "이름",
+                                                  mustMark: true,
+                                                  isFieldEnable: Binding(
+                                                    get: { !viewModel.editPetInfo.name.isEmpty },
+                                                    set: { newValue in
+                                                        if !newValue {
+                                                            viewModel.editPetInfo.name = ""
+                                                        }
+                                                    })))
             
             makeNameTextField()
         })
@@ -100,36 +116,53 @@ struct MakeProfileView: View {
     
     private var typeField: some View {
         VStack(alignment: .leading, spacing: 10, content: {
-            makeFieldTitle(fieldGroup: FieldGroup(title: "반려동물 종류", mustMark: true, isFieldEnable: viewModel.isTypeFieldFilled))
+            makeFieldTitle(fieldGroup: FieldGroup(
+                        title: "반려동물 종류",
+                        mustMark: true,
+                        isFieldEnable: Binding(
+                            get: {
+                                viewModel.editPetInfo.type != nil
+                            },
+                            set: { newValue in
+                                if !newValue {
+                                    viewModel.editPetInfo.type = nil
+                                }
+                            }
+                        )
+                    ))
             
             ProfileTwoButton(
-                selectedButton: Binding(
-                    get: { viewModel.requestData.type?.toKorean() },
-                    set: { newValue in
-                        if newValue == "강아지" {
-                            viewModel.requestData.type = .dog
-                        } else if newValue == "고양이" {
-                            viewModel.requestData.type = .cat
-                        }
-                        viewModel.isTypeFieldFilled = true
-                    }
-                ),
+                selectedButton: Binding(get: { viewModel.editPetInfo.type == nil ? nil : viewModel.editPetInfo.type?.toKorean() },
+                                        set: { newValue in
+                                            if newValue == "강아지" {
+                                                viewModel.editPetInfo.type = .dog
+                                            } else if newValue == "고양이" {
+                                                viewModel.editPetInfo.type = .cat
+                                            }
+                                            viewModel.isTypeFieldFilled = true
+                                        }),
                 firstButton: ButtonOption(
                     textTitle: "강아지",
-                    action: {}
-                ),
+                    action: {
+                    }),
                 secondButton: ButtonOption(
                     textTitle: "고양이",
-                    action: {}
-                )
-            )
+                    action: {
+                    }))
         })
         .frame(width: 331, height: 74)
     }
     
     private var varietyField: some View {
         VStack(alignment: .leading, spacing: 10, content: {
-            makeFieldTitle(fieldGroup: FieldGroup(title: "품종", mustMark: true, isFieldEnable: viewModel.isVarietyFieldFilled))
+            makeFieldTitle(fieldGroup: FieldGroup(title: "품종",
+                                                  mustMark: true,
+                                                  isFieldEnable: Binding(get: { !viewModel.editPetInfo.variety.isEmpty },
+                                                                         set: { newValue in
+                if !newValue {
+                            viewModel.editPetInfo.variety = ""
+                        }
+            })))
             
             Button(action: {
                 viewModel.showingVarietySearch.toggle()
@@ -140,9 +173,9 @@ struct MakeProfileView: View {
                         .frame(width: 331, height: 44)
                         .foregroundStyle(Color.clear)
                     HStack {
-                        Text(viewModel.requestData.variety.isEmpty == false ? viewModel.requestData.variety : "반려동물의 품종을 선택해주세요")
+                        Text(viewModel.editPetInfo.variety.isEmpty == false ? viewModel.editPetInfo.variety : "반려동물의 품종을 선택해주세요")
                             .font(.Body3_semibold)
-                            .foregroundStyle(viewModel.requestData.variety.isEmpty == false ? Color.gray900 : Color.gray200)
+                            .foregroundStyle(viewModel.editPetInfo.variety.isEmpty == false ? Color.gray900 : Color.gray200)
                         
                         Spacer()
                         
@@ -159,13 +192,26 @@ struct MakeProfileView: View {
     
     private var birthField: some View {
         VStack(alignment: .leading, spacing: 10, content: {
-            makeFieldTitle(fieldGroup: FieldGroup(title: "생년월일", mustMark: false, isFieldEnable: viewModel.isBirthFieldFilled))
+            makeFieldTitle(fieldGroup: FieldGroup(
+                        title: "생년월일",
+                        mustMark: false,
+                        isFieldEnable: Binding(
+                            get: {
+                                !viewModel.editPetInfo.birth.isEmpty
+                            },
+                            set: { newValue in
+                                if !newValue {
+                                    viewModel.editPetInfo.birth = ""
+                                }
+                            }
+                        )
+                    ))
             
             BirthSelect(
                 birthDate: Binding(
-                    get: { viewModel.requestData.birth },
+                    get: { viewModel.editPetInfo.birth },
                     set: {
-                        viewModel.requestData.birth = $0
+                        viewModel.editPetInfo.birth = $0
                         viewModel.isBirthFieldFilled = !$0.isEmpty
                     }
                 ),
@@ -175,10 +221,19 @@ struct MakeProfileView: View {
     
     private var neutralizationField: some View {
         VStack(alignment: .leading, spacing: 10, content: {
-            makeFieldTitle(fieldGroup: FieldGroup(title: "중성화여부", mustMark: true, isFieldEnable: viewModel.isNeutralizationFieldFilled))
+            makeFieldTitle(fieldGroup: FieldGroup(title: "중성화여부",
+                                                  mustMark: true,
+                                                  isFieldEnable: Binding(get: {
+                viewModel.editPetInfo.neutralization != nil
+            },
+                                                                         set: { newValue in
+                if !newValue {
+                    viewModel.editPetInfo.neutralization = nil
+                }
+            })))
             
             ProfileTwoButton(
-                selectedButton: Binding(get: { viewModel.requestData.neutralization == nil ? nil : (viewModel.requestData.neutralization! ? "예" : "아니오") },
+                selectedButton: Binding(get: { viewModel.requestData.neutralization == true ? "예" : "아니오" },
                                         set: { newValue in
                                             viewModel.requestData.neutralization = (newValue == "예")
                                             viewModel.isNeutralizationFieldFilled = true
@@ -197,25 +252,25 @@ struct MakeProfileView: View {
     
     private var registerBtn: some View {
         MainButton(
-            btnText: "등록하기",
+            btnText: "수정하기",
             width: 330,
             height: 56,
             action: {
                 if viewModel.isProfileCompleted {
-                    viewModel.makePetProfile()
+                    viewModel.patchPetProfile()
                 }
             },
             color: viewModel.isProfileCompleted ? Color.mainPrimary : Color.gray200)
     }
 }
 
-extension MakeProfileView {
+extension EditProfileView {
     
     fileprivate func makeFieldTitle(fieldGroup: FieldGroup) -> HStack<some View> {
         return HStack(content: {
             NameTag(titleText: fieldGroup.title, mustMark: fieldGroup.mustMark)
             
-            if fieldGroup.isFieldEnable {
+            if fieldGroup.isFieldEnable.wrappedValue {
                 Icon.check.image
                     .frame(width: 18, height: 18)
             }
@@ -226,10 +281,10 @@ extension MakeProfileView {
         return CustomTextField(
             keyboardType: .default,
             text: Binding(
-                get: { viewModel.requestData.name },
+                get: { viewModel.editPetInfo.name },
                 set: {
-                    viewModel.requestData.name = $0
-                    viewModel.isNameFieldFilled = !$0.isEmpty
+                    viewModel.editPetInfo.name = $0
+                    viewModel.isNameFieldFilled = true
                 }
             ),
             placeholder: "반려동물의 이름을 입력해주세요",
@@ -245,5 +300,5 @@ extension MakeProfileView {
 fileprivate struct FieldGroup {
     let title: String
     let mustMark: Bool
-    let isFieldEnable: Bool
+    let isFieldEnable: Binding<Bool>
 }

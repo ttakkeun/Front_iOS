@@ -22,7 +22,7 @@ class TokenProvider: TokenProviding {
             guard var userInfo = keyChain.loadSession(for: userSession) else { return }
             userInfo.accessToken = newValue
             if keyChain.saveSession(userInfo, for: "ttakkeunUser") {
-                print("유저 액세스 토큰 갱신됨")
+                print("유저 액세스 토큰 갱신됨: \(String(describing: newValue))")
             }
         }
     }

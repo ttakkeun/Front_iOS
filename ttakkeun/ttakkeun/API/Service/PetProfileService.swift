@@ -38,4 +38,16 @@ class PetProfileService: PetProfileServiceProtocol {
             .map(ResponseData<PetProfileResponse>.self)
             .eraseToAnyPublisher()
     }
+    
+    func getSpecificPetProfileData(petId: Int) -> AnyPublisher<ResponseData<HomeProfileResponseData>, MoyaError> {
+        return provider.requestPublisher(.getSpecificPetProfile(petId: petId))
+            .map(ResponseData<HomeProfileResponseData>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func patchPetProfile(petId: Int, petInfo: PetInfo) -> AnyPublisher<ResponseData<EditProfileResponse>, MoyaError> {
+        return provider.requestPublisher(.patchPetProfile(petId: petId, petInfo: petInfo))
+            .map(ResponseData<EditProfileResponse>.self)
+            .eraseToAnyPublisher()
+    }
 }
