@@ -9,8 +9,7 @@ import SwiftUI
 
 struct JournalRegistContents: View {
     
-    @ObservedObject var viewModel:  JournalRegistViewModel
-    @Environment(\.dismiss) var dismiss
+    @ObservedObject var viewModel: JournalRegistViewModel
     fileprivate let buttonList: [PartItem] = [.ear, .hair, .eye, .claw , .teeth]
     
     var body: some View {
@@ -141,10 +140,3 @@ extension JournalRegistContents {
         })
     }
 }
-
-struct JournalRegistContents_Preview: PreviewProvider {
-    static var previews: some View {
-        JournalRegistContents(viewModel: JournalRegistViewModel(petID: .init(5)))
-    }
-}
-

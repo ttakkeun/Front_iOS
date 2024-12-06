@@ -18,7 +18,7 @@ struct DiagnosticsView: View {
     @Binding var aiCount: Int
     @Binding var alertType: AlertType
     
-    @StateObject var journalListViewModel: JournalListViewModel = .init()
+    @StateObject var journalListViewModel: JournalListViewModel
     @StateObject var diagnosticViewModel: DiagnosticResultViewModel = .init()
     
     @State var diagnosingValue: DiagnosingValue = .init(selectedSegment: .journalList, selectedPartItem: .ear)
@@ -28,6 +28,8 @@ struct DiagnosticsView: View {
         self._alertText = alertText
         self._aiCount = aiCount
         self._alertType = alertType
+        
+        self._journalListViewModel = .init(wrappedValue: .init(container: container))
     }
     
     var body: some View {
@@ -47,7 +49,9 @@ struct DiagnosticsView: View {
     private var changeSegmentView: some View {
         switch diagnosingValue.selectedSegment {
         case .journalList:
-            JournalListView(viewModel: journalListViewModel, showAlert: $showAlert, alertText: $alertText, aiCount: $aiCount, alertType: $alertType)
+            JournalListView(viewModel: journalListViewModel, showAlert: $showAlert, alertText: $alertText, aiCount: $aiCount, alertType: $alertType, selectedPartItem: $diagnosingValue.selectedPartItem)
+                .environmentObject(container)
+                .environmentObject(appFlowViewModel)
         case .diagnosticResults:
             DiagnosListView()
         }

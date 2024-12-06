@@ -12,6 +12,7 @@ struct JournalResultCheckView: View {
     
     @ObservedObject var viewModel: JournalListViewModel
     
+    
     var body: some View {
         VStack(alignment: .center, content: {
             
@@ -103,6 +104,6 @@ extension JournalResultCheckView {
 
 struct JournalResultCheckView_Preview: PreviewProvider {
     static var previews: some View {
-        JournalResultCheckView(viewModel: JournalListViewModel())
+        JournalResultCheckView(viewModel: JournalListViewModel(container: DIContainer()))
     }
 }

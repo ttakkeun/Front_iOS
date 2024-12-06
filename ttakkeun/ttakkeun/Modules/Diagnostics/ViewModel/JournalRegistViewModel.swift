@@ -19,8 +19,11 @@ class JournalRegistViewModel: ObservableObject {
     @Published var isImagePickerPresented: Bool = false
     @Published var questionImages: [Int: [UIImage]] = [:]
     
-    init(petID: Int) {
+    let container: DIContainer
+    
+    init(petID: Int, container: DIContainer) {
         selectedAnswerData = .init(petId: petID)
+        self.container = container
     }
     
     var selectedImageCount: Int {

@@ -92,6 +92,6 @@ extension JournalQuestionView {
 
 struct JournalQuestionView_Preview: PreviewProvider {
     static var previews: some View {
-        JournalQuestionView(viewModel: JournalRegistViewModel(petID: 1), question: QuestionDetailData(questionID: 0, questionText: "111", subtitle: "2222", isDupe: true, answer: [AnswerDetailData(answerID: UUID(), answerText: "ggg")]), allowMultiSelection: false)
+        JournalQuestionView(viewModel: JournalRegistViewModel(petID: 1, container: DIContainer()), question: QuestionDetailData(questionID: 0, questionText: "111", subtitle: "2222", isDupe: true, answer: [AnswerDetailData(answerID: UUID(), answerText: "ggg")]), allowMultiSelection: false)
     }
 }
