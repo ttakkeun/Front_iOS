@@ -12,19 +12,33 @@ struct JournalListView: View {
     
     @ObservedObject var viewModel: JournalListViewModel
     
+    @Binding var showAlert: Bool
+    @Binding var alertText: Text
+    @Binding var aiCount: Int
+    @Binding var alertType: AlertType
+    
+    init(viewModel: JournalListViewModel, showAlert: Binding<Bool>, alertText: Binding<Text>, aiCount: Binding<Int>, alertType: Binding<AlertType>) {
+        self.viewModel = viewModel
+        self._showAlert = showAlert
+        self._alertText = alertText
+        self._aiCount = aiCount
+        self._alertType = alertType
+    }
+    
     var body: some View {
         GeometryReader { geo in
             ZStack {
                 journalList
                 makeJournalListBtn
-                    .position(x: geo.size.width * 0.75, y: geo.size.height * 0.88)
-                if viewModel.showAiDiagnosing {
-                    CustomAlert(alertText: self.alertText(), aiCount: viewModel.aiPoint ,alertAction: AlertAction(showAlert: $viewModel.showAiDiagnosing, yes: {
-                        print("네 진행하겠습니다.")
-                    }))
-                }
+                    .position(x: geo.size.width * 0.76, y: geo.size.height * 0.74)
             }
         }
+        .onChange(of: viewModel.showAiDiagnosing, {
+                showAlert = true
+                alertText = self.alertTextString()
+                aiCount = viewModel.aiPoint
+                alertType = .aiAlert
+        })
     }
     
     @ViewBuilder
@@ -34,21 +48,37 @@ struct JournalListView: View {
                 EmptyJournalList
             } else {
                 ScrollView(.vertical, content: {
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 102), spacing: 20), count: 3), spacing: 28, content: {
-                        ForEach(data, id: \.self) { record in
+                    LazyVGrid(columns: Array(repeating: GridItem(.fixed(102), spacing: 20), count: 3), spacing: 28, content: {
+                        ForEach(data, id: \.id) { record in
                             JournalListCard(cardData: JournalListCardData(data: record, part: viewModel.journalListData?.category ?? .ear), isSelected: Binding(get: {
-                                viewModel.selectedItem.contains(record.recordID)
+                                viewModel.selectedItem.contains(record.id)
                             }, set: {
                                 isSelected in
                                 if isSelected {
-                                    viewModel.selectedItem.insert(record.recordID)
+                                    viewModel.selectedItem.insert(record.id)
                                 } else {
-                                    viewModel.selectedItem.remove(record.recordID)
+                                    viewModel.selectedItem.remove(record.id)
                                 }
                                 viewModel.selectedCnt = viewModel.selectedItem.count
                             }))
+                            .onTapGesture {
+                                if viewModel.isSelectionMode {
+                                    if viewModel.selectedItem.contains(record.id) {
+                                        viewModel.selectedItem.remove(record.id)
+                                        print(viewModel.selectedItem)
+                                    } else {
+                                        viewModel.selectedItem.insert(record.id)
+                                        print(viewModel.selectedItem)
+                                    }
+                                    viewModel.selectedCnt = viewModel.selectedItem.count
+                                } else {
+                                    // TODO: - 일지 상세 보기 구현하기
+                                    print("상세 보기")
+                                }
+                            }
                         }
                     })
+                    .padding(.top, 10)
                     .padding(.bottom, 80)
                 })
                 .frame(maxWidth: .infinity)
@@ -80,7 +110,9 @@ struct JournalListView: View {
             if !viewModel.isSelectionMode {
                 print("선택된 모드 아닐 때")
             } else {
-                viewModel.showAiDiagnosing.toggle()
+                if viewModel.selectedCnt >= 1 {
+                    viewModel.showAiDiagnosing.toggle()
+                }
             }
         }, label: {
             HStack(alignment: .center, spacing: 5, content: {
@@ -121,17 +153,10 @@ extension JournalListView {
         }
     }
     
-    func alertText() -> Text {
+    func alertTextString() -> Text {
         let baseText = "선택된 \(viewModel.selectedItem.count)개의 일지로 \n따끈 AI 진단을 진행하시겠습니까? \n"
         let aiCountText = "(현재 가능한 횟수 : \(viewModel.aiPoint)회)"
         
         return Text(baseText) + Text(aiCountText).foregroundStyle(Color.red).font(.Body5_semiBold)
-    }
-}
-
-
-struct JournalListView_Preview: PreviewProvider {
-    static var previews: some View {
-        JournalListView(viewModel: JournalListViewModel())
     }
 }

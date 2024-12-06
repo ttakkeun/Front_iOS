@@ -97,8 +97,8 @@ struct DiagnosingActionBar: View {
             } else {
                 withAnimation(.easeInOut) {
                     viewModel.isSelectionMode = false
-                    
-                    // TODO: - 취소 버튼 액션 필요
+                    viewModel.selectedItem.removeAll()
+                    viewModel.selectedCnt = 0
                 }
             }
         }, label: {
@@ -113,14 +113,5 @@ struct DiagnosingActionBar: View {
                         .fill(Color.checkBg)
                 }
         })
-    }
-}
-
-struct DiagnosingActionBar_Preview: PreviewProvider {
-    
-    @StateObject static var viewModel: DiagnosingViewModel = DiagnosingViewModel()
-    
-    static var previews: some View {
-        DiagnosingActionBar(viewModel: viewModel.journalListViewModel)
     }
 }

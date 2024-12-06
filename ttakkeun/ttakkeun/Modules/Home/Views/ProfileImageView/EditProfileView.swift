@@ -256,7 +256,7 @@ struct EditProfileView: View {
             width: 330,
             height: 56,
             action: {
-                if viewModel.isProfileCompleted {
+                if viewModel.isNameFieldFilled && viewModel.isProfileCompleted && viewModel.isBirthFieldFilled && viewModel.isNeutralizationFieldFilled && viewModel.isNeutralizationFieldFilled {
                     viewModel.patchPetProfile()
                 }
             },

@@ -10,22 +10,46 @@ import SwiftUI
 /// 진단 목록 및 진단결과
 struct DiagnosticsView: View {
     
-    @StateObject var viewModel: DiagnosingViewModel = .init()
+    @EnvironmentObject var container: DIContainer
+    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
+    
+    @Binding var showAlert: Bool
+    @Binding var alertText: Text
+    @Binding var aiCount: Int
+    @Binding var alertType: AlertType
+    
+    @StateObject var journalListViewModel: JournalListViewModel = .init()
+    @StateObject var diagnosticViewModel: DiagnosticResultViewModel = .init()
+    
+    @State var diagnosingValue: DiagnosingValue = .init(selectedSegment: .journalList, selectedPartItem: .ear)
+    
+    init(container: DIContainer, showAlert: Binding<Bool>, alertText: Binding<Text>, aiCount: Binding<Int>, alertType: Binding<AlertType>) {
+        self._showAlert = showAlert
+        self._alertText = alertText
+        self._aiCount = aiCount
+        self._alertType = alertType
+    }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12, content: {
+        VStack(alignment: .center, spacing: 12, content: {
             TopStatusBar()
             
-            DiagnosingHeader(diagnosingValue: $viewModel.diagnosingValue)
+            DiagnosingHeader(diagnosingValue: $diagnosingValue)
             
-            DiagnosingActionBar(viewModel: viewModel.journalListViewModel)
-                
-            Spacer()
+            DiagnosingActionBar(viewModel: journalListViewModel)
             
+            changeSegmentView
         })
+        
     }
-}
-
-#Preview {
-    DiagnosticsView()
+    
+    @ViewBuilder
+    private var changeSegmentView: some View {
+        switch diagnosingValue.selectedSegment {
+        case .journalList:
+            JournalListView(viewModel: journalListViewModel, showAlert: $showAlert, alertText: $alertText, aiCount: $aiCount, alertType: $alertType)
+        case .diagnosticResults:
+            DiagnosListView()
+        }
+    }
 }

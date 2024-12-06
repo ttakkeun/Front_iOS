@@ -20,6 +20,7 @@ struct JournalListCard: View {
     var body: some View {
         ZStack(alignment: .top, content: {
             bottomPostit
+                .padding(.top, 8)
             topPostit
             
             if isSelected {
@@ -29,8 +30,8 @@ struct JournalListCard: View {
                     .foregroundStyle(Color.gray600)
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 18, height: 18)
-                    .padding(.top, 72)
-                    .padding(.leading, 70)
+                    .padding(.top, 75)
+                    .padding(.leading, 65)
             }
         })
     }
