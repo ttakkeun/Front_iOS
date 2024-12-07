@@ -44,7 +44,6 @@ struct MakeProfileView: View {
         }
         .sheet(isPresented: $viewModel.showingVarietySearch) {
             VarietySearchView(viewModel: viewModel)
-                .presentationDragIndicator(Visibility.visible)
         }
         .sheet(isPresented: $viewModel.isImagePickerPresented, content: {
             ImagePicker(imageHandler: viewModel, selectedLimit: 1)
@@ -246,4 +245,11 @@ fileprivate struct FieldGroup {
     let title: String
     let mustMark: Bool
     let isFieldEnable: Bool
+}
+
+
+struct MakeProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+        MakeProfileView(container: DIContainer())
+    }
 }

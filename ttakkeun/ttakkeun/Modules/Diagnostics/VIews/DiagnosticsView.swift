@@ -38,11 +38,26 @@ struct DiagnosticsView: View {
             
             DiagnosingHeader(diagnosingValue: $diagnosingValue, journalListViewModel: journalListViewModel)
             
-            DiagnosingActionBar(viewModel: journalListViewModel)
+            DiagnosingActionBar(diagnosingValue: $diagnosingValue, viewModel: journalListViewModel)
             
             changeSegmentView
         })
-        
+        .sheet(isPresented: $journalListViewModel.isCalendarPresented, content: {
+            Form {
+                DatePicker(
+                    "검색 날짜 선택",
+                    selection: $journalListViewModel.selectedDate,
+                    displayedComponents: [.date]
+                )
+            }
+            .presentationDragIndicator(.visible)
+            .presentationDetents([.fraction(0.5)])
+            .datePickerStyle(GraphicalDatePickerStyle())
+            .onChange(of: journalListViewModel.selectedDate, {
+                journalListViewModel.isCalendarPresented = false
+            })
+            .clipShape(UnevenRoundedRectangle(topLeadingRadius: 10, topTrailingRadius: 10))
+        })
     }
     
     @ViewBuilder

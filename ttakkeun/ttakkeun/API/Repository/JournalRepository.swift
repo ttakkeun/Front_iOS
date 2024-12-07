@@ -33,4 +33,8 @@ class JournalRepository: JournalRepositoryProtocol {
     func getAnswerList(category: PartItem.RawValue) -> AnyPublisher<ResponseData<JournalQuestionResponse>, MoyaError> {
         return journalService.getAnswerListData(category: category)
     }
+    
+    func deleteJournal(recordId: Int) -> AnyPublisher<ResponseData<DeleteJournal>, MoyaError> {
+        return journalService.deleteJournalData(recordId: recordId)
+    }
 }

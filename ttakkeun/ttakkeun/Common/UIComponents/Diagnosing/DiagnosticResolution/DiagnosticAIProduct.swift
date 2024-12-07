@@ -36,7 +36,7 @@ struct DiagnosticAIProduct: View {
             }
                 
                 VStack(alignment: .leading, spacing: 10, content: {
-                    Text(DataFormatter.shared.stripHTMLTags(from: data.title).split(separator: "").joined(separator: "\u{200B}"))
+                    Text(DataFormatter.shared.stripHTMLTags(from: data.title))
                         .font(.Body3_semibold)
                         .foregroundStyle(Color.gray900)
                         .lineLimit(2)
@@ -60,6 +60,6 @@ struct DiagnosticAIProduct: View {
 
 struct DiagnosticAIProfile_Preview: PreviewProvider {
     static var previews: some View {
-        DiagnosticAIProduct(data: AIProducts(title: "꾸까라라라어쩌구저라꾸까라라라어쩌구저라", image: "https://i.namu.wiki/i/fCX1vEyfl7n8sCOlr7u8Y0poz53uK-6-dxprHjpmkvC7rJnwfmliLqjcz1ryRdVJq7CJGsxfDlxmS4Nn6v0gl2Ouds1cumIID343BMFwQspWsrc9VsedYgOe-OMKvRawpCQmonLljjSpjm2RWLAwnw.webp", lprice: 13000, brand: "쿠팡"))
+        DiagnosticAIProduct(data: AIProducts(title: "꾸까라라라어쩌구저라꾸까라라라어쩌aldlakaldlk구저라", image: "https://i.namu.wiki/i/fCX1vEyfl7n8sCOlr7u8Y0poz53uK-6-dxprHjpmkvC7rJnwfmliLqjcz1ryRdVJq7CJGsxfDlxmS4Nn6v0gl2Ouds1cumIID343BMFwQspWsrc9VsedYgOe-OMKvRawpCQmonLljjSpjm2RWLAwnw.webp", lprice: 13000, brand: "쿠팡"))
     }
 }

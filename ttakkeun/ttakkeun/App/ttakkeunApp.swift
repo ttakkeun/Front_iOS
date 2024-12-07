@@ -15,25 +15,23 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            JournalRegistView(container: DIContainer())
-                .environmentObject(DIContainer())
-//            switch appFlowViewModel.appState {
-//            case .onBoarding:
-//                OnboardingView()
-//                    .environmentObject(appFlowViewModel)
-//            case .login:
-//                LoginView(viewModel: LoginViewModel(container: container, appFlowViewModel: appFlowViewModel))
-//                    .environmentObject(container)
-//                    .environmentObject(appFlowViewModel)
-//            case .profile:
-//                ProfileView(viewModel: ProfileViewModel(container: container))
-//                    .environmentObject(container)
-//                    .environmentObject(appFlowViewModel)
-//            case .tabView:
-//                TabView()
-//                    .environmentObject(container)
-//                    .environmentObject(appFlowViewModel)
-//            }
+            switch appFlowViewModel.appState {
+            case .onBoarding:
+                OnboardingView()
+                    .environmentObject(appFlowViewModel)
+            case .login:
+                LoginView(viewModel: LoginViewModel(container: container, appFlowViewModel: appFlowViewModel))
+                    .environmentObject(container)
+                    .environmentObject(appFlowViewModel)
+            case .profile:
+                ProfileView(viewModel: ProfileViewModel(container: container))
+                    .environmentObject(container)
+                    .environmentObject(appFlowViewModel)
+            case .tabView:
+                TabView()
+                    .environmentObject(container)
+                    .environmentObject(appFlowViewModel)
+            }
         }
     }
 }

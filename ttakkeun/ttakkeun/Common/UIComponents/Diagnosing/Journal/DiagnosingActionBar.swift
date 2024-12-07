@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DiagnosingActionBar: View {
     
+    @Binding var diagnosingValue: DiagnosingValue
     @ObservedObject var viewModel: JournalListViewModel
     
     var body: some View {
@@ -57,7 +58,7 @@ struct DiagnosingActionBar: View {
     
     private var searchButton: some View {
         Button(action: {
-            print("검색 버튼")
+            viewModel.isCalendarPresented.toggle()
         }, label: {
             Icon.glass.image
                 .renderingMode(.template)
@@ -71,8 +72,7 @@ struct DiagnosingActionBar: View {
     private var trashButton: some View {
         Button(action: {
             withAnimation(.easeIn(duration: 0.2)) {
-                // TODO: - 삭제 버튼 액션 필요
-                print("쓰레기 버튼")
+                viewModel.deleteJournal(recordIds: viewModel.selectedItem, category: diagnosingValue.selectedPartItem.rawValue)
             }
         }, label: {
             Icon.trash.image

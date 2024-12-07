@@ -18,11 +18,19 @@ class MakeProfileViewModel: ObservableObject {
     @Published var searchVariety: String = ""
     @Published var isLoading: Bool = false
     
-    var filteredVarieties: [PetVarietyData] {
+    var filteredDogVarieties: [PetVarietyData] {
         if searchVariety.isEmpty {
-            return PetVarietyData.allCases
+            return PetVarietyData.allCases.filter { $0.isDog}
         } else {
-            return PetVarietyData.allCases.filter { $0.rawValue.contains(searchVariety) }
+            return PetVarietyData.allCases.filter { $0.isDog && $0.rawValue.contains(searchVariety) }
+        }
+    }
+    
+    var filteredCatVarieties: [PetVarietyData] {
+        if searchVariety.isEmpty {
+            return PetVarietyData.allCases.filter { $0.isCat}
+        } else {
+            return PetVarietyData.allCases.filter { $0.isCat && $0.rawValue.contains(searchVariety) }
         }
     }
     

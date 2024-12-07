@@ -58,54 +58,61 @@ struct JournalListView: View {
                 JournalResultCheckView(viewModel: viewModel)
         })
     }
-    
     @ViewBuilder
-    private var journalList: some View {
-        if viewModel.recordList.isEmpty {
-            EmptyJournalList
-        } else {
-            ScrollView(.vertical, content: {
-                LazyVGrid(columns: Array(repeating: GridItem(.fixed(102), spacing: 20), count: 3), spacing: 28, content: {
-                    ForEach(viewModel.recordList, id: \.id) { record in
-                        JournalListCard(cardData: JournalListCardData(data: record, part: selectedPartItem),
-                                        isSelected: Binding(get: {
-                            viewModel.selectedItem.contains(record.id)
-                        }, set: {
-                            isSelected in
-                            if isSelected {
-                                viewModel.selectedItem.insert(record.id)
-                            } else {
-                                viewModel.selectedItem.remove(record.id)
-                            }
-                            viewModel.selectedCnt = viewModel.selectedItem.count
-                        }))
-                        .onTapGesture {
-                            if viewModel.isSelectionMode {
-                                if viewModel.selectedItem.contains(record.id) {
-                                    viewModel.selectedItem.remove(record.id)
-                                    print(viewModel.selectedItem)
-                                } else {
-                                    viewModel.selectedItem.insert(record.id)
-                                    print(viewModel.selectedItem)
-                                }
-                                viewModel.selectedCnt = viewModel.selectedItem.count
-                            } else {
-                                self.viewModel.getDetailJournalData(recordId: record.recordID)
-                            }
-                        }
-                        .task {
-                            if record == viewModel.recordList.last {
-                                viewModel.getJournalList(category: selectedPartItem.rawValue, page: viewModel.currentPage)
-                            }
-                        }
-                    }
-                })
-                .padding(.top, 10)
-                .padding(.bottom, 80)
-            })
-            .frame(maxWidth: .infinity)
-        }
-    }
+     private var journalList: some View {
+         if viewModel.recordList.isEmpty {
+             EmptyJournalList
+         } else {
+             ScrollView(.vertical, content: {
+                 LazyVGrid(columns: Array(repeating: GridItem(.fixed(102), spacing: 20), count: 3), spacing: 28, content: {
+                     ForEach(viewModel.recordList, id: \.id) { record in
+                         JournalListCard(cardData: JournalListCardData(data: record, part: selectedPartItem),
+                                         isSelected: Binding(get: {
+                             viewModel.selectedItem.contains(record.recordID)
+                         }, set: {
+                             isSelected in
+                             if isSelected {
+                                 viewModel.selectedItem.insert(record.recordID)
+                             } else {
+                                 viewModel.selectedItem.remove(record.recordID)
+                             }
+                             viewModel.selectedCnt = viewModel.selectedItem.count
+                         }))
+                         .onTapGesture {
+                             if viewModel.isSelectionMode {
+                                 if viewModel.selectedItem.contains(record.recordID) {
+                                     viewModel.selectedItem.remove(record.recordID)
+                                     print(viewModel.selectedItem)
+                                 } else {
+                                     viewModel.selectedItem.insert(record.recordID)
+                                     print(viewModel.selectedItem)
+                                 }
+                                 viewModel.selectedCnt = viewModel.selectedItem.count
+                             } else {
+                                 self.viewModel.getDetailJournalData(recordId: record.recordID)
+                             }
+                         }
+                         .task {
+                             if record == viewModel.recordList.last {
+                                 viewModel.getJournalList(category: selectedPartItem.rawValue, page: viewModel.currentPage)
+                             }
+                         }
+                     }
+
+                     if viewModel.isFetching {
+                         ProgressView()
+                             .controlSize(.regular)
+                     }
+                 })
+                 .padding(.top, 10)
+                 .padding(.bottom, 80)
+             })
+             .refreshable {
+                 viewModel.getJournalList(category: selectedPartItem.rawValue, page: 0, refresh: true)
+             }
+             .frame(maxWidth: .infinity)
+         }
+     }
     
     private var EmptyJournalList: some View {
         VStack(spacing: 19, content: {

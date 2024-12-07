@@ -343,6 +343,7 @@ enum PetVarietyData: String ,CaseIterable {
     case california_spangled = "캘리포니아 스팽글드"
     case colorpoint_shorthair = "컬러포인트 쇼트헤어"
     case kellas_cat = "켈라스 고양이"
+    case korean_short = "코리안 숏헤어"
     case cornish_rex = "코니시 렉스"
     case korat = "코랏"
     case kohana = "코호나"
@@ -370,4 +371,92 @@ enum PetVarietyData: String ,CaseIterable {
     case havana_brown = "하바나 브라운"
     case highlander = "하일랜더"
     case himalayan = "히말라얀"
+}
+
+extension PetVarietyData {
+    var isDog: Bool {
+        switch self {
+        case .gordon_setter, .golden_retriever, .great_dane, .great_pyrenees_pyrenean_mountain_dog,
+             .greyhound, .greenland_dog, .coton_de_tulear, .neapolitan_mastiff, .northern_inuit_dog,
+             .norwegian_elkhound, .norwich_terrier, .nova_scotia_duck_tolling_retriever, .norfolk_terrier,
+             .newfoundland, .dachshund, .dalmatian, .dandie_dinmont_terrier, .dunker, .dogo_argentino,
+             .doberman_pinscher, .tosa_inu, .donggyeongi, .drever, .deerhound, .lhasa_apso,
+             .large_munsterlander, .labrador_retriever, .labrador_husky, .rat_terrier, .rough_collie,
+             .leonberger, .lakeland_terrier, .rhodesian_ridgeback, .rottweiler, .lowchen_little_lion_dog,
+             .mastiff, .maltese, .mackenzie_river_husky, .manchester_terrier, .miniature_dachshund,
+             .miniature_schnauzer, .miniature_poodle, .miniature_pinscher, .miniature_bull_terrier,
+             .medium_poodle, .basenji, .basset_hound, .weimaraner, .bavarian_mountain_hound,
+             .bernese_mountain_dog, .bedlington_terrier, .belgian_shepherd_dog, .belgian_tervuren,
+             .border_collie, .dogue_de_bordeaux, .borzoi, .beauceron, .boston_terrier, .boxer,
+             .bouvier_des_flandres, .bull_terrier, .korean_bul_dog, .bulldog, .bullmastiff,
+             .brussels_griffon, .brimard, .brittany_spaniel, .brittany, .black_and_tan_coonhound,
+             .bloodhound, .beagle, .beagle_harrier, .bichon_frise, .bearded_collie, .vizsla,
+             .papillon, .petit_basset_griffon_vendeen, .samoyed, .sakhalin_husky, .saluki, .sapsali,
+             .shar_pei, .sussex_spaniel, .saint_bernard, .seppala_siberian, .central_asian_shepherd_dog,
+             .shetland_sheepdog, .soft_coated_wheaten_terrier, .schweizer_laufhund, .smooth_collie,
+             .smooth_fox_terrier, .swiss_hound, .skye_terrier, .scottish_terrier, .scottish_deerhound,
+             .schipperke, .standard_poodle, .standard_schnauzer, .shiba_inu, .siberian_husky, .shih_tzu,
+             .shikoku, .sealyham_terrier, .silky_terrier, .artois_hound, .american_staffordshire_terrier,
+             .american_eskimo_dog, .american_water_spaniel, .american_cocker_spaniel, .american_foxhound,
+             .irish_red_setter, .irish_red_and_white_setter, .irish_setter, .irish_wolfhound,
+             .irish_water_spaniel, .irish_terrier, .irish_soft_coated_wheaten_terrier, .azawakh,
+             .akita, .affenpinscher, .afghan_hound, .andalusian_hound, .alaskan_malamute, .airedale_terrier,
+             .eurohound, .polish_hound_ogar_polski, .australian_cattle_dog, .australian_kelpie,
+             .australian_terrier, .australian_shepherd, .otterhound, .old_english_sheepdog,
+             .wire_fox_terrier, .yorkshire_terrier, .west_siberian_laika, .west_highland_white_terrier,
+             .welsh_springer_spaniel, .welsh_corgi, .welsh_terrier, .welsh_corgi_cardigan, .welsh_corgi_pembroke,
+             .american_akita, .ibizan_hound, .east_siberian_laika, .italian_greyhound, .italian_sighthound,
+             .english_setter, .english_springer_spaniel, .english_cocker_spaniel, .english_toy_spaniel,
+             .english_pointer, .english_foxhound, .giant_schnauzer, .japanese_spitz, .japanese_chin,
+             .japanese_terrier, .jack_russell_terrier, .german_shepherd_dog, .german_short_haired_pointer_dog,
+             .german_spitz, .german_spitz_miniature_spitz, .german_spitz_medium_spitz, .german_spitz_giant_spitz,
+             .german_spitz_pomeranian_toy_spitz, .german_wire_haired_pointer_dog, .german_hunting_terrier,
+             .jeju_dog, .chow_chow, .chinese_shar_pei_dog, .chinese_crested_dog, .chesapeake_bay_retriever,
+             .czechoslovakian_wolfdog, .chinook, .cirneco_dell_etna, .chihuahua, .chin, .kangal,
+             .canadian_eskimo_dog, .cavalier_king_charles_spaniel, .curly_coated_retriever, .kerry_blue_terrier,
+             .cairn_terrier, .cane_corso_italiano, .caucasian_shepherd_dog, .korean_jindo_dog,
+             .komondor, .collie, .kuvasz, .coonhound, .kritikos_lagonikos, .clumber_spaniel, .kishu,
+             .keeshond, .king_charles_spaniel, .tamaskan, .thai_ridgeback_dog, .taiwan_dog,
+             .toy_manchester_terrier, .toy_poodle, .tong_il_dog, .tibetan_mastiff, .tibetan_spaniel,
+             .tibetan_terrier, .pharaoh_hound, .parson_russell_terrier, .pekingese, .pug,
+             .podenco_canario, .porcelane, .portuguese_water_dog, .pomeranian, .fox_terrier,
+             .phu_quoc_ridgeback, .puli, .poongsan_dog, .presa_canario, .french_bulldog,
+             .flat_coated_retriever, .plot_hound, .pyrenean_mastiff, .field_spaniel, .fila_brasileiro,
+             .pit_bull_terrier, .harrier, .hokkaido, .whippet:
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+extension PetVarietyData {
+    var isCat: Bool {
+        switch self {
+        case .neva_masquerade, .nebelung, .nepalayan, .norwegian_forest_cat, .new_zealand,
+             .devon_rex, .domestic_longhair, .domestic_shorthair, .donskoy, .dragon_li, .dwelf,
+             .ragamuffin, .laos, .lykoi, .la_perm, .ragdoll, .lambkin, .russian_black, .russian_blue,
+             .russian_tabby, .russian_white, .mandalay, .malaysia, .manx, .munchkin, .maine_coon,
+             .mekong_bobtail, .mojave_spotted, .mojave_bob, .minuet, .minskin, .bahraini_dilmun_cat,
+             .van_cat, .balinese, .bambino, .birman, .burmese, .burmilla, .bengal, .bombay,
+             .brazilian_shorthair, .bramble, .british_longhair, .british_shorthair, .savannah,
+             .safari, .sam_sawet, .chartreux, .siamese, .chantilly_tiffany, .serrade_petit, .serengeti,
+             .seychelles, .ceylon, .selkirk_rex, .somali, .sokoke, .supalak, .snowshoe, .scottish_fold,
+             .skookum, .sphynx, .siberian, .sibella, .singapura, .anatolian, .arabian_mau,
+             .american_ringtail, .american_shorthair, .american_wirehair, .american_curl, .abyssinian,
+             .asian, .aegean, .elf, .oregon_rex, .oriental_longhair, .oriental_bicolor,
+             .oriental_shorthair, .australian_mist, .australian_tiffanie, .ocicat, .owyhee_bob,
+             .ojos_azules, .york_chocolate, .ural_rex, .ussuri, .european_shorthair, .ukrainian_levkoy,
+             .exotic_longhair, .exotic_shorthair, .egyptian_mau, .javanese, .jag, .japanese_bobtail,
+             .german_rex, .jungle_bob, .genetta, .choshi, .cheetoh, .kurilian_bobtail, .kashmir,
+             .kao_mani, .california_spangled, .colorpoint_shorthair, .kellas_cat, .korean_short,
+             .cornish_rex, .korat, .kohana, .con_ja, .cyprus, .cyprus_aphrodite, .kinkalow, .cymric,
+             .thai, .turkish_van, .turkish_angora, .tennessee_rex, .toiger, .toybob, .tonkinese,
+             .tibetan, .tiffanie, .pantherette, .persian, .persian_chinchilla, .foreign_white,
+             .foldex, .peterbald, .pixie_bob, .havana_brown, .highlander, .himalayan:
+            return true
+        default:
+            return false
+        }
+    }
 }

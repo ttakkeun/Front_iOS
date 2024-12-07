@@ -41,4 +41,10 @@ class JournalService: JournalServiceProtocol {
             .map(ResponseData<JournalQuestionResponse>.self)
             .eraseToAnyPublisher()
     }
+    
+    func deleteJournalData(recordId: Int) -> AnyPublisher<ResponseData<DeleteJournal>, MoyaError> {
+        return provider.requestPublisher(.deleteJournal(recordId: recordId))
+            .map(ResponseData<DeleteJournal>.self)
+            .eraseToAnyPublisher()
+    }
 }

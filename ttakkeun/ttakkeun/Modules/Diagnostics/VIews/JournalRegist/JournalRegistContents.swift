@@ -149,12 +149,11 @@ extension JournalRegistContents {
                     if viewModel.currentPage < 5 {
                         viewModel.currentPage += 1
                     } else {
-                        print("전달 성공")
-//                    viewModel.makeJournal()
+                    viewModel.makeJournal()
                     }
                         
                 }
             }, color: Color.mainPrimary)
-        })
+            })
     }
 }

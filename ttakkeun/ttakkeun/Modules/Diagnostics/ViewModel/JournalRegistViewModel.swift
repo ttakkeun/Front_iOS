@@ -11,6 +11,7 @@ import UIKit
 import ImageIO
 import Combine
 import CombineMoya
+import Moya
 
 class JournalRegistViewModel: ObservableObject {
     
@@ -24,7 +25,7 @@ class JournalRegistViewModel: ObservableObject {
     @Published var questionImages: [Int: [UIImage]] = [:]
     
     @Published var questionIsLoading: Bool = false
-    @Published var makeJournalsLoading: Bool = true
+    @Published var makeJournalsLoading: Bool = false
     
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
@@ -47,6 +48,8 @@ class JournalRegistViewModel: ObservableObject {
     func updateAnswer(for questionID: Int, selectedAnswer: [String]) {
         selectedAnswerData.answers[questionID] = selectedAnswer
     }
+    
+    
 }
 
 extension JournalRegistViewModel: ImageHandling {
@@ -126,6 +129,7 @@ extension JournalRegistViewModel {
             
             container.useCaseProvider.journalUseCase.executeMakeJournal(category: selectedPart.rawValue, data: selectedAnswerData, questionImage: questionImages)
                 .tryMap { responseData -> ResponseData<MakeJournalResultResponse> in
+                    
                     if !responseData.isSuccess {
                         throw APIError.serverError(message: responseData.message, code: responseData.code)
                     }
@@ -138,21 +142,19 @@ extension JournalRegistViewModel {
                     return responseData
                 }
                 .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { [weak self] completion in
-                    guard let self = self else { return }
-                    
-                    makeJournalsLoading = false
-                    
+                .sink(receiveCompletion: { completion in
                     switch completion {
                     case .finished:
                         print("Make Journal Completed")
-                        container.navigationRouter.pop()
                     case .failure(let failure):
-                        print("Make Journal failure: \(failure)")
+                        print("Make Journal failure: \(failure.localizedDescription)")
                     }
                 },
-                      receiveValue: { responseData in
+                      receiveValue: { [weak self] responseData in
+                    guard let self = self else { return }
                     print("생성된 일지: \(String(describing: responseData.result))")
+                    makeJournalsLoading = false
+                    container.navigationRouter.pop()
                 })
                 .store(in: &cancellables)
         }

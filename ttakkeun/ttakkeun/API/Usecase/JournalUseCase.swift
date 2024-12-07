@@ -41,4 +41,10 @@ class JournalUseCase: JournalUseCaseProtocol {
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }
+    
+    func executeDeleteJournal(recordId: Int) -> AnyPublisher<ResponseData<DeleteJournal>, MoyaError> {
+        return journalRepository.deleteJournal(recordId: recordId)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
 }

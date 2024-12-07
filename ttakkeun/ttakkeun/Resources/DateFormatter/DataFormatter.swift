@@ -59,17 +59,37 @@ final class DataFormatter {
     }
     
     public func stripHTMLTags(from htmlString: String) -> String {
-        guard let data = htmlString.data(using: .utf8) else { return htmlString }
+        // 1. 입력값 검증: 빈 문자열 처리
+        guard !htmlString.isEmpty else {
+            print("Input HTML string is empty.")
+            return ""
+        }
         
+        // 2. UTF-8 인코딩 실패 방지
+        guard let data = htmlString.data(using: .utf8) else {
+            print("Failed to encode HTML string to UTF-8.")
+            return htmlString
+        }
+        
+        // 3. HTML 파싱 및 예외 처리
         do {
             let attributedString = try NSAttributedString(
                 data: data,
                 options: [.documentType: NSAttributedString.DocumentType.html,
                           .characterEncoding: String.Encoding.utf8.rawValue],
-                documentAttributes: nil)
+                documentAttributes: nil
+            )
             
-            return attributedString.string
+            // 4. 결과값 검증
+            let plainString = attributedString.string.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !plainString.isEmpty else {
+                print("Parsed string is empty after stripping HTML tags.")
+                return htmlString
+            }
+            
+            return plainString
         } catch {
+            // 5. 에러 처리 및 디버깅 메시지 출력
             print("Failed to decode HTML entities: \(error)")
             return htmlString
         }

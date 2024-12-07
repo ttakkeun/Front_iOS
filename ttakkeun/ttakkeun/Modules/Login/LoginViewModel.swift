@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import Moya
 import CombineMoya
 import Combine
 
 class LoginViewModel: ObservableObject {
+    
     @Published var isLogin: Bool = false
     @Published var isLoading: Bool = false
     
@@ -26,7 +28,7 @@ class LoginViewModel: ObservableObject {
         self.container = container
         self.appFlowViewModel = appFlowViewModel
         self.appleLoginManager.onAuthorizationCompleted = { [weak self] authorization, email, name in
-            self?.loginApple(singUpRequest: SignUpRequest(identityToken: authorization, email: email ?? "", name: name))
+            self?.loginApple(signUpRequest: SignUpRequest(identityToken: authorization, email: email ?? "", name: name))
         }
     }
     
@@ -45,13 +47,13 @@ extension LoginViewModel {
     
     // MARK: - SignApple
     
-    public func loginApple(singUpRequest: SignUpRequest) {
+    public func loginApple(signUpRequest: SignUpRequest) {
         isLoading = true
         
-        container.useCaseProvider.authUseCase.executeAppleLogin(signUpRequest: singUpRequest)
+        container.useCaseProvider.authUseCase.executeAppleLogin(signUpRequest: signUpRequest)
             .tryMap { responseData -> ResponseData<TokenResponse> in
                 if !responseData.isSuccess {
-                    self.handleSignUpFlow(singUpRequest: singUpRequest, message: responseData.message)
+                    self.handleSignUpFlow(singUpRequest: signUpRequest, message: responseData.message)
                     throw APIError.serverError(message: responseData.message, code: responseData.code)
                 }
                 
