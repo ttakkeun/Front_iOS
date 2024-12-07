@@ -54,6 +54,9 @@ struct JournalListView: View {
                 viewModel.getJournalList(category: selectedPartItem.rawValue, page: 0)
             }
         }
+        .sheet(isPresented: $viewModel.isShowDetailJournal, content: {
+                JournalResultCheckView(viewModel: viewModel)
+        })
     }
     
     @ViewBuilder
@@ -87,8 +90,7 @@ struct JournalListView: View {
                                 }
                                 viewModel.selectedCnt = viewModel.selectedItem.count
                             } else {
-                                // TODO: - 일지 상세 보기 구현하기
-                                print("상세 보기")
+                                self.viewModel.getDetailJournalData(recordId: record.recordID)
                             }
                         }
                         .task {

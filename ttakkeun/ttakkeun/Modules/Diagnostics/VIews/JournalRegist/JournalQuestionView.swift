@@ -28,18 +28,19 @@ struct JournalQuestionView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 28, content: {
-            titleText(question.questionText, question.subtitle)
-            
-            makeQuestionButton()
-                .onAppear {
-                    loadSavedQuestion()
-                }
-            
-            Spacer().frame(height: 24)
-            
-            RegistAlbumImageView(viewModel: viewModel, titleText: "사진을 등록해주시면 \n따끈 AI 진단에서 더 정확한 결과를 받을 수 있어요", subTitleText: "최대 5장")
-        })
+        ScrollView(.vertical) {
+            VStack(alignment: .leading, spacing: 28, content: {
+                titleText(question.questionText, question.subtitle)
+                
+                makeQuestionButton()
+                    .onAppear {
+                        loadSavedQuestion()
+                    }
+                
+                RegistAlbumImageView(viewModel: viewModel, titleText: "사진을 등록해주시면 \n따끈 AI 진단에서 더 정확한 결과를 받을 수 있어요", subTitleText: "최대 5장")
+            })
+            .frame(alignment: .top)
+        }
     }
 }
 
@@ -56,16 +57,23 @@ extension JournalQuestionView {
         })
     }
     
-    func titleText(_ title: String, _ sub: String) -> VStack<some View> {
-        return VStack(alignment: .leading, spacing: 10, content: {
-            Text(title)
-                .font(.H2_bold)
-                .foregroundStyle(Color.gray900)
-            
-            Text(sub)
-                .font(.Body3_medium)
-                .foregroundStyle(Color.gray400)
-        })
+    func titleText(_ title: String, _ sub: String) -> some View {
+        Group {
+            VStack(alignment: .leading, spacing: 10, content: {
+                Text(title)
+                    .font(.H2_bold)
+                    .foregroundStyle(Color.gray900)
+                    .truncationMode(.head)
+                
+                Text(sub)
+                    .font(.Body3_medium)
+                    .foregroundStyle(Color.gray400)
+            })
+        }
+        .lineLimit(nil)
+        .lineSpacing(2)
+        .multilineTextAlignment(.leading)
+        
     }
     
     private func loadSavedQuestion() {

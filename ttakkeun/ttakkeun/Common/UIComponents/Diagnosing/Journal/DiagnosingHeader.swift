@@ -15,6 +15,12 @@ struct DiagnosingValue {
 struct DiagnosingHeader: View {
     
     @Binding var diagnosingValue: DiagnosingValue
+    @ObservedObject var journalListViewModel: JournalListViewModel
+    
+    init(diagnosingValue: Binding<DiagnosingValue>, journalListViewModel: JournalListViewModel) {
+        self._diagnosingValue = diagnosingValue
+        self.journalListViewModel = journalListViewModel
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 21, content: {
@@ -32,6 +38,10 @@ struct DiagnosingHeader: View {
                 Button(action: {
                     withAnimation(.easeInOut(duration: 0.4)) {
                         diagnosingValue.selectedPartItem = item
+                        journalListViewModel.recordList.removeAll()
+                        journalListViewModel.currentPage = 0
+                        journalListViewModel.canLoadMore = true
+                        journalListViewModel.getJournalList(category: item.rawValue, page: 0)
                     }
                 }, label: {
                     Text(item.toKorean())
@@ -46,18 +56,9 @@ struct DiagnosingHeader: View {
                             }
                         }
                 })
+                .disabled(journalListViewModel.isFetching)
             }
         })
         .padding(.leading, 10)
-    }
-}
-
-
-struct DiagnosingHeader_Preview: PreviewProvider {
-    
-    @State static var value = DiagnosingValue(selectedSegment: .journalList, selectedPartItem: .claw)
-    
-    static var previews: some View {
-        DiagnosingHeader(diagnosingValue: $value)
     }
 }

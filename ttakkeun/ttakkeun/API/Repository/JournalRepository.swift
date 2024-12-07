@@ -21,4 +21,16 @@ class JournalRepository: JournalRepositoryProtocol {
     func getJournalList(petId: Int, category: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError> {
         return journalService.getJournalListData(petId: petId, category: category, page: page)
     }
+    
+    func getJournalDetailData(petId: Int, recordId: Int) -> AnyPublisher<ResponseData<JournalResultResponse>, MoyaError> {
+        return journalService.getJournalDetailDataSource(petId: petId, recordId: recordId)
+    }
+    
+    func makeJournal(category: PartItem.RawValue, data: SelectedAnswerRequest, questionImage: [Int : [UIImage]]) -> AnyPublisher<ResponseData<MakeJournalResultResponse>, MoyaError> {
+        return journalService.makeJournalData(category: category, data: data, questionImage: questionImage)
+    }
+    
+    func getAnswerList(category: PartItem.RawValue) -> AnyPublisher<ResponseData<JournalQuestionResponse>, MoyaError> {
+        return journalService.getAnswerListData(category: category)
+    }
 }

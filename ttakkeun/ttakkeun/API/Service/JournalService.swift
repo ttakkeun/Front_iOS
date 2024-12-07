@@ -23,4 +23,22 @@ class JournalService: JournalServiceProtocol {
             .map(ResponseData<JournalListResponse>.self)
             .eraseToAnyPublisher()
     }
+    
+    func getJournalDetailDataSource(petId: Int, recordId: Int) -> AnyPublisher<ResponseData<JournalResultResponse>, MoyaError> {
+        return provider.requestPublisher(.getDetailJournalData(petId: petId, recordId: recordId))
+            .map(ResponseData<JournalResultResponse>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func makeJournalData(category: PartItem.RawValue, data: SelectedAnswerRequest, questionImage: [Int : [UIImage]]) -> AnyPublisher<ResponseData<MakeJournalResultResponse>, MoyaError> {
+        return provider.requestPublisher(.makeJournal(category: category, data: data, questionImage: questionImage))
+            .map(ResponseData<MakeJournalResultResponse>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func getAnswerListData(category: PartItem.RawValue) -> AnyPublisher<ResponseData<JournalQuestionResponse>, MoyaError> {
+        return provider.requestPublisher(.getAnswerList(category: category))
+            .map(ResponseData<JournalQuestionResponse>.self)
+            .eraseToAnyPublisher()
+    }
 }

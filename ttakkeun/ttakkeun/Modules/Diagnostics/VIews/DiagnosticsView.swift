@@ -36,7 +36,7 @@ struct DiagnosticsView: View {
         VStack(alignment: .center, spacing: 12, content: {
             TopStatusBar()
             
-            DiagnosingHeader(diagnosingValue: $diagnosingValue)
+            DiagnosingHeader(diagnosingValue: $diagnosingValue, journalListViewModel: journalListViewModel)
             
             DiagnosingActionBar(viewModel: journalListViewModel)
             

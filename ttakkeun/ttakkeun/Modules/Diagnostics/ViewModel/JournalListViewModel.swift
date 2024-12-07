@@ -23,6 +23,10 @@ class JournalListViewModel: ObservableObject {
     @Published var showAiDiagnosing: Bool = false
     @Published var aiPoint: Int = 10
     
+    // MARK: - DetailJournalView
+    @Published var detailDataLoading: Bool = true
+    @Published var isShowDetailJournal: Bool = false
+    
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
     
@@ -92,5 +96,40 @@ extension JournalListViewModel {
             
         })
         .store(in: &cancellables)
+    }
+    
+    public func getDetailJournalData(recordId: Int) {
+        
+        detailDataLoading = true
+        isShowDetailJournal = true
+        
+        container.useCaseProvider.journalUseCase.executeGetJournalDetailData(petId: UserState.shared.getPetId(), recordId: recordId)
+            .tryMap { responseData -> ResponseData<JournalResultResponse> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                
+                print("DetailJournalData Server : \(responseData)")
+                return responseData
+            }
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                detailDataLoading = false
+                
+                switch completion {
+                case .finished:
+                    print("DetailJournaList Get Completed")
+                case .failure(let failure):
+                    print("DetailJournaList Get Failure: \(failure)")
+                }
+            }, receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                self.journalResultData = responseData.result
+            })
+            .store(in: &cancellables)
     }
 }

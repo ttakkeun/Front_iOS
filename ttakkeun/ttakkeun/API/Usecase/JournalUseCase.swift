@@ -23,4 +23,22 @@ class JournalUseCase: JournalUseCaseProtocol {
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }
+    
+    func executeGetJournalDetailData(petId: Int, recordId: Int) -> AnyPublisher<ResponseData<JournalResultResponse>, MoyaError> {
+        return journalRepository.getJournalDetailData(petId: petId, recordId: recordId)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executeMakeJournal(category: PartItem.RawValue, data: SelectedAnswerRequest, questionImage: [Int : [UIImage]]) -> AnyPublisher<ResponseData<MakeJournalResultResponse>, MoyaError> {
+        return journalRepository.makeJournal(category: category, data: data, questionImage: questionImage)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executeGetAnswerListData(category: PartItem.RawValue) -> AnyPublisher<ResponseData<JournalQuestionResponse>, MoyaError> {
+        return journalRepository.getAnswerList(category: category)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
 }

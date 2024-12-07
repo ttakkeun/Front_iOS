@@ -16,13 +16,14 @@ struct JournalRegistView: View {
     }
     
     var body: some View {
-        VStack(alignment: .center, spacing: 38, content: {
+        VStack(alignment: .leading, spacing: 38, content: {
             CustomNavigation(action: {
                 container.navigationRouter.pop()
             }, title: nil, currentPage: viewModel.currentPage)
             
             JournalRegistContents(viewModel: viewModel)
         })
+        .safeAreaPadding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
         .navigationBarBackButtonHidden(true)
     }
 }

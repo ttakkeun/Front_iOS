@@ -32,6 +32,8 @@ struct RegistAlbumImageView<ViewModel: ImageHandling & ObservableObject>: View {
             Text(titleText)
                 .font(.Body3_medium)
                 .foregroundStyle(Color.gray900)
+                .lineLimit(nil)
+                .multilineTextAlignment(.leading)
                 .lineSpacing(2)
             
             Text(subTitleText)
@@ -42,14 +44,14 @@ struct RegistAlbumImageView<ViewModel: ImageHandling & ObservableObject>: View {
             
             cameraAlbum
         })
-        .frame(maxWidth: 355, alignment: .leading)
+        .frame(maxWidth: 355, maxHeight: 300, alignment: .topLeading)
         .sheet(isPresented: $viewModel.isImagePickerPresented, content: {
             ImagePicker(imageHandler: viewModel, selectedLimit: (maxImageCount - viewModel.selectedImageCount))
         })
     }
     
     private var cameraAlbum: some View {
-        HStack(alignment: .top, spacing: 4, content: {
+        HStack(alignment: .top, spacing: 5, content: {
             CameraButton(cameraText: Text("\(viewModel.selectedImageCount) / \(maxImageCount)"), action: {
                 if viewModel.selectedImageCount <= maxImageCount - 1 {
                     viewModel.showImagePicker()
@@ -61,16 +63,16 @@ struct RegistAlbumImageView<ViewModel: ImageHandling & ObservableObject>: View {
     
     private var showSelectedImage: some View {
         ScrollView(.horizontal, content: {
-            LazyVGrid(columns: Array(repeating: GridItem(.fixed(80), spacing: 10) ,count: 3), spacing: 10, content: {
+            LazyHGrid(rows: Array(repeating: GridItem(.fixed(80)), count: 1), spacing: 10, content: {
                 ForEach(0..<viewModel.getImages().count, id: \.self) { index in
                     imageAddAndRemove(for: index, image: viewModel.getImages()[index])
                 }
             })
-            .frame(alignment: .topLeading)
             .padding(.top, 5)
             .padding(.bottom, 8)
-            .padding(.horizontal, 3)
+            .padding(.horizontal, 5)
         })
+        .frame(width: 260)
     }
 }
 

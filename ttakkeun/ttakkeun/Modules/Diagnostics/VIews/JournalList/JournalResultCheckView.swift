@@ -38,7 +38,7 @@ struct JournalResultCheckView: View {
                 Spacer()
             }
         })
-        .safeAreaPadding(EdgeInsets(top: 10, leading: 24, bottom: 20, trailing: 25))
+        .safeAreaPadding(EdgeInsets(top: 20, leading: 24, bottom: 20, trailing: 25))
         .clipShape(.rect(topLeadingRadius: 10, topTrailingRadius: 10))
     }
 }
@@ -98,6 +98,7 @@ extension JournalResultCheckView {
                     makeJournalEtcTextBox(text: text)
                 }
             })
+            .padding(.horizontal, 10)
         })
     }
 }
