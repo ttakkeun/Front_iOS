@@ -12,4 +12,5 @@ enum NavigationDestination: Hashable {
     case createProfile
     case editPetProfile(editPetInfo: PetInfo, image: String) // 홈 화면 펫 프로파일의 수정 버트
     case makeJournalist // 일지 생성 네비게이션
+    case makeDiagnosis // 진단 생성 네비게이션
 }

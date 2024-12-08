@@ -111,7 +111,7 @@ struct JournalRegistContents: View {
             
             changePageBtn()
         })
-        .frame(width: 353, height: 691, alignment: .top)
+        .frame(maxWidth: 353, maxHeight: 691, alignment: .top)
         .ignoresSafeArea(.keyboard)
     }
 }
