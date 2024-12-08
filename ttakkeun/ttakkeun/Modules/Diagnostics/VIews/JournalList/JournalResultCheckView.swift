@@ -12,6 +12,7 @@ struct JournalResultCheckView: View {
     
     @ObservedObject var viewModel: JournalListViewModel
     
+    
     var body: some View {
         VStack(alignment: .center, content: {
             
@@ -37,7 +38,7 @@ struct JournalResultCheckView: View {
                 Spacer()
             }
         })
-        .safeAreaPadding(EdgeInsets(top: 10, leading: 24, bottom: 20, trailing: 25))
+        .safeAreaPadding(EdgeInsets(top: 20, leading: 24, bottom: 20, trailing: 25))
         .clipShape(.rect(topLeadingRadius: 10, topTrailingRadius: 10))
     }
 }
@@ -97,12 +98,13 @@ extension JournalResultCheckView {
                     makeJournalEtcTextBox(text: text)
                 }
             })
+            .padding(.horizontal, 10)
         })
     }
 }
 
 struct JournalResultCheckView_Preview: PreviewProvider {
     static var previews: some View {
-        JournalResultCheckView(viewModel: JournalListViewModel())
+        JournalResultCheckView(viewModel: JournalListViewModel(container: DIContainer()))
     }
 }

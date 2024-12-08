@@ -10,6 +10,11 @@ import Foundation
 struct JournalQuestionResponse: Codable {
     let category: String
     let question: [QuestionDetailData]
+    
+    enum CodingKeys: String, CodingKey {
+        case category
+        case question = "questions"
+    }
 }
 
 struct QuestionDetailData: Codable {
@@ -19,6 +24,13 @@ struct QuestionDetailData: Codable {
     let isDupe: Bool
     let answer: [AnswerDetailData]
     
+    enum CodingKeys: String, CodingKey {
+        case questionID = "questionId"
+        case questionText
+        case subtitle = "descriptionText"
+        case isDupe
+        case answer = "answers"
+    }
 }
 
 struct AnswerDetailData: Codable, Hashable {
