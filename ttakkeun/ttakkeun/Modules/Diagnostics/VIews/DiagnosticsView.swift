@@ -43,20 +43,18 @@ struct DiagnosticsView: View {
             changeSegmentView
         })
         .sheet(isPresented: $journalListViewModel.isCalendarPresented, content: {
-            Form {
                 DatePicker(
                     "검색 날짜 선택",
                     selection: $journalListViewModel.selectedDate,
                     displayedComponents: [.date]
                 )
-            }
-            .presentationDragIndicator(.visible)
-            .presentationDetents([.fraction(0.5)])
-            .datePickerStyle(GraphicalDatePickerStyle())
-            .onChange(of: journalListViewModel.selectedDate, {
-                journalListViewModel.isCalendarPresented = false
-            })
-            .clipShape(UnevenRoundedRectangle(topLeadingRadius: 10, topTrailingRadius: 10))
+                .onChange(of: journalListViewModel.selectedDate, {
+                    journalListViewModel.isCalendarPresented = false
+                })
+                .datePickerStyle(GraphicalDatePickerStyle())
+                .clipShape(UnevenRoundedRectangle(topLeadingRadius: 10, topTrailingRadius: 10))
+                .presentationDragIndicator(.visible)
+                .presentationDetents([.fraction(0.5)])
         })
     }
     
