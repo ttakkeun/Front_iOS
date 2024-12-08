@@ -8,7 +8,7 @@
 import Foundation
 import Moya
 
-protocol APITargetType:  TargetType {}
+protocol APITargetType: TargetType {}
 
 extension APITargetType {
     var baseURL: URL {

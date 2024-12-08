@@ -9,8 +9,7 @@ import SwiftUI
 
 struct JournalRegistContents: View {
     
-    @ObservedObject var viewModel:  JournalRegistViewModel
-    @Environment(\.dismiss) var dismiss
+    @ObservedObject var viewModel: JournalRegistViewModel
     fileprivate let buttonList: [PartItem] = [.ear, .hair, .eye, .claw , .teeth]
     
     var body: some View {
@@ -29,8 +28,10 @@ struct JournalRegistContents: View {
     // MARK: - 1 Page(부위 선택)
     
     private var selectCategory: some View {
-        VStack(spacing: 39, content: {
+        VStack(content: {
             titleText("기록하고자 하는 \n케어 종류를 선택해주세요", "최대 1가지 선택할 수 있어요")
+            
+            Spacer().frame(height: 38)
             
             LazyVGrid(columns: Array(repeating: GridItem(.fixed(126), spacing: 14), count: 2), spacing: 6, content: {
                 ForEach(buttonList, id: \.self) { partItem in
@@ -39,34 +40,39 @@ struct JournalRegistContents: View {
             })
             .frame(height: 459)
             
+            Spacer().frame(height: 39)
+            
             MainButton(btnText: "다음", width: 339, height: 63, action: {
-                if viewModel.selectedPart != nil {
-                    // TODO: - API 받아오기
-                    viewModel.currentPage += 1
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    if viewModel.selectedPart != nil {
+                        viewModel.currentPage += 1
+                        viewModel.getAnswerList()
+                    }
                 }
             }, color: Color.mainPrimary)
         })
-        .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
+        .frame(width: 353, height: 691)
     }
     
     // MARK: - 2, 3, 4 page
     
     @ViewBuilder
     private var questionAnswer: some View {
-        if let question = viewModel.currentQuestion {
-            ScrollView(.vertical, content: {
-                VStack(alignment: .center, spacing: 40, content: {
+        if !viewModel.questionIsLoading {
+            if let question = viewModel.currentQuestion {
+                VStack(alignment: .center, content: {
                     JournalQuestionView(
                         viewModel: viewModel,
                         question: question,
                         allowMultiSelection: question.isDupe)
                     
+                    Spacer()
+                    
                     changePageBtn()
                 })
-                .frame(height: 691)
-                .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 50, trailing: 0))
-            })
-            .frame(maxHeight: .infinity)
+                .frame(width: 353, height: 691)
+                
+            }
         } else {
             VStack {
                 Spacer()
@@ -78,11 +84,12 @@ struct JournalRegistContents: View {
                 
                 Spacer()
             }
+            .frame(width: 353, height: 691)
         }
     }
     
     private var lastInputEtcTextView: some View {
-        VStack(alignment: .center, spacing: 10, content: {
+        VStack(alignment: .leading, spacing: 10, content: {
             titleText("기타 특이사항이 있으면 \n알려주세요", "현재 섭취하고 있는 털 영양제나 평소 빗질 빈도 등 추가적인 사항이나 다른 증상들을 입력해주세요")
             
             TextEditor(text: Binding<String>(
@@ -104,7 +111,7 @@ struct JournalRegistContents: View {
             
             changePageBtn()
         })
-        .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
+        .frame(width: 353, height: 691, alignment: .top)
         .ignoresSafeArea(.keyboard)
     }
 }
@@ -120,31 +127,33 @@ extension JournalRegistContents {
                 .font(.Body3_medium)
                 .foregroundStyle(Color.gray400)
         })
-        .frame(maxWidth: 339, alignment: .leading)
+        .frame(maxWidth: 339, alignment: .topLeading)
     }
     
     func changePageBtn() -> some View {
         HStack(alignment: .center, spacing: 9, content: {
             MainButton(btnText: "이전", width: 122, height: 63, action: {
-                viewModel.currentPage -= 1
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    if viewModel.currentPage == 2 {
+                        viewModel.getQuestions = nil
+                        viewModel.currentPage -= 1
+                    } else {
+                        viewModel.currentPage -= 1
+                    }
+                }
             }, color: Color.alertNo)
             
             MainButton(btnText: viewModel.currentPage == 5 ? "완료" : "다음", width: 208, height: 63, action: {
-                if viewModel.currentPage == 6 {
-                    // TODO: - API 보내기
-                } else {
-                    withAnimation(.easeInOut(duration: 0.2)) {
+                
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    if viewModel.currentPage < 5 {
                         viewModel.currentPage += 1
+                    } else {
+                    viewModel.makeJournal()
                     }
+                        
                 }
             }, color: Color.mainPrimary)
-        })
+            })
     }
 }
-
-struct JournalRegistContents_Preview: PreviewProvider {
-    static var previews: some View {
-        JournalRegistContents(viewModel: JournalRegistViewModel(petID: .init(5)))
-    }
-}
-

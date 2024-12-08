@@ -12,17 +12,22 @@ struct JournalListView: View {
     
     @ObservedObject var viewModel: JournalListViewModel
     
+    @EnvironmentObject var container: DIContainer
+    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
+    
     @Binding var showAlert: Bool
     @Binding var alertText: Text
     @Binding var aiCount: Int
     @Binding var alertType: AlertType
+    @Binding var selectedPartItem: PartItem
     
-    init(viewModel: JournalListViewModel, showAlert: Binding<Bool>, alertText: Binding<Text>, aiCount: Binding<Int>, alertType: Binding<AlertType>) {
+    init(viewModel: JournalListViewModel, showAlert: Binding<Bool>, alertText: Binding<Text>, aiCount: Binding<Int>, alertType: Binding<AlertType>, selectedPartItem: Binding<PartItem>) {
         self.viewModel = viewModel
         self._showAlert = showAlert
         self._alertText = alertText
         self._aiCount = aiCount
         self._alertType = alertType
+        self._selectedPartItem = selectedPartItem
     }
     
     var body: some View {
@@ -32,66 +37,87 @@ struct JournalListView: View {
                 makeJournalListBtn
                     .position(x: geo.size.width * 0.76, y: geo.size.height * 0.74)
             }
+            .navigationDestination(for: NavigationDestination.self) { destination in
+                NavigationRoutingView(destination: destination)
+                    .environmentObject(container)
+                    .environmentObject(appFlowViewModel)
+            }
         }
         .onChange(of: viewModel.showAiDiagnosing, {
-                showAlert = true
-                alertText = self.alertTextString()
-                aiCount = viewModel.aiPoint
-                alertType = .aiAlert
+            showAlert = true
+            alertText = self.alertTextString()
+            aiCount = viewModel.aiPoint
+            alertType = .aiAlert
+        })
+        .task {
+            if viewModel.recordList.isEmpty {
+                viewModel.getJournalList(category: selectedPartItem.rawValue, page: 0)
+            }
+        }
+        .sheet(isPresented: $viewModel.isShowDetailJournal, content: {
+                JournalResultCheckView(viewModel: viewModel)
         })
     }
-    
     @ViewBuilder
-    private var journalList: some View {
-        if let data = viewModel.journalListData?.recordList {
-            if data.isEmpty {
-                EmptyJournalList
-            } else {
-                ScrollView(.vertical, content: {
-                    LazyVGrid(columns: Array(repeating: GridItem(.fixed(102), spacing: 20), count: 3), spacing: 28, content: {
-                        ForEach(data, id: \.id) { record in
-                            JournalListCard(cardData: JournalListCardData(data: record, part: viewModel.journalListData?.category ?? .ear), isSelected: Binding(get: {
-                                viewModel.selectedItem.contains(record.id)
-                            }, set: {
-                                isSelected in
-                                if isSelected {
-                                    viewModel.selectedItem.insert(record.id)
-                                } else {
-                                    viewModel.selectedItem.remove(record.id)
-                                }
-                                viewModel.selectedCnt = viewModel.selectedItem.count
-                            }))
-                            .onTapGesture {
-                                if viewModel.isSelectionMode {
-                                    if viewModel.selectedItem.contains(record.id) {
-                                        viewModel.selectedItem.remove(record.id)
-                                        print(viewModel.selectedItem)
-                                    } else {
-                                        viewModel.selectedItem.insert(record.id)
-                                        print(viewModel.selectedItem)
-                                    }
-                                    viewModel.selectedCnt = viewModel.selectedItem.count
-                                } else {
-                                    // TODO: - 일지 상세 보기 구현하기
-                                    print("상세 보기")
-                                }
-                            }
-                        }
-                    })
-                    .padding(.top, 10)
-                    .padding(.bottom, 80)
-                })
-                .frame(maxWidth: .infinity)
-            }
-        } else {
-            EmptyJournalList
-        }
-    }
+     private var journalList: some View {
+         if viewModel.recordList.isEmpty {
+             EmptyJournalList
+         } else {
+             ScrollView(.vertical, content: {
+                 LazyVGrid(columns: Array(repeating: GridItem(.fixed(102), spacing: 20), count: 3), spacing: 28, content: {
+                     ForEach(viewModel.recordList, id: \.id) { record in
+                         JournalListCard(cardData: JournalListCardData(data: record, part: selectedPartItem),
+                                         isSelected: Binding(get: {
+                             viewModel.selectedItem.contains(record.recordID)
+                         }, set: {
+                             isSelected in
+                             if isSelected {
+                                 viewModel.selectedItem.insert(record.recordID)
+                             } else {
+                                 viewModel.selectedItem.remove(record.recordID)
+                             }
+                             viewModel.selectedCnt = viewModel.selectedItem.count
+                         }))
+                         .onTapGesture {
+                             if viewModel.isSelectionMode {
+                                 if viewModel.selectedItem.contains(record.recordID) {
+                                     viewModel.selectedItem.remove(record.recordID)
+                                     print(viewModel.selectedItem)
+                                 } else {
+                                     viewModel.selectedItem.insert(record.recordID)
+                                     print(viewModel.selectedItem)
+                                 }
+                                 viewModel.selectedCnt = viewModel.selectedItem.count
+                             } else {
+                                 self.viewModel.getDetailJournalData(recordId: record.recordID)
+                             }
+                         }
+                         .task {
+                             if record == viewModel.recordList.last {
+                                 viewModel.getJournalList(category: selectedPartItem.rawValue, page: viewModel.currentPage)
+                             }
+                         }
+                     }
+
+                     if viewModel.isFetching {
+                         ProgressView()
+                             .controlSize(.regular)
+                     }
+                 })
+                 .padding(.top, 10)
+                 .padding(.bottom, 80)
+             })
+             .refreshable {
+                 viewModel.getJournalList(category: selectedPartItem.rawValue, page: 0, refresh: true)
+             }
+             .frame(maxWidth: .infinity)
+         }
+     }
     
     private var EmptyJournalList: some View {
-        VStack(spacing:19, content: {
+        VStack(spacing: 19, content: {
             
-            Spacer()
+            Spacer().frame(height: 100)
             
             Icon.noJournal.image
                 .fixedSize()
@@ -108,7 +134,7 @@ struct JournalListView: View {
     private var makeJournalListBtn: some View {
         Button(action: {
             if !viewModel.isSelectionMode {
-                print("선택된 모드 아닐 때")
+                container.navigationRouter.push(to: .makeJournalist)
             } else {
                 if viewModel.selectedCnt >= 1 {
                     viewModel.showAiDiagnosing.toggle()

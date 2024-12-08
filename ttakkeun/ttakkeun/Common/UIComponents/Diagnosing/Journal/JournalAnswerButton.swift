@@ -43,6 +43,9 @@ struct JournalAnswerButton: View {
             Text(data.answerText)
                 .font(.Body2_semibold)
                 .foregroundStyle(Color.gray900)
+                .lineLimit(nil)
+                .lineSpacing(2)
+                .multilineTextAlignment(.leading)
             
             Spacer()
             
@@ -58,7 +61,7 @@ struct JournalAnswerButton: View {
                     .frame(width: 30, height: 30)
             }
         })
-        .frame(width: width, height: 30)
+        .frame(width: width, height: 42)
         .padding(.top, paddingValue[0])
         .padding(.bottom, paddingValue[1])
         .padding(.leading, paddingValue[2])
@@ -72,6 +75,6 @@ struct JournalAnswerButton: View {
 
 struct JournalAnswerButton_Preview: PreviewProvider {
     static var previews: some View {
-        JournalAnswerButton(isSelected: .constant(true), data: AnswerDetailData(answerID: UUID(), answerText: "윤기가 나요"), { print("hello") })
+        JournalAnswerButton(isSelected: .constant(true), data: AnswerDetailData(answerID: UUID(), answerText: "asdasjkdhakjshdkjashdkjasdhakjsdhjaskdjhdk 나요"), { print("hello") })
     }
 }
