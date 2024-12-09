@@ -13,6 +13,15 @@ struct DiagnosingResultDetailView: View {
     
     @ObservedObject var viewModel: DiagnosticResultViewModel
     
+    @Binding var showFullScreenAI: Bool
+    @EnvironmentObject var container: DIContainer
+    
+    init (viewModel: DiagnosticResultViewModel, showFullScreenAI: Binding<Bool>, diagId: Int) {
+        self.viewModel = viewModel
+        self._showFullScreenAI = showFullScreenAI
+        viewModel.getDiagResult(diagId: diagId)
+    }
+    
     var body: some View {
         if let data = viewModel.diagnosticResolutionData {
             ScrollView(.vertical, content: {
@@ -34,7 +43,7 @@ struct DiagnosingResultDetailView: View {
                     Spacer().frame(height: 34)
                     
                     MainButton(btnText: "확인", width: 343, height: 63, action: {
-                        print("데이터 해제 및 디스미스")
+                        showFullScreenAI = false
                     }, color: Color.mainPrimary)
                 })
                 .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 25, trailing: 0))
@@ -151,11 +160,5 @@ extension DiagnosingResultDetailView {
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color.white).opacity(0.5)
         }
-    }
-}
-
-struct DiagnosingResultDetailView_Preview: PreviewProvider {
-    static var previews: some View {
-        DiagnosingResultDetailView(viewModel: DiagnosticResultViewModel())
     }
 }

@@ -100,8 +100,17 @@ struct CustomAlert: View {
                 },
                            color: Color.primarycolor200
                 )
+                
+                makeButton(text: "아니오",
+                           action: {
+                    withAnimation(.spring(duration: 0.3)) {
+                        alertAction.showAlert.toggle()
+                    }
+                },
+                           color: Color.alertNo)
+                
             } else {
-                makeButton(text: aiCount == 0 ? "포인트가 부족합니다." : "아니오",
+                makeButton(text: "포인트가 부족합니다.",
                            action: {
                     withAnimation(.spring(duration: 0.3)) {
                         alertAction.showAlert.toggle()

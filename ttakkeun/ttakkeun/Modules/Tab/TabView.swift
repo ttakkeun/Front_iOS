@@ -14,6 +14,7 @@ struct TabView: View {
     @State private var alertText: Text = Text("")
     @State private var aiCount: Int = 0
     @State private var alertType: AlertType = .aiAlert
+    @State private var actionYes: () -> Void = {}
     
     
     // MARK: - TabView CustomAlert
@@ -33,7 +34,7 @@ struct TabView: View {
                         .environmentObject(container)
                         .environmentObject(appFlowViewModel)
                 case .diagnosis:
-                    DiagnosticsView(container: container, showAlert: $showAlert, alertText: $alertText, aiCount: $aiCount, alertType: $alertType)
+                    DiagnosticsView(container: container, showAlert: $showAlert, alertText: $alertText, aiCount: $aiCount, alertType: $alertType, actionYes: $actionYes)
                         .environmentObject(container)
                         .environmentObject(appFlowViewModel)
                 case .schedule:
@@ -49,7 +50,7 @@ struct TabView: View {
                 if showAlert {
                     CustomAlert(alertText: alertText,
                                 aiCount: aiCount,
-                                alertAction: AlertAction(showAlert: $showAlert, yes: { print("네 진행하겠습니다.") }),
+                                alertAction: AlertAction(showAlert: $showAlert, yes: { actionYes() }),
                                 alertType: alertType)
                 }
             }

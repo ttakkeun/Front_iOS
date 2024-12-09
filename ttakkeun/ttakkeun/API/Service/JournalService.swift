@@ -47,4 +47,22 @@ class JournalService: JournalServiceProtocol {
             .map(ResponseData<DeleteJournal>.self)
             .eraseToAnyPublisher()
     }
+    
+    func makeDiagData(data: CreateDiagRequst) -> AnyPublisher<ResponseData<DiagResultResponse>, MoyaError> {
+        return provider.requestPublisher(.makeDiagnosis(data: data))
+            .map(ResponseData<DiagResultResponse>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func updateNaverData(data: DiagResultResponse) -> AnyPublisher<ResponseData<UpdateNaverResponse>, MoyaError> {
+        return provider.requestPublisher(.updateNaverDiag(data: data))
+            .map(ResponseData<UpdateNaverResponse>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func getDiagResultData(diagId: Int) -> AnyPublisher<ResponseData<DiagnosticResolutionResponse>, MoyaError> {
+        return provider.requestPublisher(.getDiagResult(diagId: diagId))
+            .map(ResponseData<DiagnosticResolutionResponse>.self)
+            .eraseToAnyPublisher()
+    }
 }

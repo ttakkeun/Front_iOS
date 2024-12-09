@@ -21,4 +21,10 @@ protocol JournalRepositoryProtocol {
     func getAnswerList(category: PartItem.RawValue) -> AnyPublisher<ResponseData<JournalQuestionResponse>, MoyaError>
     
     func deleteJournal(recordId: Int) -> AnyPublisher<ResponseData<DeleteJournal>, MoyaError>
+    
+    func makeDiag(data: CreateDiagRequst) -> AnyPublisher<ResponseData<DiagResultResponse>, MoyaError>
+    
+    func updateNaver(data: DiagResultResponse) -> AnyPublisher<ResponseData<UpdateNaverResponse>, MoyaError>
+    
+    func getDiagResult(diagId: Int) -> AnyPublisher<ResponseData<DiagnosticResolutionResponse>, MoyaError>
 }
