@@ -18,7 +18,7 @@ struct AppInfoView: View {
                              width: 16,
                              height: 16)
             
-            InfoBtns
+            infoBtns
             
             Spacer()
         })
@@ -26,7 +26,7 @@ struct AppInfoView: View {
     
     //MARK: - Components
     /// Detail Info 볼 수 있는 버튼들
-    private var InfoBtns: some View {
+    private var infoBtns: some View {
         VStack(alignment: .center, spacing: 17, content: {
             //TODO: 버튼 액션 필요함
             SelectBtnBox(title: "서비스 이용약관", action: {print("서비스 이용약관 버튼 눌림")})
