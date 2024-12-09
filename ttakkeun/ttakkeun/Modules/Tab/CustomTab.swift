@@ -23,7 +23,7 @@ struct CustomTab: View {
                 
             }
         }
-        .frame(height: 85)
+        .frame(height: 95)
         .ignoresSafeArea(.keyboard)
         .background(Color.white)
         .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))

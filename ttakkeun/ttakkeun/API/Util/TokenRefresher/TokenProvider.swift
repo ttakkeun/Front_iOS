@@ -16,13 +16,13 @@ class TokenProvider: TokenProviding {
     var accessToken: String? {
         get {
             guard let userInfo = keyChain.loadSession(for: userSession) else { return nil }
-            return userInfo.tokenInfo?.accessToken
+            return userInfo.accessToken
         }
         set {
             guard var userInfo = keyChain.loadSession(for: userSession) else { return }
-            userInfo.tokenInfo?.accessToken = newValue
+            userInfo.accessToken = newValue
             if keyChain.saveSession(userInfo, for: "ttakkeunUser") {
-                print("유저 액세스 토큰 갱신됨")
+                print("유저 액세스 토큰 갱신됨: \(String(describing: newValue))")
             }
         }
     }
@@ -30,20 +30,20 @@ class TokenProvider: TokenProviding {
     var refreshToken: String? {
         get {
             guard let userInfo = keyChain.loadSession(for: userSession) else { return nil }
-            return userInfo.tokenInfo?.refreshToken
+            return userInfo.refreshToken
         }
         
         set {
             guard var userInfo = keyChain.loadSession(for: userSession) else { return  }
-            userInfo.tokenInfo?.refreshToken = newValue
-            if keyChain.saveSession(userInfo, for: "ttakkeunUser") {
+            userInfo.refreshToken = newValue
+            if keyChain.saveSession(userInfo, for: userSession) {
                 print("유저 리프레시 토큰 갱신 됨")
             }
         }
     }
     
     func refreshToken(completion: @escaping (String?, (any Error)?) -> Void) {
-        guard let userInfo = keyChain.loadSession(for: "ttakkeunUser"), let refreshToken = userInfo.tokenInfo?.refreshToken else {
+        guard let userInfo = keyChain.loadSession(for: userSession), let refreshToken = userInfo.refreshToken else {
             let error = NSError(domain: "ttakkeun.com", code: -2, userInfo: [NSLocalizedDescriptionKey: "User session or refresh token not found"])
             completion(nil, error)
             return

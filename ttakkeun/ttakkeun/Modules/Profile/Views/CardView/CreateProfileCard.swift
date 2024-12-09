@@ -13,8 +13,7 @@ struct CreateProfileCard: View {
     
     var body: some View {
         Button(action: {
-            //TODO: - 뷰모델 행동 추가하기
-            print("Hello")
+            viewModel.goToCreateProfile()
         }, label: {
             ZStack(alignment: .top, content: {
                 createProfile

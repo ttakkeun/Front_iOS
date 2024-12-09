@@ -9,36 +9,41 @@ import SwiftUI
 
 struct MakeProfileView: View {
     
-    @StateObject var viewModel: MakeProfileViewModel = MakeProfileViewModel()
+    @StateObject var viewModel: MakeProfileViewModel
     @EnvironmentObject var container: DIContainer
+    
+    
+    init(container: DIContainer
+    ) {
+        self._viewModel = StateObject(wrappedValue: .init(container: container))
+    }
     
     var body: some View {
         VStack {
-            
             CustomNavigation(
                 action: {
                     container.navigationRouter.pop()
                 }, title: "프로필 생성", currentPage: nil)
             
-            Spacer()
+            Spacer().frame(height: 20)
             
             profileImage
             
-            Spacer().frame(height: 20)
+            Spacer().frame(height: 25)
             
             inputFieldGroup
             
-            Spacer().frame(height: 72)
+            Spacer()
             
             registerBtn
         }
-        .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
+        .safeAreaPadding(EdgeInsets(top: 7, leading: 0, bottom: 20, trailing: 0))
+        .navigationBarBackButtonHidden(true)
         .onAppear {
             UIApplication.shared.hideKeyboard()
         }
         .sheet(isPresented: $viewModel.showingVarietySearch) {
             VarietySearchView(viewModel: viewModel)
-                .presentationDragIndicator(Visibility.visible)
         }
         .sheet(isPresented: $viewModel.isImagePickerPresented, content: {
             ImagePicker(imageHandler: viewModel, selectedLimit: 1)
@@ -46,7 +51,7 @@ struct MakeProfileView: View {
     }
     
     private var inputFieldGroup: some View {
-        VStack(alignment: .center, spacing: 19, content: {
+        VStack(alignment: .center, spacing: 20, content: {
             Group {
                 nameField
                 typeField
@@ -64,7 +69,7 @@ struct MakeProfileView: View {
                 viewModel.showImagePicker()
             }, label: {
                 if viewModel.profileImage.isEmpty {
-                    Image(systemName: "person.circle.fill")
+                    Image(systemName: "questionmark.circle.fill")
                         .resizable()
                         .frame(width: 120, height: 120)
                         .aspectRatio(contentMode: .fill)
@@ -97,18 +102,26 @@ struct MakeProfileView: View {
             makeFieldTitle(fieldGroup: FieldGroup(title: "반려동물 종류", mustMark: true, isFieldEnable: viewModel.isTypeFieldFilled))
             
             ProfileTwoButton(
+                selectedButton: Binding(
+                    get: { viewModel.requestData.type?.toKorean() },
+                    set: { newValue in
+                        if newValue == "강아지" {
+                            viewModel.requestData.type = .dog
+                        } else if newValue == "고양이" {
+                            viewModel.requestData.type = .cat
+                        }
+                        viewModel.isTypeFieldFilled = true
+                    }
+                ),
                 firstButton: ButtonOption(
                     textTitle: "강아지",
-                    action: {
-                        viewModel.requestData.type = .dog
-                        viewModel.isTypeFieldFilled = true
-                    }),
+                    action: {}
+                ),
                 secondButton: ButtonOption(
                     textTitle: "고양이",
-                    action: {
-                        viewModel.requestData.type = .cat
-                        viewModel.isTypeFieldFilled = true
-                    }))
+                    action: {}
+                )
+            )
         })
         .frame(width: 331, height: 74)
     }
@@ -164,16 +177,17 @@ struct MakeProfileView: View {
             makeFieldTitle(fieldGroup: FieldGroup(title: "중성화여부", mustMark: true, isFieldEnable: viewModel.isNeutralizationFieldFilled))
             
             ProfileTwoButton(
+                selectedButton: Binding(get: { viewModel.requestData.neutralization == nil ? nil : (viewModel.requestData.neutralization! ? "예" : "아니오") },
+                                        set: { newValue in
+                                            viewModel.requestData.neutralization = (newValue == "예")
+                                            viewModel.isNeutralizationFieldFilled = true
+                                        }),
                 firstButton: ButtonOption(
                     textTitle: "예",
                     action: {
-                        viewModel.requestData.neutralization = true
-                        viewModel.isNeutralizationFieldFilled = true
                     }), secondButton: ButtonOption(
                         textTitle: "아니오",
                         action: {
-                            viewModel.requestData.neutralization = false
-                            viewModel.isNeutralizationFieldFilled = false
                         }
                     ))
         })
@@ -186,8 +200,9 @@ struct MakeProfileView: View {
             width: 330,
             height: 56,
             action: {
-                // TODO: - 등록하기 버튼 함수 작성
-                print("등록하기 버튼")
+                if viewModel.isProfileCompleted {
+                    viewModel.makePetProfile()
+                }
             },
             color: viewModel.isProfileCompleted ? Color.mainPrimary : Color.gray200)
     }
@@ -232,14 +247,9 @@ fileprivate struct FieldGroup {
     let isFieldEnable: Bool
 }
 
-struct MakeProfileView_Preview: PreviewProvider {
-    static let devices = ["iPhone 11", "iphone 15 Pro"]
-    
+
+struct MakeProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ForEach(devices, id: \.self) { device in
-            MakeProfileView()
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewDisplayName(device)
-        }
+        MakeProfileView(container: DIContainer())
     }
 }

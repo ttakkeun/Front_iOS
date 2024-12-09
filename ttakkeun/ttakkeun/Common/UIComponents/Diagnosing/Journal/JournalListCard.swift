@@ -20,6 +20,7 @@ struct JournalListCard: View {
     var body: some View {
         ZStack(alignment: .top, content: {
             bottomPostit
+                .padding(.top, 8)
             topPostit
             
             if isSelected {
@@ -29,8 +30,8 @@ struct JournalListCard: View {
                     .foregroundStyle(Color.gray600)
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 18, height: 18)
-                    .padding(.top, 72)
-                    .padding(.leading, 70)
+                    .padding(.top, 75)
+                    .padding(.leading, 65)
             }
         })
     }
@@ -72,26 +73,9 @@ struct JournalListCard: View {
     
     private var topPostit: some View {
         RoundedRectangle(cornerRadius: 4)
-            .fill(stickerColor())
+            .fill(cardData.part.toColor())
             .frame(width: 49, height: 14)
             .shadow02()
-    }
-}
-
-extension JournalListCard {
-    func stickerColor() -> Color {
-        switch cardData.part {
-        case .ear:
-            Color.beforeEar
-        case .eye:
-            Color.beforeEye
-        case .hair:
-            Color.beforeHair
-        case .claw:
-            Color.beforeClaw
-        case .teeth:
-            Color.beforeTeeth
-        }
     }
 }
 

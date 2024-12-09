@@ -39,8 +39,8 @@ struct SearchResultView: View {
         if !viewModel.naverData.isEmpty {
             ScrollView(.horizontal, content: {
                 HStack(spacing: 10, content: {
-                    ForEach($viewModel.naverData, id: \.id) { data in
-                        Text("hello")
+                    ForEach($viewModel.naverData, id: \.id) { $data in
+                        RecentRecommendation(data: $data, type: .naver)
                     }
                 })
                 .padding(.horizontal, padding)
@@ -63,8 +63,8 @@ struct SearchResultView: View {
     private var localSearchResult: some View {
         if !viewModel.localDbData.isEmpty {
             LazyVGrid(columns: Array(repeating: GridItem(.fixed(162)), count: 2), spacing: 10 , content: {
-                ForEach($viewModel.localDbData, id: \.self) { data in
-                    InAppSearchResult(data: data)
+                ForEach($viewModel.localDbData, id: \.self) { $data in
+                    InAppSearchResult(data: $data)
                 }
             })
         } else {
@@ -77,5 +77,12 @@ extension SearchResultView {
     func warningText(type: SearchType) -> some View {
         Text(type.rawValue)
             .modifier(ProductWarningModifier())
+    }
+}
+
+
+struct SearchResultView_Preview: PreviewProvider {
+    static var previews: some View {
+        SearchResultView(viewModel: SearchViewModel())
     }
 }

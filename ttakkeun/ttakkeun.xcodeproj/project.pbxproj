@@ -13,6 +13,7 @@
 		482FBA702CC95DBD00BB964B /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 482FBA6F2CC95DBD00BB964B /* Moya */; };
 		482FBA722CC95DBD00BB964B /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 482FBA712CC95DBD00BB964B /* ReactiveMoya */; };
 		482FBA742CC95DBD00BB964B /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 482FBA732CC95DBD00BB964B /* RxMoya */; };
+		48969A5E2CF8A8C600C038B5 /* FloatingButton in Frameworks */ = {isa = PBXBuildFile; productRef = 48969A5D2CF8A8C600C038B5 /* FloatingButton */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				482FBA742CC95DBD00BB964B /* RxMoya in Frameworks */,
+				48969A5E2CF8A8C600C038B5 /* FloatingButton in Frameworks */,
 				482FB9982CC958E600BB964B /* Kingfisher in Frameworks */,
 				482FB98C2CC958B300BB964B /* Lottie in Frameworks */,
 				482FBA702CC95DBD00BB964B /* Moya in Frameworks */,
@@ -100,6 +102,7 @@
 				482FBA6F2CC95DBD00BB964B /* Moya */,
 				482FBA712CC95DBD00BB964B /* ReactiveMoya */,
 				482FBA732CC95DBD00BB964B /* RxMoya */,
+				48969A5D2CF8A8C600C038B5 /* FloatingButton */,
 			);
 			productName = ttakkeun;
 			productReference = 482FB9792CC9588E00BB964B /* ttakkeun.app */;
@@ -121,11 +124,12 @@
 				};
 			};
 			buildConfigurationList = 482FB9742CC9588E00BB964B /* Build configuration list for PBXProject "ttakkeun" */;
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = 482FB9702CC9588E00BB964B;
 			minimizedProjectReferenceProxies = 1;
@@ -133,6 +137,7 @@
 				482FB98A2CC958B300BB964B /* XCRemoteSwiftPackageReference "lottie-spm" */,
 				482FB9962CC958E600BB964B /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				482FBA6C2CC95DBD00BB964B /* XCRemoteSwiftPackageReference "Moya" */,
+				48969A5C2CF8A8C600C038B5 /* XCRemoteSwiftPackageReference "FloatingButton" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 482FB97A2CC9588E00BB964B /* Products */;
@@ -170,6 +175,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -233,6 +239,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -398,6 +405,14 @@
 				minimumVersion = 15.0.3;
 			};
 		};
+		48969A5C2CF8A8C600C038B5 /* XCRemoteSwiftPackageReference "FloatingButton" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/FloatingButton";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -430,6 +445,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 482FBA6C2CC95DBD00BB964B /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = RxMoya;
+		};
+		48969A5D2CF8A8C600C038B5 /* FloatingButton */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 48969A5C2CF8A8C600C038B5 /* XCRemoteSwiftPackageReference "FloatingButton" */;
+			productName = FloatingButton;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

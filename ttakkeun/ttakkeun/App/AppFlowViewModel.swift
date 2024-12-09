@@ -7,7 +7,6 @@
 
 import Foundation
 
-@MainActor
 class AppFlowViewModel: ObservableObject {
     private let tokenProvider: TokenProvider = TokenProvider()
     

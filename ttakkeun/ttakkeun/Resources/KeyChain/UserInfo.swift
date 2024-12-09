@@ -8,6 +8,6 @@
 import Foundation
 
 struct UserInfo: Codable {
-    let name: String
-    var tokenInfo: TokenResponse?
+    var accessToken: String?
+    var refreshToken: String?
 }

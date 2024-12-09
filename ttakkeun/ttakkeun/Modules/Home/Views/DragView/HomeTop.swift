@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeTop: View {
     
-    @StateObject var viewModel: HomeRecommendViewModel
+    @ObservedObject var viewModel: HomeRecommendViewModel
     let petType: ProfileType?
     
     var body: some View {
@@ -33,19 +33,18 @@ struct HomeTop: View {
                     })
                     .frame(width: 354, height: 331)
                     .padding(.bottom, 80)
-                    .padding(.leading, 12)
+                    .padding(.horizontal, 12)
                 })
             } else {
                 HStack {
+                    
+                    Spacer()
+                    
                     NotRecommend(recommendType: .userRecommend)
+                    
+                    Spacer()
                 }
             }
         })
-    }
-}
-
-struct HomeTop_Preview: PreviewProvider {
-    static var previews: some View {
-        HomeTop(viewModel: HomeRecommendViewModel(), petType: .cat)
     }
 }

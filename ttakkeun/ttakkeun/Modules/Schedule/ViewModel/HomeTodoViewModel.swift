@@ -6,8 +6,30 @@
 //
 
 import Foundation
+import Combine
+import CombineMoya
 
 class HomeTodoViewModel: ObservableObject, TodoCheckProtocol {
+    
+    @Published var inputDate: TodoDateRequest
+    let container: DIContainer
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(container: DIContainer) {
+        self.container = container
+        
+        let currentDate = Date()
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: currentDate)
+        let month = calendar.component(.month, from: currentDate)
+        let day = calendar.component(.day, from: currentDate)
+        
+        self.inputDate = TodoDateRequest(year: year, month: month, date: day)
+    }
+    
+    @Published var todoIsLoading: Bool = true
+    
+    
     @Published var earTodos: [TodoList] = []
     @Published var hairTodos: [TodoList] = []
     @Published var clawTodos: [TodoList] = []
@@ -43,5 +65,50 @@ class HomeTodoViewModel: ObservableObject, TodoCheckProtocol {
                 teethTodos[index].todoStatus.toggle()
             }
         }
+    }
+    
+    private func processFetchData(_ data: ScheduleInquiryResponse) {
+        self.earTodos = data.earTodo
+        self.hairTodos = data.hairTodo
+        self.clawTodos = data.clawTodo
+        self.eyeTodos = data.eyeTodo
+        self.teethTodos = data.toothTodo
+    }
+}
+
+// MARK: - HomeTodoAPI
+
+extension HomeTodoViewModel {
+    public func getTodoSchedule() {
+        todoIsLoading = true
+        
+        container.useCaseProvider.scheduleUseCase.executeGetTodoScheduleData(petId: UserState.shared.getPetId(), todoDateRequest: inputDate)
+            .tryMap { responseData -> ResponseData<ScheduleInquiryResponse> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                print("Home Todo Server: \(responseData)")
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                self.todoIsLoading = false
+                
+                switch completion {
+                case .finished:
+                    print("Todo Loaded Completed")
+                case .failure(let failure):
+                    print("Todo Loaded Failure: \(failure)")
+                }
+                
+            }, receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                if let responseData = responseData.result {
+                    processFetchData(responseData)
+                }
+            })
+            .store(in: &cancellables)
     }
 }

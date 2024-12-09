@@ -17,15 +17,15 @@ class AuthService: AuthServiceProtocol {
         self.provider = provider
     }
     
-    func appleLogin(identityToken: String) -> AnyPublisher<TokenResponse, MoyaError> {
-        return provider.requestPublisher(.appleLogin(identyToken: identityToken))
-            .map(TokenResponse.self)
+    func appleLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
+        return provider.requestPublisher(.appleLogin(signUpRequest: signUpRequest))
+            .map(ResponseData<TokenResponse>.self)
             .eraseToAnyPublisher()
     }
     
-    func signUpAppleLogin(signUpRequest: SignUpRequest) -> AnyPublisher<TokenResponse, MoyaError> {
+    func signUpAppleLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
         return provider.requestPublisher(.signUpAppleLogin(signUpRequest: signUpRequest))
-            .map(TokenResponse.self)
+            .map(ResponseData<TokenResponse>.self)
             .eraseToAnyPublisher()
     }
 }

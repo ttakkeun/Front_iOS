@@ -10,11 +10,28 @@ import SwiftUI
 @main
 struct ttakkeunApp: App {
     
-    @State var value = DiagnosingValue(selectedSegment: .journalList, selectedPartItem: .claw)
+    @StateObject var appFlowViewModel: AppFlowViewModel = .init()
+    @StateObject var container: DIContainer = .init()
     
     var body: some Scene {
         WindowGroup {
-            RecommendView()
+            switch appFlowViewModel.appState {
+            case .onBoarding:
+                OnboardingView()
+                    .environmentObject(appFlowViewModel)
+            case .login:
+                LoginView(viewModel: LoginViewModel(container: container, appFlowViewModel: appFlowViewModel))
+                    .environmentObject(container)
+                    .environmentObject(appFlowViewModel)
+            case .profile:
+                ProfileView(viewModel: ProfileViewModel(container: container))
+                    .environmentObject(container)
+                    .environmentObject(appFlowViewModel)
+            case .tabView:
+                TabView()
+                    .environmentObject(container)
+                    .environmentObject(appFlowViewModel)
+            }
         }
     }
 }

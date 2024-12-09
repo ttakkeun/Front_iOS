@@ -76,7 +76,3 @@ struct CustomNavigation: View {
         .frame(width: 353, height: 20)
     }
 }
-
-#Preview {
-    MakeProfileView()
-}

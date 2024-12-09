@@ -20,19 +20,29 @@ struct ProfileView: View {
                 
                 Spacer()
                 
-                topTitle
-                scollProfile
+                if !viewModel.isLoading {
+                    topTitle
+                    scollProfile
+                } else {
+                    ProgressView(label: {
+                        LoadingDotsText(text: "잠시 기다려 주세요!")
+                    })
+                    .controlSize(.large)
+                }
                 
                 Spacer()
             })
+            .frame(maxWidth: .infinity)
             .background(viewModel.backgroudColor)
             .task {
                 viewModel.updateBackgroundColor()
+                viewModel.getPetProfile()
+            }
+            .navigationDestination(for: NavigationDestination.self) {
+                NavigationRoutingView(destination: $0)
+                    .environmentObject(container)
             }
         }
-//        .navigationDestination(for: NavigationDestination.self) {
-//            // TODO: - NavigationRoutingView 필요
-//        }
     }
     
     private var topTitle: some View {
@@ -114,7 +124,7 @@ extension ProfileView {
         GeometryReader { item in
             ProfileCard(data: data)
                 .scaleEffect(self.scaleValue(geometry: geometry, itemGeometry: item))
-                .animation(.easeOut, value: scaleValue(geometry: geometry, itemGeometry: item))
+                .animation(.bouncy, value: scaleValue(geometry: geometry, itemGeometry: item))
                 .environmentObject(appFlopwViewModel)
                 .onChange(of: self.isCentered(geometry: geometry, itemGeometry: item)) {
                     if self.isCentered(geometry: geometry, itemGeometry: item) {
@@ -131,7 +141,7 @@ extension ProfileView {
         GeometryReader { item in
             CreateProfileCard(viewModel: viewModel)
                 .scaleEffect(self.scaleValue(geometry: geometry, itemGeometry: item))
-                .animation(.easeOut, value: self.scaleValue(geometry: geometry, itemGeometry: item))
+                .animation(.bouncy, value: self.scaleValue(geometry: geometry, itemGeometry: item))
                 .onChange(of: self.isCentered(geometry: geometry, itemGeometry: item)) {
                     if self.isCentered(geometry: geometry, itemGeometry: item) {
                         viewModel.isLastedCard = true

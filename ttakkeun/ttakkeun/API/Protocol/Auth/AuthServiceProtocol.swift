@@ -10,6 +10,6 @@ import Combine
 import Moya
 
 protocol AuthServiceProtocol {
-    func appleLogin(identityToken: String) -> AnyPublisher<TokenResponse, MoyaError>
-    func signUpAppleLogin(signUpRequest: SignUpRequest) -> AnyPublisher<TokenResponse, MoyaError>
+    func appleLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError>
+    func signUpAppleLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError>
 }

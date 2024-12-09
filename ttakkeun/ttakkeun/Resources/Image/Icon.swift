@@ -92,9 +92,14 @@ enum Icon: String {
     case againIcon = "againIcon"
     case replaceIcon = "replaceIcon"
     
+<<<<<<< HEAD
     // MARK: - MyPage
     case tips = "tips"
     case scrap = "scrap"
+=======
+    // MARK: - QnA
+    case bottomRightTag = "bottomRightTag"
+>>>>>>> develop
     
     var image: Image {
         return Image(self.rawValue)

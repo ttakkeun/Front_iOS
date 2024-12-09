@@ -8,6 +8,7 @@
 import SwiftUI
 import Charts
 
+/// 진단 결과 화면
 struct DiagnosingResultDetailView: View {
     
     @ObservedObject var viewModel: DiagnosticResultViewModel

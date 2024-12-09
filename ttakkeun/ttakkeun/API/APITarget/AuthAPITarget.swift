@@ -9,9 +9,9 @@ import Foundation
 import Moya
 
 enum AuthAPITarget {
-    case sendRefreshToken(refreshToken: String)
-    case appleLogin(identyToken: String)
-    case signUpAppleLogin(signUpRequest: SignUpRequest)
+    case sendRefreshToken(refreshToken: String) // Refresh 재발급
+    case appleLogin(signUpRequest: SignUpRequest) // 애플 로그인 시도
+    case signUpAppleLogin(signUpRequest: SignUpRequest) // 애플 회원 가입
 }
 
 extension AuthAPITarget: APITargetType {
@@ -19,7 +19,7 @@ extension AuthAPITarget: APITargetType {
     var path: String {
         switch self {
         case .sendRefreshToken:
-            return "api/auth/refresh"
+            return "/api/auth/refresh"
         case .appleLogin:
             return "/api/auth/apple/login"
         case .signUpAppleLogin:
@@ -42,23 +42,24 @@ extension AuthAPITarget: APITargetType {
         switch self {
         case .sendRefreshToken:
             return .requestPlain
-        case .appleLogin(let identyToken):
-            return .requestParameters(parameters: ["identityToken": identyToken], encoding: JSONEncoding.default)
+        case .appleLogin(let signUpData):
+            return .requestJSONEncodable(signUpData)
         case .signUpAppleLogin(let signUpData):
             return .requestJSONEncodable(signUpData)
         }
     }
     
-    var headers: [String : String]? {
-        var headers = ["Content-Type": "application/json"]
-        
-        switch self {
-        case .sendRefreshToken(let refresh):
-            headers["RefreshToken"] = "Bearer \(refresh)"
-        default:
-            break
+        var headers: [String : String]? {
+            var headers = ["Content-Type": "application/json"]
+    
+            switch self {
+            case .sendRefreshToken(let refresh):
+                headers["RefreshToken"] = "Bearer \(refresh)"
+            default:
+                break
+            }
+    
+            return headers
         }
-        
-        return headers
-    }
+    
 }

@@ -15,7 +15,12 @@ struct DiagnosingValue {
 struct DiagnosingHeader: View {
     
     @Binding var diagnosingValue: DiagnosingValue
-    @Namespace var name
+    @ObservedObject var journalListViewModel: JournalListViewModel
+    
+    init(diagnosingValue: Binding<DiagnosingValue>, journalListViewModel: JournalListViewModel) {
+        self._diagnosingValue = diagnosingValue
+        self.journalListViewModel = journalListViewModel
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 21, content: {
@@ -28,37 +33,34 @@ struct DiagnosingHeader: View {
     }
     
     private var itemsButton: some View {
-        HStack(alignment: .center, spacing: 20, content: {
+        HStack(alignment: .center, spacing: 15, content: {
             ForEach(PartItem.allCases, id: \.self) { item in
                 Button(action: {
                     withAnimation(.easeInOut(duration: 0.4)) {
                         diagnosingValue.selectedPartItem = item
+                        journalListViewModel.recordList.removeAll()
+                        journalListViewModel.currentPage = 0
+                        journalListViewModel.canLoadMore = true
+                        journalListViewModel.getJournalList(category: item.rawValue, page: 0)
                     }
                 }, label: {
                     Text(item.toKorean())
+                        .frame(width: 30, height: 18)
+                        .padding(.vertical, 6)
+                        .padding(.horizontal, 8)
                         .font(diagnosingValue.selectedPartItem == item ? .Body3_bold : .Body3_regular)
                         .foregroundStyle(diagnosingValue.selectedPartItem == item ? Color.gray900 : Color.gray600)
                         .background {
                             if diagnosingValue.selectedPartItem == item {
-                                RoundedRectangle(cornerRadius: 10)
+                                RoundedRectangle(cornerRadius: 16)
                                     .fill(Color.primarycolor400)
-                                    .frame(width: 30, height: 30)
                                     .animation(.easeInOut(duration: 0.1), value: diagnosingValue.selectedSegment)
                             }
                         }
                 })
+                .disabled(journalListViewModel.isFetching)
             }
         })
         .padding(.leading, 10)
-    }
-}
-
-
-struct DiagnosingHeader_Preview: PreviewProvider {
-    
-    @State static var value = DiagnosingValue(selectedSegment: .journalList, selectedPartItem: .claw)
-    
-    static var previews: some View {
-        DiagnosingHeader(diagnosingValue: $value)
     }
 }

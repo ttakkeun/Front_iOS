@@ -30,8 +30,8 @@ struct SelectCareItemButton: View {
             VStack(alignment: .center, spacing: 6, content: {
                 ZStack(content: {
                     RoundedRectangle(cornerRadius: 10)
-                        .fill(partItemButton.selectedPartItem == partItemButton.partItem ? buttonColor() : Color.clear)
-                        .stroke(partItemButton.selectedPartItem == partItemButton.partItem ? strokeColor() : Color.gray600, lineWidth: 1)
+                        .fill(partItemButton.selectedPartItem == partItemButton.partItem ? partItemButton.partItem.toColor() : Color.clear)
+                        .stroke(partItemButton.selectedPartItem == partItemButton.partItem ? partItemButton.partItem.toAfterColor() : Color.gray600, lineWidth: 1)
                         .scaleEffect(partItemButton.selectedPartItem == partItemButton.partItem ? (animateWave ? 1.1 : 1.0) : 1.0)
                         .animation(.easeInOut(duration: 0.3), value: animateWave)
                         .shadow03()
@@ -39,7 +39,7 @@ struct SelectCareItemButton: View {
                     buttonImage()
                         .background {
                             Circle()
-                                .fill(partItemButton.selectedPartItem == partItemButton.partItem ? Color.clear : buttonColor())
+                                .fill(partItemButton.selectedPartItem == partItemButton.partItem ? Color.clear : partItemButton.partItem.toColor())
                                 .frame(width: 99, height: 99)
                         }
                 })
@@ -65,36 +65,6 @@ extension SelectCareItemButton {
             Icon.buttonClaw.image
         case .teeth:
             Icon.buttonTeeth.image
-        }
-    }
-    
-    func buttonColor() -> Color {
-        switch partItemButton.partItem  {
-        case .ear:
-            return Color.beforeEar
-        case .eye:
-            return Color.beforeEye
-        case .hair:
-            return Color.beforeHair
-        case .claw:
-            return Color.beforeClaw
-        case .teeth:
-            return Color.beforeTeeth
-        }
-    }
-    
-    func strokeColor() -> Color {
-        switch partItemButton.partItem  {
-        case .ear:
-            return Color.afterEar
-        case .eye:
-            return Color.afterEye
-        case .hair:
-            return Color.afterHair
-        case .claw:
-            return Color.afterClaw
-        case .teeth:
-            return Color.afterTeeth
         }
     }
 }
