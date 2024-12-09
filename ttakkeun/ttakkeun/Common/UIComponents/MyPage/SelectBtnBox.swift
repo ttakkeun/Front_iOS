@@ -31,12 +31,22 @@ struct SelectBtnBox: View {
         Button(action: {
             action()
         }, label: {
-            Text(title)
-                .font(.Body2_medium)
-                .foregroundStyle(Color.gray900)
+            HStack(alignment: .center, content: {
+                Text(title)
+                    .font(.Body2_medium)
+                    .foregroundStyle(Color.gray900)
+                
+                Spacer()
+                
+                if let date = date {
+                    Text(date)
+                        .font(.Body4_medium)
+                        .foregroundStyle(Color.gray400)
+                }
+            })
+            .padding(.horizontal, 17)
+            .frame(width:349, height: 56)
         })
-        .frame(width: 349, height: 56, alignment: .leading)
-        .padding(.leading, 17)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color.clear)
