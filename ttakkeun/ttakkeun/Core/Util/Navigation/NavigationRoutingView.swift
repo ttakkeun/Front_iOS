@@ -30,8 +30,10 @@ struct NavigationRoutingView: View {
             JournalRegistView(container: container)
                 .environmentObject(container)
             
-        case .makeDiagnosis:
-            DiagnosingView()
+        case .productSearch:
+            RecommendSearchView(container: container)
+                .environmentObject(container)
+            
         }
     }
 }

@@ -11,4 +11,14 @@ class RecommendationProductViewModel: ObservableObject {
     @Published var selectedCategory: ExtendPartItem = .all
     @Published var aiProducts: [ProductResponse] = []
     @Published var recommendProducts: [ProductResponse] = []
+    
+    let container: DIContainer
+    
+    init(container: DIContainer) {
+        self.container = container
+    }
+    
+    public func goToSearchView() {
+        container.navigationRouter.push(to: .productSearch)
+    }
 }

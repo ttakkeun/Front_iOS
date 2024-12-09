@@ -37,4 +37,16 @@ class JournalRepository: JournalRepositoryProtocol {
     func deleteJournal(recordId: Int) -> AnyPublisher<ResponseData<DeleteJournal>, MoyaError> {
         return journalService.deleteJournalData(recordId: recordId)
     }
+    
+    func makeDiag(data: CreateDiagRequst) -> AnyPublisher<ResponseData<DiagResultResponse>, MoyaError> {
+        return journalService.makeDiagData(data: data)
+    }
+    
+    func updateNaver(data: DiagResultResponse) -> AnyPublisher<ResponseData<UpdateNaverResponse>, MoyaError> {
+        return journalService.updateNaverData(data: data)
+    }
+    
+    func getDiagResult(diagId: Int) -> AnyPublisher<ResponseData<DiagnosticResolutionResponse>, MoyaError> {
+        return journalService.getDiagResultData(diagId: diagId)
+    }
 }

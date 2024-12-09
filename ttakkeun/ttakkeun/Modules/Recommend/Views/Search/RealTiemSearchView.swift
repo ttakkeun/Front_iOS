@@ -14,10 +14,12 @@ struct RealTiemSearchView: View {
     var onItemClick: (String) -> Void
     
     var body: some View {
-        VStack(spacing: 12, content: {
+        VStack(alignment: .leading, spacing: 15, content: {
             if let data = viewModel.realTimeSearchResult {
-                ForEach(data, id: \.self) { data in
-                    makeSearchingResultButton(data: data)
+                if data != [] {
+                    ForEach(data, id: \.self) { data in
+                        makeSearchingResultButton(data: data)
+                    }
                 }
             } else {
                 notRealtTimeSearchResult
@@ -53,11 +55,12 @@ extension RealTiemSearchView {
             viewModel.saveSearchTerm(data.title)
             self.onItemClick(data.title)
         }, label: {
-            HStack(spacing: 10, content: {
+            HStack(spacing: 14, content: {
                 makeSearchingImage(image: data.image)
                 
                 makeProductInfo(infoText: (data.title, data.price))
             })
+            .frame(maxWidth: .infinity, alignment: .leading)
         })
     }
     
@@ -77,8 +80,11 @@ extension RealTiemSearchView {
     
     func makeProductInfo(infoText: (String, Int)) -> some View {
         VStack(alignment: .leading, spacing: 4, content: {
-            Text(DataFormatter.shared.stripHTMLTags(from: infoText.0).split(separator: "").joined(separator: "\u{200B}"))
-                .font(.Body4_extrabold)
+            Text((infoText.0).split(separator: "").joined(separator: "\u{200B}"))
+                .font(.Body3_regular)
+                .lineLimit(nil)
+                .multilineTextAlignment(.leading)
+                .lineSpacing(2)
                 .foregroundStyle(Color.gray900)
             
             Text("\(DataFormatter.shared.formattedPrice(from: infoText.1))원")

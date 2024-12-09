@@ -19,14 +19,16 @@ struct JournalListView: View {
     @Binding var alertText: Text
     @Binding var aiCount: Int
     @Binding var alertType: AlertType
+    @Binding var actionYes: () -> Void
     @Binding var selectedPartItem: PartItem
     
-    init(viewModel: JournalListViewModel, showAlert: Binding<Bool>, alertText: Binding<Text>, aiCount: Binding<Int>, alertType: Binding<AlertType>, selectedPartItem: Binding<PartItem>) {
+    init(viewModel: JournalListViewModel, showAlert: Binding<Bool>, alertText: Binding<Text>, aiCount: Binding<Int>, alertType: Binding<AlertType>, actionYes: Binding<() -> Void>, selectedPartItem: Binding<PartItem>) {
         self.viewModel = viewModel
         self._showAlert = showAlert
         self._alertText = alertText
         self._aiCount = aiCount
         self._alertType = alertType
+        self._actionYes = actionYes
         self._selectedPartItem = selectedPartItem
     }
     
@@ -48,6 +50,10 @@ struct JournalListView: View {
             alertText = self.alertTextString()
             aiCount = viewModel.aiPoint
             alertType = .aiAlert
+            actionYes = {
+                viewModel.showFullScreenAI = true
+                viewModel.makeDiag()
+            }
         })
         .task {
             if viewModel.recordList.isEmpty {
