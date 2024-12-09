@@ -61,6 +61,7 @@ extension JournalQuestionView {
                             } else {
                                 viewModel.selectedAnswerData.answers[question.questionID] = isSelected ? [answer.answerText] : []
                             }
+                            viewModel.isNextEnabled = viewModel.selectedAnswerData.answers[question.questionID]?.isEmpty == false
                         }
                     ),
                     data: answer

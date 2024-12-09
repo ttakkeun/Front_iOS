@@ -80,10 +80,18 @@ extension JournalResultCheckView {
     }
     
     func makeJournalEtcTextBox(text: String) -> some View {
-        return TextEditor(text: .constant(text))
-            .customStyleEditor(text: .constant(text), placeholder: "", maxTextCount: 150)
-            .frame(width: 314, height: 190)
-            .modifier(JournalResultBoxModifier())
+        return VStack(alignment: .leading, spacing: 16, content: {
+            Text("4. 기타 특이사항이 있으면 알려주세요!")
+                .font(.Body1_bold)
+                .foregroundStyle(Color.gray900)
+                .lineLimit(nil)
+            
+            
+            TextEditor(text: .constant(text))
+                .customStyleEditor(text: .constant(text), placeholder: "", maxTextCount: 150)
+        })
+        .frame(width: 314, height: 190)
+        .modifier(JournalResultBoxModifier())
         
     }
     
@@ -95,7 +103,7 @@ extension JournalResultCheckView {
                 }
                 
                 if let text = data.etcString {
-                    makeJournalEtcTextBox(text: text)
+                        makeJournalEtcTextBox(text: text)
                 }
             })
             .padding(.horizontal, 10)
