@@ -18,6 +18,7 @@ class SearchViewModel: ObservableObject {
     @Published var searchText: String = ""
     @Published var realTimeSearchResult: [ProductResponse]?
     
+    @Published var naverDataIsLoading: Bool = true
     @Published var naverData: [ProductResponse] = []
     @Published var localDbData: [ProductResponse] = []
     
@@ -61,13 +62,14 @@ extension SearchViewModel {
     func fetchRealTimeResults(for query: String) {
         isShowingRealTimeResults = true
         print("실시간 검색 데이터 받아옴: \(query)")
-        searchNaver()
+        searchNaver(isRealTime: true, keyword: query)
     }
     
     func fetchSearchResults(for query: String) {
         self.isShowingSearchResult = true
         print("검색 결과 받아옴: \(query)")
         self.searchText = query
+        searchNaver(isRealTime: false, keyword: query)
     }
     
     func handleSearchTextChange(_ newValue: String, _ oldValue: String) {
@@ -106,8 +108,10 @@ extension SearchViewModel {
 }
 
 extension SearchViewModel {
-    private func searchNaver() {
-        container.useCaseProvider.searchUseCase.executeSearchNaver(keyword: searchText)
+    private func searchNaver(isRealTime: Bool, keyword: String) {
+        naverDataIsLoading = true
+        
+        container.useCaseProvider.searchUseCase.executeSearchNaver(keyword: keyword)
             .tryMap { responseData -> ResponseData<[ProductResponse]> in
                 if !responseData.isSuccess {
                     throw APIError.serverError(message: responseData.message, code: responseData.code)
@@ -128,7 +132,11 @@ extension SearchViewModel {
                     print("✅ SearchNaver Product Server Completed")
                     
                 case .failure(let failure):
-                    realTimeSearchResult = nil
+                    if isRealTime {
+                        self.realTimeSearchResult = nil
+                    } else {
+                        self.naverData = []
+                    }
                     print("❌ SearchNaver Product Server Failure \(failure)")
                 }
             },
@@ -136,9 +144,18 @@ extension SearchViewModel {
                 guard let self = self else { return }
                 print("🔵 SearchNaver Product Data: \(responseData)")
                 if let data = responseData.result {
-                    self.realTimeSearchResult = data
+                    if isRealTime {
+                        self.realTimeSearchResult = data
+                    } else {
+                        self.naverData = data
+                        naverDataIsLoading = false
+                    }
                 } else {
-                    self.realTimeSearchResult = nil
+                    if isRealTime {
+                        self.realTimeSearchResult = nil
+                    } else {
+                        self.naverData = []
+                    }
                 }
             })
             .store(in: &cancellables)

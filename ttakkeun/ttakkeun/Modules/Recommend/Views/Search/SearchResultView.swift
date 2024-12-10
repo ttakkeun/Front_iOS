@@ -11,7 +11,7 @@ struct SearchResultView: View {
     
     @ObservedObject var viewModel: SearchViewModel
     
-    let padding: CGFloat = 25
+    let padding: CGFloat = 20
     
     var body: some View {
         ScrollView(.vertical, content: {
@@ -36,18 +36,33 @@ struct SearchResultView: View {
     
     @ViewBuilder
     private var naverSearchResult: some View {
-        if !viewModel.naverData.isEmpty {
-            ScrollView(.horizontal, content: {
-                HStack(spacing: 10, content: {
-                    ForEach($viewModel.naverData, id: \.id) { $data in
-                        RecentRecommendation(data: $data, type: .naver)
-                    }
+        if !viewModel.naverDataIsLoading {
+            if !viewModel.naverData.isEmpty {
+                ScrollView(.horizontal, content: {
+                    HStack(spacing: 10, content: {
+                        ForEach($viewModel.naverData, id: \.id) { $data in
+                            RecentRecommendation(data: $data, type: .naver)
+                        }
+                    })
+                    .padding(.horizontal, 10)
+                    .padding(.bottom, 12)
                 })
-                .padding(.horizontal, padding)
-            })
-            
+                
+            } else {
+                warningText(type: .naver)
+            }
         } else {
-            warningText(type: .naver)
+            HStack {
+                
+                Spacer()
+                
+                ProgressView(label: {
+                    Text("외부 상품 정보를 가져오는 중입니다.")
+                })
+                    .controlSize(.small)
+                
+                Spacer()
+            }
         }
     }
     

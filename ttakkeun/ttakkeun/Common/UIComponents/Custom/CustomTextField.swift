@@ -75,21 +75,14 @@ struct CustomTextField: View {
     }
     
     private var inputOutLineTextField: some View {
-        ZStack(alignment: .trailing, content: {
+        HStack(alignment: .center, spacing: 5, content: {
             TextField("", text: $text, axis: .horizontal)
-                .frame(width: maxWidth , height: maxHeight)
+                .frame(width: maxWidth - 56, height: maxHeight, alignment: .leading)
                 .font(.suit(type: .medium, size: fontSize))
                 .foregroundStyle(Color.black)
                 .focused($isTextFocused)
-                .padding(.leading, padding)
                 .background(Color.clear)
-                .clipShape(.rect(cornerRadius: cornerRadius))
-                .overlay(content: {
-                    RoundedRectangle(cornerRadius: cornerRadius)
-                        .inset(by: 0.5)
-                        .stroke(Color.gray200, lineWidth: 1)
-                        .frame(width: maxWidth)
-                })
+                .padding(.leading, padding - 5)
                 .onTapGesture {
                     if !isTextFocused {
                         text = ""
@@ -109,10 +102,26 @@ struct CustomTextField: View {
                         .frame(width: 19, height: 20)
                         .aspectRatio(contentMode: .fit)
                 })
-                .padding(.trailing, 21)
                 .padding(.top, 2)
             }
         })
+        .frame(width: maxWidth, alignment: .leading)
+        .foregroundStyle(Color.black)
+        .focused($isTextFocused)
+        .background(Color.clear)
+        .clipShape(.rect(cornerRadius: cornerRadius))
+        .overlay(content: {
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .inset(by: 0.5)
+                .stroke(Color.gray200, lineWidth: 1)
+                .frame(width: maxWidth)
+        })
+        .onTapGesture {
+            if !isTextFocused {
+                text = ""
+                isTextFocused = true
+            }
+        }
     }
     
     private var placeholderInField: some View {
@@ -125,11 +134,11 @@ struct CustomTextField: View {
             }
             if text.isEmpty && !isTextFocused {
                 Text(placeholder)
-                    .frame(height: 18)
+                    .frame(height: 18, alignment: .leading)
                     .font(.suit(type: .medium, size: fontSize))
                     .foregroundStyle(Color.gray200)
                     .allowsHitTesting(false)
-                    .padding(.leading, 15)
+                    .padding(.leading, showGlass ? 5 : 15)
                     .padding(.vertical, 13)
             }
             
@@ -140,5 +149,13 @@ struct CustomTextField: View {
             print("click")
             isTextFocused = true
         }
+    }
+}
+
+struct CustomTextField_Preview: PreviewProvider {
+    static var previews: some View {
+        CustomTextField(text: .constant(""), placeholder: "검색어를 입력하세요.", cornerRadius: 20, padding: 23, showGlass: true, maxWidth: 319, maxHeight: 40, onSubmit: {
+            print("Hello")
+        })
     }
 }

@@ -46,7 +46,7 @@ struct InAppSearchResult: View {
     
     private var productInfo: some View {
         VStack(alignment: .leading, spacing: 10, content: {
-            Text(DataFormatter.shared.stripHTMLTags(from: data.title).split(separator: "").joined(separator: "\u{200B}"))
+            Text(data.title.split(separator: "").joined(separator: "\u{200B}"))
                 .font(.Body3_semibold)
                 .foregroundStyle(Color.gray900)
                 .lineLimit(nil)

@@ -36,7 +36,7 @@ struct DiagnosticAIProduct: View {
             }
                 
                 VStack(alignment: .leading, spacing: 10, content: {
-                    Text(DataFormatter.shared.stripHTMLTags(from: data.title))
+                    Text(data.title)
                         .font(.Body3_semibold)
                         .foregroundStyle(Color.gray900)
                         .lineLimit(2)
