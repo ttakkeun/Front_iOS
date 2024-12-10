@@ -40,7 +40,9 @@ struct TabView: View {
                 case .schedule:
                     Text("schedule")
                 case .suggestion:
-                    Text("suggestion")
+                    RecommendView(container: container)
+                        .environmentObject(container)
+                        .environmentObject(appFlowViewModel)
                 case .qna:
                     Text("qna")
                 }

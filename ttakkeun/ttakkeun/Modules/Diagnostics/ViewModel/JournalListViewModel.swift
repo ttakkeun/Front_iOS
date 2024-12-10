@@ -95,6 +95,7 @@ extension JournalListViewModel {
             print("JournalList Server : \(responseData)")
             return responseData
         }
+        .receive(on: DispatchQueue.main)
         .sink(receiveCompletion: { [weak self] completion in
             guard let self = self else { return }
             
@@ -141,6 +142,7 @@ extension JournalListViewModel {
                 print("✅ DetailJournalData Server : \(responseData)")
                 return responseData
             }
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
                 detailDataLoading = false
@@ -179,6 +181,7 @@ extension JournalListViewModel {
                     return responseData
                 }
                 .retry(3)
+                .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { completion in
                     switch completion {
                     case .finished:
@@ -220,6 +223,7 @@ extension JournalListViewModel {
                 print("✅ makeDiag Server: \(String(describing: responseData.result))")
                 return responseData
             }
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -254,6 +258,7 @@ extension JournalListViewModel {
                 return responseData
             }
             .retry(3)
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
                 isShowMakeDiagLoading = false

@@ -29,6 +29,9 @@ struct NavigationRoutingView: View {
         case .makeJournalist:
             JournalRegistView(container: container)
                 .environmentObject(container)
+        case .productSearch:
+            RecommendSearchView(container: container)
+                .environmentObject(container)
         }
     }
 }

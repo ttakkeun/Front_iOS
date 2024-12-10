@@ -13,6 +13,7 @@ protocol UseCaseProtocol {
     var scheduleUseCase: ScheduleUseCase { get set }
     var productRecommendUseCase: ProductRecommendUseCase { get set }
     var journalUseCase: JournalUseCase { get set }
+    var searchUseCase: SearchUseCase { get set }
 }
 
 class UseCaseProvider: UseCaseProtocol {
@@ -22,6 +23,7 @@ class UseCaseProvider: UseCaseProtocol {
     var scheduleUseCase: ScheduleUseCase
     var productRecommendUseCase: ProductRecommendUseCase
     var journalUseCase: JournalUseCase
+    var searchUseCase: SearchUseCase
     
     init() {
         self.authUseCase = AuthUseCase()
@@ -29,5 +31,6 @@ class UseCaseProvider: UseCaseProtocol {
         self.scheduleUseCase = ScheduleUseCase()
         self.productRecommendUseCase = ProductRecommendUseCase()
         self.journalUseCase = JournalUseCase()
+        self.searchUseCase = SearchUseCase()
     }
 }

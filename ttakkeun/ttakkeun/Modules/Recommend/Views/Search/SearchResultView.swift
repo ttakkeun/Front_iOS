@@ -83,6 +83,6 @@ extension SearchResultView {
 
 struct SearchResultView_Preview: PreviewProvider {
     static var previews: some View {
-        SearchResultView(viewModel: SearchViewModel())
+        SearchResultView(viewModel: SearchViewModel(container: DIContainer()))
     }
 }

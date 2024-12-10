@@ -9,8 +9,16 @@ import SwiftUI
 
 struct RecommendView: View {
     
-    @StateObject var viewModel: RecommendationViewModel = .init()
+    @StateObject var viewModel: RecommendationProductViewModel
+    
+    @EnvironmentObject var container: DIContainer
+    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
+    
     @Namespace private var animationNamespace
+    
+    init(container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+    }
     
     let padding: CGFloat = 20
     
@@ -21,7 +29,7 @@ struct RecommendView: View {
                 
                 topController
                 
-                if viewModel.productViewModel.selectedCategory == .all {
+                if viewModel.selectedCategory == .all {
                     aiRecommendGroup
                     
                 }
@@ -34,6 +42,11 @@ struct RecommendView: View {
             .padding(.bottom, 80)
         })
         .matchedGeometryEffect(id: "aiRecommendGroup", in: animationNamespace)
+        .navigationDestination(for: NavigationDestination.self) { destination in
+            NavigationRoutingView(destination: destination)
+                .environmentObject(container)
+                .environmentObject(appFlowViewModel)
+        }
     }
     
     // MARK: - Top Controller
@@ -41,9 +54,9 @@ struct RecommendView: View {
     private var topController: some View {
         VStack(alignment: .center, spacing: 17, content: {
             Button(action: {
-                viewModel.searachViewModel.isSearchActive.toggle()
+                viewModel.goToSearchView()
             }, label: {
-                CustomTextField(text: $viewModel.searachViewModel.searchText, placeholder: "검색어를 입력해주세요.", cornerRadius: 20, showGlass: true, maxWidth: 360, maxHeight: 40)
+                CustomTextField(text: .constant(""), placeholder: "검색어를 입력해주세요.", cornerRadius: 20, showGlass: true, maxWidth: 360, maxHeight: 40)
                     .disabled(true)
             })
             
@@ -77,10 +90,10 @@ struct RecommendView: View {
     
     @ViewBuilder
     private var recommendProducts: some View {
-        if !viewModel.productViewModel.aiProducts.isEmpty {
+        if !viewModel.aiProducts.isEmpty {
             ScrollView(.horizontal, content: {
                 HStack(spacing: 10, content: {
-                    ForEach($viewModel.productViewModel.aiProducts, id: \.self) { data in
+                    ForEach($viewModel.aiProducts, id: \.self) { data in
                         RecentRecommendation(data: data, type: .localDB)
                     }
                 })
@@ -106,20 +119,20 @@ struct RecommendView: View {
     
     private var rankRecommendedProducts: some View {
         VStack(spacing: 16, content: {
-            if !viewModel.productViewModel.recommendProducts.isEmpty  {
-                ForEach(Array(viewModel.productViewModel.recommendProducts.enumerated()), id: \.offset) { index, product in
-                    RankRecommendation(data: $viewModel.productViewModel.recommendProducts[index], rank: index)
+            if !viewModel.recommendProducts.isEmpty  {
+                ForEach(Array(viewModel.recommendProducts.enumerated()), id: \.offset) { index, product in
+                    RankRecommendation(data: $viewModel.recommendProducts[index], rank: index)
                 }
             } else {
                 ProgressView {
-                    Text("추천 상품을 받아오는 중입니다. 잠시만 기다려 주세요!")
+                    Text("추천 상품을 받아오는 중입니다. \n잠시만 기다려 주세요!")
                         .multilineTextAlignment(.center)
                         .lineSpacing(2.5)
                         .font(.Body3_medium)
                 }
                 .controlSize(.large)
                 .padding(.vertical, 31)
-                .padding(.horizontal, 69)
+                .padding(.horizontal, 85)
                 .background {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.gray300, lineWidth: 1)
@@ -135,7 +148,7 @@ extension RecommendView {
     func makeButton(part: ExtendPartItem) -> some View {
         Button(action: {
             withAnimation(.easeInOut(duration: 0.1)) {
-                viewModel.productViewModel.selectedCategory = part
+                viewModel.selectedCategory = part
             }
         }, label: {
             Text(part.toKorean())
@@ -143,10 +156,10 @@ extension RecommendView {
                 .padding(.vertical, 6)
                 .padding(.horizontal, 24)
                 .font(.Body2_medium)
-                .foregroundStyle(viewModel.productViewModel.selectedCategory == part ? Color.gray900 : Color.gray600)
+                .foregroundStyle(viewModel.selectedCategory == part ? Color.gray900 : Color.gray600)
                 .background {
                     RoundedRectangle(cornerRadius: 24)
-                        .fill(viewModel.productViewModel.selectedCategory == part ? Color.primarycolor200 : Color.clear)
+                        .fill(viewModel.selectedCategory == part ? Color.primarycolor200 : Color.clear)
                         .stroke(Color.gray700, lineWidth: 1)
                 }
         })
@@ -155,6 +168,8 @@ extension RecommendView {
 
 struct RecommendView_Preview: PreviewProvider {
     static var previews: some View {
-        RecommendView()
+        RecommendView(container: DIContainer())
+            .environmentObject(DIContainer())
+            .environmentObject(AppFlowViewModel())
     }
 }

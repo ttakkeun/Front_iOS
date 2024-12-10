@@ -9,7 +9,6 @@ import Foundation
 import Combine
 
 class SearchViewModel: ObservableObject {
-    @Published var isSearchActive: Bool = false
     @Published var isShowingSearchResult: Bool = false
     @Published var isShowingRealTimeResults: Bool = false
     @Published var isManualSearch: Bool = false
@@ -22,11 +21,16 @@ class SearchViewModel: ObservableObject {
     @Published var naverData: [ProductResponse] = []
     @Published var localDbData: [ProductResponse] = []
     
+    
+    let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
     
-    init() {
+    init(container: DIContainer) {
+        
+        self.container = container
+        
         $searchText
-            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .debounce(for: .milliseconds(200), scheduler: DispatchQueue.main)
             .removeDuplicates()
             .sink { [weak self] newValue in
                 guard let self = self else { return }
@@ -46,9 +50,18 @@ class SearchViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    
+    public func goToSearchView() {
+        
+    }
+}
+
+extension SearchViewModel {
+    
     func fetchRealTimeResults(for query: String) {
         isShowingRealTimeResults = true
         print("실시간 검색 데이터 받아옴: \(query)")
+        searchNaver()
     }
     
     func fetchSearchResults(for query: String) {
@@ -90,6 +103,44 @@ class SearchViewModel: ObservableObject {
             UserDefaults.standard.set(self.recentSearches, forKey: "RecentSearches")
         }
     }
+}
 
-    
+extension SearchViewModel {
+    private func searchNaver() {
+        container.useCaseProvider.searchUseCase.executeSearchNaver(keyword: searchText)
+            .tryMap { responseData -> ResponseData<[ProductResponse]> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                
+                print("✅ SearchNaver Server : \(responseData)")
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                switch completion {
+                case .finished:
+                    print("✅ SearchNaver Product Server Completed")
+                    
+                case .failure(let failure):
+                    realTimeSearchResult = nil
+                    print("❌ SearchNaver Product Server Failure \(failure)")
+                }
+            },
+                  receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                print("🔵 SearchNaver Product Data: \(responseData)")
+                if let data = responseData.result {
+                    self.realTimeSearchResult = data
+                } else {
+                    self.realTimeSearchResult = nil
+                }
+            })
+            .store(in: &cancellables)
+    }
 }
