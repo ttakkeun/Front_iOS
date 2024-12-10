@@ -9,7 +9,7 @@ import SwiftUI
 
 struct JournalRegistContents: View {
     
-    @ObservedObject var viewModel: JournalRegistViewModel
+    @StateObject var viewModel: JournalRegistViewModel
     fileprivate let buttonList: [PartItem] = [.ear, .hair, .eye, .claw , .teeth]
     
     var body: some View {
@@ -148,12 +148,14 @@ extension JournalRegistContents {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     if viewModel.currentPage < 5 {
                         viewModel.currentPage += 1
+                        viewModel.isNextEnabled = false
                     } else {
                     viewModel.makeJournal()
                     }
                         
                 }
             }, color: Color.mainPrimary)
+            .disabled(!viewModel.isNextEnabled)
             })
     }
 }

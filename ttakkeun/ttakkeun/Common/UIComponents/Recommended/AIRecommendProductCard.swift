@@ -49,12 +49,12 @@ struct AIRecommendProductCard: View {
     
     private var productInfo: some View {
         VStack(alignment: .leading, spacing: 6, content: {
-            Text(DataFormatter.shared.stripHTMLTags(from: data.title).split(separator: "").joined(separator: "\u{200B}"))
+            Text(data.title.split(separator: "").joined(separator: "\u{200B}"))
                 .font(.Body3_semibold)
                 .foregroundStyle(Color.gray900)
                 .lineLimit(2)
                 .lineSpacing(1.5)
-//                .truncationMode(.tail)
+                .truncationMode(.tail)
             
             Text("\(DataFormatter.shared.formattedPrice(from: data.price))원")
                 .font(.Body2_bold)

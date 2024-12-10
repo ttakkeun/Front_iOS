@@ -9,7 +9,12 @@ import SwiftUI
 
 struct RecommendSearchView: View {
     
-    @ObservedObject var viewModel: SearchViewModel
+    @EnvironmentObject var container: DIContainer
+    @StateObject var viewModel: SearchViewModel
+    
+    init(container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5, content: {
@@ -21,25 +26,28 @@ struct RecommendSearchView: View {
             
             Spacer()
             
-            if viewModel.isShowingSearchResult {
-                SearchResultView(viewModel: viewModel)
-            } else if viewModel.isShowingRealTimeResults {
-                RealTiemSearchView(viewModel: viewModel, onItemClick: { selectedText in
-                    performSearch(with: selectedText)
-                })
-            }  else {
-                RecentSearchView(viewModel: viewModel, onItemClick: { selectedText in
-                    performManualSearch(with: selectedText)
-                })
+            ScrollView(.vertical) {
+                if viewModel.isShowingSearchResult {
+                    SearchResultView(viewModel: viewModel)
+                } else if viewModel.isShowingRealTimeResults {
+                    RealTiemSearchView(viewModel: viewModel, onItemClick: { selectedText in
+                        performSearch(with: selectedText)
+                    })
+                }  else {
+                    RecentSearchView(viewModel: viewModel, onItemClick: { selectedText in
+                        performManualSearch(with: selectedText)
+                    })
+                }
             }
         })
+        .navigationBarBackButtonHidden(true)
     }
     
     
     private var topControl: some View {
         HStack(spacing: 24, content: {
             Button(action: {
-                viewModel.isSearchActive = false
+                container.navigationRouter.pop()
             }, label: {
                 Image(systemName: "chevron.backward")
                     .foregroundStyle(Color.black)
@@ -51,6 +59,7 @@ struct RecommendSearchView: View {
             .onChange(of: viewModel.searchText) { newValue, oldValue in
                 viewModel.handleSearchTextChange(newValue, oldValue)
             }
+            .submitScope()
         })
         .modifier(SearchViewModifier())
     }
@@ -66,11 +75,5 @@ struct RecommendSearchView: View {
         guard !text.isEmpty else { return }
         viewModel.isManualSearch = true
         viewModel.fetchSearchResults(for: text)
-    }
-}
-
-struct RecommendSearchView_Preview: PreviewProvider {
-    static var previews: some View {
-        RecommendSearchView(viewModel: SearchViewModel())
     }
 }
