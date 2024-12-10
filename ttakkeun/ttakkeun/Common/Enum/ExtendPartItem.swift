@@ -58,4 +58,13 @@ enum ExtendPartItem: CaseIterable, Hashable, Codable {
             return partItem.toAfterColor()
         }
     }
+    
+    func toPartItemRawValue() -> PartItem.RawValue? {
+        switch self {
+        case .part(let partItem):
+            return partItem.rawValue
+        default:
+            return nil
+        }
+    }
 }

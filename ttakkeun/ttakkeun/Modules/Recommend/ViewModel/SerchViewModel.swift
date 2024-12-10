@@ -20,7 +20,12 @@ class SearchViewModel: ObservableObject {
     
     @Published var naverDataIsLoading: Bool = true
     @Published var naverData: [ProductResponse] = []
+    
+    @Published var isIitialLoading: Bool = true
+    @Published var localDBDataIsLoading: Bool = false
     @Published var localDbData: [ProductResponse] = []
+    @Published var localPage: Int = 0
+    @Published var canLoadMore: Bool = true
     
     
     let container: DIContainer
@@ -70,6 +75,7 @@ extension SearchViewModel {
         print("검색 결과 받아옴: \(query)")
         self.searchText = query
         searchNaver(isRealTime: false, keyword: query)
+        startNewLocalDbSearch(query)
     }
     
     func handleSearchTextChange(_ newValue: String, _ oldValue: String) {
@@ -159,5 +165,63 @@ extension SearchViewModel {
                 }
             })
             .store(in: &cancellables)
+    }
+    
+    public func searchLocalDb(keyword: String, page: Int) {
+        guard !localDBDataIsLoading && canLoadMore else { return }
+        
+        localDBDataIsLoading = true
+        
+        container.useCaseProvider.searchUseCase.executeSearchLocalDB(keyword: keyword, page: page)
+            .tryMap { responseData -> ResponseData<[ProductResponse]> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                
+                print("✅ searchLocalDb Server : \(responseData)")
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                
+                localDBDataIsLoading = false
+                
+                switch completion {
+                case .finished:
+                    print("✅ localDB Product Server Completed")
+                case .failure(let failure):
+                    print("❌ localDB Product Server Failure \(failure)")
+                    canLoadMore = false
+                }
+            },
+                  receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                if let data = responseData.result {
+                    if !data.isEmpty {
+                        self.localDbData.append(contentsOf: data)
+                        self.localPage += 1
+                        self.canLoadMore = true
+                    }
+                } else {
+                    self.canLoadMore = false
+                }
+                
+                self.isIitialLoading = false
+            })
+            .store(in: &cancellables)
+    }
+    
+    func startNewLocalDbSearch(_ keyword: String) {
+        self.searchText = keyword
+        self.localPage = 0
+        self.canLoadMore = true
+        self.localDbData = []
+        self.isIitialLoading = true
+        searchLocalDb(keyword: searchText, page: localPage)
     }
 }

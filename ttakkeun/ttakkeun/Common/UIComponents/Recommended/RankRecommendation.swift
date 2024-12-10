@@ -33,8 +33,9 @@ struct RankRecommendation: View {
         if let url = URL(string: data.image) {
             KFImage(url)
                 .placeholder {
-                    ProgressView()
-                        .controlSize(.regular)
+                    Image(systemName: "questionmark.square.fill")
+                        .resizable()
+                        .frame(width: 30, height: 30)
                 }.retry(maxCount: 2, interval: .seconds(2))
                 .resizable()
                 .frame(width: 95, height: 95)
@@ -66,7 +67,7 @@ struct RankRecommendation: View {
     
     private var productInfo: some View {
         VStack(alignment: .leading, spacing: 5, content: {
-            Text(DataFormatter.shared.stripHTMLTags(from: data.title).split(separator: "").joined(separator: "\u{200B}"))
+            Text(data.title.split(separator: "").joined(separator: "\u{200B}"))
                 .font(.Body3_semibold)
                 .foregroundStyle(Color.gray900)
                 .lineLimit(2)
@@ -82,7 +83,7 @@ struct RankRecommendation: View {
             
             LikeButton(data: $data)
         })
-        .frame(width: 236, height: 95)
+        .frame(width: 236, height: 95, alignment: .leading)
     }
 }
 

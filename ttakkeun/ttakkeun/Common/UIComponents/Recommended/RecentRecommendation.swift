@@ -24,7 +24,7 @@ struct RecentRecommendation: View {
             
             productInfo
         })
-        .frame(width: returnBackgroundSize().0, height: returnBackgroundSize().1)
+        .frame(width: returnBackgroundSize().0, height: returnBackgroundSize().1, alignment: .topLeading)
         .padding(18)
         .background {
             RoundedRectangle(cornerRadius: 10)

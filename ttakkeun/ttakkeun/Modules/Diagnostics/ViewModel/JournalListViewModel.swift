@@ -76,7 +76,6 @@ extension JournalListViewModel {
         }
         
         isFetching = true
-        canLoadMore = true
         
         container.useCaseProvider.journalUseCase.executeGetJournalList(
             petId: UserState.shared.getPetId(),
@@ -100,7 +99,6 @@ extension JournalListViewModel {
             guard let self = self else { return }
             
             isFetching = false
-            canLoadMore = false
             
             switch completion {
             case .finished:
@@ -117,6 +115,7 @@ extension JournalListViewModel {
             if let newRecords = responseData.result?.recordList, !newRecords.isEmpty {
                 self.recordList.append(contentsOf: newRecords)
                 self.currentPage += 1
+                canLoadMore = true
             } else {
                 self.canLoadMore = false
             }

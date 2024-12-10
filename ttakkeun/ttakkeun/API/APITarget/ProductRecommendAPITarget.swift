@@ -13,6 +13,8 @@ enum ProductRecommendAPITarget {
     case getAIRecommend(petId: Int)
     /// 유저 추천 상품 API
     case getRankProduct(pageNum: Int)
+    /// 유저 추천 상품 태그 조회 API
+    case getRankProductTag(tag: PartItem.RawValue, page: Int)
 }
 
 extension ProductRecommendAPITarget: APITargetType {
@@ -23,19 +25,21 @@ extension ProductRecommendAPITarget: APITargetType {
             return "/api/product/ai/\(id)"
         case .getRankProduct(let page):
             return "/api/product/rank/\(page)"
+        case .getRankProductTag(let tag, let page):
+            return "/api/product/tag/\(tag)/\(page)"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getAIRecommend, .getRankProduct:
+        case .getAIRecommend, .getRankProduct, .getRankProductTag:
             return .get
         }
     }
     
     var task: Moya.Task {
         switch self {
-        case .getAIRecommend, .getRankProduct:
+        case .getAIRecommend, .getRankProduct, .getRankProductTag:
             return .requestPlain
         }
     }

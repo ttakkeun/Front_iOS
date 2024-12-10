@@ -26,7 +26,7 @@ class SearchUseCase: SearchUseCaseProtocol {
     }
     
     func executeSearchLocalDB(keyword: String, page: Int) -> AnyPublisher<ResponseData<[ProductResponse]>, MoyaError> {
-        return searchRepository.searchLocalDB(keyword: keyword, page: 0)
+        return searchRepository.searchLocalDB(keyword: keyword, page: page)
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }

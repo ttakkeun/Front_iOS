@@ -33,8 +33,9 @@ struct AIRecommendProductCard: View {
         if let url = URL(string: data.image) {
             KFImage(url)
                 .placeholder {
-                    ProgressView()
-                        .controlSize(.regular)
+                    Image(systemName: "questionmark.square.fill")
+                        .resizable()
+                        .frame(width: 30, height: 30)
                 }.retry(maxCount: 2, interval: .seconds(2))
                 .onFailure{ _ in
                     print("AI 추천 상품 이미지 로딩 실패")

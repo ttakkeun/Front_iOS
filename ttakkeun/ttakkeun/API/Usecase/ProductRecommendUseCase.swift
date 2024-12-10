@@ -29,4 +29,10 @@ class ProductRecommendUseCase: ProductRecommendUseCaseProtocol {
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }
+    
+    func executeGetRankProductTag(tag: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<[ProductResponse]>, MoyaError> {
+        return scheduleRepository.getRankProductTag(tag: tag, page: page)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
 }

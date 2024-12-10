@@ -30,4 +30,10 @@ class ProductRecommendService: ProductRecommendServiceProtocol {
             .map(ResponseData<[ProductResponse]>.self)
             .eraseToAnyPublisher()
     }
+    
+    func getRankProductTagData(tag: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<[ProductResponse]>, MoyaError> {
+        return provider.requestPublisher(.getRankProductTag(tag: tag, page: page))
+            .map(ResponseData<[ProductResponse]>.self)
+            .eraseToAnyPublisher()
+    }
 }

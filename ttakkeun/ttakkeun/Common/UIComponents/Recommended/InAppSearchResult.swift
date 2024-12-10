@@ -11,7 +11,7 @@ import Kingfisher
 struct InAppSearchResult: View {
     
     @Binding var data: ProductResponse
-    let size: CGFloat = 162
+    let size: CGFloat = 160
     
     init(data: Binding<ProductResponse>) {
         self._data = data
@@ -29,8 +29,9 @@ struct InAppSearchResult: View {
         if let url = URL(string: data.image) {
             KFImage(url)
                 .placeholder {
-                    ProgressView()
-                        .controlSize(.regular)
+                    Image(systemName: "questionmark.square.fill")
+                        .resizable()
+                        .frame(width: 30, height: 30)
                 }.retry(maxCount: 2, interval: .seconds(2))
                 .resizable()
                 .frame(width: size, height: size)

@@ -29,6 +29,7 @@ struct SearchResultView: View {
             Text("외부 검색 상품")
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
+                .padding(.leading, 5)
             
             naverSearchResult
         })
@@ -44,7 +45,7 @@ struct SearchResultView: View {
                             RecentRecommendation(data: $data, type: .naver)
                         }
                     })
-                    .padding(.horizontal, 10)
+                    .padding(.horizontal, 5)
                     .padding(.bottom, 12)
                 })
                 
@@ -52,17 +53,7 @@ struct SearchResultView: View {
                 warningText(type: .naver)
             }
         } else {
-            HStack {
-                
-                Spacer()
-                
-                ProgressView(label: {
-                    Text("외부 상품 정보를 가져오는 중입니다.")
-                })
-                    .controlSize(.small)
-                
-                Spacer()
-            }
+            loadingDataView(text: "외부 상품 정보를 가져오는 중입니다.")
         }
     }
     
@@ -76,14 +67,32 @@ struct SearchResultView: View {
     
     @ViewBuilder
     private var localSearchResult: some View {
-        if !viewModel.localDbData.isEmpty {
-            LazyVGrid(columns: Array(repeating: GridItem(.fixed(162)), count: 2), spacing: 10 , content: {
-                ForEach($viewModel.localDbData, id: \.self) { $data in
-                    InAppSearchResult(data: $data)
-                }
-            })
+        if !viewModel.isIitialLoading {
+            if !viewModel.localDbData.isEmpty {
+                LazyVGrid(columns: Array(repeating: GridItem(.fixed(162), spacing: 42), count: 2), spacing: 25, content: {
+                    ForEach($viewModel.localDbData, id: \.self) { $data in
+                        InAppSearchResult(data: $data)
+                            .onAppear {
+                                guard !viewModel.localDBDataIsLoading, viewModel.canLoadMore else { return }
+                                
+                                if data == viewModel.localDbData.last {
+                                    print("🔵 마지막 항목 도달 - 다음 페이지 로딩 시작")
+                                    viewModel.searchLocalDb(keyword: viewModel.searchText, page: viewModel.localPage)
+                                }
+                            }
+                    }
+                    
+                    if viewModel.localDBDataIsLoading {
+                        ProgressView()
+                            .controlSize(.mini)
+                    }
+                })
+            }
+            else {
+                warningText(type: .local)
+            }
         } else {
-            warningText(type: .local)
+            loadingDataView(text: "내부 상품 정보를 가져오는 중입니다.")
         }
     }
 }
@@ -92,6 +101,19 @@ extension SearchResultView {
     func warningText(type: SearchType) -> some View {
         Text(type.rawValue)
             .modifier(ProductWarningModifier())
+    }
+    
+    func loadingDataView(text: String) -> some View {
+        HStack {
+            Spacer()
+            
+            ProgressView(label: {
+                Text(text)
+            })
+            .controlSize(.regular)
+            
+            Spacer()
+        }
     }
 }
 

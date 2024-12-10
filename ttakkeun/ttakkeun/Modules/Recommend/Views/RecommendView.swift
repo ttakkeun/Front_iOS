@@ -23,25 +23,24 @@ struct RecommendView: View {
     let padding: CGFloat = 20
     
     var body: some View {
-        ScrollView(.vertical, content: {
-            VStack(spacing: 24, content: {
-                TopStatusBar()
+        VStack(alignment: .leading, spacing: 0, content: {
+            TopStatusBar()
+            ScrollView(.vertical, content: {
                 
-                topController
-                
-                if viewModel.selectedCategory == .all {
-                    aiRecommendGroup
+                VStack(spacing: 24, content: {
                     
-                }
-                
-                Spacer().frame(height: 2)
-                
-                rankRecommendGroup
-                
+                    topController
+                    
+                    if viewModel.selectedCategory == .all {
+                        aiRecommendGroup
+                    }
+                    
+                    rankRecommendGroup
+                    
+                })
+                .padding(.bottom, 110)
             })
-            .padding(.bottom, 80)
         })
-        .matchedGeometryEffect(id: "aiRecommendGroup", in: animationNamespace)
         .navigationDestination(for: NavigationDestination.self) { destination in
             NavigationRoutingView(destination: destination)
                 .environmentObject(container)
@@ -63,6 +62,7 @@ struct RecommendView: View {
             
             topSegmentedControl
         })
+        .padding(.top, 10)
     }
     
     private var topSegmentedControl: some View {
@@ -72,7 +72,7 @@ struct RecommendView: View {
                     makeButton(part: part)
                 }
             })
-            .padding(.horizontal, padding)
+            .padding(.horizontal, 34)
             .padding(.vertical, 5)
         })
         .scrollIndicators(.hidden)
@@ -84,8 +84,22 @@ struct RecommendView: View {
     private var aiRecommendGroup: some View {
         VStack(alignment: .leading, spacing: -1, content: {
             AIRecommendTitle(padding: padding, title: "따끈따끈 AI 최근 추천")
-            recommendProducts
+            if !viewModel.isLoadingAIProduct {
+                recommendProducts
+            } else {
+                HStack {
+                    Spacer()
+                    
+                    ProgressView(label: {
+                        Text("최근 AI 제품을 받아오는 중입니다.")
+                            .controlSize(.regular)
+                    })
+                }
+            }
         })
+        .task {
+            viewModel.getAIProucts()
+        }
     }
     
     @ViewBuilder
@@ -111,7 +125,7 @@ struct RecommendView: View {
             Text("랭킹별 추천 상품")
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
-                .padding(.leading, padding)
+                .padding(.leading, 5)
             
             rankRecommendedProducts
         })
@@ -122,6 +136,20 @@ struct RecommendView: View {
             if !viewModel.recommendProducts.isEmpty  {
                 ForEach(Array(viewModel.recommendProducts.enumerated()), id: \.offset) { index, product in
                     RankRecommendation(data: $viewModel.recommendProducts[index], rank: index)
+                        .task {
+                            if product == viewModel.recommendProducts.last {
+                                if viewModel.selectedCategory == .all {
+                                    viewModel.getUserRecommendAll(page: viewModel.userProductPage)
+                                } else {
+                                    viewModel.getUserRecommendTag(tag: viewModel.selectedCategory.toPartItemRawValue() ?? "EAR", page: viewModel.userProductPage)
+                                }
+                            }
+                        }
+                }
+                
+                if viewModel.isLoadingUserProduct || viewModel.isLoadingRankTagProduct {
+                    ProgressView()
+                        .controlSize(.regular)
                 }
             } else {
                 ProgressView {
@@ -140,6 +168,12 @@ struct RecommendView: View {
             }
         })
         .padding(.horizontal, 4.5)
+        .onChange(of: viewModel.selectedCategory, {
+            loadInitialData()
+        })
+        .task {
+            loadInitialData()
+        }
     }
     
 }
@@ -147,9 +181,7 @@ struct RecommendView: View {
 extension RecommendView {
     func makeButton(part: ExtendPartItem) -> some View {
         Button(action: {
-            withAnimation(.easeInOut(duration: 0.1)) {
-                viewModel.selectedCategory = part
-            }
+            viewModel.selectedCategory = part
         }, label: {
             Text(part.toKorean())
                 .frame(width: 28, height: 20)
@@ -163,6 +195,13 @@ extension RecommendView {
                         .stroke(Color.gray700, lineWidth: 1)
                 }
         })
+    }
+    func loadInitialData() {
+        if viewModel.selectedCategory == .all {
+            viewModel.startNewUserProductAll()
+        } else {
+            viewModel.startNewRankTagProducts()
+        }
     }
 }
 

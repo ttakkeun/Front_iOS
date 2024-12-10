@@ -26,4 +26,8 @@ class ProductRecommendRepository: ProductRecommendRepositoryProtocol {
     func getRankProduct(pageNum: Int) -> AnyPublisher<ResponseData<[ProductResponse]>, MoyaError> {
         return productService.getRankProductData(pageNum: pageNum)
     }
+    
+    func getRankProductTag(tag: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<[ProductResponse]>, MoyaError> {
+        return productService.getRankProductTagData(tag: tag, page: page)
+    }
 }
