@@ -39,7 +39,6 @@ struct JournalResultCheckView: View {
             }
         })
         .safeAreaPadding(EdgeInsets(top: 20, leading: 24, bottom: 20, trailing: 25))
-        .clipShape(.rect(topLeadingRadius: 10, topTrailingRadius: 10))
     }
 }
 

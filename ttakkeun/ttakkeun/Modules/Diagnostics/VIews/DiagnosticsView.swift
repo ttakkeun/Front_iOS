@@ -55,9 +55,9 @@ struct DiagnosticsView: View {
                     journalListViewModel.isCalendarPresented = false
                 })
                 .datePickerStyle(GraphicalDatePickerStyle())
-                .clipShape(UnevenRoundedRectangle(topLeadingRadius: 10, topTrailingRadius: 10))
                 .presentationDragIndicator(.visible)
                 .presentationDetents([.fraction(0.5)])
+                .presentationCornerRadius(20)
         })
         .fullScreenCover(isPresented: $journalListViewModel.showFullScreenAI, content: {
             DiagnosingFlowView(viewModel: journalListViewModel)

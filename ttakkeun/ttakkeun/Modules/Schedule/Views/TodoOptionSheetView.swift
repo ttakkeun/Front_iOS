@@ -16,7 +16,6 @@ struct TodoOptionSheetView: View {
             mainContents
         })
         .safeAreaPadding(EdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0))
-        .clipShape(UnevenRoundedRectangle(topLeadingRadius: 10, topTrailingRadius: 10))
         .frame(width: 394, height: 340)
     }
     

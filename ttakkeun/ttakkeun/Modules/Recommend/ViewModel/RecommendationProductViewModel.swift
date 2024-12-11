@@ -10,10 +10,13 @@ import Combine
 import CombineMoya
 
 class RecommendationProductViewModel: ObservableObject {
+    
+    @Published var selectedData: ProductResponse? = nil
+    @Published var isShowSheetView: Bool = false
+    
     @Published var selectedCategory: ExtendPartItem = .all
     @Published var aiProducts: [ProductResponse] = []
     @Published var recommendProducts: [ProductResponse] = []
-    
 
     @Published var isLoadingAIProduct: Bool = false
     

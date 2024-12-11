@@ -22,6 +22,7 @@ struct SearchResultView: View {
             })
             .modifier(SearchViewModifier())
         })
+        .frame(maxWidth: .infinity)
     }
     
     private var naverSearchResultGroup: some View {
@@ -59,7 +60,7 @@ struct SearchResultView: View {
     
     private var localSearchResultGroup: some View {
         VStack(alignment: .leading, spacing: 0, content: {
-            AIRecommendTitle(padding: 5, title: "앱 내 검색 결과")
+            AIRecommendTitle(padding: 0, title: "앱 내 검색 결과")
             
             localSearchResult
         })
@@ -114,7 +115,7 @@ extension SearchResultView {
             
             Spacer()
         }
-        .modifier(ProductWarningModifier())
+        .modifier(ProductWarningModifier(horizontalPadding: 75))
     }
 }
 

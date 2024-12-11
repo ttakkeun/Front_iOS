@@ -41,6 +41,7 @@ struct ProfileView: View {
             .navigationDestination(for: NavigationDestination.self) {
                 NavigationRoutingView(destination: $0)
                     .environmentObject(container)
+                    .environmentObject(appFlopwViewModel)
             }
         }
     }
@@ -127,11 +128,10 @@ extension ProfileView {
                 .animation(.bouncy, value: scaleValue(geometry: geometry, itemGeometry: item))
                 .environmentObject(appFlopwViewModel)
                 .onChange(of: self.isCentered(geometry: geometry, itemGeometry: item)) {
-                    if self.isCentered(geometry: geometry, itemGeometry: item) {
-                        viewModel.titleName = data.name
-                        viewModel.isLastedCard = false
-                        self.viewModel.updateBackgroundColor()
-                    }
+                    changeProfileValue(geometry: geometry, item: item, data: data)
+                }
+                .onAppear {
+                    changeProfileValue(geometry: geometry, item: item, data: data)
                 }
         }
         .frame(width: 200)
@@ -150,6 +150,14 @@ extension ProfileView {
                 }
         }
         .frame(width: 200)
+    }
+    
+    private func changeProfileValue(geometry: GeometryProxy, item: GeometryProxy, data: PetProfileDetail) {
+        if self.isCentered(geometry: geometry, itemGeometry: item) {
+            viewModel.titleName = data.name
+            viewModel.isLastedCard = false
+            self.viewModel.updateBackgroundColor()
+        }
     }
 }
 

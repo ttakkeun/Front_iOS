@@ -36,7 +36,7 @@ class SearchViewModel: ObservableObject {
         self.container = container
         
         $searchText
-            .debounce(for: .milliseconds(200), scheduler: DispatchQueue.main)
+            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
             .removeDuplicates()
             .sink { [weak self] newValue in
                 guard let self = self else { return }
