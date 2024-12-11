@@ -68,9 +68,9 @@ struct MyPageInfoBox: View {
                 }
             }
         }
-        .padding(.horizontal, 14)
+        .frame(width: 320, alignment: .leading)
         .padding(.vertical, 15)
-        .frame(width: 347, alignment: .leading)
+        .padding(.horizontal, 14)
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color.answerBg)
@@ -83,9 +83,9 @@ struct MypageInfoBox_Preview: PreviewProvider {
     static var previews: some View {
         let myPageInfo = MyPageInfo(
             title: "앱 정보",
-            firstBtn: BtnInfo(name: "알림 설정", action: { print("알림 설정 버튼 눌림") }),
-            secondBtn: BtnInfo(name: "앱 버전 정보", action: { print("앱 버전 정보 버튼 눌림") }),
-            thirdBtn: BtnInfo(name: "이용약관 및 정책", action: { print("이용약관 및 정책 버튼 눌림")})
+            firstBtn: BtnInfo(name: "알림 설정", date: nil, action: { print("알림 설정 버튼 눌림") }),
+            secondBtn: BtnInfo(name: "앱 버전 정보", date: nil, action: { print("앱 버전 정보 버튼 눌림") }),
+            thirdBtn: BtnInfo(name: "이용약관 및 정책", date: nil, action: { print("이용약관 및 정책 버튼 눌림")})
         )
         
         MyPageInfoBox(myPageInfo: myPageInfo)

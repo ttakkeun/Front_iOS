@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct SelectBtnBox: View {
-    
+   
+//    var buttonInfo: BtnInfo
     
     var title: String
     var date: String?

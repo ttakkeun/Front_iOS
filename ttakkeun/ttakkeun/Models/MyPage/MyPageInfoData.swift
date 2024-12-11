@@ -17,7 +17,9 @@ struct MyPageInfo {
 }
 
 /// 개별 버튼 정보
-struct BtnInfo {
+struct BtnInfo: Identifiable {
+    let id = UUID()
     let name: String
-    let action: () -> Void
+    let date: String?
+    let action:  () -> Void
 }
