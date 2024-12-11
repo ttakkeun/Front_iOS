@@ -142,3 +142,9 @@ struct AlertAction {
     @Binding var showAlert: Bool
     let yes: () -> Void
 }
+
+struct CustomAlert_Preview: PreviewProvider {
+    static var previews: some View {
+        CustomAlert(alertText: Text("asdasdasd \nadajhjskdhka"), aiCount: nil, alertAction: AlertAction(showAlert: .constant(true), yes: { print("yes")}), alertType: .normalAlert)
+    }
+}

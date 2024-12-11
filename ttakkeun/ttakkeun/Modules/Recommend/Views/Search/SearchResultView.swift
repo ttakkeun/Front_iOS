@@ -15,7 +15,7 @@ struct SearchResultView: View {
     
     var body: some View {
         ScrollView(.vertical, content: {
-            VStack(alignment: .leading, spacing: 27, content: {
+            VStack(alignment: .center, spacing: 27, content: {
                 naverSearchResultGroup
                 
                 localSearchResultGroup
@@ -114,6 +114,7 @@ extension SearchResultView {
             
             Spacer()
         }
+        .modifier(ProductWarningModifier())
     }
 }
 
