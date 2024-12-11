@@ -92,6 +92,10 @@ enum Icon: String {
     case againIcon = "againIcon"
     case replaceIcon = "replaceIcon"
     
+    // MARK: - MyPage
+    case tips = "tips"
+    case scrap = "scrap"
+
     // MARK: - QnA
     case bottomRightTag = "bottomRightTag"
     

@@ -13,6 +13,7 @@ struct CustomTextEditor: ViewModifier {
     let placeholder: String
     let maxTextCount: Int
     let strokeColor: Color
+    let backgroundColor: Color
     
     init(text: Binding<String>,
          placeholder: String,
@@ -22,6 +23,7 @@ struct CustomTextEditor: ViewModifier {
         self.placeholder = placeholder
         self.maxTextCount = maxTextCount
         self.strokeColor = Color.gray200
+        self.backgroundColor = Color.answerBg
     }
     
     init(
@@ -34,6 +36,19 @@ struct CustomTextEditor: ViewModifier {
         self.placeholder = placeholder
         self.maxTextCount = maxTextCount
         self.strokeColor = strokeColor
+        self.backgroundColor = Color.answerBg
+    }
+    
+    init(text: Binding<String>,
+         placeholder: String,
+         maxTextCount: Int,
+         backgroundColor: Color
+    ) {
+        self._text = text
+        self.placeholder = placeholder
+        self.maxTextCount = maxTextCount
+        self.strokeColor = Color.gray200
+        self.backgroundColor = backgroundColor
     }
     
     func body(content: Content) -> some View {
@@ -51,7 +66,7 @@ struct CustomTextEditor: ViewModifier {
                 }
             })
             .textInputAutocapitalization(.none)
-            .background(Color.answerBg)
+            .background(backgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .font(.Body3_medium)
             .foregroundStyle(Color.gray900)
@@ -83,6 +98,10 @@ extension TextEditor {
     
     func customStyleTipsEditor(text: Binding<String>, placeholder: String, maxTextCount: Int, border: Color) -> some View {
         self.modifier(CustomTextEditor(text: text, placeholder: placeholder, maxTextCount: maxTextCount, strokeColor: border))
+    }
+    
+    func customStyleTipsEditor(text: Binding<String>, placeholder: String, maxTextCount: Int, backColor: Color) -> some View {
+        self.modifier(CustomTextEditor(text: text, placeholder: placeholder, maxTextCount: maxTextCount, backgroundColor: backColor))
     }
 }
 
