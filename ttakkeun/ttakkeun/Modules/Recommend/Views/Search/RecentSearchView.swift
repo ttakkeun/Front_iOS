@@ -70,6 +70,9 @@ extension RecentSearchView {
                 Text(text)
                     .font(.Body2_regular)
                     .foregroundStyle(Color.gray900)
+                    .lineLimit(nil)
+                    .lineSpacing(2)
+                    .multilineTextAlignment(.leading)
                 
                 Spacer()
                 

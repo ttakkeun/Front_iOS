@@ -47,4 +47,22 @@ class JournalUseCase: JournalUseCaseProtocol {
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }
+    
+    func executeMakeDiag(data: CreateDiagRequst) -> AnyPublisher<ResponseData<DiagResultResponse>, MoyaError> {
+        return journalRepository.makeDiag(data: data)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executeUpdateNaver(data: DiagResultResponse) -> AnyPublisher<ResponseData<UpdateNaverResponse>, MoyaError> {
+        return journalRepository.updateNaver(data: data)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executeGetDiagResult(diagId: Int) -> AnyPublisher<ResponseData<DiagnosticResolutionResponse>, MoyaError> {
+        return journalRepository.getDiagResult(diagId: diagId)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
 }

@@ -22,6 +22,14 @@ enum JournalAPITarget {
     
     /* 일지 기록 검색 */
     case searchGetJournal(category: PartItem.RawValue, page: Int, date: String)
+    
+    /* 진단 생성 */
+    case makeDiagnosis(data: CreateDiagRequst)
+    
+    /* 진단 생성 후, 추천 제품 네이버 쇼핑 정보로 업데이트*/
+    case updateNaverDiag(data: DiagResultResponse)
+    
+    case getDiagResult(diagId: Int)
 }
 
 extension JournalAPITarget: APITargetType {
@@ -40,17 +48,25 @@ extension JournalAPITarget: APITargetType {
             return "/api/record/\(recordId)"
         case .searchGetJournal(let category, _, _):
             return "/api/record/search/\(UserState.shared.getPetId())/\(category)"
+        case .makeDiagnosis:
+            return "/api/diagnose/loading"
+        case .updateNaverDiag(let data):
+            return "/api/diagnose/result/\(data.result_id)"
+        case .getDiagResult(let diagId):
+            return "/api/diagnose/result/\(diagId)"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getJournalList, .getDetailJournalData, .getAnswerList, .searchGetJournal:
+        case .getJournalList, .getDetailJournalData, .getAnswerList, .searchGetJournal, .getDiagResult:
             return .get
-        case .makeJournal:
+        case .makeJournal, .makeDiagnosis:
             return .post
         case .deleteJournal:
             return .delete
+        case .updateNaverDiag:
+            return .patch
         }
     }
     
@@ -67,6 +83,12 @@ extension JournalAPITarget: APITargetType {
             return .requestPlain
         case .searchGetJournal(_, let page, let date):
             return .requestParameters(parameters: ["page": page, "date": date], encoding: URLEncoding.default)
+        case .makeDiagnosis(let data):
+            return .requestJSONEncodable(data)
+        case .updateNaverDiag(let data):
+            return .requestParameters(parameters: ["products": data.products], encoding: JSONEncoding.default)
+        case .getDiagResult:
+            return .requestPlain
         }
     }
     

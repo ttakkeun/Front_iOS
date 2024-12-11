@@ -70,7 +70,7 @@ struct UserRecommendProductCard: View {
     @ViewBuilder
     private var productInfo: VStack<some View> {
         VStack(alignment: .leading, spacing: 4, content: {
-            Text(DataFormatter.shared.stripHTMLTags(from: data.title).split(separator: "").joined(separator: "\u{200B}"))
+            Text(data.title.split(separator: "").joined(separator: "\u{200B}"))
                 .font(.Body5_medium)
                 .foregroundStyle(Color.gray900)
                 .lineLimit(nil)

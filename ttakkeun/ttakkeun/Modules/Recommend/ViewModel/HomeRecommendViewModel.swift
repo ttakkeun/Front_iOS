@@ -63,6 +63,7 @@ extension HomeRecommendViewModel {
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.aiProduct = aiProductData.result
+                    print("aiProduct: \(String(describing: self.aiProduct))")
                 }
             })
             .store(in: &aiCancellables)

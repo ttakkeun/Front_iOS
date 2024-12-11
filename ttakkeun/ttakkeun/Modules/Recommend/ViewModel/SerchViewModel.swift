@@ -9,7 +9,6 @@ import Foundation
 import Combine
 
 class SearchViewModel: ObservableObject {
-    @Published var isSearchActive: Bool = false
     @Published var isShowingSearchResult: Bool = false
     @Published var isShowingRealTimeResults: Bool = false
     @Published var isManualSearch: Bool = false
@@ -19,14 +18,25 @@ class SearchViewModel: ObservableObject {
     @Published var searchText: String = ""
     @Published var realTimeSearchResult: [ProductResponse]?
     
+    @Published var naverDataIsLoading: Bool = true
     @Published var naverData: [ProductResponse] = []
-    @Published var localDbData: [ProductResponse] = []
     
+    @Published var isIitialLoading: Bool = true
+    @Published var localDBDataIsLoading: Bool = false
+    @Published var localDbData: [ProductResponse] = []
+    @Published var localPage: Int = 0
+    @Published var canLoadMore: Bool = true
+    
+    
+    let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
     
-    init() {
+    init(container: DIContainer) {
+        
+        self.container = container
+        
         $searchText
-            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .debounce(for: .milliseconds(200), scheduler: DispatchQueue.main)
             .removeDuplicates()
             .sink { [weak self] newValue in
                 guard let self = self else { return }
@@ -46,15 +56,26 @@ class SearchViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    
+    public func goToSearchView() {
+        
+    }
+}
+
+extension SearchViewModel {
+    
     func fetchRealTimeResults(for query: String) {
         isShowingRealTimeResults = true
         print("실시간 검색 데이터 받아옴: \(query)")
+        searchNaver(isRealTime: true, keyword: query)
     }
     
     func fetchSearchResults(for query: String) {
         self.isShowingSearchResult = true
         print("검색 결과 받아옴: \(query)")
         self.searchText = query
+        searchNaver(isRealTime: false, keyword: query)
+        startNewLocalDbSearch(query)
     }
     
     func handleSearchTextChange(_ newValue: String, _ oldValue: String) {
@@ -90,6 +111,117 @@ class SearchViewModel: ObservableObject {
             UserDefaults.standard.set(self.recentSearches, forKey: "RecentSearches")
         }
     }
+}
 
+extension SearchViewModel {
+    private func searchNaver(isRealTime: Bool, keyword: String) {
+        naverDataIsLoading = true
+        
+        container.useCaseProvider.searchUseCase.executeSearchNaver(keyword: keyword)
+            .tryMap { responseData -> ResponseData<[ProductResponse]> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                
+                print("✅ SearchNaver Server : \(responseData)")
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                switch completion {
+                case .finished:
+                    print("✅ SearchNaver Product Server Completed")
+                    
+                case .failure(let failure):
+                    if isRealTime {
+                        self.realTimeSearchResult = nil
+                    } else {
+                        self.naverData = []
+                    }
+                    print("❌ SearchNaver Product Server Failure \(failure)")
+                }
+            },
+                  receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                print("🔵 SearchNaver Product Data: \(responseData)")
+                if let data = responseData.result {
+                    if isRealTime {
+                        self.realTimeSearchResult = data
+                    } else {
+                        self.naverData = data
+                        naverDataIsLoading = false
+                    }
+                } else {
+                    if isRealTime {
+                        self.realTimeSearchResult = nil
+                    } else {
+                        self.naverData = []
+                    }
+                }
+            })
+            .store(in: &cancellables)
+    }
     
+    public func searchLocalDb(keyword: String, page: Int) {
+        guard !localDBDataIsLoading && canLoadMore else { return }
+        
+        localDBDataIsLoading = true
+        
+        container.useCaseProvider.searchUseCase.executeSearchLocalDB(keyword: keyword, page: page)
+            .tryMap { responseData -> ResponseData<[ProductResponse]> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                
+                print("✅ searchLocalDb Server : \(responseData)")
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                
+                localDBDataIsLoading = false
+                
+                switch completion {
+                case .finished:
+                    print("✅ localDB Product Server Completed")
+                case .failure(let failure):
+                    print("❌ localDB Product Server Failure \(failure)")
+                    canLoadMore = false
+                }
+            },
+                  receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                if let data = responseData.result {
+                    if !data.isEmpty {
+                        self.localDbData.append(contentsOf: data)
+                        self.localPage += 1
+                        self.canLoadMore = true
+                    }
+                } else {
+                    self.canLoadMore = false
+                }
+                
+                self.isIitialLoading = false
+            })
+            .store(in: &cancellables)
+    }
+    
+    func startNewLocalDbSearch(_ keyword: String) {
+        self.searchText = keyword
+        self.localPage = 0
+        self.canLoadMore = true
+        self.localDbData = []
+        self.isIitialLoading = true
+        searchLocalDb(keyword: searchText, page: localPage)
+    }
 }

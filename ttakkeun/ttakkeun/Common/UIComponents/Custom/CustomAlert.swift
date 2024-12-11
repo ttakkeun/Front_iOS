@@ -100,8 +100,17 @@ struct CustomAlert: View {
                 },
                            color: Color.primarycolor200
                 )
+                
+                makeButton(text: "아니오",
+                           action: {
+                    withAnimation(.spring(duration: 0.3)) {
+                        alertAction.showAlert.toggle()
+                    }
+                },
+                           color: Color.alertNo)
+                
             } else {
-                makeButton(text: aiCount == 0 ? "포인트가 부족합니다." : "아니오",
+                makeButton(text: "포인트가 부족합니다.",
                            action: {
                     withAnimation(.spring(duration: 0.3)) {
                         alertAction.showAlert.toggle()
@@ -132,4 +141,10 @@ struct CustomAlert: View {
 struct AlertAction {
     @Binding var showAlert: Bool
     let yes: () -> Void
+}
+
+struct CustomAlert_Preview: PreviewProvider {
+    static var previews: some View {
+        CustomAlert(alertText: Text("asdasdasd \nadajhjskdhka"), aiCount: nil, alertAction: AlertAction(showAlert: .constant(true), yes: { print("yes")}), alertType: .normalAlert)
+    }
 }

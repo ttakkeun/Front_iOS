@@ -24,10 +24,8 @@ struct RecentRecommendation: View {
             
             productInfo
         })
-        .frame(width: returnBackgroundSize().0, height: returnBackgroundSize().1)
-        .padding(.top, 21)
-        .padding(.leading, 19)
-        .padding([.trailing, .bottom], 23)
+        .frame(width: returnBackgroundSize().0, height: returnBackgroundSize().1, alignment: .topLeading)
+        .padding(18)
         .background {
             RoundedRectangle(cornerRadius: 10)
                 .fill(backgroundColor())
@@ -37,14 +35,14 @@ struct RecentRecommendation: View {
     
     private var productInfo: some View {
         VStack(alignment: .leading, spacing: 6, content: {
-            Text(DataFormatter.shared.stripHTMLTags(from: data.title).split(separator: "").joined(separator: "\u{200B}"))
-                .frame(height: 37)
+            Text(data.title.split(separator: "").joined(separator: "\u{200B}"))
+                .frame(height: 37, alignment: .topLeading)
                 .font(.Body3_semibold)
                 .foregroundStyle(Color.gray900)
                 .lineLimit(nil)
                 .multilineTextAlignment(.leading)
                 .lineSpacing(1.5)
-                .truncationMode(.middle)
+                .truncationMode(.tail)
             
             Text("\(DataFormatter.shared.formattedPrice(from: data.price))원")
                 .font(.Body2_semibold)

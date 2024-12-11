@@ -18,28 +18,29 @@ struct HomeAIProduct: View {
                 .foregroundStyle(Color.gray900)
             
             if let resultData = viewModel.aiProduct {
-                ScrollView(.horizontal, content: {
-                    HStack(spacing: 12) {
-                        ForEach(resultData.prefix(8), id: \.self) { data in
-                            AIRecommendProductCard(data: data)
+                if !resultData.isEmpty {
+                    ScrollView(.horizontal, content: {
+                        HStack(spacing: 12) {
+                            ForEach(resultData.prefix(8), id: \.self) { data in
+                                AIRecommendProductCard(data: data)
+                            }
                         }
+                        .frame(height: 92)
+                        .padding(.horizontal, 5)
+                        .padding(.bottom, 10)
+                    })
+                    .scrollIndicators(.visible)
+                } else {
+                    HStack {
+                        
+                        Spacer()
+                        
+                        NotRecommend(recommendType: .aiRecommend)
+                        
+                        Spacer()
                     }
-                    .frame(height: 92)
-                    .padding(.horizontal, 5)
-                    .padding(.bottom, 10)
-                })
-                .scrollIndicators(.visible)
-            } else {
-                HStack {
-                    
-                    Spacer()
-                    
-                    NotRecommend(recommendType: .aiRecommend)
-                    
-                    Spacer()
                 }
             }
-            
         })
     }
 }

@@ -9,31 +9,43 @@ import SwiftUI
 
 struct RecommendView: View {
     
-    @StateObject var viewModel: RecommendationViewModel = .init()
+    @StateObject var viewModel: RecommendationProductViewModel
+    
+    @EnvironmentObject var container: DIContainer
+    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
+    
     @Namespace private var animationNamespace
+    
+    init(container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+    }
     
     let padding: CGFloat = 20
     
     var body: some View {
-        ScrollView(.vertical, content: {
-            VStack(spacing: 24, content: {
-                TopStatusBar()
+        VStack(alignment: .leading, spacing: 0, content: {
+            TopStatusBar()
+            ScrollView(.vertical, content: {
                 
-                topController
-                
-                if viewModel.productViewModel.selectedCategory == .all {
-                    aiRecommendGroup
+                VStack(spacing: 24, content: {
                     
-                }
-                
-                Spacer().frame(height: 2)
-                
-                rankRecommendGroup
-                
+                    topController
+                    
+                    if viewModel.selectedCategory == .all {
+                        aiRecommendGroup
+                    }
+                    
+                    rankRecommendGroup
+                    
+                })
+                .padding(.bottom, 110)
             })
-            .padding(.bottom, 80)
         })
-        .matchedGeometryEffect(id: "aiRecommendGroup", in: animationNamespace)
+        .navigationDestination(for: NavigationDestination.self) { destination in
+            NavigationRoutingView(destination: destination)
+                .environmentObject(container)
+                .environmentObject(appFlowViewModel)
+        }
     }
     
     // MARK: - Top Controller
@@ -41,15 +53,16 @@ struct RecommendView: View {
     private var topController: some View {
         VStack(alignment: .center, spacing: 17, content: {
             Button(action: {
-                viewModel.searachViewModel.isSearchActive.toggle()
+                viewModel.goToSearchView()
             }, label: {
-                CustomTextField(text: $viewModel.searachViewModel.searchText, placeholder: "검색어를 입력해주세요.", cornerRadius: 20, showGlass: true, maxWidth: 360, maxHeight: 40)
+                CustomTextField(text: .constant(""), placeholder: "검색어를 입력해주세요.", cornerRadius: 20, showGlass: true, maxWidth: 360, maxHeight: 40)
                     .disabled(true)
             })
             
             
             topSegmentedControl
         })
+        .padding(.top, 10)
     }
     
     private var topSegmentedControl: some View {
@@ -59,7 +72,7 @@ struct RecommendView: View {
                     makeButton(part: part)
                 }
             })
-            .padding(.horizontal, padding)
+            .padding(.horizontal, 34)
             .padding(.vertical, 5)
         })
         .scrollIndicators(.hidden)
@@ -71,16 +84,30 @@ struct RecommendView: View {
     private var aiRecommendGroup: some View {
         VStack(alignment: .leading, spacing: -1, content: {
             AIRecommendTitle(padding: padding, title: "따끈따끈 AI 최근 추천")
-            recommendProducts
+            if !viewModel.isLoadingAIProduct {
+                recommendProducts
+            } else {
+                HStack {
+                    Spacer()
+                    
+                    ProgressView(label: {
+                        Text("최근 AI 제품을 받아오는 중입니다.")
+                            .controlSize(.regular)
+                    })
+                }
+            }
         })
+        .task {
+            viewModel.getAIProucts()
+        }
     }
     
     @ViewBuilder
     private var recommendProducts: some View {
-        if !viewModel.productViewModel.aiProducts.isEmpty {
+        if !viewModel.aiProducts.isEmpty {
             ScrollView(.horizontal, content: {
                 HStack(spacing: 10, content: {
-                    ForEach($viewModel.productViewModel.aiProducts, id: \.self) { data in
+                    ForEach($viewModel.aiProducts, id: \.self) { data in
                         RecentRecommendation(data: data, type: .localDB)
                     }
                 })
@@ -98,7 +125,7 @@ struct RecommendView: View {
             Text("랭킹별 추천 상품")
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
-                .padding(.leading, padding)
+                .padding(.leading, 5)
             
             rankRecommendedProducts
         })
@@ -106,20 +133,34 @@ struct RecommendView: View {
     
     private var rankRecommendedProducts: some View {
         VStack(spacing: 16, content: {
-            if !viewModel.productViewModel.recommendProducts.isEmpty  {
-                ForEach(Array(viewModel.productViewModel.recommendProducts.enumerated()), id: \.offset) { index, product in
-                    RankRecommendation(data: $viewModel.productViewModel.recommendProducts[index], rank: index)
+            if !viewModel.recommendProducts.isEmpty  {
+                ForEach(Array(viewModel.recommendProducts.enumerated()), id: \.offset) { index, product in
+                    RankRecommendation(data: $viewModel.recommendProducts[index], rank: index)
+                        .task {
+                            if product == viewModel.recommendProducts.last {
+                                if viewModel.selectedCategory == .all {
+                                    viewModel.getUserRecommendAll(page: viewModel.userProductPage)
+                                } else {
+                                    viewModel.getUserRecommendTag(tag: viewModel.selectedCategory.toPartItemRawValue() ?? "EAR", page: viewModel.userProductPage)
+                                }
+                            }
+                        }
+                }
+                
+                if viewModel.isLoadingUserProduct || viewModel.isLoadingRankTagProduct {
+                    ProgressView()
+                        .controlSize(.regular)
                 }
             } else {
                 ProgressView {
-                    Text("추천 상품을 받아오는 중입니다. 잠시만 기다려 주세요!")
+                    Text("추천 상품을 받아오는 중입니다. \n잠시만 기다려 주세요!")
                         .multilineTextAlignment(.center)
                         .lineSpacing(2.5)
                         .font(.Body3_medium)
                 }
                 .controlSize(.large)
                 .padding(.vertical, 31)
-                .padding(.horizontal, 69)
+                .padding(.horizontal, 85)
                 .background {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.gray300, lineWidth: 1)
@@ -127,6 +168,12 @@ struct RecommendView: View {
             }
         })
         .padding(.horizontal, 4.5)
+        .onChange(of: viewModel.selectedCategory, {
+            loadInitialData()
+        })
+        .task {
+            loadInitialData()
+        }
     }
     
 }
@@ -134,27 +181,34 @@ struct RecommendView: View {
 extension RecommendView {
     func makeButton(part: ExtendPartItem) -> some View {
         Button(action: {
-            withAnimation(.easeInOut(duration: 0.1)) {
-                viewModel.productViewModel.selectedCategory = part
-            }
+            viewModel.selectedCategory = part
         }, label: {
             Text(part.toKorean())
                 .frame(width: 28, height: 20)
                 .padding(.vertical, 6)
                 .padding(.horizontal, 24)
                 .font(.Body2_medium)
-                .foregroundStyle(viewModel.productViewModel.selectedCategory == part ? Color.gray900 : Color.gray600)
+                .foregroundStyle(viewModel.selectedCategory == part ? Color.gray900 : Color.gray600)
                 .background {
                     RoundedRectangle(cornerRadius: 24)
-                        .fill(viewModel.productViewModel.selectedCategory == part ? Color.primarycolor200 : Color.clear)
+                        .fill(viewModel.selectedCategory == part ? Color.primarycolor200 : Color.clear)
                         .stroke(Color.gray700, lineWidth: 1)
                 }
         })
+    }
+    func loadInitialData() {
+        if viewModel.selectedCategory == .all {
+            viewModel.startNewUserProductAll()
+        } else {
+            viewModel.startNewRankTagProducts()
+        }
     }
 }
 
 struct RecommendView_Preview: PreviewProvider {
     static var previews: some View {
-        RecommendView()
+        RecommendView(container: DIContainer())
+            .environmentObject(DIContainer())
+            .environmentObject(AppFlowViewModel())
     }
 }

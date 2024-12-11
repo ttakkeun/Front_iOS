@@ -14,18 +14,21 @@ import CombineMoya
 import Moya
 
 class JournalRegistViewModel: ObservableObject {
-    
+
     @Published var currentPage: Int = 1
     @Published var selectedPart: PartItem?
     
     @Published var getQuestions: JournalQuestionResponse?
     @Published var selectedAnswerData: SelectedAnswerRequest
+    @Published var isNextEnabled: Bool = false
     
     @Published var isImagePickerPresented: Bool = false
     @Published var questionImages: [Int: [UIImage]] = [:]
     
     @Published var questionIsLoading: Bool = false
     @Published var makeJournalsLoading: Bool = false
+    
+    @Published var isNextEnalbes:Bool = false
     
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
