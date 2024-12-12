@@ -1,0 +1,38 @@
+//
+//  QnAUseCase.swift
+//  ttakkeun
+//
+//  Created by 정의찬 on 12/12/24.
+//
+
+import Foundation
+import Combine
+import CombineMoya
+import Moya
+import SwiftUI
+
+class QnAUseCase: QnAUseCaseProtocol {
+    private let repository: QnARepositoryProtocol
+    
+    init(repository: QnARepositoryProtocol = QnARepository()) {
+        self.repository = repository
+    }
+    
+    func executeGetTipsAll(page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError> {
+        return repository.getTipsAll(page: page)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executeGetTipsBest() -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError> {
+        return repository.getTipsBest()
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executeGetTips(cateogry: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError> {
+        return repository.getTips(cateogry: cateogry, page: page)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+}
