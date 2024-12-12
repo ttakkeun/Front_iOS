@@ -31,12 +31,16 @@ class SearchViewModel: ObservableObject, TapGestureProduct, ProductUpdate {
     // MARK: - ProductSheet
     
     @Published var isShowSheetView: Bool = false
+    @Published var isLoadingSheetView: Bool = false
     @Published var selectedData: ProductResponse? = nil
     @Published var selectedSource: RecommendProductType = .none
     
     func handleTap(data: ProductResponse, source: RecommendProductType) {
         self.selectedData = data
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
+        self.selectedSource = source
+        self.isLoadingSheetView = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2, execute: {
+            self.isLoadingSheetView.toggle()
             self.isShowSheetView.toggle()
         })
     }

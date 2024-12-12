@@ -38,6 +38,7 @@ struct RecommendView: View {
                     rankRecommendGroup
                     
                 })
+                .padding(.top, 8)
                 .padding(.bottom, 110)
             })
         })
@@ -56,6 +57,13 @@ struct RecommendView: View {
                 .presentationDetents([.fraction(0.68)])
                 .presentationDragIndicator(Visibility.hidden)
                 .presentationCornerRadius(30)
+            }
+        })
+        .overlay(alignment: .center, content: {
+            if viewModel.isLoadingSheetView {
+                ProgressView()
+                    .controlSize(.large)
+                    .transition(.opacity)
             }
         })
     }

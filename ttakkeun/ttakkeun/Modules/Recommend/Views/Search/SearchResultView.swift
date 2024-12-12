@@ -34,6 +34,13 @@ struct SearchResultView: View {
                 .presentationCornerRadius(30)
             }
         })
+        .overlay(alignment: .center, content: {
+            if viewModel.isLoadingSheetView {
+                ProgressView()
+                    .controlSize(.large)
+                    .transition(.opacity)
+            }
+        })
     }
     
     private var naverSearchResultGroup: some View {

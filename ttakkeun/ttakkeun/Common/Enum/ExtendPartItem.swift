@@ -23,7 +23,7 @@ enum ExtendPartItem: CaseIterable, Hashable, Codable, Identifiable, Equatable {
         case .etc:
             return "etc"
         case .part(let partItem):
-            return "part-\(partItem.rawValue)"
+            return partItem.rawValue
         }
     }
     
@@ -36,7 +36,7 @@ enum ExtendPartItem: CaseIterable, Hashable, Codable, Identifiable, Equatable {
     }
     
     static var floatingCases: [ExtendPartItem] {
-        return [.etc] + PartItem.allCases.map { .part($0) }
+        return PartItem.allCases.map { .part($0) }
     }
     
     func toKorean() -> String {

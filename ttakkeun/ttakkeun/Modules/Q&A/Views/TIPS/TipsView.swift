@@ -75,12 +75,31 @@ struct TipsView: View {
             case .best:
                 viewModel.getTipsBest()
             case .part(let part):
-                if let category = viewModel.isSelectedCategory.toPartItemRawValue() {
-                    viewModel.getTipsCategory(category: category, page: viewModel.tipsPage, refresh: true)
-                }
+                viewModel.getTipsCategory(category: part.rawValue, page: viewModel.tipsPage, refresh: true)
             default:
                 break
             }
+        }
+        .onChange(of: viewModel.isSelectedCategory, {
+            loadInitialTIps()
+        })
+        .task {
+            loadInitialTIps()
+        }
+    }
+}
+
+extension TipsView {
+    func loadInitialTIps() {
+        switch viewModel.isSelectedCategory {
+        case .all:
+            viewModel.startNewAllTipsRequest()
+        case .best:
+            viewModel.startNewBestTipsRequest()
+        case .part(let part):
+            viewModel.startNewCategorTipsRequest(part: part)
+        default:
+            break
         }
     }
 }

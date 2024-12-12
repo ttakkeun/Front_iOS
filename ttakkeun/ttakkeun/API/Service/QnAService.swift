@@ -31,9 +31,21 @@ class QnAService: QnAServiceProtocol {
             .eraseToAnyPublisher()
     }
     
-    func getTipsPart(cateogry: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError> {
+    func getTipsPartData(cateogry: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError> {
         return provider.requestPublisher(.getTipsPart(category: cateogry, page: page))
             .map(ResponseData<[TipsResponse]>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func writeTipsData(data: WriteTipsRequest) -> AnyPublisher<ResponseData<TipsResponse>, MoyaError> {
+        return provider.requestPublisher(.writeTips(data: data))
+            .map(ResponseData<TipsResponse>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func patchTipsImageData(tipId: Int, images: [UIImage]) -> AnyPublisher<ResponseData<[String]>, MoyaError> {
+        return provider.requestPublisher(.patchTipsImage(tipId: tipId, images: images))
+            .map(ResponseData<[String]>.self)
             .eraseToAnyPublisher()
     }
 }

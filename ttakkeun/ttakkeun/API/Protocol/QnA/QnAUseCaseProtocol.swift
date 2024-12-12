@@ -15,4 +15,6 @@ protocol QnAUseCaseProtocol {
     func executeGetTipsAll(page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError>
     func executeGetTipsBest() -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError>
     func executeGetTips(cateogry: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError>
+    func executeWriteTipsData(data: WriteTipsRequest) -> AnyPublisher<ResponseData<TipsResponse>, MoyaError>
+    func executePatchTipsImage(tipId: Int, images: [UIImage]) -> AnyPublisher<ResponseData<[String]>, MoyaError>
 }

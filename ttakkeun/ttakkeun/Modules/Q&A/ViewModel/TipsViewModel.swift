@@ -263,11 +263,8 @@ extension TipsViewModel {
         getTipsBest()
     }
     
-    func startNewCategorTipsRequest() {
+    func startNewCategorTipsRequest(part: PartItem) {
         startNewBaseFunc()
-        
-        if let category = isSelectedCategory.toPartItemRawValue() {
-            getTipsCategory(category: category, page: self.tipsPage)
-        }
+        getTipsCategory(category: part.rawValue, page: self.tipsPage)
     }
 }

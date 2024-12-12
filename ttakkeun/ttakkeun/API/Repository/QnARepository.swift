@@ -28,7 +28,15 @@ class QnARepository: QnARepositoryProtocol {
     }
     
     func getTips(cateogry: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError> {
-        return qnaService.getTipsPart(cateogry: cateogry, page: page)
+        return qnaService.getTipsPartData(cateogry: cateogry, page: page)
+    }
+    
+    func writeTips(data: WriteTipsRequest) -> AnyPublisher<ResponseData<TipsResponse>, MoyaError> {
+        return qnaService.writeTipsData(data: data)
+    }
+    
+    func patchTipsImage(tipId: Int, images: [UIImage]) -> AnyPublisher<ResponseData<[String]>, MoyaError> {
+        return qnaService.patchTipsImageData(tipId: tipId, images: images)
     }
     
 }

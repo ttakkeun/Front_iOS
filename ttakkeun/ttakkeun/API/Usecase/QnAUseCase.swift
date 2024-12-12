@@ -35,4 +35,15 @@ class QnAUseCase: QnAUseCaseProtocol {
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }
+    
+    func executeWriteTipsData(data: WriteTipsRequest) -> AnyPublisher<ResponseData<TipsResponse>, MoyaError> {
+        return repository.writeTips(data: data)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executePatchTipsImage(tipId: Int, images: [UIImage]) -> AnyPublisher<ResponseData<[String]>, MoyaError> {
+        return repository.patchTipsImage(tipId: tipId, images: images)
+            .eraseToAnyPublisher()
+    }
 }

@@ -15,4 +15,6 @@ protocol QnARepositoryProtocol {
     func getTipsAll(page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError>
     func getTipsBest() -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError>
     func getTips(cateogry: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError>
+    func writeTips(data: WriteTipsRequest) -> AnyPublisher<ResponseData<TipsResponse>, MoyaError>
+    func patchTipsImage(tipId: Int, images: [UIImage]) -> AnyPublisher<ResponseData<[String]>, MoyaError>
 }

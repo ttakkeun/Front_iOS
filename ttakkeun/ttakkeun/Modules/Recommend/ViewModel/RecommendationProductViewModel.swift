@@ -43,13 +43,16 @@ class RecommendationProductViewModel: ObservableObject, TapGestureProduct, Produ
     // MARK: - ProductSheet
     
     @Published var selectedData: ProductResponse? = nil
+    @Published var isLoadingSheetView: Bool = false
     @Published var isShowSheetView: Bool = false
     @Published var selectedSource: RecommendProductType = .none
     
     func handleTap(data: ProductResponse, source: RecommendProductType) {
         self.selectedData = data
         self.selectedSource = source
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
+        self.isLoadingSheetView = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2, execute: {
+            self.isLoadingSheetView.toggle()
             self.isShowSheetView.toggle()
         })
     }
