@@ -51,8 +51,8 @@ struct ProductSheetView: View {
                         .frame(width: 30, height: 30)
                 }.retry(maxCount: 2, interval: .seconds(2))
                 .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 312, height: 185)
+                .frame(width: 300, height: 185)
+                .aspectRatio(contentMode: .fill)
                 .padding(10)
                 .overlay(content: {
                     Rectangle()

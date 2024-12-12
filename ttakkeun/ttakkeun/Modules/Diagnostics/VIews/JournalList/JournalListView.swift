@@ -62,7 +62,7 @@ struct JournalListView: View {
         }
         .sheet(isPresented: $viewModel.isShowDetailJournal, content: {
                 JournalResultCheckView(viewModel: viewModel)
-                .presentationCornerRadius(20)
+                .presentationCornerRadius(30)
         })
     }
     @ViewBuilder

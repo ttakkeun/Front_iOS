@@ -31,7 +31,7 @@ struct CalendarView: View {
         .sheet(isPresented: $viewModel.showDatePickerView, content: {
             DatePickerSheetView(selectedDate: $viewModel.selectedDate, showDatePickerView: $viewModel.showDatePickerView)
                 .presentationDetents([.fraction(0.3)])
-                .presentationCornerRadius(20)
+                .presentationCornerRadius(30)
         })
     }
     

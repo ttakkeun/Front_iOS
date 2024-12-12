@@ -50,13 +50,11 @@ struct RecommendView: View {
             if let product = viewModel.selectedData {
                 ProductSheetView(data: Binding(get: { product },
                                                set: { updateProduct in
-                    if let index = viewModel.aiProducts.firstIndex(where: { $0.id == updateProduct.id }) {
-                        viewModel.aiProducts[index] = updateProduct
-                    }
+                    viewModel.updateProduct(updateProduct)
                 }), isShowSheet: $viewModel.isShowSheetView)
                 .presentationDetents([.fraction(0.68)])
                 .presentationDragIndicator(Visibility.hidden)
-                .presentationCornerRadius(20)
+                .presentationCornerRadius(30)
             }
         })
     }
@@ -122,10 +120,7 @@ struct RecommendView: View {
                 HStack(spacing: 10, content: {
                     ForEach($viewModel.aiProducts, id: \.id) { $data in
                         RecentRecommendation(data: $data, type: .localDB)
-                            .onTapGesture {
-                                viewModel.selectedData = data
-                                viewModel.isShowSheetView.toggle()
-                            }
+                            .handleTapGesture(with: viewModel, data: data, source: .aiProduct)
                     }
                 })
                 .padding(.bottom, 10)
@@ -155,6 +150,7 @@ struct RecommendView: View {
             if !viewModel.recommendProducts.isEmpty  {
                 ForEach(Array(viewModel.recommendProducts.enumerated()), id: \.offset) { index, product in
                     RankRecommendation(data: $viewModel.recommendProducts[index], rank: index)
+                        .handleTapGesture(with: viewModel, data: viewModel.recommendProducts[index], source: .userProduct)
                         .task {
                             if product == viewModel.recommendProducts.last {
                                 if viewModel.selectedCategory == .all {

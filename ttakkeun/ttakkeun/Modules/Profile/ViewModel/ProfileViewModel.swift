@@ -21,6 +21,8 @@ class ProfileViewModel: ObservableObject {
     @Published var petProfileResponse: PetProfileResponse?
     @Published var isLoading: Bool = true
     
+    @Published var showFullScreen: Bool = false
+    
     let container: DIContainer
     private var cancellalbes = Set<AnyCancellable>()
     

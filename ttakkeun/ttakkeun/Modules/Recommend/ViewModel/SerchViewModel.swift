@@ -8,7 +8,8 @@
 import Foundation
 import Combine
 
-class SearchViewModel: ObservableObject {
+class SearchViewModel: ObservableObject, TapGestureProduct, ProductUpdate {
+    
     @Published var isShowingSearchResult: Bool = false
     @Published var isShowingRealTimeResults: Bool = false
     @Published var isManualSearch: Bool = false
@@ -26,6 +27,34 @@ class SearchViewModel: ObservableObject {
     @Published var localDbData: [ProductResponse] = []
     @Published var localPage: Int = 0
     @Published var canLoadMore: Bool = true
+    
+    // MARK: - ProductSheet
+    
+    @Published var isShowSheetView: Bool = false
+    @Published var selectedData: ProductResponse? = nil
+    @Published var selectedSource: RecommendProductType = .none
+    
+    func handleTap(data: ProductResponse, source: RecommendProductType) {
+        self.selectedData = data
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
+            self.isShowSheetView.toggle()
+        })
+    }
+    
+    func updateProduct(_ updateProduct: ProductResponse) {
+        switch self.selectedSource {
+        case .searchNaverProduct:
+            if let index = naverData.firstIndex(where: { $0.id == updateProduct.id }) {
+                naverData[index] = updateProduct
+            }
+        case .searchLocalProduct:
+            if let index = localDbData.firstIndex(where: { $0.id == updateProduct.id }) {
+                localDbData[index] = updateProduct
+            }
+        default:
+            break
+        }
+    }
     
     
     let container: DIContainer

@@ -11,6 +11,7 @@ struct MakeProfileView: View {
     
     @StateObject var viewModel: MakeProfileViewModel
     @EnvironmentObject var container: DIContainer
+    @Environment(\.dismiss) var dismiss
     
     
     init(container: DIContainer
@@ -22,7 +23,7 @@ struct MakeProfileView: View {
         VStack {
             CustomNavigation(
                 action: {
-                    container.navigationRouter.pop()
+                    dismiss()
                 }, title: "프로필 생성", currentPage: nil)
             
             Spacer().frame(height: 20)

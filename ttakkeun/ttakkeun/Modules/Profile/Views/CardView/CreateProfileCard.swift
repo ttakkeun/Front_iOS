@@ -13,7 +13,7 @@ struct CreateProfileCard: View {
     
     var body: some View {
         Button(action: {
-            viewModel.goToCreateProfile()
+            viewModel.showFullScreen.toggle()
         }, label: {
             ZStack(alignment: .top, content: {
                 createProfile

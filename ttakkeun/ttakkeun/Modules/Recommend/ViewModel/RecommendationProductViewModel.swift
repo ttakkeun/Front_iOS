@@ -6,25 +6,23 @@
 //
 
 import Foundation
+import SwiftUI
 import Combine
 import CombineMoya
 
-class RecommendationProductViewModel: ObservableObject {
-    
-    @Published var selectedData: ProductResponse? = nil
-    @Published var isShowSheetView: Bool = false
+class RecommendationProductViewModel: ObservableObject, TapGestureProduct, ProductUpdate {
     
     @Published var selectedCategory: ExtendPartItem = .all
     @Published var aiProducts: [ProductResponse] = []
     @Published var recommendProducts: [ProductResponse] = []
-
+    
     @Published var isLoadingAIProduct: Bool = false
     
     @Published var isLoadingUserProduct: Bool = false
     @Published var canLoadMoarUserProduct: Bool = true
     @Published var userAllisIitialLoading: Bool = true
     
-    // MARK:  RankTag
+    // MARK: - RankTag
     @Published var isLoadingRankTagProduct: Bool = false
     @Published var canLoadMoreRankTagProduct: Bool = true
     @Published var userRankTagisIitialLoading: Bool = true
@@ -40,6 +38,35 @@ class RecommendationProductViewModel: ObservableObject {
     
     public func goToSearchView() {
         container.navigationRouter.push(to: .productSearch)
+    }
+    
+    // MARK: - ProductSheet
+    
+    @Published var selectedData: ProductResponse? = nil
+    @Published var isShowSheetView: Bool = false
+    @Published var selectedSource: RecommendProductType = .none
+    
+    func handleTap(data: ProductResponse, source: RecommendProductType) {
+        self.selectedData = data
+        self.selectedSource = source
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
+            self.isShowSheetView.toggle()
+        })
+    }
+    
+    func updateProduct(_ updateProduct: ProductResponse) {
+        switch self.selectedSource {
+        case .aiProduct:
+            if let index = aiProducts.firstIndex(where: { $0.id == updateProduct.id }) {
+                aiProducts[index] = updateProduct
+            }
+        case .userProduct:
+            if let index = recommendProducts.firstIndex(where: { $0.id == updateProduct.id }) {
+                recommendProducts[index] = updateProduct
+            }
+        default:
+            break
+        }
     }
 }
 

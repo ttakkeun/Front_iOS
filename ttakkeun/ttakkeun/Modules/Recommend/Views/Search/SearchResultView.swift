@@ -23,6 +23,17 @@ struct SearchResultView: View {
             .modifier(SearchViewModifier())
         })
         .frame(maxWidth: .infinity)
+        .sheet(isPresented: $viewModel.isShowSheetView, content: {
+            if let product = viewModel.selectedData {
+                ProductSheetView(data: Binding(get: { product },
+                                               set: { updateProduct in
+                    viewModel.updateProduct(updateProduct)
+                }), isShowSheet: $viewModel.isShowSheetView)
+                .presentationDetents([.fraction(0.68)])
+                .presentationDragIndicator(Visibility.hidden)
+                .presentationCornerRadius(30)
+            }
+        })
     }
     
     private var naverSearchResultGroup: some View {
@@ -44,6 +55,7 @@ struct SearchResultView: View {
                     HStack(spacing: 10, content: {
                         ForEach($viewModel.naverData, id: \.id) { $data in
                             RecentRecommendation(data: $data, type: .naver)
+                                .handleTapGesture(with: viewModel, data: data, source: .searchNaverProduct)
                         }
                     })
                     .padding(.horizontal, 5)
@@ -73,6 +85,7 @@ struct SearchResultView: View {
                 LazyVGrid(columns: Array(repeating: GridItem(.fixed(162), spacing: 42), count: 2), spacing: 25, content: {
                     ForEach($viewModel.localDbData, id: \.self) { $data in
                         InAppSearchResult(data: $data)
+                            .handleTapGesture(with: viewModel, data: data, source: .searchLocalProduct)
                             .onAppear {
                                 guard !viewModel.localDBDataIsLoading, viewModel.canLoadMore else { return }
                                 
