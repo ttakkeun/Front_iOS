@@ -48,18 +48,20 @@ struct FloatingCircle: View {
     }
     
     private var floatingMainBtn: some View {
-        Image(systemName: isShowFloating ? "xmark" : "plus")
+        Image(systemName: "plus")
             .renderingMode(.template)
             .resizable()
             .foregroundStyle(Color.black)
             .aspectRatio(contentMode: .fit)
-            .frame(width: returnSize(), height: returnSize())
-            .padding(25)
+            .frame(width: 18, height: 18)
+            .padding(20)
             .background {
                 Circle()
                     .fill(isShowFloating ? Color.white : Color.floatingBtn)
                     .shadow03()
             }
+            .rotationEffect(.degrees(isShowFloating ? 45 : 0))
+            .animation(.easeInOut(duration: 0.3), value: isShowFloating)
     }
 }
 
@@ -75,14 +77,6 @@ extension FloatingCircle {
                         container.navigationRouter.push(to: .writeTipsView(category: selectedFloatingMenu))
                     }
                 }
-        }
-    }
-    
-    func returnSize() -> CGFloat {
-        if isShowFloating {
-            return 15
-        } else {
-            return 18
         }
     }
 }
