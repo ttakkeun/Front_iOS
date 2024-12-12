@@ -23,7 +23,8 @@ struct FAQView: View {
                 
                 faqList
             })
-            .padding(.bottom, 80)
+            .padding(.top ,10)
+            .padding(.bottom, 100)
         })
     }
     

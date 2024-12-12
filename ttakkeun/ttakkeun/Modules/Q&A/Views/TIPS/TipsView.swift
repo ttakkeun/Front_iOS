@@ -9,14 +9,20 @@ import SwiftUI
 
 struct TipsView: View {
     
-    @StateObject var viewModel: TipsViewModel = .init()
+    @StateObject var viewModel: TipsViewModel
+    
+    init(container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+    }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 24, content: {
-            TipsSegment(viewModel: viewModel)
-            
-            tipContents
-        })
+        ZStack {
+            VStack(alignment: .leading, spacing: 24, content: {
+                TipsSegment(viewModel: viewModel)
+                
+                tipContents
+            })
+        }
         .safeAreaPadding(EdgeInsets(top: 0, leading: 19, bottom: 0, trailing: 19))
         
     }
@@ -36,15 +42,45 @@ struct TipsView: View {
                 LazyVStack(alignment: .leading, spacing: 16, content: {
                     title
                     ForEach($viewModel.tipsResponse, id: \.self) { $data in
-                        TipsContentsCard(data: $data, tipsButtonOption: TipsButtonOption(heartAction: { viewModel.toggleLike(for: data.tipId) }, scrapAction: { viewModel.toggleBookMark(for: data.tipId) }))
+                        TipsContentsCard(data: $data, tipsType: .scrapTips, tipsButtonOption: TipsButtonOption(heartAction: { viewModel.toggleLike(for: data.tipId) }, scrapAction: { viewModel.toggleBookMark(for: data.tipId) }))
+                            .task {
+                                if data == viewModel.tipsResponse.last {
+                                    switch viewModel.isSelectedCategory {
+                                    case .all:
+                                        viewModel.getTipsAll(page: viewModel.tipsPage)
+                                    case .best:
+                                        viewModel.getTipsBest()
+                                    case .part(let part):
+                                        viewModel.getTipsCategory(category: part.rawValue, page: viewModel.tipsPage)
+                                        
+                                    default:
+                                        break
+                                    }
+                                }
+                            }
+                    }
+                    
+                    if viewModel.fetchingTips {
+                        ProgressView()
+                            .controlSize(.regular)
                     }
                 })
-                .padding(.bottom, 80)
+                .padding(.bottom, 100)
             }
         })
+        .refreshable {
+            switch viewModel.isSelectedCategory {
+            case .all:
+                viewModel.getTipsAll(page: viewModel.tipsPage, refresh: true)
+            case .best:
+                viewModel.getTipsBest()
+            case .part(let part):
+                if let category = viewModel.isSelectedCategory.toPartItemRawValue() {
+                    viewModel.getTipsCategory(category: category, page: viewModel.tipsPage, refresh: true)
+                }
+            default:
+                break
+            }
+        }
     }
-}
-
-#Preview {
-    TipsView()
 }

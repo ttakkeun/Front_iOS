@@ -18,9 +18,6 @@ struct NavigationRoutingView: View {
         case .signUp(let signUpRequest):
             SignUpView(singUpRequest: signUpRequest, container: container, appFlowViewModel: appFlowViewModel)
                 .environmentObject(container)
-        case .createProfile:
-            MakeProfileView(container: container)
-                .environmentObject(container)
             
         case .editPetProfile(let petInfo, let image):
             EditProfileView(container: container,
@@ -32,6 +29,9 @@ struct NavigationRoutingView: View {
         case .productSearch:
             RecommendSearchView(container: container)
                 .environmentObject(container)
+            
+        case .writeTipsView(let category):
+            WriteTipsView(category: category, container: container)
         }
     }
 }

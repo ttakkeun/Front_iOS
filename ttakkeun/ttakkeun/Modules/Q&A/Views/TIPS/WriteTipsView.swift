@@ -11,12 +11,17 @@ struct WriteTipsView: View {
     
     @StateObject var viewModel: TipsWriteViewModel
     
+    init(category: ExtendPartItem,
+         container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(category: category, container: container))
+    }
+    
     let placeholder: String = "최대 230자까지 입력 가능합니다. \n욕설, 비방, 혐오 표현 등 부적절한 내용은 신고 대상이 될 수 있으며, 계정 제제 등의 불이익을 받을 수 있습니다. \n모두가 즐길 수 있는 커뮤니티를 위해 예의 있는 표현을 사용해주세요!"
     
     var body: some View {
         VStack(alignment: .leading, spacing: 28, content: {
             CustomNavigation(action: {
-                viewModel.changeIsShowTipsWriteView()
+                viewModel.goToBeforePage()
             }, title: "TIP 작성", currentPage: nil)
             
             categoryTitle
@@ -29,10 +34,11 @@ struct WriteTipsView: View {
             
             MainButton(btnText: "공유하기", width: 353, height: 56, action: {
                 //TODO: - 공유하기 버튼 API
-                viewModel.changeIsShowTipsWriteView()
+                viewModel.goToBeforePage()
             }, color: Color.mainPrimary)
         })
         .safeAreaPadding(EdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20))
+        .navigationBarBackButtonHidden(true)
     }
     
     private var categoryTitle: some View {
@@ -73,6 +79,6 @@ extension WriteTipsView {
 
 struct WriteTipsView_Preview: PreviewProvider {
     static var previews: some View {
-        WriteTipsView(viewModel: TipsWriteViewModel(category: .part(.ear)))
+        WriteTipsView(category: .best, container: DIContainer())
     }
 }

@@ -27,6 +27,21 @@ struct TipsSegment: View {
         Button(action: {
             withAnimation(.spring(duration: 0.2)) {
                 viewModel.isSelectedCategory = segment
+                viewModel.tipsResponse.removeAll()
+                viewModel.tipsPage = 0
+                viewModel.canLoadMoreTips = true
+                switch viewModel.isSelectedCategory {
+                case .all:
+                    viewModel.getTipsAll(page: viewModel.tipsPage)
+                case .best:
+                    viewModel.getTipsBest()
+                case .part(let part):
+                    if let category = viewModel.isSelectedCategory.toPartItemRawValue() {
+                        viewModel.getTipsCategory(category: category, page: viewModel.tipsPage)
+                    }
+                default:
+                    break
+                }
             }
         }, label: {
             Text(segment.toKorean())
@@ -46,6 +61,6 @@ struct TipsSegment: View {
 
 struct TipsSegment_Preview: PreviewProvider {
     static var previews: some View {
-        TipsSegment(viewModel: TipsViewModel())
+        TipsSegment(viewModel: TipsViewModel(container: DIContainer()))
     }
 }

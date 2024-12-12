@@ -14,6 +14,7 @@ protocol UseCaseProtocol {
     var productRecommendUseCase: ProductRecommendUseCase { get set }
     var journalUseCase: JournalUseCase { get set }
     var searchUseCase: SearchUseCase { get set }
+    var qnaUseCase: QnAUseCase { get set }
 }
 
 class UseCaseProvider: UseCaseProtocol {
@@ -24,6 +25,8 @@ class UseCaseProvider: UseCaseProtocol {
     var productRecommendUseCase: ProductRecommendUseCase
     var journalUseCase: JournalUseCase
     var searchUseCase: SearchUseCase
+    var qnaUseCase: QnAUseCase
+    
     
     init() {
         self.authUseCase = AuthUseCase()
@@ -32,5 +35,6 @@ class UseCaseProvider: UseCaseProtocol {
         self.productRecommendUseCase = ProductRecommendUseCase()
         self.journalUseCase = JournalUseCase()
         self.searchUseCase = SearchUseCase()
+        self.qnaUseCase = QnAUseCase()
     }
 }

@@ -8,11 +8,24 @@
 import Foundation
 import SwiftUI
 
-enum ExtendPartItem: CaseIterable, Hashable, Codable {
+enum ExtendPartItem: CaseIterable, Hashable, Codable, Identifiable, Equatable {
     case all
     case best
     case etc
     case part(PartItem)
+    
+    var id: String {
+        switch self {
+        case .all:
+            return "all"
+        case .best:
+            return "best"
+        case .etc:
+            return "etc"
+        case .part(let partItem):
+            return "part-\(partItem.rawValue)"
+        }
+    }
     
     static var allCases: [ExtendPartItem] {
         return [.all] + PartItem.allCases.map { .part($0) }

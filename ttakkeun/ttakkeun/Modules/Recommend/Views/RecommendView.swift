@@ -41,6 +41,7 @@ struct RecommendView: View {
                 .padding(.bottom, 110)
             })
         })
+        .background(Color.scheduleBg)
         .navigationDestination(for: NavigationDestination.self) { destination in
             NavigationRoutingView(destination: destination)
                 .environmentObject(container)

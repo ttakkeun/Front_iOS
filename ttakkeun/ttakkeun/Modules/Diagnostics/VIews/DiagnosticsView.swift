@@ -45,6 +45,7 @@ struct DiagnosticsView: View {
             
             changeSegmentView
         })
+        .background(Color.scheduleBg)
         .sheet(isPresented: $journalListViewModel.isCalendarPresented, content: {
                 DatePicker(
                     "검색 날짜 선택",
