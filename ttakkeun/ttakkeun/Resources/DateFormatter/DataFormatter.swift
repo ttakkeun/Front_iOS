@@ -142,7 +142,7 @@ final class DataFormatter {
         // 3. 한국 시간(KST)으로 변환
         let koreanTimeZone = TimeZone(identifier: "Asia/Seoul")!
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy.MM.dd HH:mm" // 원하는 포맷 설정
+        dateFormatter.dateFormat = "yyyy.MM.dd" // 원하는 포맷 설정
         dateFormatter.timeZone = koreanTimeZone
 
         return dateFormatter.string(from: serverDate) // 한국 시간 문자열 반환

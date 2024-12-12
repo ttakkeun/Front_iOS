@@ -36,7 +36,7 @@ struct TipsView: View {
                 LazyVStack(alignment: .leading, spacing: 16, content: {
                     title
                     ForEach($viewModel.tipsResponse, id: \.self) { $data in
-                        TipsContentsCard(data: $data, tipsButtonOption: TipsButtonOption(heartAction: { viewModel.toggleLike(for: data.tipId) }, scrapAction: { viewModel.toggleBookMark(for: data.tipId) }))
+                        TipsContentsCard(data: $data, tipsType: .scrapTips, tipsButtonOption: TipsButtonOption(heartAction: { viewModel.toggleLike(for: data.tipId) }, scrapAction: { viewModel.toggleBookMark(for: data.tipId) }))
                     }
                 })
                 .padding(.bottom, 80)
