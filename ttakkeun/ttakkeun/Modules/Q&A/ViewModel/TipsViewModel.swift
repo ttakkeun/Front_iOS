@@ -9,10 +9,18 @@ import Foundation
 import Combine
 
 class TipsViewModel: ObservableObject {
+    
+    @Published var isShowFloating: Bool = false
+    
     @Published var isSelectedCategory: ExtendPartItem = .all
     @Published var tipsResponse: [TipsResponse] = []
     
+    let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
+    
+    init(container: DIContainer) {
+        self.container = container
+    }
     
     func toggleLike(for tipID: Int) {
         if let index = tipsResponse.firstIndex(where: { $0.tipId == tipID }) {

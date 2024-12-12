@@ -12,24 +12,32 @@ class TipsWriteViewModel: ObservableObject, ImageHandling {
     
     @Published var title: String = ""
     @Published var textContents: String = ""
-    @Published private var isShowTipsWriteView: Bool = false
     
     let category: ExtendPartItem
+    let container: DIContainer
     
-    init(category: ExtendPartItem) {
+    init(category: ExtendPartItem,
+         container: DIContainer
+    ) {
         self.category = category
+        self.container = container
     }
     
-    public func changeIsShowTipsWriteView() {
-        isShowTipsWriteView.toggle()
+    // MARK: - NavigationFunction
+    
+    public func goToBeforePage() {
+        container.navigationRouter.pop()
     }
     
-    // MARK: - ImageHandling
     
     @Published var isImagePickerPresented: Bool = false
     @Published private var selectedImage: [UIImage] = []
     
     var selectedImageCount: Int = 0
+    // MARK: - ImageHandling
+}
+
+extension TipsWriteViewModel {
     
     func addImage(_ images: UIImage) {
         selectedImage.append(images)
@@ -46,6 +54,4 @@ class TipsWriteViewModel: ObservableObject, ImageHandling {
     func getImages() -> [UIImage] {
         selectedImage
     }
-    
-    
 }

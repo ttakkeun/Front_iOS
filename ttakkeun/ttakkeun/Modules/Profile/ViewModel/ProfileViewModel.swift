@@ -46,10 +46,6 @@ class ProfileViewModel: ObservableObject {
         self.backgroudColor = newColor
         }
     }
-    
-    public func goToCreateProfile() {
-        container.navigationRouter.push(to: .createProfile)
-    }
 }
 
 // MARK: - GetPetProfile

@@ -9,14 +9,20 @@ import SwiftUI
 
 struct TipsView: View {
     
-    @StateObject var viewModel: TipsViewModel = .init()
+    @StateObject var viewModel: TipsViewModel
+    
+    init(container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+    }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 24, content: {
-            TipsSegment(viewModel: viewModel)
-            
-            tipContents
-        })
+        ZStack {
+            VStack(alignment: .leading, spacing: 24, content: {
+                TipsSegment(viewModel: viewModel)
+                
+                tipContents
+            })
+        }
         .safeAreaPadding(EdgeInsets(top: 0, leading: 19, bottom: 0, trailing: 19))
         
     }
@@ -43,8 +49,4 @@ struct TipsView: View {
             }
         })
     }
-}
-
-#Preview {
-    TipsView()
 }

@@ -10,32 +10,41 @@ import FloatingButton
 
 struct FloatingCircle: View {
     
+    @EnvironmentObject var container: DIContainer
     @Binding var isShowFloating: Bool
     @State private var selectedFloatingMenu: ExtendPartItem? = nil
     
     var body: some View {
-        
-        VStack {
-            Spacer()
+        ZStack {
+            if isShowFloating {
+                Color.btnBg.opacity(0.6)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        isShowFloating.toggle()
+                    }
+            } else {
+                Color.clear
+            }
             
-            HStack {
-                
+            VStack {
                 Spacer()
                 
-                FloatingButton(mainButtonView: floatingMainBtn, buttons: floatingList(), isOpen: $isShowFloating)
-                    .straight()
-                    .direction(.top)
-                    .delays(delayDelta: 0.1)
-                    .alignment(.right)
-                    .spacing(10)
-                    .initialOpacity(0)
+                HStack {
+                    
+                    Spacer()
+                    
+                    FloatingButton(mainButtonView: floatingMainBtn, buttons: floatingList(), isOpen: $isShowFloating)
+                        .straight()
+                        .direction(.top)
+                        .delays(delayDelta: 0.1)
+                        .alignment(.right)
+                        .spacing(10)
+                        .initialOpacity(0)
+                }
+                .padding(.bottom, 110)
+                .padding(.trailing, -20)
             }
-            .padding(.bottom, 80)
         }
-        .onTapGesture {
-            isShowFloating.toggle()
-        }
-        .background(isShowFloating ? Color.btnBg.opacity(0.6) : Color.clear)
     }
     
     private var floatingMainBtn: some View {
@@ -45,7 +54,7 @@ struct FloatingCircle: View {
             .foregroundStyle(Color.black)
             .aspectRatio(contentMode: .fit)
             .frame(width: returnSize(), height: returnSize())
-            .padding(16)
+            .padding(25)
             .background {
                 Circle()
                     .fill(isShowFloating ? Color.white : Color.floatingBtn)
@@ -61,6 +70,10 @@ extension FloatingCircle {
                 .onTapGesture {
                     selectedFloatingMenu = segment
                     isShowFloating.toggle()
+                    
+                    if let selectedFloatingMenu = selectedFloatingMenu {
+                        container.navigationRouter.push(to: .writeTipsView(category: selectedFloatingMenu))
+                    }
                 }
         }
     }
