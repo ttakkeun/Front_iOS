@@ -50,7 +50,7 @@ struct CustomNavigation: View {
             })
             
             if let title = self.title {
-                Spacer().frame(minWidth: 96, maxWidth: 120)
+                Spacer().frame(minWidth: 96, maxWidth: naviIcon == Image(systemName: "xmark") ? 98 : 103)
                 
                 Text(title)
                     .font(.H3_bold)
@@ -69,7 +69,7 @@ struct CustomNavigation: View {
                     .font(.Body2_semibold)
                     .foregroundStyle(Color.gray900)
             } else {
-                Spacer().frame(maxWidth: 160)
+                Spacer()
             }
             
         })
