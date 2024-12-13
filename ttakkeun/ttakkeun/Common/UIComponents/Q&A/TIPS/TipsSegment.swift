@@ -46,6 +46,6 @@ struct TipsSegment: View {
 
 struct TipsSegment_Preview: PreviewProvider {
     static var previews: some View {
-        TipsSegment(viewModel: TipsViewModel())
+        TipsSegment(viewModel: TipsViewModel(container: DIContainer()))
     }
 }

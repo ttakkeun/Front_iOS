@@ -7,8 +7,12 @@
 
 import SwiftUI
 import Kingfisher
+import UIKit
 
 struct ProductSheetView: View {
+    
+    @State private var loadedImage: Image = Image(systemName: "questionmark.square.fill")
+    @State private var isActivityViewPresented = false
     
     @Binding var data: ProductResponse
     @Binding var isShowSheet: Bool
@@ -19,28 +23,22 @@ struct ProductSheetView: View {
     }
     
     var body: some View {
-        VStack(alignment: .center, content: {
+        VStack(alignment: .center, spacing: 28, content: {
             Capsule()
                 .modifier(CapsuleModifier())
             
-            Spacer().frame(height: 36)
-            
             productImage
-            
-            Spacer().frame(height: 40)
+                .padding(.top, 6)
             
             productInfoGroup
-            
-            Spacer().frame(height: 28)
+                .padding(.top, 12)
             
             MainButton(btnText: "구매하러 가기", width: 342, height: 59, action: {
-                isShowSheet = false
                 openSite(data.purchaseLink)
             }, color: Color.mainPrimary)
         })
-        .frame(width: 342)
+        .frame(width: 342, height: 544, alignment: .top)
         .safeAreaPadding(EdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0))
-        .clipShape(.rect(topLeadingRadius: 10, topTrailingRadius: 10))
     }
     
     @ViewBuilder
@@ -48,12 +46,13 @@ struct ProductSheetView: View {
         if let url = URL(string: data.image) {
             KFImage(url)
                 .placeholder {
-                    ProgressView()
-                        .controlSize(.regular)
+                    Image(systemName: "questionmark.square.fill")
+                        .resizable()
+                        .frame(width: 30, height: 30)
                 }.retry(maxCount: 2, interval: .seconds(2))
                 .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 312, height: 185)
+                .frame(width: 300, height: 185)
+                .aspectRatio(contentMode: .fill)
                 .padding(10)
                 .overlay(content: {
                     Rectangle()
@@ -67,11 +66,10 @@ struct ProductSheetView: View {
         VStack(alignment: .leading, spacing: 9, content: {
             category
             productTitleInfo
-            
-            Spacer().frame(height: 10)
-            
             productPriceInfo
+                .padding(.top, 9)
         })
+        .frame(height: 145, alignment: .top)
     }
     
     private var category: some View {
@@ -82,33 +80,34 @@ struct ProductSheetView: View {
             
             Spacer()
             
-            ShareLink(item: data.purchaseLink,
-                      preview: SharePreview("\(data.title)", image: loadImage(from: data.image)),
-                      label: {
+            ShareLink(
+                items: [
+                    "[따끈] \n\(data.title.split(separator: "").joined(separator: "\u{200B}"))",
+                    data.purchaseLink
+                ]
+            ) {
                 Image(systemName: "square.and.arrow.up")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 23)
                     .foregroundStyle(Color.gray400)
-            })
+            }
         })
     }
     
     private var productTitleInfo: some View {
         VStack(alignment: .leading, spacing: 9, content: {
             Text(data.title)
-                .frame(width: 323)
+                .frame(width: 323, alignment: .leading)
                 .font(.Body2_bold)
                 .foregroundStyle(Color.gray900)
                 .lineLimit(nil)
                 .multilineTextAlignment(.leading)
                 .lineSpacing(2)
             
-            if let brand = data.brand {
-                Text("\(brand) >")
-                    .font(.Body4_medium)
-                    .foregroundStyle(Color.gray400)
-            }
+            Text(data.brand?.isEmpty == false ? "\(data.brand!) >" : "브랜드 정보 없음")
+                .font(.Body4_medium)
+                .foregroundStyle(Color.gray400)
         })
     }
     
@@ -126,14 +125,6 @@ struct ProductSheetView: View {
 }
 
 extension ProductSheetView {
-    func loadImage(from urlString: String) -> Image {
-        guard let url = URL(string: urlString),
-              let imageData = try? Data(contentsOf: url),
-              let uiImage = UIImage(data: imageData) else {
-            return Image(systemName: "photo")
-        }
-        return Image(uiImage: uiImage)
-    }
     
     func buildCategoryList() -> String {
         [data.category2, data.category3, data.category4]

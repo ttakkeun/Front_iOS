@@ -48,7 +48,7 @@ class JournalListViewModel: ObservableObject {
     // MARK: - Paging
     
     @Published var isFetching: Bool = false
-    @Published var currentPage: Int = 1
+    @Published var currentPage: Int = 0
     @Published var canLoadMore: Bool = true
     @Published var listIsLoading: Bool = true
     

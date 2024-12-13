@@ -16,8 +16,11 @@ struct TabView: View {
     @State private var alertType: AlertType = .aiAlert
     @State private var actionYes: () -> Void = {}
     
+    // MARK: - FloatingButton
+    @State private var isShowFloating: Bool = false
+    @State private var qnaSegmentValue: QnASegment = .faq
     
-    // MARK: - TabView CustomAlert
+    // MARK: - TabView Property
     
     @State private var selectedTab: TabCase = .home
     @State private var opacity = 0.0
@@ -27,37 +30,46 @@ struct TabView: View {
     
     var body: some View {
         NavigationStack(path: $container.navigationRouter.destination) {
-            ZStack(alignment: .bottom) {
-                switch selectedTab {
-                case .home:
-                    HomeView(container: container)
-                        .environmentObject(container)
-                        .environmentObject(appFlowViewModel)
-                case .diagnosis:
-                    DiagnosticsView(container: container, showAlert: $showAlert, alertText: $alertText, aiCount: $aiCount, alertType: $alertType, actionYes: $actionYes)
-                        .environmentObject(container)
-                        .environmentObject(appFlowViewModel)
-                case .schedule:
-                    Text("schedule")
-                case .suggestion:
-                    RecommendView(container: container)
-                        .environmentObject(container)
-                        .environmentObject(appFlowViewModel)
-                case .qna:
-                    Text("qna")
+            Group {
+                ZStack(alignment: .bottom) {
+                    switch selectedTab {
+                    case .home:
+                        HomeView(container: container)
+                    case .diagnosis:
+                        DiagnosticsView(container: container, showAlert: $showAlert, alertText: $alertText, aiCount: $aiCount, alertType: $alertType, actionYes: $actionYes)
+                    case .schedule:
+                        Text("schedule")
+                    case .suggestion:
+                        RecommendView(container: container)
+                    case .qna:
+                        QnAView(qnaSegmentValue: $qnaSegmentValue)
+                    }
+                    
+                    if qnaSegmentValue == .tips {
+                        FloatingCircle(isShowFloating: $isShowFloating)
+                            .zIndex(1)
+                    }
+                    
+                    CustomTab(selectedTab: $selectedTab)
+                    
+                    if showAlert {
+                        CustomAlert(alertText: alertText,
+                                    aiCount: aiCount,
+                                    alertAction: AlertAction(showAlert: $showAlert, yes: { actionYes() }),
+                                    alertType: alertType)
+                    }
                 }
-                
-                CustomTab(selectedTab: $selectedTab)
-                
-                if showAlert {
-                    CustomAlert(alertText: alertText,
-                                aiCount: aiCount,
-                                alertAction: AlertAction(showAlert: $showAlert, yes: { actionYes() }),
-                                alertType: alertType)
+                .safeAreaPadding(EdgeInsets(top: 60, leading: 0, bottom: 0, trailing: 0))
+                .ignoresSafeArea(.all).opacity(opacity)
+                .task {
+                    withAnimation(.easeInOut(duration: 0.75)) {
+                        self.opacity = 1.0
+                    }
                 }
             }
-            .safeAreaPadding(EdgeInsets(top: 60, leading: 0, bottom: 0, trailing: 0))
-            .ignoresSafeArea(.all)
+            .environmentObject(container)
+            .environmentObject(appFlowViewModel)
+            
         }
     }
 }

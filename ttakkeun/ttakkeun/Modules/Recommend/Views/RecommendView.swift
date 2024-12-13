@@ -20,10 +20,10 @@ struct RecommendView: View {
         self._viewModel = .init(wrappedValue: .init(container: container))
     }
     
-    let padding: CGFloat = 20
+    let padding: CGFloat = 34
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0, content: {
+        VStack(alignment: .center, spacing: 0, content: {
             TopStatusBar()
             ScrollView(.vertical, content: {
                 
@@ -38,14 +38,34 @@ struct RecommendView: View {
                     rankRecommendGroup
                     
                 })
+                .padding(.top, 8)
                 .padding(.bottom, 110)
             })
         })
+        .background(Color.scheduleBg)
         .navigationDestination(for: NavigationDestination.self) { destination in
             NavigationRoutingView(destination: destination)
                 .environmentObject(container)
                 .environmentObject(appFlowViewModel)
         }
+        .sheet(isPresented: $viewModel.isShowSheetView, content: {
+            if let product = viewModel.selectedData {
+                ProductSheetView(data: Binding(get: { product },
+                                               set: { updateProduct in
+                    viewModel.updateProduct(updateProduct)
+                }), isShowSheet: $viewModel.isShowSheetView)
+                .presentationDetents([.fraction(0.68)])
+                .presentationDragIndicator(Visibility.hidden)
+                .presentationCornerRadius(30)
+            }
+        })
+        .overlay(alignment: .center, content: {
+            if viewModel.isLoadingSheetView {
+                ProgressView()
+                    .controlSize(.large)
+                    .transition(.opacity)
+            }
+        })
     }
     
     // MARK: - Top Controller
@@ -72,7 +92,7 @@ struct RecommendView: View {
                     makeButton(part: part)
                 }
             })
-            .padding(.horizontal, 34)
+            .padding(.horizontal, padding)
             .padding(.vertical, 5)
         })
         .scrollIndicators(.hidden)
@@ -83,7 +103,7 @@ struct RecommendView: View {
     @ViewBuilder
     private var aiRecommendGroup: some View {
         VStack(alignment: .leading, spacing: -1, content: {
-            AIRecommendTitle(padding: padding, title: "따끈따끈 AI 최근 추천")
+            AIRecommendTitle(padding: viewModel.aiProducts.isEmpty ? 5 : padding, title: "따끈따끈 AI 최근 추천")
             if !viewModel.isLoadingAIProduct {
                 recommendProducts
             } else {
@@ -107,10 +127,12 @@ struct RecommendView: View {
         if !viewModel.aiProducts.isEmpty {
             ScrollView(.horizontal, content: {
                 HStack(spacing: 10, content: {
-                    ForEach($viewModel.aiProducts, id: \.self) { data in
-                        RecentRecommendation(data: data, type: .localDB)
+                    ForEach($viewModel.aiProducts, id: \.id) { $data in
+                        RecentRecommendation(data: $data, type: .localDB)
+                            .handleTapGesture(with: viewModel, data: data, source: .aiProduct)
                     }
                 })
+                .padding(.bottom, 10)
                 .padding(.horizontal, padding)
             })
         } else {
@@ -125,17 +147,19 @@ struct RecommendView: View {
             Text("랭킹별 추천 상품")
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
-                .padding(.leading, 5)
+                .padding(.leading, padding)
             
             rankRecommendedProducts
         })
+        .frame(maxWidth: .infinity)
     }
     
     private var rankRecommendedProducts: some View {
-        VStack(spacing: 16, content: {
+        VStack(spacing: 32, content: {
             if !viewModel.recommendProducts.isEmpty  {
                 ForEach(Array(viewModel.recommendProducts.enumerated()), id: \.offset) { index, product in
                     RankRecommendation(data: $viewModel.recommendProducts[index], rank: index)
+                        .handleTapGesture(with: viewModel, data: viewModel.recommendProducts[index], source: .userProduct)
                         .task {
                             if product == viewModel.recommendProducts.last {
                                 if viewModel.selectedCategory == .all {
@@ -167,7 +191,8 @@ struct RecommendView: View {
                 }
             }
         })
-        .padding(.horizontal, 4.5)
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, padding)
         .onChange(of: viewModel.selectedCategory, {
             loadInitialData()
         })

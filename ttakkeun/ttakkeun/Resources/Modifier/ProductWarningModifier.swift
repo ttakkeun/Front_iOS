@@ -9,11 +9,18 @@ import Foundation
 import SwiftUI
 
 struct ProductWarningModifier: ViewModifier {
+    
+    let horizontalPadding: CGFloat
+    
+    init(horizontalPadding: CGFloat = 69) {
+        self.horizontalPadding = horizontalPadding
+    }
+    
     func body(content: Content) -> some View {
         content
             .frame(width: 212, height: 50)
             .padding(.vertical, 31)
-            .padding(.horizontal, 69)
+            .padding(.horizontal, horizontalPadding)
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
                     .fill(Color.clear)

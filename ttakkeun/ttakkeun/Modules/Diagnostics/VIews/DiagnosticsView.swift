@@ -45,6 +45,7 @@ struct DiagnosticsView: View {
             
             changeSegmentView
         })
+        .background(Color.scheduleBg)
         .sheet(isPresented: $journalListViewModel.isCalendarPresented, content: {
                 DatePicker(
                     "검색 날짜 선택",
@@ -55,9 +56,9 @@ struct DiagnosticsView: View {
                     journalListViewModel.isCalendarPresented = false
                 })
                 .datePickerStyle(GraphicalDatePickerStyle())
-                .clipShape(UnevenRoundedRectangle(topLeadingRadius: 10, topTrailingRadius: 10))
                 .presentationDragIndicator(.visible)
                 .presentationDetents([.fraction(0.5)])
+                .presentationCornerRadius(30)
         })
         .fullScreenCover(isPresented: $journalListViewModel.showFullScreenAI, content: {
             DiagnosingFlowView(viewModel: journalListViewModel)

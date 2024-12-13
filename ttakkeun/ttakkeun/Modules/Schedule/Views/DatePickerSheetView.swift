@@ -54,7 +54,6 @@ struct DatePickerSheetView: View {
         .safeAreaPadding(EdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0))
         .background(Color.white)
         .frame(height: 250)
-        .clipShape(.rect(topLeadingRadius: 10, topTrailingRadius: 10))
     }
     
     private var DatePicker: some View {

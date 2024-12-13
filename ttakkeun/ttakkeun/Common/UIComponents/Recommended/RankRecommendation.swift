@@ -38,6 +38,7 @@ struct RankRecommendation: View {
                         .frame(width: 30, height: 30)
                 }.retry(maxCount: 2, interval: .seconds(2))
                 .resizable()
+                .aspectRatio(contentMode: .fill)
                 .frame(width: 95, height: 95)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .padding(5)

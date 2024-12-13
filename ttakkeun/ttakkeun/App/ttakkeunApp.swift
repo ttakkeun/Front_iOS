@@ -24,7 +24,7 @@ struct ttakkeunApp: App {
                     .environmentObject(container)
                     .environmentObject(appFlowViewModel)
             case .profile:
-                ProfileView(viewModel: ProfileViewModel(container: container))
+                ProfileView(container: container)
                     .environmentObject(container)
                     .environmentObject(appFlowViewModel)
             case .tabView:

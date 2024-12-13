@@ -21,6 +21,8 @@ class ProfileViewModel: ObservableObject {
     @Published var petProfileResponse: PetProfileResponse?
     @Published var isLoading: Bool = true
     
+    @Published var showFullScreen: Bool = false
+    
     let container: DIContainer
     private var cancellalbes = Set<AnyCancellable>()
     
@@ -43,10 +45,6 @@ class ProfileViewModel: ObservableObject {
         withAnimation(.easeInOut(duration: 0.5)) {
         self.backgroudColor = newColor
         }
-    }
-    
-    public func goToCreateProfile() {
-        container.navigationRouter.push(to: .createProfile)
     }
 }
 

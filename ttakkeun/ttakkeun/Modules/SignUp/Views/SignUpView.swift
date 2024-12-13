@@ -106,6 +106,7 @@ struct SignUpView: View {
         .sheet(item: $viewModel.selectedAgreement) { item in
             AgreementSheeetView(agreement: item)
                 .presentationDragIndicator(.visible)
+                .presentationCornerRadius(20)
         }
     }
     

@@ -10,12 +10,15 @@ import SwiftUI
 struct ProfileView: View {
     
     @EnvironmentObject var container: DIContainer
-    @EnvironmentObject var appFlopwViewModel: AppFlowViewModel
+    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     @StateObject var viewModel: ProfileViewModel
+    
+    init(container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+    }
     
     
     var body: some View {
-        NavigationStack(path: $container.navigationRouter.destination) {
             VStack(alignment: .center, content: {
                 
                 Spacer()
@@ -38,11 +41,9 @@ struct ProfileView: View {
                 viewModel.updateBackgroundColor()
                 viewModel.getPetProfile()
             }
-            .navigationDestination(for: NavigationDestination.self) {
-                NavigationRoutingView(destination: $0)
-                    .environmentObject(container)
-            }
-        }
+            .fullScreenCover(isPresented: $viewModel.showFullScreen, content: {
+                MakeProfileView(container: container)
+            })
     }
     
     private var topTitle: some View {
@@ -66,6 +67,7 @@ struct ProfileView: View {
             ScrollViewReader { proxy in
                 ScrollView(.horizontal) {
                     HStack(spacing: 1, content: {
+                        
                         if let results = viewModel.petProfileResponse?.result {
                             ForEach(results, id: \.self) { data in
                                 profileReadView(geometry: geometry, data: data)
@@ -77,7 +79,9 @@ struct ProfileView: View {
                             createProfileView(geometry: geometry)
                                 .id("createProfile")
                         }
+                        
                     })
+                    .frame(maxWidth: .infinity)
                     .padding(.top, 32)
                     .padding(.horizontal, (geometry.size.width - 200) / 2)
                 }
@@ -125,16 +129,16 @@ extension ProfileView {
             ProfileCard(data: data)
                 .scaleEffect(self.scaleValue(geometry: geometry, itemGeometry: item))
                 .animation(.bouncy, value: scaleValue(geometry: geometry, itemGeometry: item))
-                .environmentObject(appFlopwViewModel)
+                .environmentObject(appFlowViewModel)
                 .onChange(of: self.isCentered(geometry: geometry, itemGeometry: item)) {
-                    if self.isCentered(geometry: geometry, itemGeometry: item) {
-                        viewModel.titleName = data.name
-                        viewModel.isLastedCard = false
-                        self.viewModel.updateBackgroundColor()
-                    }
+                    changeProfileValue(geometry: geometry, item: item, data: data)
                 }
+                .onAppear {
+                    changeProfileValue(geometry: geometry, item: item, data: data)
+                }
+                .position(x: item.size.width / 2, y: item.size.height / 2)
         }
-        .frame(width: 200)
+        .frame(width: 213, alignment: .center)
     }
     
     private func createProfileView(geometry: GeometryProxy) -> some View {
@@ -149,14 +153,14 @@ extension ProfileView {
                     }
                 }
         }
-        .frame(width: 200)
+        .frame(width: 213)
     }
-}
-
-struct ProfileView_Preview: PreviewProvider {
-    static var previews: some View {
-        ProfileView(viewModel: ProfileViewModel(container: DIContainer()))
-            .environmentObject(DIContainer())
-            .environmentObject(AppFlowViewModel())
+    
+    private func changeProfileValue(geometry: GeometryProxy, item: GeometryProxy, data: PetProfileDetail) {
+        if self.isCentered(geometry: geometry, itemGeometry: item) {
+            viewModel.titleName = data.name
+            viewModel.isLastedCard = false
+            self.viewModel.updateBackgroundColor()
+        }
     }
 }

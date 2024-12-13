@@ -98,6 +98,7 @@ enum Icon: String {
 
     // MARK: - QnA
     case bottomRightTag = "bottomRightTag"
+    case dotsY = "dotsY"
     
     var image: Image {
         return Image(self.rawValue)

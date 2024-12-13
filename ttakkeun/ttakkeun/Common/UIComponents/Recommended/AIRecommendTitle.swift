@@ -26,6 +26,6 @@ struct AIRecommendTitle: View {
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
         })
-        .padding(.leading, 5)
+        .padding(.leading, padding)
     }
 }

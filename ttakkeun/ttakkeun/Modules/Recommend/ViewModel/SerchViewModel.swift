@@ -8,7 +8,8 @@
 import Foundation
 import Combine
 
-class SearchViewModel: ObservableObject {
+class SearchViewModel: ObservableObject, TapGestureProduct, ProductUpdate {
+    
     @Published var isShowingSearchResult: Bool = false
     @Published var isShowingRealTimeResults: Bool = false
     @Published var isManualSearch: Bool = false
@@ -27,6 +28,38 @@ class SearchViewModel: ObservableObject {
     @Published var localPage: Int = 0
     @Published var canLoadMore: Bool = true
     
+    // MARK: - ProductSheet
+    
+    @Published var isShowSheetView: Bool = false
+    @Published var isLoadingSheetView: Bool = false
+    @Published var selectedData: ProductResponse? = nil
+    @Published var selectedSource: RecommendProductType = .none
+    
+    func handleTap(data: ProductResponse, source: RecommendProductType) {
+        self.selectedData = data
+        self.selectedSource = source
+        self.isLoadingSheetView = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2, execute: {
+            self.isLoadingSheetView.toggle()
+            self.isShowSheetView.toggle()
+        })
+    }
+    
+    func updateProduct(_ updateProduct: ProductResponse) {
+        switch self.selectedSource {
+        case .searchNaverProduct:
+            if let index = naverData.firstIndex(where: { $0.id == updateProduct.id }) {
+                naverData[index] = updateProduct
+            }
+        case .searchLocalProduct:
+            if let index = localDbData.firstIndex(where: { $0.id == updateProduct.id }) {
+                localDbData[index] = updateProduct
+            }
+        default:
+            break
+        }
+    }
+    
     
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
@@ -36,7 +69,7 @@ class SearchViewModel: ObservableObject {
         self.container = container
         
         $searchText
-            .debounce(for: .milliseconds(200), scheduler: DispatchQueue.main)
+            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
             .removeDuplicates()
             .sink { [weak self] newValue in
                 guard let self = self else { return }
