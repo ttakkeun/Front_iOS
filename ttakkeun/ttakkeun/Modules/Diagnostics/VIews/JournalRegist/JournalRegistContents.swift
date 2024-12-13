@@ -143,7 +143,7 @@ extension JournalRegistContents {
                 }
             }, color: Color.alertNo)
             
-            MainButton(btnText: viewModel.currentPage == 5 ? "완료" : "다음", width: 208, height: 63, action: {
+            MainButton(btnText: viewModel.currentPage == 5 ? "완료" : viewModel.isNextEnabled ? "다음" : "답변이 선택되지 않았습니다.", width: 208, height: 63, action: {
                 
                 withAnimation(.easeInOut(duration: 0.2)) {
                     if viewModel.currentPage < 5 {
