@@ -13,7 +13,7 @@ import SwiftUI
 
 class HomeProfileCardViewModel: ObservableObject {
     @Published var isShowFront: Bool = true
-    @Published var profileData: HomeProfileResponseData? = nil
+    @Published var profileData: HomeProfileResponseData? = HomeProfileResponseData(name: "곰돌이", image: "https://flexible.img.hani.co.kr/flexible/normal/960/960/imgdb/resize/2019/0121/00501111_20190121.JPG", type: .dog, variety: "포메라니안", birth: "2024-11-03", neutralization: false) /*= nil*/
     
     @Published var profileIsLoading: Bool = true
     

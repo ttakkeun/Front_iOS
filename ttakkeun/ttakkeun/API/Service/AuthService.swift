@@ -28,4 +28,16 @@ class AuthService: AuthServiceProtocol {
             .map(ResponseData<TokenResponse>.self)
             .eraseToAnyPublisher()
     }
+    
+    func kakaoLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
+        return provider.requestPublisher(.kakakoLogin(signUpRequest: signUpRequest))
+            .map(ResponseData<TokenResponse>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func signUpkakaoLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
+        return provider.requestPublisher(.signUpKakaoLogin(signUpRequest: signUpRequest))
+            .map(ResponseData<TokenResponse>.self)
+            .eraseToAnyPublisher()
+    }
 }

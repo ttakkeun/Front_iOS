@@ -10,8 +10,12 @@ import Moya
 
 enum AuthAPITarget {
     case sendRefreshToken(refreshToken: String) // Refresh 재발급
+    
     case appleLogin(signUpRequest: SignUpRequest) // 애플 로그인 시도
     case signUpAppleLogin(signUpRequest: SignUpRequest) // 애플 회원 가입
+    
+    case kakakoLogin(signUpRequest: SignUpRequest)
+    case signUpKakaoLogin(signUpRequest: SignUpRequest)
 }
 
 extension AuthAPITarget: APITargetType {
@@ -24,6 +28,10 @@ extension AuthAPITarget: APITargetType {
             return "/api/auth/apple/login"
         case .signUpAppleLogin:
             return "/api/auth/apple/signup"
+        case .kakakoLogin:
+            return "/api/auth/kakao/login"
+        case .signUpKakaoLogin:
+            return "/api/auth/kakao/signup"
         }
     }
     
@@ -35,6 +43,10 @@ extension AuthAPITarget: APITargetType {
             return .post
         case .signUpAppleLogin:
             return .post
+        case .kakakoLogin:
+            return .post
+        case.signUpKakaoLogin:
+            return .post
         }
     }
     
@@ -45,6 +57,10 @@ extension AuthAPITarget: APITargetType {
         case .appleLogin(let signUpData):
             return .requestJSONEncodable(signUpData)
         case .signUpAppleLogin(let signUpData):
+            return .requestJSONEncodable(signUpData)
+        case .kakakoLogin(let signUpData):
+            return .requestJSONEncodable(signUpData)
+        case .signUpKakaoLogin(let signUpData):
             return .requestJSONEncodable(signUpData)
         }
     }

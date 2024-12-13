@@ -318,6 +318,7 @@ extension TipsContentsCard {
                     .padding(.horizontal, 5)
             })
         })
+        .padding(.leading, 5)
         .frame(width: 76)
     }
     

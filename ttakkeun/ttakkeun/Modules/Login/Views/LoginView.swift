@@ -17,21 +17,16 @@ struct LoginView: View {
     var body: some View {
         NavigationStack(path: $container.navigationRouter.destination) {
             VStack(alignment: .center) {
-                Spacer().frame(height: 200)
+                
+                Spacer()
                 
                 topLogoContents
                 
-                Spacer().frame(height: 180)
+                Spacer().frame(height: 200)
                 
-                Button(action: {
-                    viewModel.appleLogin()
-                }, label: {
-                    Icon.appleLogin.image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 330, height: 44)
-                })
+                loginButtons
             }
+            .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
             .navigationDestination(for: NavigationDestination.self) { destination in
                 NavigationRoutingView(destination: destination)
                     .environmentObject(container)
@@ -67,6 +62,24 @@ struct LoginView: View {
                 .frame(width: 116, height: 50)
         })
     }
+    
+    private var loginButtons: some View {
+        VStack(alignment: .center, spacing: 20, content: {
+            Button(action: {
+                viewModel.appleLogin()
+            }, label: {
+                Icon.appleLogin.image
+                    .fixedSize()
+            })
+            
+            Button(action: {
+                print("카카오")
+            }, label: {
+                Icon.kakaoLogin.image
+                    .fixedSize()
+            })
+        })
+    }
 }
 
 struct LoginView_Preview: PreviewProvider {
@@ -77,6 +90,7 @@ struct LoginView_Preview: PreviewProvider {
         ForEach(devices, id: \.self) { device in
             LoginView(viewModel: LoginViewModel(container: DIContainer(), appFlowViewModel: AppFlowViewModel()))
                 .environmentObject(DIContainer())
+                .environmentObject(AppFlowViewModel())
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }

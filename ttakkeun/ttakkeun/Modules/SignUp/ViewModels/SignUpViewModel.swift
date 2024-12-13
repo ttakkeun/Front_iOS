@@ -14,7 +14,13 @@ class SignUpViewModel: ObservableObject {
     @Published var tokenResponse: TokenResponse? = nil
     
     @Published var userEmail: String = ""
-    @Published var userNickname: String = ""
+    @Published var userNickname: String = "" {
+        didSet {
+            if userNickname.count > 8 {
+                userNickname = String(userNickname.prefix(8))
+            }
+        }
+    }
     
     let container: DIContainer
     let appFlowViewModel: AppFlowViewModel
@@ -47,7 +53,7 @@ class SignUpViewModel: ObservableObject {
     }
     
     
-    private func saveKeyChain(responseData: TokenResponse?) {
+    private func saveKeyChain(responseData: TokenResponse?, socialType: SocialLoginType) {
         if let responseData = responseData {
             let userInfo = UserInfo(accessToken: responseData.accessToken, refreshToken: responseData.refreshToken)
             let success = KeyChainManager.standard.saveSession(userInfo, for: "ttakkeunUser")
@@ -56,15 +62,16 @@ class SignUpViewModel: ObservableObject {
     }
     
     private func saveUserInfo(signUpRequest: SignUpRequest) {
-        UserState.shared.setUserName(signUpRequest.name)
-        UserState.shared.setUserEmail(signUpRequest.email)
+        UserDefaults.standard.set(signUpRequest.name, forKey: "UserNickname")
+        UserDefaults.standard.set(signUpRequest.email, forKey: "UserEmail")
     }
+    
 }
 
 // MARK: - SignUp
 
 extension SignUpViewModel {
-    public func signUp(signUpRequet: SignUpRequest) {
+    public func signUpApple(signUpRequet: SignUpRequest) {
         container.useCaseProvider.authUseCase.executeSignUpApple(signUpRequest: signUpRequet)
             .tryMap { responseData -> ResponseData<TokenResponse> in
                 if !responseData.isSuccess {
@@ -87,7 +94,39 @@ extension SignUpViewModel {
             }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
                 self.tokenResponse = responseData.result
-                saveKeyChain(responseData: tokenResponse)
+                saveKeyChain(responseData: tokenResponse, socialType: .apple)
+                saveUserInfo(signUpRequest: signUpRequet)
+                container.navigationRouter.pop()
+                appFlowViewModel.onSignUpSuccess()
+                
+            })
+            .store(in: &cancellables)
+    }
+    
+    public func signUpKakao(signUpRequet: SignUpRequest) {
+        container.useCaseProvider.authUseCase.executeSignUpkakaoLogin(signUpRequest: signUpRequet)
+            .tryMap { responseData -> ResponseData<TokenResponse> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("kakao SignUp Finished")
+                case .failure(let failure):
+                    print("kakao SignUp Faield: \(failure)")
+                }
+            }, receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                self.tokenResponse = responseData.result
+                saveKeyChain(responseData: tokenResponse, socialType: .kakao)
                 saveUserInfo(signUpRequest: signUpRequet)
                 container.navigationRouter.pop()
                 appFlowViewModel.onSignUpSuccess()

@@ -15,8 +15,8 @@ struct NavigationRoutingView: View {
     
     var body: some View {
         switch destination {
-        case .signUp(let signUpRequest):
-            SignUpView(singUpRequest: signUpRequest, container: container, appFlowViewModel: appFlowViewModel)
+        case .signUp(let type, let signUpRequest):
+            SignUpView(socialType: type, singUpRequest: signUpRequest, container: container, appFlowViewModel: appFlowViewModel)
                 .environmentObject(container)
             
         case .editPetProfile(let petInfo, let image):

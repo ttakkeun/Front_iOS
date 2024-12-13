@@ -25,7 +25,7 @@ struct CustomNavigation: View {
     init(
         action: @escaping () -> Void,
         title: String?,
-        currentPage: Int?,
+        currentPage: Int? = nil,
         naviIcon: Image = Image(systemName: "xmark"),
         width: CGFloat = 14,
         height: CGFloat = 14
@@ -50,7 +50,7 @@ struct CustomNavigation: View {
             })
             
             if let title = self.title {
-                Spacer().frame(maxWidth: 91)
+                Spacer().frame(maxWidth: 96)
                 
                 Text(title)
                     .font(.H3_bold)
@@ -63,7 +63,7 @@ struct CustomNavigation: View {
             
             if let currentPage = self.currentPage {
                 
-                Spacer()
+                Spacer().frame(maxWidth: 75)
                 
                 Text("\(currentPage) / 5")
                     .font(.Body2_semibold)
@@ -74,5 +74,15 @@ struct CustomNavigation: View {
             
         })
         .frame(width: 353, height: 24)
+    }
+}
+
+struct CustomNavigation_Preview: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            CustomNavigation(action: { print("hello") }, title: "일지 생성", currentPage: 1)
+            
+            Spacer()
+        }
     }
 }
