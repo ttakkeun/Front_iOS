@@ -11,9 +11,7 @@ import Foundation
 /// MyPageInfo Data Struct
 struct MyPageInfo {
     let title: String
-    let firstBtn: BtnInfo
-    let secondBtn: BtnInfo
-    let thirdBtn: BtnInfo?
+    let boxBtn: [BtnInfo]
 }
 
 /// 개별 버튼 정보

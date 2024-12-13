@@ -39,34 +39,8 @@ struct MyPageInfoBox: View {
                 }
             }
             
-            /// 첫 번째 버튼
-            Button(action: {
-                myPageInfo.firstBtn.action()
-            }) {
-                Text(myPageInfo.firstBtn.name)
-                    .font(.Body3_medium)
-                    .foregroundStyle(Color.gray900)
-            }
-            
-            /// 두 번째 버튼
-            Button(action: {
-                myPageInfo.secondBtn.action()
-            }) {
-                Text(myPageInfo.secondBtn.name)
-                    .font(.Body3_medium)
-                    .foregroundStyle(Color.gray900)
-            }
-            
-            /// 세 번째 버튼
-            if let thirdButton = myPageInfo.thirdBtn {
-                Button(action: {
-                    thirdButton.action()
-                }) {
-                    Text(thirdButton.name)
-                        .font(.Body3_medium)
-                        .foregroundStyle(Color.gray900)
-                }
-            }
+            /// 버튼 리스트
+            buttonList()
         }
         .frame(width: 320, alignment: .leading)
         .padding(.vertical, 15)
@@ -76,6 +50,19 @@ struct MyPageInfoBox: View {
                 .fill(Color.answerBg)
         )
     }
+    
+    @ViewBuilder
+    private func buttonList() -> some View {
+        ForEach(myPageInfo.boxBtn) { button in
+            Button(action: {
+                button.action()
+            }) {
+                Text(button.name)
+                    .font(.Body3_medium)
+                    .foregroundStyle(Color.gray900)
+            }
+        }
+    }
 }
 
 //MARK: - Preview
@@ -83,9 +70,11 @@ struct MypageInfoBox_Preview: PreviewProvider {
     static var previews: some View {
         let myPageInfo = MyPageInfo(
             title: "앱 정보",
-            firstBtn: BtnInfo(name: "알림 설정", date: nil, action: { print("알림 설정 버튼 눌림") }),
-            secondBtn: BtnInfo(name: "앱 버전 정보", date: nil, action: { print("앱 버전 정보 버튼 눌림") }),
-            thirdBtn: BtnInfo(name: "이용약관 및 정책", date: nil, action: { print("이용약관 및 정책 버튼 눌림")})
+            boxBtn: [
+                BtnInfo(name: "알림 설정", date: nil, action: { print("알림 설정 버튼 눌림") }),
+                BtnInfo(name: "앱 버전 정보", date: nil, action: { print("앱 버전 정보 버튼 눌림") }),
+                BtnInfo(name: "이용약관 및 정책", date: nil, action: { print("이용약관 및 정책 버튼 눌림") })
+            ]
         )
         
         MyPageInfoBox(myPageInfo: myPageInfo)
