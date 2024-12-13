@@ -6,12 +6,17 @@
 //
 
 import SwiftUI
+import KakaoSDKCommon
 
 @main
 struct ttakkeunApp: App {
     
     @StateObject var appFlowViewModel: AppFlowViewModel = .init()
     @StateObject var container: DIContainer = .init()
+    
+    init() {
+        KakaoSDK.initSDK(appKey: Config.kakaoAppKey)
+    }
     
     var body: some Scene {
         WindowGroup {

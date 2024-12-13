@@ -14,19 +14,12 @@ class UserState: ObservableObject {
     private var petName: String
     private var petId: Int
     
-    private var userName: String
-    private var userEmail: String
-    
     init(
         petName: String = "",
-        petId: Int = 0,
-        userName: String = "",
-        userEmail: String = ""
+        petId: Int = 0
     ) {
         self.petName = petName
         self.petId = petId
-        self.userName = userName
-        self.userEmail = userEmail
     }
     
     public func setPetId(_ petId: Int) {
@@ -38,11 +31,11 @@ class UserState: ObservableObject {
     }
     
     public func setUserName(_ userName: String) {
-        self.userName = userName
+        UserDefaults.standard.setValue(userName, forKey: "UserNickname")
     }
     
     public func setUserEmail(_ userEmail: String) {
-        self.userEmail = userEmail
+        UserDefaults.standard.setValue(userEmail, forKey: "UserEmail")
     }
     
     public func getPetId() -> Int {
@@ -54,10 +47,18 @@ class UserState: ObservableObject {
     }
     
     public func getUserName() -> String {
-        return self.userName
+        guard let userName = UserDefaults.standard.string(forKey: "UserNickname") else {
+            return "닉네임 정보 없음"
+        }
+        
+        return userName
     }
     
     public func getUserEmail() -> String {
-        return self.userEmail
+        guard let userEmail = UserDefaults.standard.string(forKey: "UserEmail") else {
+            return "이메일 정보 없음"
+        }
+        
+        return userEmail
     }
 }

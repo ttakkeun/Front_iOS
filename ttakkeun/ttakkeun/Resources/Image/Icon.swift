@@ -11,6 +11,7 @@ import SwiftUI
 enum Icon: String {
     
     // MARK: - Login
+    case kakaoLogin = "kakaoButton"
     case appleLogin = "appleLogin"
     case logoBackground = "logoBackground"
     case logo = "logo"

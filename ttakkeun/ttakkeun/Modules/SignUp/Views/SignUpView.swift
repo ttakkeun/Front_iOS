@@ -15,11 +15,15 @@ struct SignUpView: View {
     
     @State var signUpRequest: SignUpRequest
     
+    let socialType: SocialLoginType
+    
     init(
+        socialType: SocialLoginType,
         singUpRequest: SignUpRequest,
         container: DIContainer,
         appFlowViewModel: AppFlowViewModel
     ) {
+        self.socialType = socialType
         self.signUpRequest = singUpRequest
         self._viewModel = StateObject(wrappedValue: SignUpViewModel(container: container, appFlowViewModel: appFlowViewModel))
     }
@@ -47,7 +51,12 @@ struct SignUpView: View {
                        height: 56,
                        action: {
                 if viewModel.isAllMandatoryChecked {
-                    viewModel.signUp(signUpRequet: returnSignUpData())
+                    switch socialType {
+                    case .kakao:
+                        viewModel.signUpKakao(signUpRequet: returnSignUpData())
+                    case .apple:
+                        viewModel.signUpApple(signUpRequet: returnSignUpData())
+                    }
                 }
             },
                        color: viewModel.isAllMandatoryChecked ? Color.mainPrimary : Color.gray200)
@@ -58,12 +67,12 @@ struct SignUpView: View {
     }
     
     private var emailField: some View {
-        makeUserInfo(title: "이메일", placeholder: signUpRequest.email, value: .constant(""))
+        makeUserInfo(title: "이메일", placeholder: signUpRequest.email, value: .constant(signUpRequest.email))
             .disabled(true)
     }
     
     private var nicknameField: some View {
-        makeUserInfo(title: "닉네임", placeholder: "앱 내에서 사용할 회원님의 닉네임을 지어주세요.", value: $viewModel.userNickname)
+        makeUserInfo(title: "닉네임", placeholder: formattedPlaceholder, value: $viewModel.userNickname)
     }
     
     private var agreementPart: some View {
@@ -133,6 +142,19 @@ struct SignUpView: View {
                 .fill(Color.clear)
                 .stroke(Color.grayBorder)
         })
+    }
+    
+    private var formattedPlaceholder: String {
+        let baseText = "앱 내에서 사용할 회원님의 닉네이을 지어주세요."
+        let smallText = "(최대 8자)"
+        
+        var attributedText = AttributedString(baseText + "" + smallText)
+        
+        if let range = attributedText.range(of: smallText) {
+            attributedText[range].font = .Body5_medium
+            attributedText[range].foregroundColor = .gray
+        }
+        return String(attributedText.characters)
     }
 }
 

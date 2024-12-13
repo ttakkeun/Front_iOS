@@ -25,4 +25,13 @@ class AuthRepository: AuthRepositoryProtocol {
     func signUpWithApple(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, Moya.MoyaError> {
         return authService.signUpAppleLogin(signUpRequest: signUpRequest)
     }
+    
+    func kakaoLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
+        return authService.kakaoLogin(signUpRequest: signUpRequest)
+    }
+    
+    func signUpkakaoLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
+        return authService.kakaoLogin(signUpRequest: signUpRequest)
+    }
+    
 }

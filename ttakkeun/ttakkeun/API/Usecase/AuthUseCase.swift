@@ -28,4 +28,15 @@ class AuthUseCase: AuthUseCaseProtocol {
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }
+    func executeKakaoLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
+        return repository.kakaoLogin(signUpRequest: signUpRequest)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executeSignUpkakaoLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
+        return repository.signUpkakaoLogin(signUpRequest: signUpRequest)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
 }
