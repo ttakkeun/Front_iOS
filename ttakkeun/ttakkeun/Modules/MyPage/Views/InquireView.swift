@@ -16,10 +16,7 @@ struct InquireView: View {
         VStack(alignment: .center, spacing: 25, content: {
             CustomNavigation(action: { print("hello world") },
                              title: "문의하기",
-                             currentPage: nil,
-                             naviIcon: Image(systemName: "xmark"),
-                             width: 16,
-                             height: 16)
+                             currentPage: nil)
             
             reportContent
             

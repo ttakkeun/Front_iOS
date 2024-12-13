@@ -21,8 +21,7 @@ struct AppInfoBtnView: View {
         VStack(alignment: .center, spacing: 40, content: {
             CustomNavigation(action: { print("hello world") },
                              title: "이용약관 및 정책",
-                             currentPage: nil
-                             )
+                             currentPage: nil)
             infoBtns
             Spacer()
         })

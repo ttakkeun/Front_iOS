@@ -14,7 +14,7 @@ struct MyPageView: View {
             CustomNavigation(action: { print("hello world") },
                              title: "마이페이지",
                              currentPage: nil,
-                             naviIcon: Image(systemName: "chevron.left"),
+                             naviIcon: Image(systemName: "chevron.backward"),
                              width: 8,
                              height: 16)
             
