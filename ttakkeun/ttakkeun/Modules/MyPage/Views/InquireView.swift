@@ -1,13 +1,13 @@
 //
-//  ReportView.swift
+//  InquireView.swift
 //  ttakkeun
 //
-//  Created by 황유빈 on 12/9/24.
+//  Created by 황유빈 on 12/13/24.
 //
 
 import SwiftUI
 
-struct ReportView: View {
+struct InquireView: View {
     
     //TODO: 스웨거 안나와서 일단 뷰만 돌리기 위한 임시변수, viewModel 만들어야 함!
     @State private var detail: String = ""
@@ -15,7 +15,7 @@ struct ReportView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 25, content: {
             CustomNavigation(action: { print("hello world") },
-                             title: "신고하기",
+                             title: "문의하기",
                              currentPage: nil,
                              naviIcon: Image(systemName: "xmark"),
                              width: 16,
@@ -25,9 +25,9 @@ struct ReportView: View {
             
             Spacer()
             
-            MainButton(btnText: "신고하기", width: 349, height: 63, action: {
+            MainButton(btnText: "문의하기", width: 349, height: 63, action: {
                     //TODO: - 신고하기 버튼 눌렸을 때 액션 필요
-                    print("신고하기 버튼 눌림")},
+                    print("문의하기 버튼 눌림")},
                        color: Color.mainPrimary
             )
         })
@@ -38,7 +38,8 @@ struct ReportView: View {
     ///정보 입력 필드
     private var reportContent: some View {
         VStack(alignment: .leading, spacing: 17, content: {
-            Text("신고하기 > 기타 신고 내용 작성하기")
+            //TODO: - '>' 뒤에 카테고리는 앞에 뷰에서 어떤 버튼을 선택하느냐에 따라 달라져야함
+            Text("문의하기 > 서비스 이용 문의")
                 .font(.Body4_medium)
                 .foregroundStyle(Color.gray400)
             
@@ -52,13 +53,13 @@ struct ReportView: View {
     /// 신고 내용
     private var reportDetail: some View {
         VStack(alignment: .leading, spacing: 18,content: {
-            Text("신고내용을 작성해주세요.")
+            Text("문의 내용을 작성해주세요.")
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
             
             //TODO: text Binding, maxTextCount 수정
             TextEditor(text: $detail)
-                .customStyleTipsEditor(text: $detail, placeholder: "신고 내용은 문제를 신속히 파악하고 해결하는 데 큰 도움이 됩니다.", maxTextCount: 300, backColor: Color.white)
+                .customStyleTipsEditor(text: $detail, placeholder: "최대 300자 이내", maxTextCount: 300, backColor: Color.white)
                 .frame(width: 351, height: 200)
         })
     }
@@ -93,17 +94,18 @@ private struct FieldGroup {
 }
 
 //MARK: - Preview
-struct ReportView_Preview: PreviewProvider {
+struct InquireView_Preview: PreviewProvider {
     
     static let devices = ["iPhone 11", "iPhone 16 Pro"]
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            ReportView()
+            InquireView()
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
         }
     }
 }
+
 
 
