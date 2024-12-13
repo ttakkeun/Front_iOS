@@ -11,9 +11,9 @@ import CombineMoya
 
 class HomeRecommendViewModel: ObservableObject {
     @Published var aiProduct: [ProductResponse]?
-    @Published var userProduct: [ProductResponse]? // @Published 추가
+    @Published var userProduct: [ProductResponse]?
     @Published var aiRecommendIsLoading: Bool = true
-    @Published var userRecommendIsLoading: Bool = true // @Published 추가
+    @Published var userRecommendIsLoading: Bool = true
     
     private var aiCancellables = Set<AnyCancellable>()
     private var userCancellables = Set<AnyCancellable>()

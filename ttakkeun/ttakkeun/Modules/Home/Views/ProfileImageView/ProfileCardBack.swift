@@ -12,7 +12,7 @@ struct ProfileCardBack: View {
     @ObservedObject var viewModel: HomeProfileCardViewModel
     
     var body: some View {
-        VStack(alignment: .leading, content: {
+        VStack(alignment: .leading, spacing: 17, content: {
             if let data = viewModel.profileData {
                 myPetTag(data: data)
                 
@@ -20,10 +20,17 @@ struct ProfileCardBack: View {
                 
             } else {
                 
-                Spacer().frame(height: 60)
+                Spacer()
                 
-                ProgressView(label: { LoadingDotsText(text: "데이터를 받아오지 못했습니다") })
-                    .controlSize(.regular)
+                HStack {
+                    
+                    Spacer()
+                    
+                    ProgressView(label: { LoadingDotsText(text: "데이터를 받아오지 못했습니다") })
+                        .controlSize(.regular)
+                    
+                    Spacer()
+                }
                 
                 Spacer()
             }
@@ -41,7 +48,7 @@ struct ProfileCardBack: View {
                 })
             })
         })
-        .frame(width: 320)
+        .frame(width: 320, height: 232)
         .padding(.top, 13)
         .padding(.leading, 25)
         .padding(.bottom, 23)
@@ -65,15 +72,16 @@ struct ProfileCardBack: View {
                         .stroke(Color.gray900)
                 }
             
+            Spacer()
+            
             Button(action: {
                 viewModel.goToEditPetProfile()
             }, label: {
-                Icon.pencil.image
+                Image(systemName: "pencil.circle")
                     .renderingMode(.template)
                     .resizable()
-                    .frame(width: 18, height: 18)
+                    .frame(width: 25, height: 25)
                     .foregroundStyle(Color.black)
-                    .padding()
             })
         }
     }

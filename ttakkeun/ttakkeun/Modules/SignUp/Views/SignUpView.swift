@@ -67,12 +67,12 @@ struct SignUpView: View {
     }
     
     private var emailField: some View {
-        makeUserInfo(title: "이메일", placeholder: signUpRequest.email, value: .constant(signUpRequest.email))
+        makeUserInfo(title: "이메일", placeholder: signUpRequest.email, value: .constant(""))
             .disabled(true)
     }
     
     private var nicknameField: some View {
-        makeUserInfo(title: "닉네임", placeholder: formattedPlaceholder, value: $viewModel.userNickname)
+        makeUserInfo(title: "닉네임", placeholder: "닉네임을 지어주세요(최대 8자)", value: $viewModel.userNickname)
     }
     
     private var agreementPart: some View {
@@ -143,19 +143,6 @@ struct SignUpView: View {
                 .stroke(Color.grayBorder)
         })
     }
-    
-    private var formattedPlaceholder: String {
-        let baseText = "앱 내에서 사용할 회원님의 닉네이을 지어주세요."
-        let smallText = "(최대 8자)"
-        
-        var attributedText = AttributedString(baseText + "" + smallText)
-        
-        if let range = attributedText.range(of: smallText) {
-            attributedText[range].font = .Body5_medium
-            attributedText[range].foregroundColor = .gray
-        }
-        return String(attributedText.characters)
-    }
 }
 
 extension SignUpView {
@@ -180,5 +167,12 @@ extension SignUpView {
     
     func returnSignUpData() -> SignUpRequest {
         return SignUpRequest(identityToken: signUpRequest.identityToken, email: signUpRequest.email, name: viewModel.userNickname)
+    }
+}
+
+struct SignUpView_Preview: PreviewProvider {
+    static var previews: some View {
+        SignUpView(socialType: .apple, singUpRequest: SignUpRequest(identityToken: "1123", email: "apple@example.com", name: "정의찬"), container: DIContainer(), appFlowViewModel: AppFlowViewModel())
+            .environmentObject(DIContainer())
     }
 }
