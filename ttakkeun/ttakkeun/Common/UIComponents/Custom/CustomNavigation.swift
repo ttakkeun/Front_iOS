@@ -80,7 +80,7 @@ struct CustomNavigation: View {
 struct CustomNavigation_Preview: PreviewProvider {
     static var previews: some View {
         VStack {
-            CustomNavigation(action: { print("hello") }, title: "일지 생성", currentPage: 1)
+            CustomNavigation(action: { print("hello") }, title: "이용약관", currentPage: nil)
             
             Spacer()
         }
