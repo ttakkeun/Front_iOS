@@ -37,7 +37,7 @@ struct JournalListView: View {
             ZStack {
                 journalList
                 makeJournalListBtn
-                    .position(x: geo.size.width * 0.76, y: geo.size.height * 0.74)
+                    .position(x: geo.size.width * 0.78, y: geo.size.height * 0.78)
             }
             .navigationDestination(for: NavigationDestination.self) { destination in
                 NavigationRoutingView(destination: destination)
@@ -191,5 +191,12 @@ extension JournalListView {
         let aiCountText = "(현재 가능한 횟수 : \(viewModel.aiPoint)회)"
         
         return Text(baseText) + Text(aiCountText).foregroundStyle(Color.red).font(.Body5_semiBold)
+    }
+}
+
+
+struct JournalListView_Prviews: PreviewProvider {
+    static var previews: some View {
+        JournalListView(viewModel: JournalListViewModel(container: DIContainer()), showAlert: .constant(true), alertText: .constant(Text("Qq")), aiCount: .constant(1), alertType: .constant(.aiAlert), actionYes: .constant({print("hello")}), selectedPartItem: .constant(.claw))
     }
 }

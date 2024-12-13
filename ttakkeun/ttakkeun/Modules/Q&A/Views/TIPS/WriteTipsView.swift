@@ -47,6 +47,7 @@ struct WriteTipsView: View {
             if viewModel.registTipsLoading {
                 ProgressView(label: {
                     LoadingDotsText(text: "작성한 Tips를 생성 중입니다.")
+                        .controlSize(.extraLarge)
                 })
             }
         })

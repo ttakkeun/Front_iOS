@@ -28,6 +28,7 @@ struct LoadingDotsText: View {
             .multilineTextAlignment(.center)
             .lineSpacing(2.5)
             .font(.Body3_medium)
+            .foregroundStyle(Color.gray900)
             .onReceive(timer, perform: { _ in
                 dotCount = (dotCount + 1) % (maxDots + 1)
             })

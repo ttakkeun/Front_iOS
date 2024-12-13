@@ -182,9 +182,9 @@ struct RecommendView: View {
                         .lineSpacing(2.5)
                         .font(.Body3_medium)
                 }
-                .controlSize(.large)
-                .padding(.vertical, 31)
-                .padding(.horizontal, 85)
+                .controlSize(.regular)
+                .padding(.vertical, 25)
+                .padding(.horizontal, 100)
                 .background {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.gray300, lineWidth: 1)

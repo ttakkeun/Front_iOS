@@ -149,10 +149,11 @@ final class DataFormatter {
     }
     
     public func changeDifferenceTime(from serverTime: String) -> String {
-        let isoFormatter = ISO8601DateFormatter()
-        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         
-        guard let serverDate = isoFormatter.date(from: serverTime) else {
+        guard let serverDate = dateFormatter.date(from: serverTime) else {
             return "알 수 없음"
         }
         

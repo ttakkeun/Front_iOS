@@ -18,24 +18,18 @@ struct QnAView: View {
         self._qnaSegmentValue = qnaSegmentValue
     }
     
+    
     var body: some View {
-        ZStack {
-            VStack(alignment: .center, spacing: 0, content: {
-                TopStatusBar()
-                
-                QnAHeader(selectedSegment: $qnaSegmentValue)
-                    .frame(width: 353, alignment: .leading)
-                    .padding(.top, 12)
-                
-                changeSegmentView
-            })
-            .background(Color.scheduleBg)
-        }
-        .navigationDestination(for: NavigationDestination.self) { detination in
-            NavigationRoutingView(destination: detination)
-                .environmentObject(container)
-                .environmentObject(appFlowViewModel)
-        }
+        VStack(alignment: .center, spacing: 0, content: {
+            TopStatusBar()
+            
+            QnAHeader(selectedSegment: $qnaSegmentValue)
+                .frame(width: 353, alignment: .leading)
+                .padding(.top, 12)
+            
+            changeSegmentView
+        })
+        .background(Color.scheduleBg)
     }
     
     @ViewBuilder
@@ -46,6 +40,7 @@ struct QnAView: View {
         case .tips:
             TipsView(container: container)
                 .environmentObject(container)
+                .environmentObject(appFlowViewModel)
         }
     }
 }

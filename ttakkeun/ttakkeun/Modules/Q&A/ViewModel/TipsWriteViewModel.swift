@@ -18,7 +18,7 @@ class TipsWriteViewModel: ObservableObject, ImageHandling {
     @Published var isImagePickerPresented: Bool = false
     @Published private var selectedImage: [UIImage] = []
     
-    @Published var registTipsLoading: Bool = true
+    @Published var registTipsLoading: Bool = false
     
     var selectedImageCount: Int = 0
     

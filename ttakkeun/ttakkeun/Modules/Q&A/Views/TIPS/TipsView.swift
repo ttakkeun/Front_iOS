@@ -11,6 +11,8 @@ struct TipsView: View {
     
     @StateObject var viewModel: TipsViewModel
     @EnvironmentObject var container: DIContainer
+    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
+    
     
     init(container: DIContainer) {
         self._viewModel = .init(wrappedValue: .init(container: container))
@@ -25,6 +27,11 @@ struct TipsView: View {
             })
         }
         .safeAreaPadding(EdgeInsets(top: 0, leading: 19, bottom: 0, trailing: 19))
+        .navigationDestination(for: NavigationDestination.self) { detination in
+            NavigationRoutingView(destination: detination)
+                .environmentObject(container)
+                .environmentObject(appFlowViewModel)
+        }
         
     }
     
@@ -40,13 +47,13 @@ struct TipsView: View {
     private var tipContents: some View {
         ScrollView(.vertical, content: {
             if !viewModel.tipsResponse.isEmpty {
-                LazyVStack(alignment: .leading, spacing: 16, content: {
+                LazyVStack(alignment: .center, spacing: 16, content: {
                     title
                     ForEach($viewModel.tipsResponse, id: \.self) { $data in
                         TipsContentsCard(data: $data, tipsType: .scrapTips, tipsButtonOption: TipsButtonOption(heartAction: { viewModel.toggleLike(for: data.tipId) }, scrapAction: { viewModel.toggleBookMark(for: data.tipId) }))
                             .environmentObject(container)
-                            .task {
-                                if data == viewModel.tipsResponse.last {
+                            .onAppear {
+                                if data == viewModel.tipsResponse.last && viewModel.canLoadMoreTips {
                                     switch viewModel.isSelectedCategory {
                                     case .all:
                                         viewModel.getTipsAll(page: viewModel.tipsPage)
@@ -67,7 +74,7 @@ struct TipsView: View {
                             .controlSize(.regular)
                     }
                 })
-                .padding(.bottom, 100)
+                .padding(.bottom, 180)
             }
         })
         .refreshable {
