@@ -33,12 +33,23 @@ struct WriteTipsView: View {
             Spacer()
             
             MainButton(btnText: "공유하기", width: 353, height: 56, action: {
-                //TODO: - 공유하기 버튼 API
-                viewModel.goToBeforePage()
+                if !viewModel.title.isEmpty && !viewModel.textContents.isEmpty {
+                    viewModel.writeTips()
+                    if !viewModel.registTipsLoading {
+                        viewModel.goToBeforePage()
+                    }
+                }
             }, color: Color.mainPrimary)
         })
         .safeAreaPadding(EdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20))
         .navigationBarBackButtonHidden(true)
+        .overlay(alignment: .center, content: {
+            if viewModel.registTipsLoading {
+                ProgressView(label: {
+                    LoadingDotsText(text: "작성한 Tips를 생성 중입니다.")
+                })
+            }
+        })
     }
     
     private var categoryTitle: some View {

@@ -45,6 +45,7 @@ struct QnAView: View {
             FAQView()
         case .tips:
             TipsView(container: container)
+                .environmentObject(container)
         }
     }
 }

@@ -126,24 +126,59 @@ final class DataFormatter {
         }
         return name
     }
-
+    
     /// 서버 시간(UTC)을 받아 현재 한국 시간(KST)과 비교하여 경과 시간을 반환
     func convertToKoreanTime(from serverTime: String) -> String {
         // 1. ISO8601DateFormatter 설정
         let isoFormatter = ISO8601DateFormatter()
         isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         isoFormatter.timeZone = TimeZone(secondsFromGMT: 0) // UTC 기준으로 해석
-
+        
         // 2. 서버 시간 문자열 → Date 변환
         guard let serverDate = isoFormatter.date(from: serverTime) else {
             return "알 수 없음" // 형식이 잘못된 경우 처리
         }
-
+        
         // 3. 한국 시간(KST)으로 변환
         let koreanTimeZone = TimeZone(identifier: "Asia/Seoul")!
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy.MM.dd" // 원하는 포맷 설정
         dateFormatter.timeZone = koreanTimeZone
-
+        
         return dateFormatter.string(from: serverDate) // 한국 시간 문자열 반환
-    }}
+    }
+    
+    public func changeDifferenceTime(from serverTime: String) -> String {
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        
+        guard let serverDate = isoFormatter.date(from: serverTime) else {
+            return "알 수 없음"
+        }
+        
+        // 한국 표준시 설정
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone(identifier: "Asia/Seoul")!
+        
+        let currentDate = Date()
+        
+        // 날짜 차이 계산
+        let difference = calendar.dateComponents([.day, .hour, .minute], from: serverDate, to: currentDate)
+        
+        if let day = difference.day, day > 0 {
+            if let hour = difference.hour, let minute = difference.minute {
+                return "\(day)일 \(hour)시간 \(minute)분 전"
+            }
+            return "\(day)일 전"
+        } else if let hour = difference.hour, hour > 0 {
+            if let minute = difference.minute {
+                return "\(hour)시간 \(minute)분 전"
+            }
+            return "\(hour)시간 전"
+        } else if let minute = difference.minute, minute > 0 {
+            return "\(minute)분 전"
+        } else {
+            return "방금 전"
+        }
+    }
+}

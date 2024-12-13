@@ -10,20 +10,26 @@ import Kingfisher
 
 struct TipsContentsCard: View {
     
+    @EnvironmentObject var container: DIContainer
     @Binding var data: TipsResponse
     let tipsType: TipsType
+    
     let tipsButtonOption: TipsButtonOption?
     let deleteTipsAction: (() -> Void)?
+    
+    let showReportBtn: Bool
     
     init(data: Binding<TipsResponse>,
          tipsType: TipsType,
          tipsButtonOption: TipsButtonOption? = nil,
-         deleteTipsAction: (() -> Void)? = nil
+         deleteTipsAction: (() -> Void)? = nil,
+         showReportBtn: Bool = true
     ) {
         self._data = data
         self.tipsType = tipsType
         self.tipsButtonOption = tipsButtonOption
         self.deleteTipsAction = deleteTipsAction
+        self.showReportBtn = showReportBtn
     }
     
     var body: some View {
@@ -182,7 +188,7 @@ struct TipsContentsCard: View {
             Group {
                 Text(DataFormatter.shared.maskUserName(data.authorName))
                 
-                Text(DataFormatter.shared.convertToKoreanTime(from: data.createdAt))
+                Text(DataFormatter.shared.changeDifferenceTime(from: data.createdAt))
             }
             .font(.Body4_medium)
             .foregroundStyle(Color.gray400)
@@ -281,8 +287,8 @@ extension TipsContentsCard {
                 Image(systemName: data.isLike ? "suit.heart.fill" : "suit.heart")
                     .resizable()
                     .renderingMode(.template)
+                    .frame(width: 19, height: 18)
                     .foregroundStyle(data.isLike ? Color.removeBtn : Color.gray600)
-                    .frame(width: 20, height: 20)
             })
             
             Button(action: {
@@ -293,10 +299,26 @@ extension TipsContentsCard {
                 Image(systemName: data.isScrap ? "bookmark.fill" : "bookmark")
                     .resizable()
                     .renderingMode(.template)
+                    .frame(width: 15, height: 18)
                     .foregroundStyle(data.isScrap ? Color.card005 : Color.gray600)
-                    .frame(width: 15, height: 20)
+            })
+            
+            Menu(content: {
+                Button(action: {
+                    print("신고하기 클릭")
+                }, label: {
+                    Label("신고하기", systemImage: "light.beacon.max")
+                        .foregroundStyle(Color.gray900)
+                })
+            }, label: {
+                Icon.dotsY.image
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 4, height: 16)
+                    .padding(.horizontal, 5)
             })
         })
+        .frame(width: 76)
     }
     
     func deleteButton(deleteAction: @escaping () -> Void) -> some View {
@@ -324,6 +346,7 @@ struct TipsButtonOption {
 
 struct TipsContentsCard_Preview: PreviewProvider {
     static var previews: some View {
-        TipsContentsCard(data: .constant(TipsResponse(tipId: 0, category: .ear, title: "털 안꼬이게 빗는 법 꿀팁 공유 드림", content: "털은 빗어주지 않으면 쉽게 꼬일 수 있기 때문에 열심히 빗어주면 됩니다. 그래서 매일매일 빗질을 해주는 것이 매우 중요합니다. 털의 길이와 상태에 따라 길이와 상태에 따라 종류에 맞는 빗을 구매하셔서 부드럽게 털을 빗어 죽은 털을 제거해주세요 그러면 윤기나고 건강한 털을 유지할 수 있습니다. 하하하하하하하하", recommendCount: 1000, createdAt: "2024-12-04T02:20:00.584Z", imageUrls: ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg", "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"], authorName: "정의찬", isLike: true, isPopular: true, isScrap: true)), tipsType: .writeMyTips, deleteTipsAction: { print("hello") })
+        TipsContentsCard(data: .constant(TipsResponse(tipId: 0, category: .ear, title: "털 안꼬이게 빗는 법 꿀팁 공유 드림", content: "털은 빗어주지 않으면 쉽게 꼬일 수 있기 때문에 열심히 빗어주면 됩니다. 그래서 매일매일 빗질을 해주는 것이 매우 중요합니다. 털의 길이와 상태에 따라 길이와 상태에 따라 종류에 맞는 빗을 구매하셔서 부드럽게 털을 빗어 죽은 털을 제거해주세요 그러면 윤기나고 건강한 털을 유지할 수 있습니다. 하하하하하하하하", recommendCount: 1000, createdAt: "2024-12-12T02:20:00.08Z", imageUrls: ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg", "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"], authorName: "정의찬", isLike: false, isPopular: true, isScrap: true)), tipsType: .scrapTips, tipsButtonOption: TipsButtonOption(heartAction: { print("hello") }, scrapAction: { print("hello") }))
+            .environmentObject(DIContainer())
     }
 }

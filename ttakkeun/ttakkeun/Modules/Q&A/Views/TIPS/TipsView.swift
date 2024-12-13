@@ -10,6 +10,7 @@ import SwiftUI
 struct TipsView: View {
     
     @StateObject var viewModel: TipsViewModel
+    @EnvironmentObject var container: DIContainer
     
     init(container: DIContainer) {
         self._viewModel = .init(wrappedValue: .init(container: container))
@@ -43,6 +44,7 @@ struct TipsView: View {
                     title
                     ForEach($viewModel.tipsResponse, id: \.self) { $data in
                         TipsContentsCard(data: $data, tipsType: .scrapTips, tipsButtonOption: TipsButtonOption(heartAction: { viewModel.toggleLike(for: data.tipId) }, scrapAction: { viewModel.toggleBookMark(for: data.tipId) }))
+                            .environmentObject(container)
                             .task {
                                 if data == viewModel.tipsResponse.last {
                                     switch viewModel.isSelectedCategory {
