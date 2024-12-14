@@ -35,7 +35,6 @@ struct FAQView: View {
             VStack(alignment: .leading, spacing: -8, content: {
                 topTenQuestionTitle
                     .zIndex(1)
-                    .padding(.leading, 25)
                 topTenQuestionList
             })
         })
@@ -61,6 +60,7 @@ struct FAQView: View {
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
         })
+        .padding(.leading, 40)
     }
     
     private var topTenQuestionList: some View {
@@ -71,7 +71,7 @@ struct FAQView: View {
                 }
             })
             .padding(.vertical, 15)
-            .padding(.horizontal, 14)
+            .padding(.horizontal, 35)
         })
         .frame(height: 156)
         .padding(.vertical, 4)
@@ -79,7 +79,7 @@ struct FAQView: View {
     
     // MARK: - CategoryList
     private var fiveCategoryButton: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.fixed(105)), count: 3), spacing: 11, content: {
+        LazyVGrid(columns: Array(repeating: GridItem(.fixed(115), spacing: 20), count: 3), spacing: 11, content: {
             ForEach(PartItem.allCases, id: \.self) { category in
                 makeListButton(category)
             }

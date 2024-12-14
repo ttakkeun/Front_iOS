@@ -115,3 +115,9 @@ struct DiagnosingActionBar: View {
         })
     }
 }
+
+struct DiagnosingActionBar_Preview: PreviewProvider {
+    static var previews: some View {
+        DiagnosingActionBar(diagnosingValue: .constant(.init(selectedSegment: .journalList, selectedPartItem: .ear)), viewModel: JournalListViewModel(container: .init()))
+    }
+}

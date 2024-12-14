@@ -61,6 +61,5 @@ struct DiagnosingHeader: View {
                 .disabled(journalListViewModel.isFetching)
             }
         })
-        .padding(.leading, 10)
     }
 }

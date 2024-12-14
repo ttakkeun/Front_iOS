@@ -114,6 +114,8 @@ struct RecommendView: View {
                         Text("최근 AI 제품을 받아오는 중입니다.")
                             .controlSize(.regular)
                     })
+                    
+                    Spacer()
                 }
             }
         })
