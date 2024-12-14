@@ -44,8 +44,8 @@ struct TodoCard: View {
     
     private var todoCheckList: some View {
         VStack(alignment: .leading, spacing: 5, content: {
-            ForEach(viewModel.todos, id: \.self) { todo in
-                TodoCheckList(data: .constant(todo), viewModel: viewModel, partItem: viewModel.partItem, checkAble: true)
+            ForEach($viewModel.todos, id: \.id) { todo in
+                TodoCheckList(data: todo, viewModel: viewModel, partItem: viewModel.partItem, checkAble: true)
             }
             
             if viewModel.isAddingNewTodo {

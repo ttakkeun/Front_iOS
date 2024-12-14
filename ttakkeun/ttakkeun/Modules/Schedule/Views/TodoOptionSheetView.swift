@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct TodoOptionSheetView: View {
+    
+    @ObservedObject var viewModel: TodoCheckViewModel
+    @Binding var selectedTodo: TodoList
+    
     var body: some View {
         VStack(alignment: .center, spacing: 30, content: {
             Capsule()
@@ -130,8 +134,4 @@ extension TodoOptionSheetView {
             print("날짜 바꾸기")
         }
     }
-}
-
-#Preview {
-    TodoOptionSheetView()
 }

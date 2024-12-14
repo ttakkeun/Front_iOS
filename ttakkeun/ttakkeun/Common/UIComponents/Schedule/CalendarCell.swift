@@ -51,7 +51,3 @@ struct CalendarCell: View {
             .foregroundStyle(Color.gray900)
     }
 }
-
-#Preview {
-    CalendarView()
-}

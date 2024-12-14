@@ -11,8 +11,8 @@ struct CalendarView: View {
     
     @StateObject var viewModel: CalendarViewModel
     
-    init() {
-        self._viewModel = StateObject(wrappedValue: .init(month: Date(), calendar: Calendar.current))
+    init(container: DIContainer) {
+        self._viewModel = StateObject(wrappedValue: .init(month: Date(), calendar: Calendar.current, container: container))
     }
     
     var body: some View {
@@ -112,8 +112,4 @@ extension CalendarView {
                 .fontWeight(.bold)
         })
     }
-}
-
-#Preview {
-    CalendarView()
 }
