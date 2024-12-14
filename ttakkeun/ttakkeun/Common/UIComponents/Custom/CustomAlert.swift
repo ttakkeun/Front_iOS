@@ -10,12 +10,34 @@ import SwiftUI
 struct CustomAlert: View {
     
     let alertText: Text
-    let aiCount: Int?
+    var alertSubText: Text? = nil
+    var aiCount: Int
     let alertAction: AlertAction
     let alertType: AlertType
     
-    init(alertText: Text, aiCount: Int?, alertAction: AlertAction, alertType: AlertType = .aiAlert) {
+    /* AI 진단 타입 Alert 초기화 */
+    
+    init(
+        alertText: Text,
+        aiCount: Int,
+        alertAction: AlertAction,
+        alertType: AlertType = .aiAlert
+    ) {
         self.alertText = alertText
+        self.aiCount = aiCount
+        self.alertAction = alertAction
+        self.alertType = alertType
+    }
+    
+    init(
+        alertText: Text,
+        alertSubText: Text,
+        aiCount: Int = 0,
+        alertAction: AlertAction,
+        alertType: AlertType = .normalAlert
+    ) {
+        self.alertText = alertText
+        self.alertSubText = alertSubText
         self.aiCount = aiCount
         self.alertAction = alertAction
         self.alertType = alertType
@@ -36,21 +58,43 @@ struct CustomAlert: View {
             
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color.white)
-                .frame(width: 248, height: 175)
+                .frame(width: backGroundWidthCGFloat(), height: backGroundHeightCGFlaot())
             
             VStack(spacing: 30, content: {
-                alertText
-                    .lineLimit(nil)
-                    .multilineTextAlignment(.center)
-                    .font(.Body3_semibold)
-                    .foregroundStyle(Color.gray900)
-                    .lineSpacing(2.5)
+                textGroup
                 
                 buttonGroup
             })
-            .frame(width: 224)
+            .frame(width: stackCGFloat())
             .padding(.bottom, 17)
         })
+    }
+    
+    @ViewBuilder
+    private var textGroup: some View {
+        switch alertType {
+        case .aiAlert:
+            alertText
+                .lineLimit(nil)
+                .multilineTextAlignment(.center)
+                .font(.Body3_semibold)
+                .foregroundStyle(Color.gray900)
+                .lineSpacing(2.5)
+        case .normalAlert:
+            VStack(alignment: .leading, spacing: 20) {
+                alertText
+                    .font(.Body2_semibold)
+                    .foregroundStyle(Color.gray900)
+                
+                alertSubText
+                    .font(.Body4_semibold)
+                    .foregroundStyle(Color.gray400)
+                    .lineLimit(2)
+                    .lineSpacing(2)
+                    .multilineTextAlignment(.leading)
+            }
+            .frame(width: 301)
+        }
     }
     
     @ViewBuilder
@@ -66,6 +110,9 @@ struct CustomAlert: View {
     @ViewBuilder
     func normalAlert() -> some View {
         HStack(spacing: 8, content: {
+            
+            Spacer()
+            
             makeButton(text: "예",
                        action: {
                 alertAction.yes()
@@ -76,14 +123,8 @@ struct CustomAlert: View {
             },
                        color: Color.primarycolor200
             )
-            makeButton(text: "아니오",
-                       action: {
-                withAnimation(.spring(duration: 0.3)) {
-                    alertAction.showAlert.toggle()
-                }
-            },
-                       color: Color.alertNo)
         })
+        .frame(width: 301)
     }
     
     @ViewBuilder
@@ -129,12 +170,49 @@ struct CustomAlert: View {
                 .font(.Body3_semibold)
                 .foregroundStyle(Color.gray900)
                 .padding(.vertical, 9)
-                .frame(maxWidth: 140)
+                .frame(maxWidth: buttonCGFloat())
                 .background(content: {
                     RoundedRectangle(cornerRadius: 12)
                         .fill(color)
                 })
         })
+    }
+    
+    func backGroundWidthCGFloat() -> CGFloat {
+        switch alertType {
+        case .aiAlert:
+            return 248
+        case .normalAlert:
+            return 338
+        }
+        
+    }
+    
+    func backGroundHeightCGFlaot() -> CGFloat {
+        switch alertType {
+        case .aiAlert:
+            return 175
+        case .normalAlert:
+            return 196
+        }
+    }
+    
+    func stackCGFloat() -> CGFloat {
+        switch alertType {
+        case .aiAlert:
+            return 224
+        case .normalAlert:
+            return 301
+        }
+    }
+    
+    func buttonCGFloat() -> CGFloat {
+        switch alertType {
+        case .aiAlert:
+            return 140
+        case .normalAlert:
+            return 82
+        }
     }
 }
 
@@ -145,6 +223,6 @@ struct AlertAction {
 
 struct CustomAlert_Preview: PreviewProvider {
     static var previews: some View {
-        CustomAlert(alertText: Text("asdasdasd \nadajhjskdhka"), aiCount: nil, alertAction: AlertAction(showAlert: .constant(true), yes: { print("yes")}), alertType: .normalAlert)
+        CustomAlert(alertText: Text("문의내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록 하겠습니다. \n영업시간 2~3일 이내에 이메일로 답변을 받아보실 수 있습니다."), alertAction: .init(showAlert: .constant(true), yes: { print("ok") }))
     }
 }

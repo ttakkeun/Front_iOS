@@ -163,7 +163,7 @@ struct RecommendView: View {
                     RankRecommendation(data: $viewModel.recommendProducts[index], rank: index)
                         .handleTapGesture(with: viewModel, data: viewModel.recommendProducts[index], source: .userProduct)
                         .task {
-                            if product == viewModel.recommendProducts.last {
+                            if product == viewModel.recommendProducts.last && viewModel.canLoadMoarUserProduct {
                                 if viewModel.selectedCategory == .all {
                                     viewModel.getUserRecommendAll(page: viewModel.userProductPage)
                                 } else {
