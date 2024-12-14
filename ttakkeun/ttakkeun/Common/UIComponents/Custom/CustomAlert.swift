@@ -15,6 +15,8 @@ struct CustomAlert: View {
     let alertAction: AlertAction
     let alertType: AlertType
     
+    var nickNameValue: Binding<String>? = nil
+    
     /* AI 진단 타입 Alert 초기화 */
     
     init(
@@ -29,6 +31,8 @@ struct CustomAlert: View {
         self.alertType = alertType
     }
     
+    /* 문의하기, 신고하기 타입 Alert 초기화 */
+    
     init(
         alertText: Text,
         alertSubText: Text,
@@ -41,6 +45,24 @@ struct CustomAlert: View {
         self.aiCount = aiCount
         self.alertAction = alertAction
         self.alertType = alertType
+    }
+    
+    /* NickName Alert 초기화 */
+    
+    init(
+        alertText: Text,
+        alertSubText: Text,
+        aiCount: Int = 0,
+        alertAction: AlertAction,
+        alertType: AlertType = .editNicknameAlert,
+        nickNameValue: Binding<String>
+    ) {
+        self.alertText = alertText
+        self.alertSubText = alertSubText
+        self.aiCount = aiCount
+        self.alertAction = alertAction
+        self.alertType = alertType
+        self.nickNameValue = nickNameValue
     }
     
     var body: some View {
@@ -94,6 +116,27 @@ struct CustomAlert: View {
                     .multilineTextAlignment(.leading)
             }
             .frame(width: 301)
+            
+        case .editNicknameAlert:
+            VStack(alignment: .leading, spacing: 17, content: {
+                
+                HStack(content: {
+                    alertText
+                        .font(.Body2_semibold)
+                        .foregroundStyle(Color.gray900)
+                    
+                    Spacer()
+                    
+                    alertSubText
+                        .font(.Body4_medium)
+                        .foregroundStyle(Color.gray400)
+                })
+                
+                if let nickName = nickNameValue {
+                    CustomTextField(text: nickName, placeholder: "바꾸고자 하는 닉네임을 입력해주세요.", maxWidth: 301, maxHeight: 47)
+                }
+            })
+            .frame(width: 301)
         }
     }
     
@@ -104,10 +147,35 @@ struct CustomAlert: View {
             makeAIAlert()
         case .normalAlert:
             normalAlert()
+        case .editNicknameAlert:
+            editNickNameAlert()
         }
     }
     
-    @ViewBuilder
+    func editNickNameAlert() -> some View {
+        HStack(spacing: 8, content: {
+            makeButton(text: "취소", action: {
+                withAnimation(.spring(duration: 0.3)) {
+                    alertAction.showAlert.toggle()
+                }
+            }, color: Color.alertNo)
+            
+            Spacer()
+            
+            makeButton(text: "완료", action: {
+                
+                if let _ = nickNameValue {
+                    
+                    alertAction.yes()
+                       
+                    withAnimation(.spring(duration: 0.3)){
+                        alertAction.showAlert.toggle()
+                    }
+                }
+            }, color: Color.primarycolor200)
+        })
+    }
+    
     func normalAlert() -> some View {
         HStack(spacing: 8, content: {
             
@@ -127,8 +195,7 @@ struct CustomAlert: View {
         .frame(width: 301)
     }
     
-    @ViewBuilder
-    func  makeAIAlert() -> some View {
+    func makeAIAlert() -> some View {
         HStack(spacing: 8, content: {
             if aiCount != 0 {
                 makeButton(text: "예",
@@ -170,7 +237,7 @@ struct CustomAlert: View {
                 .font(.Body3_semibold)
                 .foregroundStyle(Color.gray900)
                 .padding(.vertical, 9)
-                .frame(maxWidth: buttonCGFloat())
+                .frame(maxWidth: buttonCGFloat(), maxHeight: 39)
                 .background(content: {
                     RoundedRectangle(cornerRadius: 12)
                         .fill(color)
@@ -182,7 +249,7 @@ struct CustomAlert: View {
         switch alertType {
         case .aiAlert:
             return 248
-        case .normalAlert:
+        case .normalAlert, .editNicknameAlert:
             return 338
         }
         
@@ -192,7 +259,7 @@ struct CustomAlert: View {
         switch alertType {
         case .aiAlert:
             return 175
-        case .normalAlert:
+        case .normalAlert, .editNicknameAlert:
             return 196
         }
     }
@@ -201,14 +268,14 @@ struct CustomAlert: View {
         switch alertType {
         case .aiAlert:
             return 224
-        case .normalAlert:
+        case .normalAlert, .editNicknameAlert:
             return 301
         }
     }
     
     func buttonCGFloat() -> CGFloat {
         switch alertType {
-        case .aiAlert:
+        case .aiAlert, .editNicknameAlert:
             return 140
         case .normalAlert:
             return 82
@@ -223,6 +290,13 @@ struct AlertAction {
 
 struct CustomAlert_Preview: PreviewProvider {
     static var previews: some View {
-        CustomAlert(alertText: Text("문의내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록 하겠습니다. \n영업시간 2~3일 이내에 이메일로 답변을 받아보실 수 있습니다."), alertAction: .init(showAlert: .constant(true), yes: { print("ok") }))
+        /* 문의하기 및 신고하기 프리뷰 */
+         // CustomAlert(alertText: Text("문의내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록 하겠습니다. \n영업시간 2~3일 이내에 이메일로 답변을 받아보실 수 있습니다."), alertAction: .init(showAlert: .constant(true), yes: { print("ok") }))
+        
+        /* 닉네임 변경 프리뷰 */
+        CustomAlert(alertText: Text("닉네임 수정하기"), alertSubText: Text(UserState.shared.getUserName()), alertAction: .init(showAlert: .constant(true), yes: { print("yes") }), nickNameValue: .constant(""))
+        
+        /* ai alert */
+//        CustomAlert(alertText: Text("선택된 2개의 일지로 \n따끈 AI 진단을 진행하시겠습니까?"), aiCount: 10, alertAction: .init(showAlert: .constant(true), yes: {print("yes")}))
     }
 }
