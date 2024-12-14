@@ -103,7 +103,7 @@ struct RecommendView: View {
     @ViewBuilder
     private var aiRecommendGroup: some View {
         VStack(alignment: .leading, spacing: -1, content: {
-            AIRecommendTitle(padding: viewModel.aiProducts.isEmpty ? 5 : padding, title: "따끈따끈 AI 최근 추천")
+            AIRecommendTitle(padding: viewModel.aiProducts.isEmpty ? 34 : padding, title: "따끈따끈 AI 최근 추천")
             if !viewModel.isLoadingAIProduct {
                 recommendProducts
             } else {

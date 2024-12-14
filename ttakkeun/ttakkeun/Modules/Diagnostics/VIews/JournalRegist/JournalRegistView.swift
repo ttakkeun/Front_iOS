@@ -18,7 +18,7 @@ struct JournalRegistView: View {
     
     var body: some View {
         ZStack {
-            VStack(alignment: .leading, content: {
+            VStack(alignment: .leading, spacing: 38, content: {
                 CustomNavigation(action: {
                     container.navigationRouter.pop()
                 }, title: nil, currentPage: viewModel.currentPage)

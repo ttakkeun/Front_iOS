@@ -92,7 +92,7 @@ struct TipsView: View {
         .onChange(of: viewModel.isSelectedCategory, {
             loadInitialTIps()
         })
-        .task {
+        .onAppear {
             loadInitialTIps()
         }
     }
