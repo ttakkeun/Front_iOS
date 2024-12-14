@@ -15,9 +15,9 @@ class JournalListViewModel: ObservableObject {
     @Published var isSelectionMode: Bool = false
     @Published var selectedCnt: Int = 0
     
-    @Published var journalResultData: JournalResultResponse?
-    @Published var journalListData: JournalListResponse? // 서버에서 전체 응답 저장
-    @Published var recordList: [JournalListItem] = [] // 기록 데이터만 별도로 관리
+    @Published var journalResultData: JournalResultResponse? = JournalResultResponse(category: .claw, date: "123123", time: "123123", qnaList: [QnAListData(question: "qweqwe", answer: ["qweqweq"], image: nil)], etcString: "qweqweqw")
+    @Published var journalListData: JournalListResponse?
+    @Published var recordList: [JournalListItem] = []
     
     @Published var selectedItem: Set<Int> = []
     @Published var showDetailJournalList: Bool = false

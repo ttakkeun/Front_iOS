@@ -56,28 +56,30 @@ struct JournalAnswerResult: View {
     @ViewBuilder
     private var selectedAnswerImage: some View {
         if let images = data.image {
-            ScrollView(.horizontal, content: {
-                LazyHGrid(rows: Array(repeating: GridItem(.fixed(63)), count: 1), content: {
-                    ForEach(images, id: \.self) { image in
-                        if let url = URL(string: image) {
-                            returnKFImage(url)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 64, height: 63)
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
-                                .overlay(content: {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(Color.clear)
-                                        .stroke(Color.gray200)
-                                })
+            if !images.isEmpty {
+                ScrollView(.horizontal, content: {
+                    LazyHGrid(rows: Array(repeating: GridItem(.fixed(63)), count: 1), content: {
+                        ForEach(images, id: \.self) { image in
+                            if let url = URL(string: image) {
+                                returnKFImage(url)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 64, height: 63)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .overlay(content: {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(Color.clear)
+                                            .stroke(Color.gray200)
+                                    })
+                            }
                         }
-                    }
+                    })
                 })
-            })
-            .frame(maxWidth: 312, maxHeight: 70)
-            .padding(.horizontal, 3)
-        } else {
-            EmptyView()
+                .frame(maxWidth: 312, maxHeight: 70)
+                .padding(.horizontal, 3)
+            } else {
+                EmptyView()
+            }
         }
     }
 }
