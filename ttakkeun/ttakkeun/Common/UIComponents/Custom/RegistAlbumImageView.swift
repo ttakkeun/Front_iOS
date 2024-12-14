@@ -14,6 +14,8 @@ struct RegistAlbumImageView<ViewModel: ImageHandling & ObservableObject>: View {
     let maxImageCount: Int
     let titleText: String
     let subTitleText: String
+    var maxWidth: CGFloat = 355
+    var maxHeight: CGFloat = 300
     
     init(
         viewModel: ViewModel,
@@ -25,6 +27,22 @@ struct RegistAlbumImageView<ViewModel: ImageHandling & ObservableObject>: View {
         self.maxImageCount = maxImageCount
         self.titleText = titleText
         self.subTitleText = subTitleText
+    }
+    
+    init(
+        viewModel: ViewModel,
+        maxImageCount: Int = 5,
+        titleText: String,
+        subTitleText: String,
+        maxWidth: CGFloat,
+        maxHeight: CGFloat
+    ) {
+        self.viewModel = viewModel
+        self.maxImageCount = maxImageCount
+        self.titleText = titleText
+        self.subTitleText = subTitleText
+        self.maxWidth = maxWidth
+        self.maxHeight = maxHeight
     }
     
     var body: some View {
@@ -44,7 +62,7 @@ struct RegistAlbumImageView<ViewModel: ImageHandling & ObservableObject>: View {
             
             cameraAlbum
         })
-        .frame(maxWidth: 355, maxHeight: 300, alignment: .topLeading)
+        .frame(maxWidth: maxWidth, maxHeight: maxHeight, alignment: .topLeading)
         .sheet(isPresented: $viewModel.isImagePickerPresented, content: {
             ImagePicker(imageHandler: viewModel, selectedLimit: (maxImageCount - viewModel.selectedImageCount))
         })
@@ -72,7 +90,7 @@ struct RegistAlbumImageView<ViewModel: ImageHandling & ObservableObject>: View {
             .padding(.bottom, 8)
             .padding(.horizontal, 5)
         })
-        .frame(width: 260)
+        .frame(width: maxWidth - 88)
     }
 }
 
