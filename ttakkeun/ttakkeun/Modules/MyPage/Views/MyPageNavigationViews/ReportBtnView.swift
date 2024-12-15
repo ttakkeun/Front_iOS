@@ -10,7 +10,7 @@ import SwiftUI
 struct ReportBtnView: View {
     
     let btnInfoArray: [BtnInfo] = [
-        //TODO: 버튼 액션 필요함
+        //TODO: 버튼 액션 필요함 -> 1~8은 ReportDetailBtnView에 name 넘겨서 해당 타이틀에 맞는 페이지 출력하도록 해야하고 / 9 기타 누르면 ReportView로 네비게이션되어야 함
         BtnInfo(name: "스팸/광고", date: nil, action: {print("스팸/광고 눌림")}),
         BtnInfo(name: "부적절한 콘텐츠", date: nil, action: {print("부적절한 콘텐츠 버튼 눌림")}),
         BtnInfo(name: "허위 정보", date: nil, action: {print("허위 정보 버튼 눌림")}),
