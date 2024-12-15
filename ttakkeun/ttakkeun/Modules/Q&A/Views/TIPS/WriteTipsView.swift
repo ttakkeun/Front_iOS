@@ -28,7 +28,7 @@ struct WriteTipsView: View {
             
             inputTextString
             
-            RegistAlbumImageView(viewModel: viewModel, maxImageCount: 3, titleText: "사진 등록(선택 사항)", subTitleText: "최대 3장")
+            RegistAlbumImageView(viewModel: viewModel, maxImageCount: 3, titleText: "사진 등록(선택 사항)", subTitleText: "최대 3장", maxWidth: 353, maxHeight: 152)
             
             Spacer()
             
@@ -41,12 +41,14 @@ struct WriteTipsView: View {
                 }
             }, color: Color.mainPrimary)
         })
-        .safeAreaPadding(EdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20))
+        .frame(width: 353)
+        .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
         .navigationBarBackButtonHidden(true)
         .overlay(alignment: .center, content: {
             if viewModel.registTipsLoading {
                 ProgressView(label: {
                     LoadingDotsText(text: "작성한 Tips를 생성 중입니다.")
+                        .controlSize(.extraLarge)
                 })
             }
         })
@@ -90,6 +92,6 @@ extension WriteTipsView {
 
 struct WriteTipsView_Preview: PreviewProvider {
     static var previews: some View {
-        WriteTipsView(category: .best, container: DIContainer())
+        WriteTipsView(category: .part(.claw), container: DIContainer())
     }
 }

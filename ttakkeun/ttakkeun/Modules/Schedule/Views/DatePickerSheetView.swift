@@ -16,6 +16,7 @@ struct DatePickerSheetView: View {
     // MARK: - State
     @State private var selectedYear: Int
     @State private var selectedMonth: Int
+    @State private var selectedDay: Int
     
     // MARK: - Constants
     private let years: [Int]
@@ -31,9 +32,11 @@ struct DatePickerSheetView: View {
         let calendar = Calendar.current
         let year = calendar.component(.year, from: selectedDate.wrappedValue)
         let month = calendar.component(.month, from: selectedDate.wrappedValue)
+        let day = calendar.component(.day, from: selectedDate.wrappedValue)
         
         self._selectedYear = State(initialValue: year)
         self._selectedMonth = State(initialValue: month)
+        self._selectedDay = State(initialValue: day)
         
         self.years = {
             let currentYear = calendar.component(.year, from: Date())
@@ -77,6 +80,15 @@ struct DatePickerSheetView: View {
                             .tag(month)
                     }
                 })
+                
+                Picker("Day", selection: $selectedDay, content: {
+                    ForEach(generateDays(), id: \.self) { day in
+                        Text("\(day)일")
+                            .font(.Body4_medium)
+                            .foregroundStyle(Color.gray900)
+                            .tag(day)
+                    }
+                })
             }
             .pickerStyle(WheelPickerStyle())
             .frame(maxWidth: .infinity)
@@ -87,11 +99,11 @@ struct DatePickerSheetView: View {
     
     private var completeButton: some View {
         Button(action: {
-            let components = DateComponents(year: selectedYear, month: selectedMonth)
+            let components = DateComponents(year: selectedYear, month: selectedMonth, day: selectedDay)
             if let newDate = Calendar.current.date(from: components) {
                 selectedDate = newDate
+                print("새롭게 선택된 날짜 : \(newDate)")
             }
-            
             showDatePickerView.toggle()
         }, label: {
             Text("확인")
@@ -116,6 +128,14 @@ extension DatePickerSheetView {
         } else {
             return "\(year)년"
         }
+    }
+    
+    private func generateDays() -> [Int] {
+        let calendar = Calendar.current
+        let dateComponents = DateComponents(year: selectedYear, month: selectedMonth)
+        let date = calendar.date(from: dateComponents) ?? Date()
+        let range = calendar.range(of: .day, in: .month, for: date) ?? (1...30).lowerBound..<31
+        return Array(range)
     }
 }
 

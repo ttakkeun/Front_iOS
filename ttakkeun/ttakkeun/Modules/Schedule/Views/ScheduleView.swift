@@ -9,7 +9,13 @@ import SwiftUI
 
 struct ScheduleView: View {
     
-    @StateObject var completionViewModel: TodoCompletionViewModel = .init()
+    @StateObject var completionViewModel: TodoCompletionViewModel
+    @EnvironmentObject var container: DIContainer
+    @EnvironmentObject var appflowViewModel: AppFlowViewModel
+    
+    init(container: DIContainer) {
+        self._completionViewModel = .init(wrappedValue: .init(container: container))
+    }
     
     
     var body: some View {
@@ -19,7 +25,7 @@ struct ScheduleView: View {
             ScrollView(.vertical, content: {
                 VStack(alignment: .center, spacing: 24, content: {
                     
-                    CalendarView()
+                    CalendarView(container: container)
                     
                     Spacer().frame(height: 3)
                     
@@ -84,11 +90,5 @@ struct ScheduleView: View {
                     .stroke(Color.gray200, lineWidth: 1)
             }
         })
-    }
-}
-
-struct ScheduleView_Preview: PreviewProvider {
-    static var previews: some View {
-        ScheduleView()
     }
 }

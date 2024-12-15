@@ -38,18 +38,14 @@ struct TabView: View {
                     case .diagnosis:
                         DiagnosticsView(container: container, showAlert: $showAlert, alertText: $alertText, aiCount: $aiCount, alertType: $alertType, actionYes: $actionYes)
                     case .schedule:
-                        Text("schedule")
+                        ScheduleView(container: container)
                     case .suggestion:
                         RecommendView(container: container)
                     case .qna:
-                        QnAView(qnaSegmentValue: $qnaSegmentValue)
+                        ZStack {
+                            QnAView(qnaSegmentValue: $qnaSegmentValue)
+                        }
                     }
-                    
-                    if qnaSegmentValue == .tips {
-                        FloatingCircle(isShowFloating: $isShowFloating)
-                            .zIndex(1)
-                    }
-                    
                     CustomTab(selectedTab: $selectedTab)
                     
                     if showAlert {
@@ -58,18 +54,23 @@ struct TabView: View {
                                     alertAction: AlertAction(showAlert: $showAlert, yes: { actionYes() }),
                                     alertType: alertType)
                     }
-                }
-                .safeAreaPadding(EdgeInsets(top: 60, leading: 0, bottom: 0, trailing: 0))
-                .ignoresSafeArea(.all).opacity(opacity)
-                .task {
-                    withAnimation(.easeInOut(duration: 0.75)) {
-                        self.opacity = 1.0
+                    
+                    if selectedTab == .qna && qnaSegmentValue == .tips {
+                        if isShowFloating {
+                            Color.btnBg.opacity(0.6)
+                                .ignoresSafeArea()
+                                .onTapGesture {
+                                    isShowFloating.toggle()
+                                }
+                        }
+                        FloatingCircle(isShowFloating: $isShowFloating)
                     }
                 }
+                .safeAreaPadding(EdgeInsets(top: 60, leading: 0, bottom: 0, trailing: 0))
+                .ignoresSafeArea(.all)
             }
             .environmentObject(container)
             .environmentObject(appFlowViewModel)
-            
         }
     }
 }

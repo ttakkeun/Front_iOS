@@ -32,7 +32,9 @@ struct TodoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
     var body: some View {
         checkComponents
             .sheet(isPresented: $isShowSheet, content: {
-                Text("hello")
+                TodoOptionSheetView(viewModel: viewModel as! TodoCheckViewModel, selectedTodo: $data)
+                    .presentationCornerRadius(30)
+                    .presentationDetents([.fraction(0.45)])
             })
     }
     
@@ -62,15 +64,24 @@ struct TodoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
                     }
                 }
             })
-            Text(data.todoName)
-                .font(.Body4_medium)
-                .foregroundStyle(Color.gray900)
-                .onTapGesture {
-                    if checkAble {
-                        isShowSheet = true
-                    }
+            
+            Button(action: {
+                if checkAble {
+                    isShowSheet = true
                 }
+            }, label: {
+                Text(data.todoName)
+                    .font(.Body4_medium)
+                    .foregroundStyle(Color.gray900)
+            })
+            
         })
         .frame(maxWidth: 203, maxHeight: 16, alignment: .leading)
+    }
+}
+
+struct TodoCheckList_Preview: PreviewProvider {
+    static var previews: some View {
+        TodoCard(partItem: .ear)
     }
 }

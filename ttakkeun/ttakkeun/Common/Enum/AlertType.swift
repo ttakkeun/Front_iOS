@@ -10,4 +10,5 @@ import Foundation
 enum AlertType {
     case aiAlert
     case normalAlert
+    case editNicknameAlert
 }

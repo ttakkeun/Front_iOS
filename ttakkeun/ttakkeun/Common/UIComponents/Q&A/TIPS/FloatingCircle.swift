@@ -15,35 +15,23 @@ struct FloatingCircle: View {
     @State private var selectedFloatingMenu: ExtendPartItem? = nil
     
     var body: some View {
-        ZStack {
-            if isShowFloating {
-                Color.btnBg.opacity(0.6)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        isShowFloating.toggle()
-                    }
-            } else {
-                Color.clear
-            }
+        VStack {
+            Spacer()
             
-            VStack {
+            HStack {
+                
                 Spacer()
                 
-                HStack {
-                    
-                    Spacer()
-                    
-                    FloatingButton(mainButtonView: floatingMainBtn, buttons: floatingList(), isOpen: $isShowFloating)
-                        .straight()
-                        .direction(.top)
-                        .delays(delayDelta: 0.1)
-                        .alignment(.right)
-                        .spacing(10)
-                        .initialOpacity(0)
-                }
-                .padding(.bottom, 110)
-                .padding(.trailing, -20)
+                FloatingButton(mainButtonView: floatingMainBtn, buttons: floatingList(), isOpen: $isShowFloating)
+                    .straight()
+                    .direction(.top)
+                    .delays(delayDelta: 0.1)
+                    .alignment(.right)
+                    .spacing(10)
+                    .initialOpacity(0)
             }
+            .padding(.bottom, 110)
+            .padding(.trailing, -20)
         }
     }
     

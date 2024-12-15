@@ -35,6 +35,7 @@ struct JournalQuestionView: View {
             })
             .frame(alignment: .top)
         }
+        .scrollIndicators(.hidden)
     }
 }
 

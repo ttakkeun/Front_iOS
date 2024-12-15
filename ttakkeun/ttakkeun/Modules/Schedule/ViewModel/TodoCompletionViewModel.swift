@@ -9,4 +9,10 @@ import Foundation
 
 class TodoCompletionViewModel: ObservableObject {
     @Published var completionData: TodoCompleteResponse?
+    
+    let container: DIContainer
+    
+    init(container: DIContainer) {
+        self.container = container
+    }
 }

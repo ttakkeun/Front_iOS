@@ -33,18 +33,16 @@ struct JournalListView: View {
     }
     
     var body: some View {
-        GeometryReader { geo in
             ZStack {
                 journalList
                 makeJournalListBtn
-                    .position(x: geo.size.width * 0.76, y: geo.size.height * 0.74)
+//                    .position(x: geo.size.width * 0.8, y: geo.size.height * 0.78)
             }
             .navigationDestination(for: NavigationDestination.self) { destination in
                 NavigationRoutingView(destination: destination)
                     .environmentObject(container)
                     .environmentObject(appFlowViewModel)
             }
-        }
         .onChange(of: viewModel.showAiDiagnosing, {
             showAlert = true
             alertText = self.alertTextString()
@@ -100,7 +98,7 @@ struct JournalListView: View {
                              }
                          }
                          .task {
-                             if record == viewModel.recordList.last {
+                             if record == viewModel.recordList.last && viewModel.canLoadMore {
                                  viewModel.getJournalList(category: selectedPartItem.rawValue, page: viewModel.currentPage)
                              }
                          }
@@ -112,7 +110,7 @@ struct JournalListView: View {
                      }
                  })
                  .padding(.top, 10)
-                 .padding(.bottom, 80)
+                 .padding(.bottom, 180)
              })
              .refreshable {
                  viewModel.getJournalList(category: selectedPartItem.rawValue, page: 0, refresh: true)
@@ -139,33 +137,45 @@ struct JournalListView: View {
     }
     
     private var makeJournalListBtn: some View {
-        Button(action: {
-            if !viewModel.isSelectionMode {
-                container.navigationRouter.push(to: .makeJournalist)
-            } else {
-                if viewModel.selectedCnt >= 1 {
-                    viewModel.showAiDiagnosing.toggle()
-                }
-            }
-        }, label: {
-            HStack(alignment: .center, spacing: 5, content: {
-                changeIcon()
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 18, height: 18)
+        VStack {
+            Spacer()
+            
+            HStack {
+                Spacer()
                 
-                changeText()
-                    .font(.Body3_medium)
-                    .foregroundStyle(Color.gray900)
-            })
-            .padding(10)
-            .background {
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(Color.primarycolor400)
-                    .shadow03()
+                Button(action: {
+                    if !viewModel.isSelectionMode {
+                        container.navigationRouter.push(to: .makeJournalist)
+                    } else {
+                        if viewModel.selectedCnt >= 1 {
+                            viewModel.showAiDiagnosing.toggle()
+                        }
+                    }
+                }, label: {
+                    HStack(alignment: .center, spacing: 5, content: {
+                        changeIcon()
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 18, height: 18)
+                        
+                        changeText()
+                            .font(.Body3_medium)
+                            .foregroundStyle(Color.gray900)
+                    })
+                    .padding(10)
+                    .background {
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(Color.primarycolor400)
+                            .shadow03()
+                    }
+                    .animation(.easeInOut, value: viewModel.isSelectionMode)
+                })
             }
-            .animation(.easeInOut, value: viewModel.isSelectionMode)
-        })
+            .padding(.trailing, 10)
+            .padding(.bottom, 110)
+        }
+        
+        
     }
 }
 
@@ -191,5 +201,12 @@ extension JournalListView {
         let aiCountText = "(현재 가능한 횟수 : \(viewModel.aiPoint)회)"
         
         return Text(baseText) + Text(aiCountText).foregroundStyle(Color.red).font(.Body5_semiBold)
+    }
+}
+
+
+struct JournalListView_Prviews: PreviewProvider {
+    static var previews: some View {
+        JournalListView(viewModel: JournalListViewModel(container: DIContainer()), showAlert: .constant(true), alertText: .constant(Text("Qq")), aiCount: .constant(1), alertType: .constant(.aiAlert), actionYes: .constant({print("hello")}), selectedPartItem: .constant(.claw))
     }
 }

@@ -87,7 +87,7 @@ struct SearchResultView: View {
     
     @ViewBuilder
     private var localSearchResult: some View {
-        if !viewModel.isIitialLoading {
+        if !viewModel.localDBDataIsLoading {
             if !viewModel.localDbData.isEmpty {
                 LazyVGrid(columns: Array(repeating: GridItem(.fixed(162), spacing: 42), count: 2), spacing: 25, content: {
                     ForEach($viewModel.localDbData, id: \.self) { $data in

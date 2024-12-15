@@ -52,7 +52,7 @@ struct TipsContentsCard: View {
                 .fill(Color.clear)
                 .stroke(Color.grayBorder)
         }
-        .animation(.bouncy(duration: 0.5), value: data.isExpand)
+        .animation(.easeInOut(duration: 0.3), value: data.isExpand)
     }
     
     // MARK: - MainContents
@@ -301,6 +301,7 @@ extension TipsContentsCard {
                     .renderingMode(.template)
                     .frame(width: 15, height: 18)
                     .foregroundStyle(data.isScrap ? Color.card005 : Color.gray600)
+                    .padding(.leading, 5)
             })
             
             Menu(content: {
@@ -313,9 +314,8 @@ extension TipsContentsCard {
             }, label: {
                 Icon.dotsY.image
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 4, height: 16)
-                    .padding(.horizontal, 5)
+                    .frame(width: 4, height: 18)
+                    .padding(.horizontal, 6)
             })
         })
         .padding(.leading, 5)

@@ -103,7 +103,7 @@ struct RecommendView: View {
     @ViewBuilder
     private var aiRecommendGroup: some View {
         VStack(alignment: .leading, spacing: -1, content: {
-            AIRecommendTitle(padding: viewModel.aiProducts.isEmpty ? 5 : padding, title: "따끈따끈 AI 최근 추천")
+            AIRecommendTitle(padding: viewModel.aiProducts.isEmpty ? 34 : padding, title: "따끈따끈 AI 최근 추천")
             if !viewModel.isLoadingAIProduct {
                 recommendProducts
             } else {
@@ -114,6 +114,8 @@ struct RecommendView: View {
                         Text("최근 AI 제품을 받아오는 중입니다.")
                             .controlSize(.regular)
                     })
+                    
+                    Spacer()
                 }
             }
         })
@@ -161,7 +163,7 @@ struct RecommendView: View {
                     RankRecommendation(data: $viewModel.recommendProducts[index], rank: index)
                         .handleTapGesture(with: viewModel, data: viewModel.recommendProducts[index], source: .userProduct)
                         .task {
-                            if product == viewModel.recommendProducts.last {
+                            if product == viewModel.recommendProducts.last && viewModel.canLoadMoarUserProduct {
                                 if viewModel.selectedCategory == .all {
                                     viewModel.getUserRecommendAll(page: viewModel.userProductPage)
                                 } else {
@@ -182,9 +184,9 @@ struct RecommendView: View {
                         .lineSpacing(2.5)
                         .font(.Body3_medium)
                 }
-                .controlSize(.large)
-                .padding(.vertical, 31)
-                .padding(.horizontal, 85)
+                .controlSize(.regular)
+                .padding(.vertical, 25)
+                .padding(.horizontal, 100)
                 .background {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.gray300, lineWidth: 1)

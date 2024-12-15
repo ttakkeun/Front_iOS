@@ -51,7 +51,7 @@ class RecommendationProductViewModel: ObservableObject, TapGestureProduct, Produ
         self.selectedData = data
         self.selectedSource = source
         self.isLoadingSheetView = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6, execute: {
             self.isLoadingSheetView.toggle()
             self.isShowSheetView.toggle()
         })

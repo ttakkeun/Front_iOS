@@ -234,10 +234,15 @@ extension TipsViewModel {
                   receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
                 
-                if let newTips = responseData.result, !newTips.isEmpty {
-                    self.tipsResponse.append(contentsOf: newTips)
-                    self.tipsPage += 1
-                    self.canLoadMoreTips = true
+                if let newTips = responseData.result {
+                    if newTips.isEmpty {
+                        print("❌ 빈 결과가 반환되었습니다.")
+                        self.canLoadMoreTips = false
+                    } else {
+                        self.tipsResponse.append(contentsOf: newTips)
+                        self.tipsPage += 1
+                        self.canLoadMoreTips = true
+                    }
                 } else {
                     self.canLoadMoreTips = false
                 }

@@ -25,9 +25,8 @@ struct JournalRegistView: View {
                 
                 JournalRegistContents(viewModel: viewModel)
             })
-            .safeAreaPadding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
+            .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
             .navigationBarBackButtonHidden(true)
-            
             
             if viewModel.makeJournalsLoading {
                 

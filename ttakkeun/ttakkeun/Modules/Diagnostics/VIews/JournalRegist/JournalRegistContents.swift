@@ -40,7 +40,7 @@ struct JournalRegistContents: View {
             })
             .frame(height: 459)
             
-            Spacer().frame(height: 39)
+            Spacer()
             
             MainButton(btnText: "다음", width: 339, height: 63, action: {
                 withAnimation(.easeInOut(duration: 0.2)) {
@@ -51,7 +51,7 @@ struct JournalRegistContents: View {
                 }
             }, color: Color.mainPrimary)
         })
-        .frame(width: 353, height: 691)
+        .frame(width: 353)
     }
     
     // MARK: - 2, 3, 4 page
@@ -70,7 +70,7 @@ struct JournalRegistContents: View {
                     
                     changePageBtn()
                 })
-                .frame(width: 353, height: 691)
+                .frame(width: 353)
                 
             }
         } else {
@@ -84,7 +84,7 @@ struct JournalRegistContents: View {
                 
                 Spacer()
             }
-            .frame(width: 353, height: 691)
+            .frame(width: 353)
         }
     }
     
@@ -111,7 +111,7 @@ struct JournalRegistContents: View {
             
             changePageBtn()
         })
-        .frame(maxWidth: 353, maxHeight: 691, alignment: .top)
+        .frame(maxWidth: 353, alignment: .top)
         .ignoresSafeArea(.keyboard)
     }
 }

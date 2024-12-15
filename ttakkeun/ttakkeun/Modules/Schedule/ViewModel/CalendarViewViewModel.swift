@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 class CalendarViewModel: ObservableObject {
+    
     // MARK: - Published Properties
     
     @Published var showDatePickerView: Bool = false
@@ -18,16 +19,22 @@ class CalendarViewModel: ObservableObject {
             updateSelectedYearAndMonth(from: month)
         }
     }
-    @Published var selectedDate: Date
+    @Published var selectedDate: Date {
+        didSet {
+            syncMonthWithSelectedDate()
+        }
+    }
     @Published var selectedYear: Int = 0
     @Published var selectedMonth: Int = 0
     @Published var showCurrentWeekBar: Bool = true
     
     // MARK: - Private Properties
     public var calendar: Calendar
+    private let container: DIContainer
     
     // MARK: - Initializer
-    init(month: Date, calendar: Calendar) {
+    init(month: Date, calendar: Calendar, container: DIContainer) {
+        self.container = container
         self.month = month
         self.calendar = calendar
         self.selectedDate = Date()
@@ -98,6 +105,13 @@ class CalendarViewModel: ObservableObject {
             return
         } else {
             selectedDate = date
+        }
+    }
+    
+    private func syncMonthWithSelectedDate() {
+        let components = calendar.dateComponents([.year, .month], from: selectedDate)
+        if let newMonth = calendar.date(from: components), newMonth != month {
+            month = newMonth
         }
     }
 }
