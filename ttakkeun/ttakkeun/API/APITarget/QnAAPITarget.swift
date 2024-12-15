@@ -15,10 +15,10 @@ enum QnAAPITarget {
     case getTipsPart(category: PartItem.RawValue, page: Int) // 부위별 팁 조회
     case writeTips(data: WriteTipsRequest) // 팁 생성
     case patchTipsImage(tipId: Int, images: [UIImage]) // 팁 이미지 업로드 API
-    case touchScrap(tipId: Int)
-    case getMyWriteTips(page: Int)
-    case getMyScrapTips(page: Int)
-    case deleteMyTips(tipId: Int)
+    case touchScrap(tipId: Int) // 팁 스크랩
+    case getMyWriteTips(page: Int) // 내가 작성한 팁
+    case getMyScrapTips(page: Int) // 내가 스크랩한 팁
+    case deleteMyTips(tipId: Int) // 나의 팁 제거
 }
 
 extension QnAAPITarget: APITargetType {
