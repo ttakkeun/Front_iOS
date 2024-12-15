@@ -50,4 +50,10 @@ class PetProfileService: PetProfileServiceProtocol {
             .map(ResponseData<EditProfileResponse>.self)
             .eraseToAnyPublisher()
     }
+    
+    func deletePetprofileData(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError> {
+        return provider.requestPublisher(.deletePetProfile(petId: petId))
+            .map(ResponseData<EmptyResponse>.self)
+            .eraseToAnyPublisher()
+    }
 }

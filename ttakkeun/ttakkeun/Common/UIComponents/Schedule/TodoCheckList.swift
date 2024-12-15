@@ -42,7 +42,6 @@ struct TodoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
         HStack(alignment: .center, spacing: 6, content: {
             Button(action: {
                 withAnimation(.easeInOut(duration: 0.2)) {
-                    data.todoStatus.toggle()
                     viewModel.toggleTodoStatus(for: partItem, todoID: data.id)
                 }
             }, label: {

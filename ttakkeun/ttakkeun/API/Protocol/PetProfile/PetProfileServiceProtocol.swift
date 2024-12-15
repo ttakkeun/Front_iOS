@@ -21,4 +21,6 @@ protocol PetProfileServiceProtocol {
     func getSpecificPetProfileData(petId: Int) -> AnyPublisher<ResponseData<HomeProfileResponseData>, MoyaError>
     
     func patchPetProfile(petId: Int, petInfo: PetInfo) -> AnyPublisher<ResponseData<EditProfileResponse>, MoyaError>
+    
+    func deletePetprofileData(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
 }

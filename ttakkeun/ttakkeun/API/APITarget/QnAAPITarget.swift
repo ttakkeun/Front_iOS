@@ -10,11 +10,15 @@ import Moya
 import SwiftUI
 
 enum QnAAPITarget {
-    case getTipsAll(page: Int)
-    case getTipsBest
-    case getTipsPart(category: PartItem.RawValue, page: Int)
-    case writeTips(data: WriteTipsRequest)
-    case patchTipsImage(tipId: Int, images: [UIImage])
+    case getTipsAll(page: Int) // 전체 팁 조회
+    case getTipsBest // Best 팁 조회
+    case getTipsPart(category: PartItem.RawValue, page: Int) // 부위별 팁 조회
+    case writeTips(data: WriteTipsRequest) // 팁 생성
+    case patchTipsImage(tipId: Int, images: [UIImage]) // 팁 이미지 업로드 API
+    case touchScrap(tipId: Int)
+    case getMyWriteTips(page: Int)
+    case getMyScrapTips(page: Int)
+    case deleteMyTips(tipId: Int)
 }
 
 extension QnAAPITarget: APITargetType {
@@ -30,17 +34,27 @@ extension QnAAPITarget: APITargetType {
             return "/api/tips/add"
         case .patchTipsImage(let tipId, _):
             return "/api/tips/\(tipId)/images"
+        case .touchScrap(let tipId):
+            return "/api/tips/scrap/\(tipId)"
+        case .getMyWriteTips:
+            return "/api/tips/myTips"
+        case .getMyScrapTips:
+            return "/api/tips/myScraps"
+        case .deleteMyTips(let tipId):
+            return "/api/tips/\(tipId)"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getTipsAll, .getTipsBest, .getTipsPart:
+        case .getTipsAll, .getTipsBest, .getTipsPart, .getMyScrapTips, .getMyWriteTips:
             return .get
         case .writeTips:
             return .post
-        case .patchTipsImage:
+        case .patchTipsImage, .touchScrap:
             return .patch
+        case .deleteMyTips:
+            return .delete
         }
     }
     
@@ -68,6 +82,18 @@ extension QnAAPITarget: APITargetType {
                 }
             }
             return .uploadMultipart(formData)
+            
+        case .touchScrap:
+            return .requestPlain
+            
+        case .getMyWriteTips(let page):
+            return .requestParameters(parameters: ["page": page], encoding: URLEncoding.default)
+            
+        case .getMyScrapTips(let page):
+            return .requestParameters(parameters: ["page": page], encoding: URLEncoding.default)
+            
+        case .deleteMyTips:
+            return .requestPlain
         }
     }
     

@@ -42,9 +42,15 @@ class PetProfileUseCase: PetProfileUseCaseProtocol {
             .eraseToAnyPublisher()
     }
     
-    func excutePatchPetProfile(petId: Int, PetInfo: PetInfo) -> AnyPublisher<ResponseData<EditProfileResponse>, MoyaError> {
+    func executePatchPetProfile(petId: Int, PetInfo: PetInfo) -> AnyPublisher<ResponseData<EditProfileResponse>, MoyaError> {
         return repository.patchPetProfile(petId: petId, petInfo: PetInfo)
             .mapError { $0 as MoyaError}
+            .eraseToAnyPublisher()
+    }
+    
+    func executeDeletePetprofile(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError> {
+        return repository.deletePetprofile(petId: petId)
+            .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }
 }

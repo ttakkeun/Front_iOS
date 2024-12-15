@@ -15,7 +15,7 @@ enum PetAPITarget {
     case getSpecificPetProfile(petId: Int) // 특정 반려동물 프로필 조회(홈탭)
     case patchPetProfile(petId: Int, petInfo: PetInfo) // 반려동물 프로필 수정
     case patchPetProfileImage(petId: Int, image: UIImage) // 반려동물 프로필 이미지 생성
-    case deletePetProfile(petId: Int)
+    case deletePetProfile(petId: Int) // 반려동물 프로필 삭제
 }
 
 extension PetAPITarget: APITargetType {

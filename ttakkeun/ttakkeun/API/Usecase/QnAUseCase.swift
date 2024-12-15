@@ -46,4 +46,28 @@ class QnAUseCase: QnAUseCaseProtocol {
         return repository.patchTipsImage(tipId: tipId, images: images)
             .eraseToAnyPublisher()
     }
+    
+    func executeTouchScrap(tipId: Int) -> AnyPublisher<ResponseData<TouchScrapResponse>, MoyaError> {
+        return repository.touchScrap(tipId: tipId)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executeGetMyWriteTips(page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError> {
+        return repository.getMyWriteTips(page: page)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executeGetMyScrapTips(page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError> {
+        return repository.getMyScrapTips(page: page)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executeDeleteMyTips(tipId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError> {
+        return repository.deleteMyTips(tipId: tipId)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
 }
