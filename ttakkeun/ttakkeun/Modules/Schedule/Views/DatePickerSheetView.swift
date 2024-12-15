@@ -99,7 +99,7 @@ struct DatePickerSheetView: View {
     
     private var completeButton: some View {
         Button(action: {
-            let components = DateComponents(year: selectedYear, month: selectedMonth)
+            let components = DateComponents(year: selectedYear, month: selectedMonth, day: selectedDay)
             if let newDate = Calendar.current.date(from: components) {
                 selectedDate = newDate
                 print("새롭게 선택된 날짜 : \(newDate)")

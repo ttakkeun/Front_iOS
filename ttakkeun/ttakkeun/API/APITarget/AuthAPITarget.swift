@@ -14,8 +14,8 @@ enum AuthAPITarget {
     case appleLogin(signUpRequest: SignUpRequest) // 애플 로그인 시도
     case signUpAppleLogin(signUpRequest: SignUpRequest) // 애플 회원 가입
     
-    case kakakoLogin(signUpRequest: SignUpRequest)
-    case signUpKakaoLogin(signUpRequest: SignUpRequest)
+    case kakakoLogin(signUpRequest: SignUpRequest) // 카카오 로그인 시도
+    case signUpKakaoLogin(signUpRequest: SignUpRequest) // 카카오 회원 가입
 }
 
 extension AuthAPITarget: APITargetType {

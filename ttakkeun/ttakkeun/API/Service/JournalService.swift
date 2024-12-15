@@ -18,6 +18,8 @@ class JournalService: JournalServiceProtocol {
         self.provider = provider
     }
     
+    /* --- 일지 --- */
+    
     func getJournalListData(petId: Int, category: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError> {
         return provider.requestPublisher(.getJournalList(petId: petId, category: category, page: page))
             .map(ResponseData<JournalListResponse>.self)
@@ -48,6 +50,14 @@ class JournalService: JournalServiceProtocol {
             .eraseToAnyPublisher()
     }
     
+    func searchGetJournalData(category: PartItem.RawValue, page: Int, date: String) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError> {
+        return provider.requestPublisher(.searchGetJournal(category: category, page: page, date: date))
+            .map(ResponseData<JournalListResponse>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    /* --- 진단 --- */
+    
     func makeDiagData(data: CreateDiagRequst) -> AnyPublisher<ResponseData<DiagResultResponse>, MoyaError> {
         return provider.requestPublisher(.makeDiagnosis(data: data))
             .map(ResponseData<DiagResultResponse>.self)
@@ -63,6 +73,24 @@ class JournalService: JournalServiceProtocol {
     func getDiagResultData(diagId: Int) -> AnyPublisher<ResponseData<DiagnosticResolutionResponse>, MoyaError> {
         return provider.requestPublisher(.getDiagResult(diagId: diagId))
             .map(ResponseData<DiagnosticResolutionResponse>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func getDiagListData(petId: Int, category: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<DiagResultListResponse>, MoyaError> {
+        return provider.requestPublisher(.getDiagList(petId: petId, category: category, page: page))
+            .map(ResponseData<DiagResultListResponse>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func getUserPointData() -> AnyPublisher<ResponseData<DiagUserPoint>, MoyaError> {
+        return provider.requestPublisher(.getUserPoint)
+            .map(ResponseData<DiagUserPoint>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func patchUserPointData() -> AnyPublisher<ResponseData<DiagUserPoint>, MoyaError> {
+        return provider.requestPublisher(.patchUserPoint)
+            .map(ResponseData<DiagUserPoint>.self)
             .eraseToAnyPublisher()
     }
 }

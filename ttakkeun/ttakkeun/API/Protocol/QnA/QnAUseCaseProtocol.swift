@@ -13,8 +13,20 @@ import SwiftUI
 
 protocol QnAUseCaseProtocol {
     func executeGetTipsAll(page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError>
+    
     func executeGetTipsBest() -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError>
+    
     func executeGetTips(cateogry: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError>
+    
     func executeWriteTipsData(data: WriteTipsRequest) -> AnyPublisher<ResponseData<TipsResponse>, MoyaError>
+    
     func executePatchTipsImage(tipId: Int, images: [UIImage]) -> AnyPublisher<ResponseData<[String]>, MoyaError>
+    
+    func executeTouchScrap(tipId: Int) -> AnyPublisher<ResponseData<TouchScrapResponse>, MoyaError>
+    
+    func executeGetMyWriteTips(page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError>
+    
+    func executeGetMyScrapTips(page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError>
+    
+    func executeDeleteMyTips(tipId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
 }
