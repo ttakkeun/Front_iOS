@@ -19,6 +19,7 @@ enum QnAAPITarget {
     case getMyWriteTips(page: Int) // 내가 작성한 팁
     case getMyScrapTips(page: Int) // 내가 스크랩한 팁
     case deleteMyTips(tipId: Int) // 나의 팁 제거
+    case likeTip(tipId: Int) // 팁 좋아요
 }
 
 extension QnAAPITarget: APITargetType {
@@ -42,6 +43,8 @@ extension QnAAPITarget: APITargetType {
             return "/api/tips/myScraps"
         case .deleteMyTips(let tipId):
             return "/api/tips/\(tipId)"
+        case .likeTip(let tipId):
+            return "/api/tips/like/\(tipId)"
         }
     }
     
@@ -55,6 +58,8 @@ extension QnAAPITarget: APITargetType {
             return .patch
         case .deleteMyTips:
             return .delete
+        case .likeTip:
+            return .patch
         }
     }
     
@@ -93,6 +98,8 @@ extension QnAAPITarget: APITargetType {
             return .requestParameters(parameters: ["page": page], encoding: URLEncoding.default)
             
         case .deleteMyTips:
+            return .requestPlain
+        case .likeTip:
             return .requestPlain
         }
     }
