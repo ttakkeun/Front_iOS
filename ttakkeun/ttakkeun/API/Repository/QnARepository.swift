@@ -39,4 +39,20 @@ class QnARepository: QnARepositoryProtocol {
         return qnaService.patchTipsImageData(tipId: tipId, images: images)
     }
     
+    func touchScrap(tipId: Int) -> AnyPublisher<ResponseData<TouchScrapResponse>, MoyaError> {
+        return qnaService.touchScrapData(tipId: tipId)
+    }
+    
+    func getMyWriteTips(page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError> {
+        return qnaService.getMyWriteTipsData(page: page)
+    }
+    
+    func getMyScrapTips(page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError> {
+        return qnaService.getMyScrapTipsData(page: page)
+    }
+    
+    func deleteMyTips(tipId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError> {
+        return qnaService.deleteMyTipsData(tipId: tipId)
+    }
+    
 }

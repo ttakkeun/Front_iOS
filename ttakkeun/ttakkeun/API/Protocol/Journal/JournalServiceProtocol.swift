@@ -12,6 +12,9 @@ import Moya
 import SwiftUI
 
 protocol JournalServiceProtocol {
+    
+    /* --- 일지 --- */
+    
     func getJournalListData(petId: Int, category: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError>
     
     func getJournalDetailDataSource(petId: Int, recordId: Int) -> AnyPublisher<ResponseData<JournalResultResponse>, MoyaError>
@@ -22,9 +25,19 @@ protocol JournalServiceProtocol {
     
     func deleteJournalData(recordId: Int) -> AnyPublisher<ResponseData<DeleteJournal>, MoyaError>
     
+    func searchGetJournalData(category: PartItem.RawValue, page: Int, date: String) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError>
+    
+    /* --- 진단 --- */
+    
     func makeDiagData(data: CreateDiagRequst) -> AnyPublisher<ResponseData<DiagResultResponse>, MoyaError>
     
     func updateNaverData(data: DiagResultResponse) -> AnyPublisher<ResponseData<UpdateNaverResponse>, MoyaError>
     
     func getDiagResultData(diagId: Int) -> AnyPublisher<ResponseData<DiagnosticResolutionResponse>, MoyaError>
+    
+    func getDiagListData(petId: Int, category: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<DiagResultListResponse>, MoyaError>
+    
+    func getUserPointData() -> AnyPublisher<ResponseData<DiagUserPoint>, MoyaError>
+    
+    func patchUserPointData() -> AnyPublisher<ResponseData<DiagUserPoint>, MoyaError>
 }

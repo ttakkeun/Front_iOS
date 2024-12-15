@@ -30,7 +30,7 @@ class EditProfileViewModel: MakeProfileViewModel {
 
 extension EditProfileViewModel {
     public func patchPetProfile() {
-        container.useCaseProvider.petProfileUseCase.excutePatchPetProfile(petId: UserState.shared.getPetId(), PetInfo: editPetInfo)
+        container.useCaseProvider.petProfileUseCase.executePatchPetProfile(petId: UserState.shared.getPetId(), PetInfo: editPetInfo)
             .tryMap { responseData -> ResponseData<EditProfileResponse> in
                 if !responseData.isSuccess {
                     throw APIError.serverError(message: responseData.message, code: responseData.code)

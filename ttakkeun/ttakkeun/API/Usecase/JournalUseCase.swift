@@ -18,6 +18,8 @@ class JournalUseCase: JournalUseCaseProtocol {
         self.journalRepository = journalRepository
     }
     
+    /* --- 일지 --- */
+    
     func executeGetJournalList(petId: Int, category: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError> {
         return journalRepository.getJournalList(petId: petId, category: category, page: page)
             .mapError { $0 as MoyaError }
@@ -48,6 +50,14 @@ class JournalUseCase: JournalUseCaseProtocol {
             .eraseToAnyPublisher()
     }
     
+    func executeSearchGetJournal(category: PartItem.RawValue, page: Int, date: String) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError> {
+        return journalRepository.searchGetJournal(category: category, page: page, date: date)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    /* --- 진단 --- */
+    
     func executeMakeDiag(data: CreateDiagRequst) -> AnyPublisher<ResponseData<DiagResultResponse>, MoyaError> {
         return journalRepository.makeDiag(data: data)
             .mapError { $0 as MoyaError }
@@ -62,6 +72,24 @@ class JournalUseCase: JournalUseCaseProtocol {
     
     func executeGetDiagResult(diagId: Int) -> AnyPublisher<ResponseData<DiagnosticResolutionResponse>, MoyaError> {
         return journalRepository.getDiagResult(diagId: diagId)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executeGetDiagList(petId: Int, category: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<DiagResultListResponse>, MoyaError> {
+        return journalRepository.getDiagList(petId: petId, category: category, page: page)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executeGetUserPoint() -> AnyPublisher<ResponseData<DiagUserPoint>, MoyaError> {
+        return journalRepository.getUserPoint()
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executePatchUserPoint() -> AnyPublisher<ResponseData<DiagUserPoint>, MoyaError> {
+        return journalRepository.patchUserPoint()
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }

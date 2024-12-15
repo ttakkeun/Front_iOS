@@ -48,4 +48,28 @@ class QnAService: QnAServiceProtocol {
             .map(ResponseData<[String]>.self)
             .eraseToAnyPublisher()
     }
+    
+    func touchScrapData(tipId: Int) -> AnyPublisher<ResponseData<TouchScrapResponse>, MoyaError> {
+        return provider.requestPublisher(.touchScrap(tipId: tipId))
+            .map(ResponseData<TouchScrapResponse>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func getMyWriteTipsData(page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError> {
+        return provider.requestPublisher(.getMyWriteTips(page: page))
+            .map(ResponseData<[TipsResponse]>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func getMyScrapTipsData(page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError> {
+        return provider.requestPublisher(.getMyScrapTips(page: page))
+            .map(ResponseData<[TipsResponse]>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func deleteMyTipsData(tipId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError> {
+        return provider.requestPublisher(.deleteMyTips(tipId: tipId))
+            .map(ResponseData<EmptyResponse>.self)
+            .eraseToAnyPublisher()
+    }
 }

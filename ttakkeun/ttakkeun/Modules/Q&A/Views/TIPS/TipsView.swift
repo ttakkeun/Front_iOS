@@ -53,6 +53,9 @@ struct TipsView: View {
                         TipsContentsCard(data: $data, tipsType: .scrapTips, tipsButtonOption: TipsButtonOption(heartAction: { viewModel.toggleLike(for: data.tipId) }, scrapAction: { viewModel.toggleBookMark(for: data.tipId) }))
                             .environmentObject(container)
                             .onAppear {
+                                guard !viewModel.tipsResponse.isEmpty else { return }
+                                
+                                
                                 if data == viewModel.tipsResponse.last && viewModel.canLoadMoreTips {
                                     switch viewModel.isSelectedCategory {
                                     case .all:

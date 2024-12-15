@@ -10,26 +10,24 @@ import Moya
 import SwiftUI
 
 enum JournalAPITarget {
-    case getJournalList(petId: Int, category: PartItem.RawValue, page: Int)
-    case getDetailJournalData(petId: Int, recordId: Int)
     
-    /* 일지 생성 및 답변 조회 */
-    case makeJournal(category: PartItem.RawValue, data: SelectedAnswerRequest, questionImage: [Int: [UIImage]])
-    case getAnswerList(category: PartItem.RawValue)
+    /* --- 일지 --- */
     
-    /* 일지 삭세 */
-    case deleteJournal(recordId: Int)
+    case getJournalList(petId: Int, category: PartItem.RawValue, page: Int) // 일지 목록 조회
+    case getDetailJournalData(petId: Int, recordId: Int) // 일지 상세 내용 조회
+    case makeJournal(category: PartItem.RawValue, data: SelectedAnswerRequest, questionImage: [Int: [UIImage]]) // 일지 생성
+    case getAnswerList(category: PartItem.RawValue) // 일지 질문 및 답변 조회
+    case deleteJournal(recordId: Int) // 일지 삭제
+    case searchGetJournal(category: PartItem.RawValue, page: Int, date: String) //일지 기록 검색
     
-    /* 일지 기록 검색 */
-    case searchGetJournal(category: PartItem.RawValue, page: Int, date: String)
+    /* --- 진단 --- */
     
-    /* 진단 생성 */
-    case makeDiagnosis(data: CreateDiagRequst)
-    
-    /* 진단 생성 후, 추천 제품 네이버 쇼핑 정보로 업데이트*/
-    case updateNaverDiag(data: DiagResultResponse)
-    
-    case getDiagResult(diagId: Int)
+    case makeDiagnosis(data: CreateDiagRequst) // AI 진단하기
+    case updateNaverDiag(data: DiagResultResponse) // 추천 제품 네이버 쇼핑 정보로 업데이트
+    case getDiagResult(diagId: Int) // 진단서 상세 내용 조회
+    case getDiagList(petId: Int, category: PartItem.RawValue, page: Int)
+    case getUserPoint
+    case patchUserPoint
 }
 
 extension JournalAPITarget: APITargetType {
@@ -54,18 +52,24 @@ extension JournalAPITarget: APITargetType {
             return "/api/diagnose/result/\(data.result_id)"
         case .getDiagResult(let diagId):
             return "/api/diagnose/result/\(diagId)"
+        case .getDiagList(let petId, let category, let page):
+            return "/api/diagnose/\(petId)/\(category)/\(page)"
+        case .getUserPoint:
+            return "/api/diagnose/point"
+        case .patchUserPoint:
+            return "/api/diagnose/loading"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getJournalList, .getDetailJournalData, .getAnswerList, .searchGetJournal, .getDiagResult:
+        case .getJournalList, .getDetailJournalData, .getAnswerList, .searchGetJournal, .getDiagResult, .getDiagList, .getUserPoint:
             return .get
         case .makeJournal, .makeDiagnosis:
             return .post
         case .deleteJournal:
             return .delete
-        case .updateNaverDiag:
+        case .updateNaverDiag, .patchUserPoint:
             return .patch
         }
     }
@@ -88,6 +92,12 @@ extension JournalAPITarget: APITargetType {
         case .updateNaverDiag(let data):
             return .requestParameters(parameters: ["products": data.products], encoding: JSONEncoding.default)
         case .getDiagResult:
+            return .requestPlain
+        case .getDiagList:
+            return .requestPlain
+        case .getUserPoint:
+            return .requestPlain
+        case .patchUserPoint:
             return .requestPlain
         }
     }

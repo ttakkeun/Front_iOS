@@ -20,5 +20,7 @@ protocol PetProfileUseCaseProtocol {
     
     func executeSpecificPetProfile(petId: Int) -> AnyPublisher<ResponseData<HomeProfileResponseData>, MoyaError>
     
-    func excutePatchPetProfile(petId: Int, PetInfo: PetInfo) -> AnyPublisher<ResponseData<EditProfileResponse>, MoyaError>
+    func executePatchPetProfile(petId: Int, PetInfo: PetInfo) -> AnyPublisher<ResponseData<EditProfileResponse>, MoyaError>
+    
+    func executeDeletePetprofile(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
 }

@@ -38,4 +38,8 @@ class PetProfileRepository: PetProfileRepositoryProtocol {
     func patchPetProfile(petId: Int, petInfo: PetInfo) -> AnyPublisher<ResponseData<EditProfileResponse>, MoyaError> {
         return petProfileService.patchPetProfile(petId: petId, petInfo: petInfo)
     }
+    
+    func deletePetprofile(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError> {
+        return petProfileService.deletePetprofileData(petId: petId)
+    }
 }
