@@ -15,11 +15,7 @@ struct MyTipsView: View {
         VStack(alignment: .center, spacing: 30, content: {
             CustomNavigation(action: { print("hello world") },
                              title: "내가 쓴 tips",
-                             currentPage: nil,
-                             naviIcon: Image(systemName: "chevron.backward"),
-                             width: 8,
-                             height: 16)
-            
+                             currentPage: nil)
             
             ScrollView(.vertical, content: {
                 contents
@@ -35,6 +31,7 @@ struct MyTipsView: View {
                     data: $tip,
                     tipsType: .writeMyTips,
                     deleteTipsAction: {
+                        //TODO: - 삭제하기 버튼 액션 필요
                         print("Delete button tapped for \(tip.title)")
                     }
                 )
