@@ -28,6 +28,8 @@ struct SelectBtnBox: View {
                 Text(btnInfo.name)
                     .font(.Body2_medium)
                     .foregroundStyle(Color.gray900)
+                    .lineLimit(1) // 한 줄만 표시
+                        .truncationMode(.tail) // 길어지면 ...으로 축약
                 
                 Spacer()
                 

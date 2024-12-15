@@ -79,6 +79,9 @@ struct ReportView: View {
                             .stroke(Color.gray400, lineWidth: 1)
                     )
             })
+           
+            //TODO: - 사진 선택하면 선택한 사진을 일렬로 배치할 수 있도록 해야 함
+            
         })
     }
 }
