@@ -70,4 +70,10 @@ class QnAUseCase: QnAUseCaseProtocol {
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }
+    
+    func executeLikeTips(tipId: Int) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError> {
+        return repository.likeTips(tipId: tipId)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
 }

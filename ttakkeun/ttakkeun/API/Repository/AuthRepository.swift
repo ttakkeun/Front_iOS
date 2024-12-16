@@ -34,4 +34,11 @@ class AuthRepository: AuthRepositoryProtocol {
         return authService.kakaoLogin(signUpRequest: signUpRequest)
     }
     
+    func deleteAppleAccount(authorizationCode: String) -> AnyPublisher<ResponseData<String>, MoyaError> {
+        return authService.deleteAppleAccount(authorizationCode: authorizationCode)
+    }
+    
+    func logout() -> AnyPublisher<ResponseData<String>, MoyaError> {
+        return authService.logout()
+    }
 }

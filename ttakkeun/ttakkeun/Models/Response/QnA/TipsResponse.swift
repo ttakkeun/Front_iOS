@@ -19,7 +19,7 @@ struct TipsResponse: Identifiable, Codable, Hashable {
     var authorName: String
     var isLike: Bool
     var isPopular: Bool
-    var isScrap: Bool = false
+    var isScrap: Bool
     var isExpand: Bool = false
     
     enum CodingKeys: String, CodingKey {
@@ -33,5 +33,6 @@ struct TipsResponse: Identifiable, Codable, Hashable {
         case authorName
         case isLike
         case isPopular
+        case isScrap
     }
 }

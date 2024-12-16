@@ -29,4 +29,6 @@ protocol QnAServiceProtocol {
     func getMyScrapTipsData(page: Int) -> AnyPublisher<ResponseData<[TipsResponse]>, MoyaError>
     
     func deleteMyTipsData(tipId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
+    
+    func likeTipsData(tipId: Int) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError>
 }

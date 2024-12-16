@@ -72,4 +72,10 @@ class QnAService: QnAServiceProtocol {
             .map(ResponseData<EmptyResponse>.self)
             .eraseToAnyPublisher()
     }
+    
+    func likeTipsData(tipId: Int) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError> {
+        return provider.requestPublisher(.likeTip(tipId: tipId))
+            .map(ResponseData<LikeTipsResponse>.self)
+            .eraseToAnyPublisher()
+    }
 }

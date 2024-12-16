@@ -16,6 +16,9 @@ enum AuthAPITarget {
     
     case kakakoLogin(signUpRequest: SignUpRequest) // 카카오 로그인 시도
     case signUpKakaoLogin(signUpRequest: SignUpRequest) // 카카오 회원 가입
+    
+    case deleteAppleAccount(authorizationCode: String) // 애플 회원가입 제거
+    case logout // 로그아웃
 }
 
 extension AuthAPITarget: APITargetType {
@@ -32,6 +35,10 @@ extension AuthAPITarget: APITargetType {
             return "/api/auth/kakao/login"
         case .signUpKakaoLogin:
             return "/api/auth/kakao/signup"
+        case .deleteAppleAccount:
+            return "/api/auth/apple/delete"
+        case .logout:
+            return "/api/auth/logout"
         }
     }
     
@@ -46,6 +53,10 @@ extension AuthAPITarget: APITargetType {
         case .kakakoLogin:
             return .post
         case.signUpKakaoLogin:
+            return .post
+        case .deleteAppleAccount:
+            return .delete
+        case .logout:
             return .post
         }
     }
@@ -62,6 +73,10 @@ extension AuthAPITarget: APITargetType {
             return .requestJSONEncodable(signUpData)
         case .signUpKakaoLogin(let signUpData):
             return .requestJSONEncodable(signUpData)
+        case .deleteAppleAccount:
+            return .requestPlain
+        case .logout:
+            return .requestPlain
         }
     }
     
@@ -71,10 +86,11 @@ extension AuthAPITarget: APITargetType {
             switch self {
             case .sendRefreshToken(let refresh):
                 headers["RefreshToken"] = "Bearer \(refresh)"
+            case .deleteAppleAccount(let code):
+                headers["authorization-code"] = code
             default:
                 break
             }
-    
             return headers
         }
     
