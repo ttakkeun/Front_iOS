@@ -9,11 +9,12 @@ import SwiftUI
 
 struct CalendarView: View {
     
-    @StateObject var viewModel: CalendarViewModel
+    @ObservedObject var viewModel: CalendarViewModel
     
-    init(container: DIContainer) {
-        self._viewModel = StateObject(wrappedValue: .init(month: Date(), calendar: Calendar.current, container: container))
+    init(viewModel: CalendarViewModel) {
+        self.viewModel = viewModel
     }
+    
     
     var body: some View {
         VStack(alignment: .leading, content: {

@@ -9,4 +9,5 @@ import Foundation
 
 protocol TodoCheckProtocol {
     func toggleTodoStatus(for category: PartItem, todoID: UUID)
+    func sendTodoStatus(todoId: Int)
 }

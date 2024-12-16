@@ -185,12 +185,7 @@ struct RecommendView: View {
                         .font(.Body3_medium)
                 }
                 .controlSize(.regular)
-                .padding(.vertical, 25)
-                .padding(.horizontal, 100)
-                .background {
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray300, lineWidth: 1)
-                }
+                .modifier(ProductWarningModifier())
             }
         })
         .frame(maxWidth: .infinity)

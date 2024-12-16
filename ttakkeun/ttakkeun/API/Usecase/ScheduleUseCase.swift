@@ -23,4 +23,16 @@ class ScheduleUseCase: ScheduleUseCaseProtocol {
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }
+    
+    func executePatchTodoCheck(todoId: Int) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
+        return scheduleRepository.patchTodoCheck(todoId: todoId)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executeGetCompleteRate(petId: Int) -> AnyPublisher<ResponseData<TodoCompleteResponse>, MoyaError> {
+        return scheduleRepository.getCompleteRate(petId: petId)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
 }

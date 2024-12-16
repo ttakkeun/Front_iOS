@@ -22,4 +22,12 @@ class ScheduleRepository: ScheduleRepositoryProtocol {
     func getTodoSchedule(petId: Int, todoDateRequest: TodoDateRequest) -> AnyPublisher<ResponseData<ScheduleInquiryResponse>, MoyaError> {
         return scheduleService.getTodoScheduleData(petId: petId, todoDateRequest: todoDateRequest)
     }
+    
+    func patchTodoCheck(todoId: Int) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
+        return scheduleService.patchTodoCheckData(todoId: todoId)
+    }
+    
+    func getCompleteRate(petId: Int) -> AnyPublisher<ResponseData<TodoCompleteResponse>, MoyaError> {
+        return scheduleService.getCompleteRateData(petId: petId)
+    }
 }

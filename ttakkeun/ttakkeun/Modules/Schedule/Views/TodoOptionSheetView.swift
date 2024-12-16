@@ -19,8 +19,6 @@ struct TodoOptionSheetView: View {
             
             mainContents
         })
-        .safeAreaPadding(EdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0))
-        .frame(width: 394, height: 340)
     }
     
     private var mainContents: some View {
@@ -39,7 +37,7 @@ struct TodoOptionSheetView: View {
         HStack(content: {
             Spacer()
             
-            Text("면봉 사기")
+            Text(selectedTodo.todoName)
                 .font(.Body2_medium)
                 .foregroundStyle(Color.gray900)
             
@@ -133,5 +131,11 @@ extension TodoOptionSheetView {
         case .replaceTheDate:
             print("날짜 바꾸기")
         }
+    }
+}
+
+struct TodoOptionSheetView_Preview: PreviewProvider {
+    static var previews: some View {
+        TodoOptionSheetView(viewModel: TodoCheckViewModel(partItem: .claw, container: DIContainer()), selectedTodo: .constant(TodoList(todoID: 1, todoName: "sss", todoStatus: true)))
     }
 }

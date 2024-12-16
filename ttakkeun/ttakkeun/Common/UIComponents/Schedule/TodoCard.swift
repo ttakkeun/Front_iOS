@@ -11,14 +11,15 @@ import SwiftUI
 struct TodoCard: View {
     
     @StateObject var viewModel: TodoCheckViewModel
+    @EnvironmentObject var calendarViewModel: CalendarViewModel
     
-    init(partItem: PartItem) {
-        self._viewModel = StateObject(wrappedValue: .init(partItem: partItem))
+    init(partItem: PartItem, container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(partItem: partItem, container: container))
     }
     
     var body: some View {
         HStack(content: {
-                todoCicle
+                todoCircle
                 
                 Spacer().frame(width: 20)
                 
@@ -39,6 +40,9 @@ struct TodoCard: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.white)
                 .stroke(Color.gray200, lineWidth: 1)
+        }
+        .onReceive(calendarViewModel.$selectedDate) { newDate in
+            viewModel.getTodoData(date: newDate)
         }
     }
     
@@ -65,7 +69,7 @@ struct TodoCard: View {
         }
     }
     
-    private var todoCicle: some View {
+    private var todoCircle: some View {
         ZStack(alignment: .topTrailing, content: {
             TodoCircle(partItem: viewModel.partItem, isBefore: true)
             
@@ -144,11 +148,5 @@ extension TodoCard {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 18, height: 18)
         })
-    }
-}
-
-struct TodoCard_Preview: PreviewProvider {
-    static var previews: some View {
-        TodoCard(partItem: .ear)
     }
 }

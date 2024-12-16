@@ -10,10 +10,9 @@ import Moya
 
 /// 일정 관련 API 타켓
 enum ScheduleAPITarget {
-    /// 일정 완수율 조회
-    case getCompleteRate(petId: Int)
-    /// TODO 일정 조회 API
-    case getCalendar(petId: Int, todoDateRequest: TodoDateRequest)
+    case getCompleteRate(petId: Int) // 일정 완수율 조회
+    case getCalendar(petId: Int, todoDateRequest: TodoDateRequest) // TODO 일정 조회 API
+    case patchTodoCheck(todoId: Int) // 투두 체크/취소
 }
 
 extension ScheduleAPITarget: APITargetType {
@@ -24,6 +23,8 @@ extension ScheduleAPITarget: APITargetType {
             return "/api/todos/completion-rate"
         case .getCalendar(_, let todoDate):
             return "/api/calendar/\(todoDate.year)/\(todoDate.month)/\(todoDate.date)"
+        case .patchTodoCheck(let todoId):
+            return "/api/todos/\(todoId)/check"
         }
     }
     
@@ -31,6 +32,8 @@ extension ScheduleAPITarget: APITargetType {
         switch self {
         case .getCalendar, .getCompleteRate:
             return .get
+        case .patchTodoCheck:
+            return .patch
         }
     }
     
@@ -38,6 +41,8 @@ extension ScheduleAPITarget: APITargetType {
         switch self {
         case .getCompleteRate(let id), .getCalendar(let id, _):
             return .requestParameters(parameters: ["petId": id], encoding: URLEncoding.default)
+        case .patchTodoCheck:
+            return .requestPlain
         }
     }
     

@@ -10,6 +10,10 @@ import Combine
 import CombineMoya
 
 class HomeTodoViewModel: ObservableObject, TodoCheckProtocol {
+    func sendTodoStatus(todoId: Int) {
+        //TODO: - TodoAction
+    }
+    
     
     @Published var inputDate: TodoDateRequest
     let container: DIContainer

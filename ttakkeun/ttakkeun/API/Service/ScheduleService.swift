@@ -24,4 +24,16 @@ class ScheduleService: ScheduleServiceProtocol {
             .map(ResponseData<ScheduleInquiryResponse>.self)
             .eraseToAnyPublisher()
     }
+    
+    func patchTodoCheckData(todoId: Int) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
+        return provider.requestPublisher(.patchTodoCheck(todoId: todoId))
+            .map(ResponseData<TodoCheckResponse>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func getCompleteRateData(petId: Int) -> AnyPublisher<ResponseData<TodoCompleteResponse>, MoyaError> {
+        return provider.requestPublisher(.getCompleteRate(petId: petId))
+            .map(ResponseData<TodoCompleteResponse>.self)
+            .eraseToAnyPublisher()
+    }
 }

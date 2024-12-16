@@ -43,20 +43,21 @@ struct TodoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
             Button(action: {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     viewModel.toggleTodoStatus(for: partItem, todoID: data.id)
+                    viewModel.sendTodoStatus(todoId: data.todoID)
                 }
             }, label: {
                 if !data.todoStatus {
                     Icon.unCheckBox.image
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 15, height: 15)
+                        .frame(width: 18, height: 18)
                         .opacity(data.todoStatus ? 0 : 1)
                 } else {
                     ZStack {
                         Icon.checkBox.image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 15, height: 15)
+                            .frame(width: 18, height: 18)
                         
                         Icon.checkV.image
                             .fixedSize()
@@ -81,6 +82,6 @@ struct TodoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
 
 struct TodoCheckList_Preview: PreviewProvider {
     static var previews: some View {
-        TodoCard(partItem: .ear)
+        TodoCard(partItem: .ear, container: DIContainer())
     }
 }
