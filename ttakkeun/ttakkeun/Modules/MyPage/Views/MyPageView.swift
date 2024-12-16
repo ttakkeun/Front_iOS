@@ -14,13 +14,15 @@ struct MyPageView: View {
             CustomNavigation(action: { print("hello world") },
                              title: "마이페이지",
                              currentPage: nil,
-                             naviIcon: Image(systemName: "chevron.left"),
+                             naviIcon: Image(systemName: "chevron.backward"),
                              width: 8,
                              height: 16)
             
             myInfo
             
             bottomMyPageBoxGroup
+            
+            Spacer()
         })
     }
     
@@ -43,12 +45,17 @@ struct MyPageView: View {
                 .tint(Color.gray300)
             
             VStack(alignment: .leading, spacing: 6,content: {
-                Text("날아가는붕붕이")
-//                Text(\(UserState.shared.getUserName()))
+
+                //TODO: - 주석 제거 필요
+                Text("날아가는 붕붕이")
+//                Text("\(UserState.shared.getUserName())")
                     .font(.H4_bold)
-                Text(verbatim: "534re@kakao.com") // 여기 @랑 .이 같이 들어가면 출력이 안돼요..
-//                Text(\(UserState.shared.getUserName()))
+                    .foregroundStyle(Color.gray900)
+
+                Text(verbatim: "asefd@naver.com")
+//                Text("\(UserState.shared.getUserEmail())")
                     .font(.Body4_semibold)
+                    .foregroundStyle(Color.gray900)
             })
             
             Spacer()
@@ -83,29 +90,30 @@ struct MyPageView: View {
         VStack(alignment: .center, spacing: 21,content: {
             ///앱 정보 박스
             MyPageInfoBox(myPageInfo: MyPageInfo(
-                title: "앱 정보",
-                //TODO: 버튼 액션 필요(해당 페이지로 넘어가야 함)
-                firstBtn: BtnInfo(name: "알림 설정", date: nil, action: { print("알림 설정 버튼 눌림") }),
-                secondBtn: BtnInfo(name: "이용약관 및 정책", date: nil, action: { print("이용약관 및 정책 버튼 눌림") }), thirdBtn: nil
-            ), versionInfo: "v1.0.0")
+                            title: "앱 정보",
+                            boxBtn: [
+                                BtnInfo(name: "이용약관 및 정책", date: nil, action: { print("이용약관 및 정책 버튼 눌림") })
+                            ]
+                        ), versionInfo: "v1.0.0")
             
             ///이용정보 박스
             MyPageInfoBox(myPageInfo: MyPageInfo(
-                title: "이용 정보",
-                //TODO: 버튼 액션 필요(해당 페이지로 넘어가야 함)
-                firstBtn: BtnInfo(name: "공지사항", date: nil, action: { print("공지사항 버튼 눌림") }),
-                secondBtn: BtnInfo(name: "문의하기", date: nil, action: { print("문의하기 버튼 눌림") }),
-                thirdBtn: BtnInfo(name: "신고하기", date: nil, action: { print("신고하기 버튼 눌림")})
-            ))
+                            title: "이용 정보",
+                            boxBtn: [
+                                BtnInfo(name: "문의하기", date: nil, action: { print("문의하기 버튼 눌림") }),
+                                BtnInfo(name: "신고하기", date: nil, action: { print("신고하기 버튼 눌림") })
+                            ]
+                        ))
             
             ///계정 박스
             MyPageInfoBox(myPageInfo: MyPageInfo(
-                title: "계정",
-                //TODO: 버튼 액션 필요(해당 페이지로 넘어가야 함)
-                firstBtn: BtnInfo(name: "로그아웃하기", date: nil, action: { print("로그아웃하기 버튼 눌림") }),
-                secondBtn: BtnInfo(name: "프로필 삭제하기", date: nil, action: { print("프로필 삭제하기 버튼 눌림") }),
-                thirdBtn: BtnInfo(name: "탈퇴하기", date: nil, action: { print("탈퇴하기 버튼 눌림")})
-            ))
+                            title: "계정",
+                            boxBtn: [
+                                BtnInfo(name: "로그아웃하기", date: nil, action: { print("로그아웃 버튼 눌림") }),
+                                BtnInfo(name: "프로필 삭제하기", date: nil, action: { print("프로필 삭제 버튼 눌림") }),
+                                BtnInfo(name: "탈퇴하기", date: nil, action: { print("탈퇴 버튼 눌림") })
+                            ]
+                        ))
         })
     }
 }
