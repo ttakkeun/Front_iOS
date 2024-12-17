@@ -10,17 +10,26 @@ import SwiftUI
 
 enum TodoActionBtn: String, CaseIterable {
     case againTomorrow = "내일 또 하기"
-    case anotherDay = "다른 날 또 하기"
-    case replaceTheDate = " 날짜 바꾸기"
+    case tomorrowDay = "내일 하기"
+    case anotherDay = "다른 날짜 또 하기"
+    case replaceTheDate = "날짜 바꾸기"
     
     func caseIcon() -> Image {
         switch self {
-        case .againTomorrow:
+        case .againTomorrow, .tomorrowDay:
             Icon.againIcon.image
         case .anotherDay:
             Icon.anotherIcon.image
         case .replaceTheDate:
             Icon.replaceIcon.image
         }
+    }
+    
+    static func checkedTask() -> [TodoActionBtn] {
+        return [.againTomorrow, .anotherDay, .replaceTheDate]
+    }
+    
+    static func uncheckTask() -> [TodoActionBtn] {
+        return [.tomorrowDay, .replaceTheDate]
     }
 }

@@ -42,4 +42,40 @@ class ScheduleService: ScheduleServiceProtocol {
             .map(ResponseData<TodoCheckResponse>.self)
             .eraseToAnyPublisher()
     }
+    
+    func postRepeatTodoData(todoId: Int) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
+        return provider.requestPublisher(.postRepeatTodo(todoId: todoId))
+            .map(ResponseData<TodoCheckResponse>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func postAnotherDayData(todoId: Int, newDate: String) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
+        return provider.requestPublisher(.postAnotherDay(todoId: todoId, newDate: newDate))
+            .map(ResponseData<TodoCheckResponse>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func deleteTodoDateData(todoID: Int) -> AnyPublisher<ResponseData<DeleteTodoResponse>, MoyaError> {
+        return provider.requestPublisher(.deleteTodo(todoId: todoID))
+            .map(ResponseData<DeleteTodoResponse>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func patchTodoNameData(todoId: Int, todoName: String) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
+        return provider.requestPublisher(.patchTodoName(todoId: todoId, toodName: todoName))
+            .map(ResponseData<TodoCheckResponse>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func patchTodoTransferTomorrowData(todoId: Int) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
+        return provider.requestPublisher(.patchTodoTransferTomorrow(todoId: todoId))
+            .map(ResponseData<TodoCheckResponse>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func patchTodoTransferAnotherDayData(todoId: Int, newDate: String) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
+        return provider.requestPublisher(.patchTodoTransferAnotherDay(todoId: todoId, newDate: newDate))
+            .map(ResponseData<TodoCheckResponse>.self)
+            .eraseToAnyPublisher()
+    }
 }

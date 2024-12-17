@@ -34,4 +34,28 @@ class ScheduleRepository: ScheduleRepositoryProtocol {
     func makeTodoContents(todoData: MakeTodoRequest) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
         return scheduleService.makeTodoContentsData(todoData: todoData)
     }
+    
+    func postRepeatTodo(todoId: Int) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
+        return scheduleService.postRepeatTodoData(todoId: todoId)
+    }
+    
+    func postAnotherDay(todoId: Int, newDate: String) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
+        return scheduleService.postAnotherDayData(todoId: todoId, newDate: newDate)
+    }
+    
+    func deleteTodoDate(todoID: Int) -> AnyPublisher<ResponseData<DeleteTodoResponse>, MoyaError> {
+        return scheduleService.deleteTodoDateData(todoID: todoID)
+    }
+    
+    func patchTodoName(todoId: Int, todoName: String) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
+        return scheduleService.patchTodoNameData(todoId: todoId, todoName: todoName)
+    }
+    
+    func patchTodoTransferTomorrow(todoId: Int) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
+        return scheduleService.patchTodoTransferTomorrowData(todoId: todoId)
+    }
+    
+    func patchTodoTransferAnotherDay(todoId: Int, newDate: String) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
+        return scheduleService.patchTodoTransferAnotherDayData(todoId: todoId, newDate: newDate)
+    }
 }

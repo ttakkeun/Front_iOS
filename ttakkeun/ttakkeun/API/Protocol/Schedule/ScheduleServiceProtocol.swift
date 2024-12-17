@@ -19,4 +19,16 @@ protocol ScheduleServiceProtocol {
     func getCompleteRateData(petId: Int) -> AnyPublisher<ResponseData<TodoCompleteResponse>, MoyaError>
     
     func makeTodoContentsData(todoData: MakeTodoRequest) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError>
+    
+    func postRepeatTodoData(todoId: Int) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError>
+    
+    func postAnotherDayData(todoId: Int, newDate: String) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError>
+    
+    func deleteTodoDateData(todoID: Int) -> AnyPublisher<ResponseData<DeleteTodoResponse>, MoyaError>
+    
+    func patchTodoNameData(todoId: Int, todoName: String) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError>
+    
+    func patchTodoTransferTomorrowData(todoId: Int) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError>
+    
+    func patchTodoTransferAnotherDayData(todoId: Int, newDate: String) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError>
 }

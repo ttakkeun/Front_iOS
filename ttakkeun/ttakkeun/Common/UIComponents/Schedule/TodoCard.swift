@@ -26,7 +26,7 @@ struct TodoCard: View {
                 if !viewModel.todos.isEmpty {
                     todoCheckList
                 } else {
-                    notTOdoChecList
+                    notTodoChecList
                 }
                 
                 Spacer()
@@ -59,7 +59,7 @@ struct TodoCard: View {
     }
     
     @ViewBuilder
-    private var notTOdoChecList: some View {
+    private var notTodoChecList: some View {
         if viewModel.isAddingNewTodo {
             newTodoInputField
         } else {

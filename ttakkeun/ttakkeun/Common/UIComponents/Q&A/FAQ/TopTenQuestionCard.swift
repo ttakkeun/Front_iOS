@@ -24,8 +24,6 @@ struct TopTenQuestionCard: View {
             topTenTitle
             
             topTenContents
-            
-            Spacer()
         })
         .frame(width: 136, height: 126)
         .padding(.vertical, 15)
@@ -66,12 +64,14 @@ struct TopTenQuestionCard: View {
     }
     
     private var topTenContents: some View {
-        Text(dataString().split(separator: "").joined(separator: "\u{200B}"))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .lineLimit(nil)
-            .multilineTextAlignment(.leading)
-            .font(.Body4_medium)
-            .lineSpacing(1.5)
+        ScrollView(.vertical, content: {
+            Text(dataString().split(separator: "").joined(separator: "\u{200B}"))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .multilineTextAlignment(.leading)
+                .font(.Body4_medium)
+                .lineSpacing(1.5)
+        })
+        .padding(.horizontal, 5)
     }
 }
 
@@ -96,6 +96,6 @@ extension TopTenQuestionCard {
 
 struct TopTenQuestionCard_Preview: PreviewProvider {
     static var previews: some View {
-        TopTenQuestionCard(data: .constant(FAQData(category: .ear, question: "털이 왜 이렇게 빠지 는지 궁금해요!!", answer: "여름철 체온조절로 인해 털빠짐 현상이 발생할 수 있습니다.")), index: 1)
+        TopTenQuestionCard(data: .constant(FAQData(category: .ear, question: "털이 왜 이렇게 빠지 는지 궁금해요!!", answer: "혈관이 지나가는 부분인 '퀵(quick)'을 피해서 깎아야 합니다. 퀵을 다치게 하면 출혈이 발생할 수 있으므로, 밝은 색 발톱의 경우 퀵을 쉽게 식별할 수 있습니다.")), index: 1)
     }
 }

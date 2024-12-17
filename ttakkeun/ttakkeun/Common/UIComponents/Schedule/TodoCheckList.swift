@@ -32,7 +32,7 @@ struct TodoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
     var body: some View {
         checkComponents
             .sheet(isPresented: $isShowSheet, content: {
-                TodoOptionSheetView(viewModel: viewModel as! TodoCheckViewModel, selectedTodo: $data)
+                TodoOptionSheetView(viewModel: viewModel as! TodoCheckViewModel, selectedTodo: $data, isShowSheet: $isShowSheet)
                     .presentationCornerRadius(30)
                     .presentationDetents([.fraction(0.45)])
             })
