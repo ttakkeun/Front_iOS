@@ -35,4 +35,10 @@ class ScheduleUseCase: ScheduleUseCaseProtocol {
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }
+    
+    func executeMakeTodoContents(todoData: MakeTodoRequest) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
+        return scheduleRepository.makeTodoContents(todoData: todoData)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
 }

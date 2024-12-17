@@ -30,4 +30,8 @@ class ScheduleRepository: ScheduleRepositoryProtocol {
     func getCompleteRate(petId: Int) -> AnyPublisher<ResponseData<TodoCompleteResponse>, MoyaError> {
         return scheduleService.getCompleteRateData(petId: petId)
     }
+    
+    func makeTodoContents(todoData: MakeTodoRequest) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
+        return scheduleService.makeTodoContentsData(todoData: todoData)
+    }
 }

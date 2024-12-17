@@ -54,7 +54,7 @@ class TodoCheckViewModel: ObservableObject, TodoCheckProtocol {
     }
     
     func sendTodoStatus(todoId: Int) {
-        //TODO: - TodoCheckAction
+        self.patchTodoStatus(todoId: todoId)
     }
     
     func isAddingNewTodoToggle() {
@@ -131,6 +131,38 @@ extension TodoCheckViewModel {
             }, receiveValue: { responseData in
                 if let responseData = responseData.result {
                     print("투두 체크 상태: \(responseData)")
+                }
+            })
+            .store(in: &cancellables)
+    }
+    
+    func makeTodoContetns(makeTodoData: MakeTodoRequest) {
+        container.useCaseProvider.scheduleUseCase.executeMakeTodoContents(todoData: makeTodoData)
+            .tryMap { responseData -> ResponseData<TodoCheckResponse> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                
+                print("MakeTodoContents Server: \(responseData)")
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("MakeTodoContents Completed")
+                case .failure(let failure):
+                    print("MakeTodoContents Failure: \(failure)")
+                }
+                
+            },
+                  receiveValue: { responseData in
+                if let result = responseData.result {
+                    print("MakeTodo ResponseData: \(result)")
                 }
             })
             .store(in: &cancellables)

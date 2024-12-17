@@ -40,6 +40,9 @@ struct ScheduleView: View {
             })
         })
         .background(Color.scheduleBg)
+        .task {
+            completionViewModel.getCompletionData()
+        }
     }
     
     private var todoList: some View {

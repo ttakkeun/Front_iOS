@@ -36,4 +36,10 @@ class ScheduleService: ScheduleServiceProtocol {
             .map(ResponseData<TodoCompleteResponse>.self)
             .eraseToAnyPublisher()
     }
+    
+    func makeTodoContentsData(todoData: MakeTodoRequest) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError> {
+        return provider.requestPublisher(.makeTodoContents(todoData: todoData))
+            .map(ResponseData<TodoCheckResponse>.self)
+            .eraseToAnyPublisher()
+    }
 }

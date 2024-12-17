@@ -17,4 +17,6 @@ protocol ScheduleServiceProtocol {
     func patchTodoCheckData(todoId: Int) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError>
     
     func getCompleteRateData(petId: Int) -> AnyPublisher<ResponseData<TodoCompleteResponse>, MoyaError>
+    
+    func makeTodoContentsData(todoData: MakeTodoRequest) -> AnyPublisher<ResponseData<TodoCheckResponse>, MoyaError>
 }

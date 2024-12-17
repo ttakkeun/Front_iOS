@@ -13,6 +13,7 @@ enum ScheduleAPITarget {
     case getCompleteRate(petId: Int) // 일정 완수율 조회
     case getCalendar(petId: Int, todoDateRequest: TodoDateRequest) // TODO 일정 조회 API
     case patchTodoCheck(todoId: Int) // 투두 체크/취소
+    case makeTodoContents(todoData: MakeTodoRequest)
 }
 
 extension ScheduleAPITarget: APITargetType {
@@ -25,6 +26,8 @@ extension ScheduleAPITarget: APITargetType {
             return "/api/calendar/\(todoDate.year)/\(todoDate.month)/\(todoDate.date)"
         case .patchTodoCheck(let todoId):
             return "/api/todos/\(todoId)/check"
+        case .makeTodoContents:
+            return "/api/todos"
         }
     }
     
@@ -34,6 +37,8 @@ extension ScheduleAPITarget: APITargetType {
             return .get
         case .patchTodoCheck:
             return .patch
+        case .makeTodoContents:
+            return .post
         }
     }
     
@@ -43,6 +48,8 @@ extension ScheduleAPITarget: APITargetType {
             return .requestParameters(parameters: ["petId": id], encoding: URLEncoding.default)
         case .patchTodoCheck:
             return .requestPlain
+        case .makeTodoContents(let todoData):
+            return .requestJSONEncodable(todoData)
         }
     }
     
