@@ -22,7 +22,7 @@ struct MyPageView: View {
     }
     
     var body: some View {
-        if !viewModel.isLoading {
+//        if !viewModel.isLoading {
             ZStack(content: {
                 VStack(alignment: .center, spacing: 37, content: {
                     CustomNavigation(action: { container.navigationRouter.pop() },
