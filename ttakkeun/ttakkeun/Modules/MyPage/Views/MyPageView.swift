@@ -14,6 +14,8 @@ struct MyPageView: View {
     
     @StateObject var viewModel: MyPageViewModel
     @State private var isNickBtnClicked: Bool = false
+    @State private var isDeleteAccountBtnClicked: Bool = false
+    @State private var isProfileDeleteBtnClicked: Bool = false
     
     init(container: DIContainer) {
         self._viewModel = .init(wrappedValue: .init(container: container))
@@ -41,18 +43,27 @@ struct MyPageView: View {
                 }
             })
             .navigationBarBackButtonHidden(true)
-//        } else {
-//            VStack {
-//                
-//                Spacer()
-//                
-//                ProgressView(label: {
-//                    LoadingDotsText(text: "잠시만 기다려주세요")
-//                })
-//                
-//                Spacer()
-//            }
-//        }
+        } else {
+            VStack {
+                
+                Spacer()
+                
+                ProgressView(label: {
+                    LoadingDotsText(text: "잠시만 기다려주세요")
+                })
+                
+                Spacer()
+            }
+            
+            if isDeleteAccountBtnClicked {
+                CustomAlert(alertText: Text("탈퇴하기"), alertSubText: Text("정말 따끈을 떠나시겠어요?"), alertAction: .init(showAlert: $isDeleteAccountBtnClicked, yes: { print("ok") }))
+            }
+            
+            if isProfileDeleteBtnClicked {
+                CustomAlert(alertText: Text("프로필 삭제하기"), alertSubText: Text("해당 프로필을 삭제하시겠습니까?"), alertAction: .init(showAlert: $isProfileDeleteBtnClicked, yes: { print("ok") }))
+            }
+        })
+        .navigationBarBackButtonHidden(true)
     }
     
     //MARK: - Compoents
@@ -135,13 +146,13 @@ struct MyPageView: View {
             
             ///계정 박스
             MyPageInfoBox(myPageInfo: MyPageInfo(
-                title: "계정",
-                boxBtn: [
-                    BtnInfo(name: "로그아웃하기", date: nil, action: { print("로그아웃 버튼 눌림") }),
-                    BtnInfo(name: "프로필 삭제하기", date: nil, action: { print("프로필 삭제 버튼 눌림") }),
-                    BtnInfo(name: "탈퇴하기", date: nil, action: { print("탈퇴 버튼 눌림") })
-                ]
-            ))
+                            title: "계정",
+                            boxBtn: [
+                                BtnInfo(name: "로그아웃하기", date: nil, action: { print("로그아웃 버튼 눌림") }),
+                                BtnInfo(name: "프로필 삭제하기", date: nil, action: { print("프로필 삭제 버튼 눌림") }),
+                                BtnInfo(name: "탈퇴하기", date: nil, action: { print("탈퇴 버튼 눌림") })
+                            ]
+                        ))
         })
     }
 }

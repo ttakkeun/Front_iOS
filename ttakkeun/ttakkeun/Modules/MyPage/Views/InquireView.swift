@@ -13,35 +13,40 @@ struct InquireView: View {
     @State private var detail: String = ""
     @State private var email: String = ""
     @State private var isAgreementCheck: Bool = false
+    @State private var isMainBtnClicked: Bool = false
     
     @State private var showAgreementSheet: Bool = false
     private let agreement = AgreementDetailData.loadEmailAgreements()
     
     var body: some View {
-        VStack(alignment: .center, spacing: 25, content: {
-            CustomNavigation(action: { print("hello world") },
-                             title: "문의하기",
-                             currentPage: nil)
+        ZStack(content: {
+            VStack(alignment: .center, spacing: 25, content: {
+                CustomNavigation(action: { print("hello world") },
+                                 title: "문의하기",
+                                 currentPage: nil)
+                
+                reportContent
+                
+                emailCheck
+                
+                agreementCheck
+                
+                Spacer()
+                
+                MainButton(btnText: "문의하기", width: 349, height: 63,
+                           action: { isMainBtnClicked.toggle()}, color: isMainButtonEnabled() ? Color.mainPrimary : Color.checkBg)
+                .disabled(!isMainButtonEnabled())
+            })
+            .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
+            .sheet(isPresented: $showAgreementSheet) {
+                AgreementSheetView(agreement: agreement)
+                    .presentationCornerRadius(30)
+            }
             
-            reportContent
-            
-            emailCheck
-            
-            agreementCheck
-            
-            Spacer()
-            
-            MainButton(btnText: "문의하기", width: 349, height: 63, action: {
-                    //TODO: - 신고하기 버튼 눌렸을 때 액션 필요
-                    print("문의하기 버튼 눌림")},
-                       color: Color.mainPrimary
-            )
+            if isMainBtnClicked {
+                CustomAlert(alertText: Text("문의내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록 하겠습니다. \n영업시간 2~3일 이내에 이메일로 답변을 받아보실 수 있습니다."), alertAction: .init(showAlert: $isMainBtnClicked, yes: { print("ok") }))
+            }
         })
-        .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
-        .sheet(isPresented: $showAgreementSheet) {
-            AgreementSheetView(agreement: agreement)
-                .presentationCornerRadius(30)
-        }
     }
     
     //MARK: - Components
@@ -63,9 +68,7 @@ struct InquireView: View {
     /// 신고 내용
     private var reportDetail: some View {
         VStack(alignment: .leading, spacing: 18,content: {
-            Text("문의 내용을 작성해주세요.")
-                .font(.H4_bold)
-                .foregroundStyle(Color.gray900)
+            makeTitle(title: "문의 내용을 작성해주세요.")
             
             //TODO: text Binding, maxTextCount 수정
             TextEditor(text: $detail)
@@ -76,9 +79,7 @@ struct InquireView: View {
     
     private var imageAdd: some View {
         VStack(alignment: .leading, spacing: 13, content: {
-            Text("이미지 첨부")
-                .font(.H4_bold)
-                .foregroundStyle(Color.gray900)
+            makeTitle(title: "이미지 첨부")
             
             Button(action: {
                 //TODO: - 이미지 피커 연결
@@ -100,9 +101,7 @@ struct InquireView: View {
     
     private var emailCheck: some View {
         VStack(alignment: .leading, spacing: 13, content: {
-            Text("연락 받을 이메일")
-                .font(.H4_bold)
-                .foregroundStyle(Color.gray900)
+            makeTitle(title: "연락 받을 이메일")
         
             CustomTextField(text: $email, placeholder: "입력해주세요.", cornerRadius: 10, maxWidth: 355, maxHeight: 56)
         })
@@ -111,9 +110,7 @@ struct InquireView: View {
     private var agreementCheck: some View {
         VStack(alignment: .leading, spacing: 13, content: {
             HStack(alignment: .center, spacing: 91, content: {
-                Text("개인정보 수집 및 이용 약관 동의")
-                    .font(.H4_bold)
-                    .foregroundStyle(Color.gray900)
+                makeTitle(title: "개인정보 수집 및 이용 약관 동의")
                 
                 Button(action: {
                     showAgreementSheet = true
@@ -153,6 +150,20 @@ struct InquireView: View {
 private struct FieldGroup {
     let title: String
     let text: Binding<String>
+}
+
+//MARK: - function
+extension InquireView {
+    private func makeTitle(title: String) -> some View {
+        Text(title)
+            .font(.H4_bold)
+            .foregroundStyle(Color.gray900)
+    }
+    
+    // Main 버튼 활성화 조건 함수
+    private func isMainButtonEnabled() -> Bool {
+        return !detail.isEmpty && !email.isEmpty && isAgreementCheck
+    }
 }
 
 //MARK: - Preview

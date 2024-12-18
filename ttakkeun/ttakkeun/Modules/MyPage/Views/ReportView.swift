@@ -12,23 +12,29 @@ struct ReportView: View {
     //TODO: 스웨거 안나와서 일단 뷰만 돌리기 위한 임시변수, viewModel 만들어야 함!
     @State private var detail: String = ""
     
+    @State private var isReportMainBtnClicked: Bool = false
+    
     var body: some View {
-        VStack(alignment: .center, spacing: 25, content: {
-            CustomNavigation(action: { print("hello world") },
-                             title: "신고하기",
-                             currentPage: nil)
+        ZStack(content: {
+            VStack(alignment: .center, spacing: 25, content: {
+                CustomNavigation(action: { print("hello world") },
+                                 title: "신고하기",
+                                 currentPage: nil)
+                
+                reportContent
+                
+                Spacer()
+                
+                MainButton(btnText: "신고하기", width: 349, height: 63, action: {
+                    isReportMainBtnClicked.toggle()}, color: detail.isEmpty ? Color.checkBg : Color.mainPrimary)
+                .disabled(detail.isEmpty)
+            })
+            .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
             
-            reportContent
-            
-            Spacer()
-            
-            MainButton(btnText: "신고하기", width: 349, height: 63, action: {
-                    //TODO: - 신고하기 버튼 눌렸을 때 액션 필요
-                    print("신고하기 버튼 눌림")},
-                       color: Color.mainPrimary
-            )
+            if isReportMainBtnClicked {
+                CustomAlert(alertText: Text("신고내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록. \n검토 후 신고내용을 반영하여 조치를 취하겠습니다."), alertAction: .init(showAlert: $isReportMainBtnClicked, yes: { print("ok") }))
+            }
         })
-        .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
     }
     
     //MARK: - Components
