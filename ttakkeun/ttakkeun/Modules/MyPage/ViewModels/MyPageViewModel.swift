@@ -16,10 +16,14 @@ class MyPageViewModel: ObservableObject {
     
     init(container: DIContainer) {
         self.container = container
+        
+        self.getUserInfo()
     }
     
     @Published var userInfo: UserInfoResponse?
     @Published var isLoading: Bool = false
+    
+    @Published var inputNickname: String = ""
     
     var cancellalbes = Set<AnyCancellable>()
     
@@ -78,6 +82,8 @@ extension MyPageViewModel {
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
                 
+                isLoading = true
+                
                 switch completion {
                 case .finished:
                     print("getUserInfo Completed")
@@ -121,7 +127,8 @@ extension MyPageViewModel {
                   receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
                 
-                if let responseData = responseData.result {
+                if let result = responseData.result {
+                    UserState.shared.setUserName(result)
                     getUserInfo()
                 }
             })

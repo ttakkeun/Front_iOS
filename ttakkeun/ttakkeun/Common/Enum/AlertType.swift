@@ -11,4 +11,5 @@ enum AlertType {
     case aiAlert
     case normalAlert
     case editNicknameAlert
+    case deleteAccountAlert
 }

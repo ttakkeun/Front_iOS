@@ -39,6 +39,7 @@ struct DiagnosticsView: View {
         VStack(alignment: .center, spacing: 12, content: {
             TopStatusBar()
                 .environmentObject(container)
+                .environmentObject(appFlowViewModel)
             
             DiagnosingHeader(diagnosingValue: $diagnosingValue, journalListViewModel: journalListViewModel)
             

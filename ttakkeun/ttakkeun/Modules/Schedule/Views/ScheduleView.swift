@@ -24,6 +24,7 @@ struct ScheduleView: View {
         VStack(alignment: .center, spacing: 0, content: {
             TopStatusBar()
                 .environmentObject(container)
+                .environmentObject(appflowViewModel)
             
             ScrollView(.vertical, content: {
                 VStack(alignment: .center, spacing: 24, content: {
