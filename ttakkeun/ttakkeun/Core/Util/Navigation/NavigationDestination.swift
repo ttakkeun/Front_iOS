@@ -15,4 +15,5 @@ enum NavigationDestination: Hashable {
     case productSearch
     case writeTipsView(category: ExtendPartItem)
     case myPage
+    case appInfo
 }

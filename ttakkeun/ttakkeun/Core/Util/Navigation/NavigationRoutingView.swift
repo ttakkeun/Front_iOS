@@ -23,9 +23,11 @@ struct NavigationRoutingView: View {
             EditProfileView(container: container,
                             editPetInfo: petInfo, image: image)
                 .environmentObject(container)
+            
         case .makeJournalist:
             JournalRegistView(container: container)
                 .environmentObject(container)
+            
         case .productSearch:
             RecommendSearchView(container: container)
                 .environmentObject(container)
@@ -36,6 +38,11 @@ struct NavigationRoutingView: View {
         case .myPage:
             MyPageView(container: container)
                 .environmentObject(container)
+            
+        case .appInfo:
+            AppInfoBtnView()
+                .environmentObject(container)
         }
+    
     }
 }
