@@ -12,6 +12,8 @@ struct MyPageView: View {
     @EnvironmentObject var container: DIContainer
     @StateObject var viewModel: MyPageViewModel
     @State private var isNickBtnClicked: Bool = false
+    @State private var isDeleteAccountBtnClicked: Bool = false
+    @State private var isProfileDeleteBtnClicked: Bool = false
     
     init(container: DIContainer) {
         self._viewModel = .init(wrappedValue: .init(container: container))
@@ -33,6 +35,14 @@ struct MyPageView: View {
             
             if isNickBtnClicked {
                 CustomAlert(alertText: Text("닉네임 수정하기"), alertSubText: Text(UserState.shared.getUserName()), alertAction: .init(showAlert: $isNickBtnClicked, yes: { print("yes") }), nickNameValue: .constant(""))
+            }
+            
+            if isDeleteAccountBtnClicked {
+                CustomAlert(alertText: Text("탈퇴하기"), alertSubText: Text("정말 따끈을 떠나시겠어요?"), alertAction: .init(showAlert: $isDeleteAccountBtnClicked, yes: { print("ok") }))
+            }
+            
+            if isProfileDeleteBtnClicked {
+                CustomAlert(alertText: Text("프로필 삭제하기"), alertSubText: Text("해당 프로필을 삭제하시겠습니까?"), alertAction: .init(showAlert: $isProfileDeleteBtnClicked, yes: { print("ok") }))
             }
         })
         .navigationBarBackButtonHidden(true)
@@ -122,8 +132,8 @@ struct MyPageView: View {
                             title: "계정",
                             boxBtn: [
                                 BtnInfo(name: "로그아웃하기", date: nil, action: { print("로그아웃 버튼 눌림") }),
-                                BtnInfo(name: "프로필 삭제하기", date: nil, action: { print("프로필 삭제 버튼 눌림") }),
-                                BtnInfo(name: "탈퇴하기", date: nil, action: { print("탈퇴 버튼 눌림") })
+                                BtnInfo(name: "프로필 삭제하기", date: nil, action: { isProfileDeleteBtnClicked.toggle() }),
+                                BtnInfo(name: "탈퇴하기", date: nil, action: { isDeleteAccountBtnClicked.toggle() })
                             ]
                         ))
         })

@@ -13,35 +13,40 @@ struct InquireView: View {
     @State private var detail: String = ""
     @State private var email: String = ""
     @State private var isAgreementCheck: Bool = false
+    @State private var isMainBtnClicked: Bool = false
     
     @State private var showAgreementSheet: Bool = false
     private let agreement = AgreementDetailData.loadEmailAgreements()
     
     var body: some View {
-        VStack(alignment: .center, spacing: 25, content: {
-            CustomNavigation(action: { print("hello world") },
-                             title: "문의하기",
-                             currentPage: nil)
+        ZStack(content: {
+            VStack(alignment: .center, spacing: 25, content: {
+                CustomNavigation(action: { print("hello world") },
+                                 title: "문의하기",
+                                 currentPage: nil)
+                
+                reportContent
+                
+                emailCheck
+                
+                agreementCheck
+                
+                Spacer()
+                
+                MainButton(btnText: "문의하기", width: 349, height: 63, action: {
+                            isMainBtnClicked.toggle()}, color: Color.mainPrimary
+                )
+            })
+            .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
+            .sheet(isPresented: $showAgreementSheet) {
+                AgreementSheetView(agreement: agreement)
+                    .presentationCornerRadius(30)
+            }
             
-            reportContent
-            
-            emailCheck
-            
-            agreementCheck
-            
-            Spacer()
-            
-            MainButton(btnText: "문의하기", width: 349, height: 63, action: {
-                    //TODO: - 신고하기 버튼 눌렸을 때 액션 필요
-                    print("문의하기 버튼 눌림")},
-                       color: Color.mainPrimary
-            )
+            if isMainBtnClicked {
+                CustomAlert(alertText: Text("문의내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록 하겠습니다. \n영업시간 2~3일 이내에 이메일로 답변을 받아보실 수 있습니다."), alertAction: .init(showAlert: $isMainBtnClicked, yes: { print("ok") }))
+            }
         })
-        .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
-        .sheet(isPresented: $showAgreementSheet) {
-            AgreementSheetView(agreement: agreement)
-                .presentationCornerRadius(30)
-        }
     }
     
     //MARK: - Components
