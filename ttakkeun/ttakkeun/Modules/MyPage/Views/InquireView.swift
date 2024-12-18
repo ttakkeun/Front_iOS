@@ -33,9 +33,9 @@ struct InquireView: View {
                 
                 Spacer()
                 
-                MainButton(btnText: "문의하기", width: 349, height: 63, action: {
-                            isMainBtnClicked.toggle()}, color: Color.mainPrimary
-                )
+                MainButton(btnText: "문의하기", width: 349, height: 63,
+                           action: { isMainBtnClicked.toggle()}, color: isMainButtonEnabled() ? Color.mainPrimary : Color.checkBg)
+                .disabled(!isMainButtonEnabled())
             })
             .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
             .sheet(isPresented: $showAgreementSheet) {
@@ -158,6 +158,11 @@ extension InquireView {
         Text(title)
             .font(.H4_bold)
             .foregroundStyle(Color.gray900)
+    }
+    
+    // Main 버튼 활성화 조건 함수
+    private func isMainButtonEnabled() -> Bool {
+        return !detail.isEmpty && !email.isEmpty && isAgreementCheck
     }
 }
 
