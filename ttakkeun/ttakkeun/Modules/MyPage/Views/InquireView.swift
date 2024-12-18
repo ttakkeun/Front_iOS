@@ -12,6 +12,10 @@ struct InquireView: View {
     //TODO: 스웨거 안나와서 일단 뷰만 돌리기 위한 임시변수, viewModel 만들어야 함!
     @State private var detail: String = ""
     @State private var email: String = ""
+    @State private var isAgreementCheck: Bool = false
+    
+    @State private var showAgreementSheet: Bool = false
+    private let agreement = AgreementDetailData.loadEmailAgreements()
     
     var body: some View {
         VStack(alignment: .center, spacing: 25, content: {
@@ -23,6 +27,8 @@ struct InquireView: View {
             
             emailCheck
             
+            agreementCheck
+            
             Spacer()
             
             MainButton(btnText: "문의하기", width: 349, height: 63, action: {
@@ -32,6 +38,10 @@ struct InquireView: View {
             )
         })
         .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
+        .sheet(isPresented: $showAgreementSheet) {
+            AgreementSheetView(agreement: agreement)
+                .presentationCornerRadius(30)
+        }
     }
     
     //MARK: - Components
@@ -95,6 +105,46 @@ struct InquireView: View {
                 .foregroundStyle(Color.gray900)
         
             CustomTextField(text: $email, placeholder: "입력해주세요.", cornerRadius: 10, maxWidth: 355, maxHeight: 56)
+        })
+    }
+    
+    private var agreementCheck: some View {
+        VStack(alignment: .leading, spacing: 13, content: {
+            HStack(alignment: .center, spacing: 91, content: {
+                Text("개인정보 수집 및 이용 약관 동의")
+                    .font(.H4_bold)
+                    .foregroundStyle(Color.gray900)
+                
+                Button(action: {
+                    showAgreementSheet = true
+                }, label: {
+                    Text("보기")
+                        .font(.Body4_medium)
+                        .foregroundStyle(Color.gray900)
+                        .frame(width: 63, height: 28)
+                        .background(content: {
+                            RoundedRectangle(cornerRadius: 999)
+                                .fill(Color.checkBg)
+                        })
+                })
+            })
+            
+            HStack(alignment: .center, spacing: 8, content: {
+                
+                Button(action: {
+                    isAgreementCheck.toggle()
+                }, label: {
+                    (isAgreementCheck ? Icon.check.image : Icon.uncheck.image)
+                        .resizable()
+                        .frame(width: 25, height: 25)
+                })
+
+                
+                Text("개인정보 수집 및 이용 약관에 동의합니다.")
+                    .font(.Body2_medium)
+                    .foregroundStyle(Color.gray400)
+            })
+        
         })
     }
 }

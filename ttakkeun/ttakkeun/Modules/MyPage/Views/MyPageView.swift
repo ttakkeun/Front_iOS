@@ -11,23 +11,31 @@ struct MyPageView: View {
     
     @EnvironmentObject var container: DIContainer
     @StateObject var viewModel: MyPageViewModel
+    @State private var isNickBtnClicked: Bool = false
     
     init(container: DIContainer) {
         self._viewModel = .init(wrappedValue: .init(container: container))
     }
     
     var body: some View {
-        VStack(alignment: .center, spacing: 37, content: {
-            CustomNavigation(action: { container.navigationRouter.pop() },
-                             title: "마이페이지",
-                             currentPage: nil)
+        ZStack(content: {
+            VStack(alignment: .center, spacing: 37, content: {
+                CustomNavigation(action: { container.navigationRouter.pop() },
+                                 title: "마이페이지",
+                                 currentPage: nil)
+                
+                myInfo
+                
+                bottomMyPageBoxGroup
+                
+                Spacer()
+            })
             
-            myInfo
-            
-            bottomMyPageBoxGroup
-            
-            Spacer()
+            if isNickBtnClicked {
+                CustomAlert(alertText: Text("닉네임 수정하기"), alertSubText: Text(UserState.shared.getUserName()), alertAction: .init(showAlert: $isNickBtnClicked, yes: { print("yes") }), nickNameValue: .constant(""))
+            }
         })
+        .navigationBarBackButtonHidden(true)
     }
     
     //MARK: - Compoents
@@ -65,7 +73,7 @@ struct MyPageView: View {
             Spacer()
             
             Button(action: {
-                print("hello world")
+                isNickBtnClicked.toggle()
             }, label: {
                 Text("닉네임 수정")
                     .font(.Body4_medium)
@@ -96,7 +104,7 @@ struct MyPageView: View {
             MyPageInfoBox(myPageInfo: MyPageInfo(
                             title: "앱 정보",
                             boxBtn: [
-                                BtnInfo(name: "이용약관 및 정책", date: nil, action: { print("이용약관 및 정책 버튼 눌림") })
+                                BtnInfo(name: "이용약관 및 정책", date: nil, action: { container.navigationRouter.push(to: .appInfo) })
                             ]
                         ), versionInfo: "v1.0.0")
             

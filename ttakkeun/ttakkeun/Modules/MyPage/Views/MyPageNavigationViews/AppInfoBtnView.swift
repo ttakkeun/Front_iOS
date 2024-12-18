@@ -10,6 +10,8 @@ import SwiftUI
 /// 앱 이용정보 분야 선택뷰
 struct AppInfoBtnView: View {
     
+    @EnvironmentObject var container: DIContainer
+    
     let btnInfoArray: [BtnInfo] = [
         //TODO: 버튼 액션 필요함
         BtnInfo(name: "서비스 이용 약관", date: nil, action: {print("서비스 이용 약관 버튼 눌림")}),
@@ -19,12 +21,13 @@ struct AppInfoBtnView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 40, content: {
-            CustomNavigation(action: { print("hello world") },
+            CustomNavigation(action: { container.navigationRouter.pop() },
                              title: "이용약관 및 정책",
                              currentPage: nil)
             infoBtns
             Spacer()
         })
+        .navigationBarBackButtonHidden(true)
     }
     
     //MARK: - Components
@@ -49,6 +52,7 @@ struct AppInfoBtnView_Preview: PreviewProvider {
             AppInfoBtnView()
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
+                .environmentObject(DIContainer())
         }
     }
 }

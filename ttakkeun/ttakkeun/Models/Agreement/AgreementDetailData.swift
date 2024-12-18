@@ -93,4 +93,28 @@ struct AgreementDetailData {
             )
         ]
     }
+    
+    static func loadEmailAgreements() -> AgreementData {
+        return {
+            AgreementData(
+                title: "개인정보 수집 및 이용",
+                isMandatory: false,
+                detailText: [
+                    SectionData(section: "[개인정보 수집 및 이용 동의]",
+                                text: "회사는 문의 처리 및 답변 제공을 위해 아래와 같은 개인정보를 수집 및 이용합니다."),
+                    SectionData(section: "1. 수집하는 개인정보 항목:",
+                                text: "- 문의 내용, 파일(이미지) 첨부, 연락받을 이메일, 사용자 로그인 이메일"),
+                    SectionData(section: "2. 개인정보 수집 및 이용 목적:",
+                                text: "- [서비스 이용 문의]: 서비스 관련 문제 해결 및 문의에 대한 답변 제공 \n- [제휴 문의]: 제휴 관련 정보 제공 및 협력 검토 \n- [광고 문의]: 광고 관련 정보 제공 및 협력 검토"),
+                    SectionData(section: "3. 개인정보 보유 및 이용 기간:",
+                                text: " - 문의 처리 및 답변 완료 후 1년간 보관 후 파기"),
+                    SectionData(section: "4. 개인정보 제3자 제공 여부:",
+                                text: "- 수집된 개인정보는 제3자에게 제공되지 않습니다."),
+                    SectionData(section: "5. 동의를 거부할 권리 및 불이익:",
+                                text: "- 사용자는 개인정보 제공에 동의하지 않을 권리가 있으며, 동의하지 않으면 문의 접수가 불가합니다.")
+                ]
+            )
+        }()
+        
+    }
 }

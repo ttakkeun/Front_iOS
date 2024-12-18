@@ -67,7 +67,7 @@ struct CustomAlert: View {
     
     var body: some View {
         ZStack {
-            Color.customAlert.opacity(0.5)
+            Color.customAlert.opacity(0.7)
                 .ignoresSafeArea(.all)
             
             customAlertWindow
