@@ -13,7 +13,7 @@ struct InquireView: View {
     @State private var detail: String = ""
     @State private var email: String = ""
     @State private var isAgreementCheck: Bool = false
-    @State private var isMainBtnClicked: Bool = false
+    @State private var isInquireMainBtnClicked: Bool = false
     
     @State private var showAgreementSheet: Bool = false
     private let agreement = AgreementDetailData.loadEmailAgreements()
@@ -34,7 +34,7 @@ struct InquireView: View {
                 Spacer()
                 
                 MainButton(btnText: "문의하기", width: 349, height: 63,
-                           action: { isMainBtnClicked.toggle()}, color: isMainButtonEnabled() ? Color.mainPrimary : Color.checkBg)
+                           action: { isInquireMainBtnClicked.toggle()}, color: isMainButtonEnabled() ? Color.mainPrimary : Color.checkBg)
                 .disabled(!isMainButtonEnabled())
             })
             .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
@@ -43,8 +43,8 @@ struct InquireView: View {
                     .presentationCornerRadius(30)
             }
             
-            if isMainBtnClicked {
-                CustomAlert(alertText: Text("문의내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록 하겠습니다. \n영업시간 2~3일 이내에 이메일로 답변을 받아보실 수 있습니다."), alertAction: .init(showAlert: $isMainBtnClicked, yes: { print("ok") }))
+            if isInquireMainBtnClicked {
+                CustomAlert(alertText: Text("문의내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록 하겠습니다. \n영업시간 2~3일 이내에 이메일로 답변을 받아보실 수 있습니다."), alertAction: .init(showAlert: $isInquireMainBtnClicked, yes: { print("ok") }))
             }
         })
     }

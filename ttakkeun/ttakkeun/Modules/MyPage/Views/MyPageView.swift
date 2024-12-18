@@ -43,11 +43,11 @@ struct MyPageView: View {
                 }
                 
                 if isDeleteAccountBtnClicked {
-                    CustomAlert(alertText: Text("탈퇴하기"), alertSubText: Text("정말 따끈을 떠나시겠어요?"), alertAction: .init(showAlert: $isDeleteAccountBtnClicked, yes: { print("ok") }))
+                    CustomAlert(alertText: Text("탈퇴하기"), alertSubText: Text("정말 따끈을 떠나시겠습니까?"), alertAction: .init(showAlert: $isDeleteAccountBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
                 }
                 
                 if isProfileDeleteBtnClicked {
-                    CustomAlert(alertText: Text("프로필 삭제하기"), alertSubText: Text("해당 프로필을 삭제하시겠습니까?"), alertAction: .init(showAlert: $isProfileDeleteBtnClicked, yes: { print("ok") }))
+                    CustomAlert(alertText: Text("프로필 삭제하기"), alertSubText: Text("해당 프로필을 삭제하시겠습니까?"), alertAction: .init(showAlert: $isProfileDeleteBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
                 }
             })
             .navigationBarBackButtonHidden(true)
@@ -148,8 +148,8 @@ struct MyPageView: View {
                 title: "계정",
                 boxBtn: [
                     BtnInfo(name: "로그아웃하기", date: nil, action: { print("로그아웃 버튼 눌림") }),
-                    BtnInfo(name: "프로필 삭제하기", date: nil, action: { print("프로필 삭제 버튼 눌림") }),
-                    BtnInfo(name: "탈퇴하기", date: nil, action: { print("탈퇴 버튼 눌림") })
+                    BtnInfo(name: "프로필 삭제하기", date: nil, action: { isProfileDeleteBtnClicked.toggle()}),
+                    BtnInfo(name: "탈퇴하기", date: nil, action: { isDeleteAccountBtnClicked.toggle()})
                 ]
             ))
         })
