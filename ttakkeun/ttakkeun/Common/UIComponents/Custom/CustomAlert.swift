@@ -109,6 +109,7 @@ struct CustomAlert: View {
                     .foregroundStyle(Color.gray900)
                 
                 alertSubText
+                    .frame(width: 300, alignment: .leading)
                     .font(.Body4_semibold)
                     .foregroundStyle(Color.gray400)
                     .lineLimit(2)
@@ -137,6 +138,27 @@ struct CustomAlert: View {
                 }
             })
             .frame(width: 301)
+            
+        case .deleteAccountAlert:
+            HStack {
+                VStack(alignment: .leading, spacing: 10) {
+                    alertText
+                        .font(.Body2_semibold)
+                        .foregroundStyle(Color.gray900)
+                    
+                    
+                    alertSubText
+                        .font(.Body4_semibold)
+                        .foregroundStyle(Color.gray400)
+                        .lineLimit(2)
+                        .lineSpacing(2)
+                        .multilineTextAlignment(.leading)
+                }
+                
+                Spacer()
+                
+            }
+            .frame(width: 301)
         }
     }
     
@@ -149,7 +171,30 @@ struct CustomAlert: View {
             normalAlert()
         case .editNicknameAlert:
             editNickNameAlert()
+        case .deleteAccountAlert:
+            deleteAccountAlert()
         }
+    }
+    
+    func deleteAccountAlert() -> some View {
+        HStack(spacing: 8, content: {
+            makeButton(text: "취소", action: {
+                withAnimation(.spring(duration: 0.3)) {
+                    alertAction.showAlert.toggle()
+                }
+            }, color: Color.alertNo)
+            
+            Spacer()
+            
+            makeButton(text: "완료", action: {
+                alertAction.yes()
+                
+                withAnimation(.spring(duration: 0.3)){
+                    alertAction.showAlert.toggle()
+                }
+                
+            }, color: Color.primarycolor200)
+        })
     }
     
     func editNickNameAlert() -> some View {
@@ -249,7 +294,7 @@ struct CustomAlert: View {
         switch alertType {
         case .aiAlert:
             return 248
-        case .normalAlert, .editNicknameAlert:
+        case .normalAlert, .editNicknameAlert, .deleteAccountAlert:
             return 338
         }
         
@@ -261,6 +306,8 @@ struct CustomAlert: View {
             return 175
         case .normalAlert, .editNicknameAlert:
             return 196
+        case .deleteAccountAlert:
+            return 160
         }
     }
     
@@ -268,14 +315,14 @@ struct CustomAlert: View {
         switch alertType {
         case .aiAlert:
             return 224
-        case .normalAlert, .editNicknameAlert:
+        case .normalAlert, .editNicknameAlert, .deleteAccountAlert:
             return 301
         }
     }
     
     func buttonCGFloat() -> CGFloat {
         switch alertType {
-        case .aiAlert, .editNicknameAlert:
+        case .aiAlert, .editNicknameAlert, .deleteAccountAlert:
             return 140
         case .normalAlert:
             return 82
@@ -291,12 +338,14 @@ struct AlertAction {
 struct CustomAlert_Preview: PreviewProvider {
     static var previews: some View {
         /* 문의하기 및 신고하기 프리뷰 */
-         // CustomAlert(alertText: Text("문의내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록 하겠습니다. \n영업시간 2~3일 이내에 이메일로 답변을 받아보실 수 있습니다."), alertAction: .init(showAlert: .constant(true), yes: { print("ok") }))
+          CustomAlert(alertText: Text("신고내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록 하겠습니다. \n회원님의 소중한 의견을 잘 반영하도록 하겠습니다."), alertAction: .init(showAlert: .constant(true), yes: { print("ok") }))
         
         /* 닉네임 변경 프리뷰 */
-        CustomAlert(alertText: Text("닉네임 수정하기"), alertSubText: Text(UserState.shared.getUserName()), alertAction: .init(showAlert: .constant(true), yes: { print("yes") }), nickNameValue: .constant(""))
+//        CustomAlert(alertText: Text("닉네임 수정하기"), alertSubText: Text(UserState.shared.getUserName()), alertAction: .init(showAlert: .constant(true), yes: { print("yes") }), nickNameValue: .constant(""))
         
         /* ai alert */
 //        CustomAlert(alertText: Text("선택된 2개의 일지로 \n따끈 AI 진단을 진행하시겠습니까?"), aiCount: 10, alertAction: .init(showAlert: .constant(true), yes: {print("yes")}))
+        
+//        CustomAlert(alertText: Text("탈퇴하기"), alertSubText: Text("정말 따끈을 떠나시겠습니까?"), alertAction: .init(showAlert: .constant(true), yes: { print("ok") }), alertType: .deleteAccountAlert)
     }
 }

@@ -23,6 +23,8 @@ class MyPageViewModel: ObservableObject {
     @Published var userInfo: UserInfoResponse?
     @Published var isLoading: Bool = false
     
+    @Published var inputNickname: String = ""
+    
     var cancellalbes = Set<AnyCancellable>()
     
     
@@ -125,7 +127,8 @@ extension MyPageViewModel {
                   receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
                 
-                if let _ = responseData.result {
+                if let result = responseData.result {
+                    UserState.shared.setUserName(result)
                     getUserInfo()
                 }
             })

@@ -23,6 +23,7 @@ struct QnAView: View {
         VStack(alignment: .center, spacing: 0, content: {
             TopStatusBar()
                 .environmentObject(container)
+                .environmentObject(appFlowViewModel)
             
             QnAHeader(selectedSegment: $qnaSegmentValue)
                 .frame(width: 353, alignment: .leading)

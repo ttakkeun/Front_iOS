@@ -10,6 +10,8 @@ import SwiftUI
 struct MyPageView: View {
     
     @EnvironmentObject var container: DIContainer
+    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
+    
     @StateObject var viewModel: MyPageViewModel
     @State private var isNickBtnClicked: Bool = false
     
@@ -18,24 +20,39 @@ struct MyPageView: View {
     }
     
     var body: some View {
-        ZStack(content: {
-            VStack(alignment: .center, spacing: 37, content: {
-                CustomNavigation(action: { container.navigationRouter.pop() },
-                                 title: "마이페이지",
-                                 currentPage: nil)
+        if !viewModel.isLoading {
+            ZStack(content: {
+                VStack(alignment: .center, spacing: 37, content: {
+                    CustomNavigation(action: { container.navigationRouter.pop() },
+                                     title: "마이페이지",
+                                     currentPage: nil)
+                    
+                    myInfo
+                    
+                    bottomMyPageBoxGroup
+                    
+                    Spacer()
+                })
                 
-                myInfo
-                
-                bottomMyPageBoxGroup
+                if isNickBtnClicked {
+                    CustomAlert(alertText: Text("닉네임 수정하기"), alertSubText: Text(UserState.shared.getUserName()), alertAction: .init(showAlert: $isNickBtnClicked, yes: {
+                        viewModel.editName(newUsername: viewModel.inputNickname)
+                    }), nickNameValue: $viewModel.inputNickname)
+                }
+            })
+            .navigationBarBackButtonHidden(true)
+        } else {
+            VStack {
                 
                 Spacer()
-            })
-            
-            if isNickBtnClicked {
-                CustomAlert(alertText: Text("닉네임 수정하기"), alertSubText: Text(UserState.shared.getUserName()), alertAction: .init(showAlert: $isNickBtnClicked, yes: { print("yes") }), nickNameValue: .constant(""))
+                
+                ProgressView(label: {
+                    LoadingDotsText(text: "잠시만 기다려주세요")
+                })
+                
+                Spacer()
             }
-        })
-        .navigationBarBackButtonHidden(true)
+        }
     }
     
     //MARK: - Compoents
