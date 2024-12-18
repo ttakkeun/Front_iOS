@@ -16,4 +16,13 @@ enum NavigationDestination: Hashable {
     case writeTipsView(category: ExtendPartItem)
     case myPage
     case appInfo
+    case myTips
+    case myScrapTips
+    case deleteAccount
+    case inquireBtn
+    case reportBtn
+    case writeInquire(selectedCategory: String)
+    case myInquire
+    case reportDetailBtn(selectedCategory: String)
+    case writeReport
 }

@@ -69,9 +69,10 @@ struct AgreementSheetView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            InquireView()
+            InquireView(container: DIContainer(), selectedCategory: "서비스 이용 문의")
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
+                .environmentObject(DIContainer())
         }
     }
 }

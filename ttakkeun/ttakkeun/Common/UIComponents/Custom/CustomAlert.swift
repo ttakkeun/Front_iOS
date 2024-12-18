@@ -307,7 +307,7 @@ struct CustomAlert: View {
         case .normalAlert, .editNicknameAlert:
             return 196
         case .deleteAccountAlert:
-            return 160
+            return 175
         }
     }
     

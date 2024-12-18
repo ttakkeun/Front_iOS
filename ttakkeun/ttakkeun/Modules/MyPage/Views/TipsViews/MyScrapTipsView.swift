@@ -9,11 +9,19 @@ import SwiftUI
 
 struct MyScrapTipsView: View {
     
+    @EnvironmentObject var container: DIContainer
+    @StateObject var viewModel: MyPageViewModel
+    
     @State var response: [TipsResponse]
+    
+    init(container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+        self.response = MyTipsView.sampleTips
+    }
     
     var body: some View {
         VStack(alignment: .center, spacing: 30, content: {
-            CustomNavigation(action: { print("hello world") },
+            CustomNavigation(action: { container.navigationRouter.pop() },
                              title: "내가 스크랩한 tips",
                              currentPage: nil)
             
@@ -21,6 +29,7 @@ struct MyScrapTipsView: View {
                 contents
             })
         })
+        .navigationBarBackButtonHidden(true)
     }
     
     /// 내가 스크랩한 tips 콘텐츠들
@@ -57,9 +66,10 @@ struct MyScrapTipsView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            MyScrapTipsView(response: MyScrapTipsView.sampleTips)
+            MyScrapTipsView(container: DIContainer())
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
+                .environmentObject(DIContainer())
         }
     }
 }

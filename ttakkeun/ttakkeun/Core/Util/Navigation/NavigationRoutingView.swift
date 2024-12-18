@@ -42,7 +42,43 @@ struct NavigationRoutingView: View {
         case .appInfo:
             AppInfoBtnView()
                 .environmentObject(container)
+            
+        case .myTips:
+            MyTipsView(container: container)
+                .environmentObject(container)
+            
+        case .myScrapTips:
+            MyScrapTipsView(container: container)
+                .environmentObject(container)
+            
+        case .deleteAccount:
+            DeleteAccountView(container: container)
+                .environmentObject(container)
+            
+        case .inquireBtn:
+            InquireBtnView(container: container)
+                .environmentObject(container)
+            
+        case .reportBtn:
+            ReportBtnView(container: container)
+                .environmentObject(container)
+            
+        case .writeInquire(let selectedCategory):
+            InquireView(container: container, selectedCategory: selectedCategory)
+                .environmentObject(container)
+            
+        case .myInquire:
+            MyInquireView(container: container)
+                .environmentObject(container)
+            
+        case .reportDetailBtn(let selectedCategory):
+            ReportDetailBtnView(container: container, selectedCategory: selectedCategory)
+                .environmentObject(container)
+            
+        case .writeReport:
+            ReportView(container: container)
+                .environmentObject(container)
+            
         }
-    
     }
 }

@@ -9,22 +9,40 @@ import SwiftUI
 /// 신고하기 분야 선택 뷰
 struct ReportBtnView: View {
     
-    let btnInfoArray: [BtnInfo] = [
-        //TODO: 버튼 액션 필요함 -> 1~8은 ReportDetailBtnView에 name 넘겨서 해당 타이틀에 맞는 페이지 출력하도록 해야하고 / 9 기타 누르면 ReportView로 네비게이션되어야 함
-        BtnInfo(name: "스팸/광고", date: nil, action: {print("스팸/광고 눌림")}),
-        BtnInfo(name: "부적절한 콘텐츠", date: nil, action: {print("부적절한 콘텐츠 버튼 눌림")}),
-        BtnInfo(name: "허위 정보", date: nil, action: {print("허위 정보 버튼 눌림")}),
-        BtnInfo(name: "반려동물 학대", date: nil, action: {print("반려동물 학대 버튼 눌림")}),
-        BtnInfo(name: "저작권 침해", date: nil, action: {print("저작권 침해 버튼 눌림")}),
-        BtnInfo(name: "개인 정보 노출", date: nil, action: {print("개인 정보 노출 버튼 눌림")}),
-        BtnInfo(name: "비방 및 혐오 표현", date: nil, action: {print("비방 및 혐오 표현 버튼 눌림")}),
-        BtnInfo(name: "부정 행위", date: nil, action: {print("부정 행위 버튼 눌림")}),
-        BtnInfo(name: "기타 신고 내용 작성하기", date: nil, action: {print("기타 신고 내용 작성하기 버튼 눌림")})
-    ]
+    @EnvironmentObject var container: DIContainer
+    @StateObject var viewModel: MyPageViewModel
+    
+    init(container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+    }
+    
+    var btnInfoArray: [BtnInfo] {
+        return [
+            //TODO: 버튼 액션 필요함 -> 1~8은 ReportDetailBtnView에 name 넘겨서 해당 타이틀에 맞는 페이지 출력하도록 해야하고 / 9 기타 누르면 ReportView로 네비게이션되어야 함
+            BtnInfo(name: "스팸/광고", date: nil, action: {
+                container.navigationRouter.push(to: .reportDetailBtn(selectedCategory: "스팸/광고"))}),
+            BtnInfo(name: "부적절한 콘텐츠", date: nil, action: {
+                container.navigationRouter.push(to: .reportDetailBtn(selectedCategory: "부적절한 콘텐츠"))}),
+            BtnInfo(name: "허위 정보", date: nil, action: {
+                container.navigationRouter.push(to: .reportDetailBtn(selectedCategory: "허위 정보"))}),
+            BtnInfo(name: "반려동물 학대", date: nil, action: {
+                container.navigationRouter.push(to: .reportDetailBtn(selectedCategory: "반려동물 학대"))}),
+            BtnInfo(name: "저작권 침해", date: nil, action: {
+                container.navigationRouter.push(to: .reportDetailBtn(selectedCategory: "저작권 침해"))}),
+            BtnInfo(name: "개인 정보 노출", date: nil, action: {
+                        container.navigationRouter.push(to: .reportDetailBtn(selectedCategory: "개인 정보 노출"))}),
+            BtnInfo(name: "비방 및 혐오 표현", date: nil, action: {
+                        container.navigationRouter.push(to: .reportDetailBtn(selectedCategory: "비방 및 혐오 표현"))}),
+            BtnInfo(name: "부정 행위", date: nil, action: {
+                        container.navigationRouter.push(to: .reportDetailBtn(selectedCategory: "부정 행위"))}),
+            BtnInfo(name: "기타 신고 내용 작성하기", date: nil, action: {
+                        container.navigationRouter.push(to: .writeReport)})
+        ]
+    }
     
     var body: some View {
         VStack(alignment: .center, spacing: 40, content: {
-            CustomNavigation(action: { print("hello world") },
+            CustomNavigation(action: { container.navigationRouter.pop() },
                              title: "신고하기",
                              currentPage: nil)
             
@@ -32,6 +50,7 @@ struct ReportBtnView: View {
             
             Spacer()
         })
+        .navigationBarBackButtonHidden(true)
     }
     
     //MARK: - Components
@@ -53,9 +72,10 @@ struct ReportBtnView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            ReportBtnView()
+            ReportBtnView(container: DIContainer())
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
+                .environmentObject(DIContainer())
         }
     }
 }

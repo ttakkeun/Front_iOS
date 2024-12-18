@@ -308,7 +308,7 @@ extension TipsContentsCard {
             
             Menu(content: {
                 Button(action: {
-                    print("신고하기 클릭")
+                    container.navigationRouter.push(to: .reportBtn)
                 }, label: {
                     Label("신고하기", systemImage: "light.beacon.max")
                         .foregroundStyle(Color.gray900)

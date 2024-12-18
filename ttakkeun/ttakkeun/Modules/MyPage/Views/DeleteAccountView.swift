@@ -9,6 +9,11 @@ import SwiftUI
 
 struct DeleteAccountView: View {
     
+    @EnvironmentObject var container: DIContainer
+    @StateObject var viewModel: MyPageViewModel
+    
+    @State private var isDeleteAccountMainBtnClicked: Bool = false
+    
     ///뷰모델 없어서 임시로 필요한 변수들 state 처리해둠
     @State private var currentPage: Int = 1
     @State private var selectedReasons: Set<String> = []
@@ -16,24 +21,35 @@ struct DeleteAccountView: View {
     @State private var agreementIsChecked: Bool = false
     @State private var myAccountIsChecked: Bool = false
     
+    init(container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+    }
+    
+    
     let reasonList = ["기능 불만족", "앱 내 콘텐츠 부족", "기술적 문제(버그, 오류)", "기기 호환성 문제", "사용자 경험 불편","기타 사유"]
     
     var body: some View {
-        
-        VStack(alignment: .center, spacing: 40, content: {
-            CustomNavigation(action: { print("hello world") },
-                             title: "회원 탈퇴",
-                             currentPage: nil)
+        ZStack(content: {
+            VStack(alignment: .center, spacing: 40, content: {
+                CustomNavigation(action: { container.navigationRouter.pop() },
+                                 title: "회원 탈퇴",
+                                 currentPage: nil)
+                
+                switch currentPage {
+                case 1:
+                    checkConfirmTerms
+                case 2:
+                    inputReason
+                default:
+                    EmptyView()
+                }
+            })
             
-            switch currentPage {
-            case 1:
-                checkConfirmTerms
-            case 2:
-                inputReason
-            default:
-                EmptyView()
+            if isDeleteAccountMainBtnClicked {
+                CustomAlert(alertText: Text("정말로 따끈을 떠나시겠습니까?"), alertSubText: Text("회원님의 소중한 정보는 이용약관에 따라 처리됩니다. \n이대로 탈퇴를 누르신다면 탈퇴를 취소하실 수 없습니다."), alertAction: .init(showAlert: $isDeleteAccountMainBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
             }
         })
+        .navigationBarBackButtonHidden(true)
     }
     
     //MARK: - 1 Page: 유의 사항 확인
@@ -123,7 +139,7 @@ struct DeleteAccountView: View {
                     }
                 }, color: Color.answerBg)
                 
-                MainButton(btnText: "탈퇴하기", width: 219, height: 63, action: {print(selectedReasons)}, color: myAccountIsChecked ? Color.mainPrimary : Color.checkBg)
+                MainButton(btnText: "탈퇴하기", width: 219, height: 63, action: {isDeleteAccountMainBtnClicked.toggle()}, color: myAccountIsChecked ? Color.mainPrimary : Color.checkBg)
                     .disabled(!myAccountIsChecked)
             })
             .frame(width: 351)
@@ -243,9 +259,10 @@ struct DeleteAccountView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            DeleteAccountView()
+            DeleteAccountView(container: DIContainer())
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
+                .environmentObject(DIContainer())
         }
     }
 }

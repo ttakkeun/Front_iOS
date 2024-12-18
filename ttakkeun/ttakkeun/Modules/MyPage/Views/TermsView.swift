@@ -9,12 +9,14 @@ import SwiftUI
 
 struct TermsView: View {
     
+    
+    @EnvironmentObject var container: DIContainer
     var selectedAgreement: AgreementData
     
     var body: some View {
         VStack(alignment: .center, spacing: 35, content: {
             
-            CustomNavigation(action: { print("hello world") },
+            CustomNavigation(action: { container.navigationRouter.pop() },
                              title: "이용 약관",
                              currentPage: nil)
             
@@ -68,6 +70,7 @@ struct TermsView_Preview: PreviewProvider {
             TermsView(selectedAgreement: sampleAgreement)
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
+                .environmentObject(DIContainer())
         }
     }
 }

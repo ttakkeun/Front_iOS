@@ -12,13 +12,21 @@ struct ReportDetailBtnView: View {
     
     let selectedCategory: String
     
+    @EnvironmentObject var container: DIContainer
+    @StateObject var viewModel: MyPageViewModel
+    
+    init(container: DIContainer, selectedCategory: String) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+        self.selectedCategory = selectedCategory
+    }
+    
     var btnInfoArray: [BtnInfo] {
         return ReportDetailBtnView.getCategoryButtons(for: selectedCategory)
     }
     
     var body: some View {
         VStack(alignment: .center, spacing: 32, content: {
-            CustomNavigation(action: { print("hello world") },
+            CustomNavigation(action: { container.navigationRouter.pop() },
                              title: "신고하기",
                              currentPage: nil)
             
@@ -31,6 +39,7 @@ struct ReportDetailBtnView: View {
                 print("신고하기 버튼 눌림")}, color: Color.mainPrimary
             )
         })
+        .navigationBarBackButtonHidden(true)
     }
     
     private var reportBtnsForEachCategory: some View {
@@ -127,9 +136,10 @@ struct ReportDetailBtnView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            ReportDetailBtnView(selectedCategory: "스팸/광고")
+            ReportDetailBtnView(container: DIContainer(), selectedCategory: "스팸/광고")
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
+                .environmentObject(DIContainer())
         }
     }
 }

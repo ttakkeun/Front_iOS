@@ -10,16 +10,23 @@ import SwiftUI
 /// 문의하기 분야 선택 뷰
 struct InquireBtnView: View {
     
-    let btnInfoArray: [BtnInfo] = [
-        //TODO: 버튼 액션 필요함
-        BtnInfo(name: "서비스 이용 문의", date: nil, action: {print("서비스 이용 문의 버튼 눌림")}),
-        BtnInfo(name: "광고 문의", date: nil, action: {print("광고 문의 버튼 눌림")}),
-        BtnInfo(name: "제휴 문의", date: nil, action: {print("제휴 문의 버튼 눌림")})
-    ]
+    @EnvironmentObject var container: DIContainer
+    @StateObject var viewModel: MyPageViewModel
+    
+    init(container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+        self.btnInfoArray = [
+            BtnInfo(name: "서비스 이용 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedCategory: "서비스 이용 문의"))}),
+            BtnInfo(name: "광고 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedCategory: "광고 문의"))}),
+            BtnInfo(name: "제휴 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedCategory: "제휴 문의"))})
+        ]
+    }
+    
+    var btnInfoArray: [BtnInfo]
     
     var body: some View {
         VStack(alignment: .center, spacing: 40, content: {
-            CustomNavigation(action: { print("hello world") },
+            CustomNavigation(action: { container.navigationRouter.pop() },
                              title: "문의하기",
                              currentPage: nil)
             
@@ -30,12 +37,13 @@ struct InquireBtnView: View {
             
             Spacer()
         })
+        .navigationBarBackButtonHidden(true)
     }
     
     //MARK: - Components
     ///내가 문의한 내용 확인 버튼
     private var myInquire: some View {
-        SelectBtnBox(btnInfo: BtnInfo(name: "내가 문의한 내용 확인하기", date: nil, action: {print("내가 문의한 내용 확인하기 버튼 눌림")}))
+        SelectBtnBox(btnInfo: BtnInfo(name: "내가 문의한 내용 확인하기", date: nil, action: {container.navigationRouter.push(to: .myInquire)}))
     }
     
     /// 서비스 문의 카테고리 볼 수 있는 버튼들
@@ -60,9 +68,10 @@ struct InquireBtnView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            InquireBtnView()
+            InquireBtnView(container: DIContainer())
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
+                .environmentObject(DIContainer())
         }
     }
 }
