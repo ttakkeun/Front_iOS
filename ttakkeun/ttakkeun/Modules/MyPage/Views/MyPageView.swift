@@ -39,7 +39,7 @@ struct MyPageView: View {
     }
     
     //MARK: - Compoents
-    /// 내 프로필과 콘텐츠들(프로필, 내가 쓴 tips, 스크랩한 tips)
+    
     private var myInfo: some View {
         VStack(alignment: .center, spacing: 17, content: {
             profile
@@ -57,17 +57,16 @@ struct MyPageView: View {
                 .tint(Color.gray300)
             
             VStack(alignment: .leading, spacing: 6,content: {
-
-                //TODO: - 주석 제거 필요
-                Text("날아가는 붕붕이")
-//                Text("\(UserState.shared.getUserName())")
-                    .font(.H4_bold)
-                    .foregroundStyle(Color.gray900)
-
-                Text(verbatim: "asefd@naver.com")
-//                Text("\(UserState.shared.getUserEmail())")
-                    .font(.Body4_semibold)
-                    .foregroundStyle(Color.gray900)
+                
+                if let userInfo = viewModel.userInfo {
+                    Text(userInfo.username)
+                        .font(.H4_bold)
+                        .foregroundStyle(Color.gray900)
+                    
+                    Text(verbatim: "\(userInfo.email)")
+                        .font(.Body4_semibold)
+                        .foregroundStyle(Color.gray900)
+                }
             })
             
             Spacer()
@@ -110,22 +109,22 @@ struct MyPageView: View {
             
             ///이용정보 박스
             MyPageInfoBox(myPageInfo: MyPageInfo(
-                            title: "이용 정보",
-                            boxBtn: [
-                                BtnInfo(name: "문의하기", date: nil, action: { print("문의하기 버튼 눌림") }),
-                                BtnInfo(name: "신고하기", date: nil, action: { print("신고하기 버튼 눌림") })
-                            ]
-                        ))
+                title: "이용 정보",
+                boxBtn: [
+                    BtnInfo(name: "문의하기", date: nil, action: { print("문의하기 버튼 눌림") }),
+                    BtnInfo(name: "신고하기", date: nil, action: { print("신고하기 버튼 눌림") })
+                ]
+            ))
             
             ///계정 박스
             MyPageInfoBox(myPageInfo: MyPageInfo(
-                            title: "계정",
-                            boxBtn: [
-                                BtnInfo(name: "로그아웃하기", date: nil, action: { print("로그아웃 버튼 눌림") }),
-                                BtnInfo(name: "프로필 삭제하기", date: nil, action: { print("프로필 삭제 버튼 눌림") }),
-                                BtnInfo(name: "탈퇴하기", date: nil, action: { print("탈퇴 버튼 눌림") })
-                            ]
-                        ))
+                title: "계정",
+                boxBtn: [
+                    BtnInfo(name: "로그아웃하기", date: nil, action: { print("로그아웃 버튼 눌림") }),
+                    BtnInfo(name: "프로필 삭제하기", date: nil, action: { print("프로필 삭제 버튼 눌림") }),
+                    BtnInfo(name: "탈퇴하기", date: nil, action: { print("탈퇴 버튼 눌림") })
+                ]
+            ))
         })
     }
 }

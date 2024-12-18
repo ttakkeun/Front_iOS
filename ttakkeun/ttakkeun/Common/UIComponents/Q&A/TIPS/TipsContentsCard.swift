@@ -186,7 +186,7 @@ struct TipsContentsCard: View {
     private var userNameElapsedTime: some View {
         HStack(spacing: 6, content: {
             Group {
-                Text(DataFormatter.shared.maskUserName(data.authorName))
+                Text(data.authorName)
                 
                 Text(DataFormatter.shared.changeDifferenceTime(from: data.createdAt))
             }
