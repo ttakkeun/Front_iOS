@@ -20,7 +20,7 @@ struct MyPageView: View {
     }
     
     var body: some View {
-        if !viewModel.isLoading {
+//        if !viewModel.isLoading {
             ZStack(content: {
                 VStack(alignment: .center, spacing: 37, content: {
                     CustomNavigation(action: { container.navigationRouter.pop() },
@@ -41,18 +41,18 @@ struct MyPageView: View {
                 }
             })
             .navigationBarBackButtonHidden(true)
-        } else {
-            VStack {
-                
-                Spacer()
-                
-                ProgressView(label: {
-                    LoadingDotsText(text: "잠시만 기다려주세요")
-                })
-                
-                Spacer()
-            }
-        }
+//        } else {
+//            VStack {
+//                
+//                Spacer()
+//                
+//                ProgressView(label: {
+//                    LoadingDotsText(text: "잠시만 기다려주세요")
+//                })
+//                
+//                Spacer()
+//            }
+//        }
     }
     
     //MARK: - Compoents
