@@ -50,12 +50,12 @@ struct CustomNavigation: View {
             })
             
             if let title = self.title {
-                Spacer().frame(minWidth: 96, maxWidth: naviIcon == Image(systemName: "xmark") ? 98 : 103)
+                Spacer().frame(minWidth: 78, maxWidth: naviIcon == Image(systemName: "xmark") ? 86 : 103)
                 
                 Text(title)
                     .font(.H3_bold)
                     .foregroundStyle(Color.black)
-                    .frame(maxWidth: 132, alignment: .center)
+                    .frame(maxWidth: 150, alignment: .center)
                 
             } else {
                 Spacer()
@@ -80,7 +80,7 @@ struct CustomNavigation: View {
 struct CustomNavigation_Preview: PreviewProvider {
     static var previews: some View {
         VStack {
-            CustomNavigation(action: { print("hello") }, title: "TIP 작성", currentPage: nil)
+            CustomNavigation(action: { print("ss") }, title: "신고하기", currentPage: nil)
             
             Spacer()
         }

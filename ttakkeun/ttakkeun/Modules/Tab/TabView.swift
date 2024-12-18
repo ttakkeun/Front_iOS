@@ -48,12 +48,16 @@ struct TabView: View {
                     }
                     CustomTab(selectedTab: $selectedTab)
                     
+                    /* Alert */
+                    
                     if showAlert {
                         CustomAlert(alertText: alertText,
                                     aiCount: aiCount,
                                     alertAction: AlertAction(showAlert: $showAlert, yes: { actionYes() }),
                                     alertType: alertType)
                     }
+                    
+                    /* Floating */
                     
                     if selectedTab == .qna && qnaSegmentValue == .tips {
                         if isShowFloating {

@@ -39,4 +39,16 @@ class AuthUseCase: AuthUseCaseProtocol {
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }
+    
+    func executeDeleteAppleAccount(authorizationCode: String) -> AnyPublisher<ResponseData<String>, MoyaError> {
+        return repository.deleteAppleAccount(authorizationCode: authorizationCode)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executeLogout() -> AnyPublisher<ResponseData<String>, MoyaError> {
+        return repository.logout()
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
 }

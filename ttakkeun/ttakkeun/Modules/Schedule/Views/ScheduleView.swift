@@ -10,11 +10,13 @@ import SwiftUI
 struct ScheduleView: View {
     
     @StateObject var completionViewModel: TodoCompletionViewModel
+    @StateObject var calendarViewModel: CalendarViewModel
     @EnvironmentObject var container: DIContainer
     @EnvironmentObject var appflowViewModel: AppFlowViewModel
     
     init(container: DIContainer) {
         self._completionViewModel = .init(wrappedValue: .init(container: container))
+        self._calendarViewModel = StateObject(wrappedValue: .init(month: Date(), calendar: Calendar.current, container: container))
     }
     
     
@@ -25,7 +27,7 @@ struct ScheduleView: View {
             ScrollView(.vertical, content: {
                 VStack(alignment: .center, spacing: 24, content: {
                     
-                    CalendarView(container: container)
+                    CalendarView(viewModel: calendarViewModel)
                     
                     Spacer().frame(height: 3)
                     
@@ -38,6 +40,9 @@ struct ScheduleView: View {
             })
         })
         .background(Color.scheduleBg)
+        .task {
+            completionViewModel.getCompletionData()
+        }
     }
     
     private var todoList: some View {
@@ -47,7 +52,8 @@ struct ScheduleView: View {
                 .foregroundStyle(Color.gray900)
             
             ForEach(PartItem.allCases, id: \.self) { part in
-                TodoCard(partItem: part)
+                TodoCard(partItem: part, container: container)
+                    .environmentObject(calendarViewModel)
             }
         })
     }
@@ -66,9 +72,22 @@ struct ScheduleView: View {
             .foregroundStyle(Color.gray900)
             
             HStack(alignment: .center, spacing: 4, content: {
-                if let data = completionViewModel.completionData {
-                    ForEach(PartItem.allCases, id: \.self) { part in
-                        TodoCompletionRate(data: data)
+                if !completionViewModel.isLoading {
+                    if let data = completionViewModel.completionData {
+                        ForEach(PartItem.allCases, id: \.self) { part in
+                            TodoCompletionRate(data: data)
+                        }
+                    } else {
+                        Spacer()
+                        
+                        ProgressView(label: {
+                            Text("투두 완수율 데이터를 가져오지 못했습니다.")
+                                .font(.Body4_medium)
+                                .foregroundStyle(Color.gray900)
+                        })
+                        .controlSize(.mini)
+                        
+                        Spacer()
                     }
                 } else {
                     Spacer()
@@ -76,7 +95,6 @@ struct ScheduleView: View {
                     ProgressView(label: {
                         LoadingDotsText(text: "투두 완수율 데이터를 가져오는 중입니다")
                     })
-                    .controlSize(.mini)
                     
                     Spacer()
                 }

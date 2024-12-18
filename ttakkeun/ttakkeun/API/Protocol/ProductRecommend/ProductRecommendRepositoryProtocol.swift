@@ -13,6 +13,10 @@ import SwiftUI
 
 protocol ProductRecommendRepositoryProtocol {
     func getAIRecommend(petId: Int) -> AnyPublisher<ResponseData<[ProductResponse]>, MoyaError>
+    
     func getRankProduct(pageNum: Int) -> AnyPublisher<ResponseData<[ProductResponse]>, MoyaError>
+    
     func getRankProductTag(tag: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<[ProductResponse]>, MoyaError>
+    
+    func likeProduct(productId: Int) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError>
 }

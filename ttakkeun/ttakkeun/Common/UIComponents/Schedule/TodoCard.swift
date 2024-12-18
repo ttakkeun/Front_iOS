@@ -11,21 +11,22 @@ import SwiftUI
 struct TodoCard: View {
     
     @StateObject var viewModel: TodoCheckViewModel
+    @EnvironmentObject var calendarViewModel: CalendarViewModel
     
-    init(partItem: PartItem) {
-        self._viewModel = StateObject(wrappedValue: .init(partItem: partItem))
+    init(partItem: PartItem, container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(partItem: partItem, container: container))
     }
     
     var body: some View {
         HStack(content: {
-                todoCicle
+                todoCircle
                 
                 Spacer().frame(width: 20)
                 
                 if !viewModel.todos.isEmpty {
                     todoCheckList
                 } else {
-                    notTOdoChecList
+                    notTodoChecList
                 }
                 
                 Spacer()
@@ -39,6 +40,9 @@ struct TodoCard: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.white)
                 .stroke(Color.gray200, lineWidth: 1)
+        }
+        .onReceive(calendarViewModel.$selectedDate) { newDate in
+            viewModel.getTodoData(date: newDate)
         }
     }
     
@@ -55,7 +59,7 @@ struct TodoCard: View {
     }
     
     @ViewBuilder
-    private var notTOdoChecList: some View {
+    private var notTodoChecList: some View {
         if viewModel.isAddingNewTodo {
             newTodoInputField
         } else {
@@ -65,7 +69,7 @@ struct TodoCard: View {
         }
     }
     
-    private var todoCicle: some View {
+    private var todoCircle: some View {
         ZStack(alignment: .topTrailing, content: {
             TodoCircle(partItem: viewModel.partItem, isBefore: true)
             
@@ -128,6 +132,8 @@ extension TodoCard {
         let newTodo = TodoList(todoID: Int.random(in: 1...214748364),
                                todoName: viewModel.newTodoText, todoStatus: false)
         
+        viewModel.makeTodoContetns(makeTodoData: MakeTodoRequest(petId: UserState.shared.getPetId(), todoCategory: viewModel.partItem.rawValue, todoName: newTodo.todoName))
+        
         viewModel.todos.append(newTodo)
         viewModel.newTodoText = ""
         viewModel.isAddingNewTodoToggle()
@@ -144,11 +150,5 @@ extension TodoCard {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 18, height: 18)
         })
-    }
-}
-
-struct TodoCard_Preview: PreviewProvider {
-    static var previews: some View {
-        TodoCard(partItem: .ear)
     }
 }

@@ -78,6 +78,14 @@ struct TipsView: View {
                     }
                 })
                 .padding(.bottom, 180)
+            } else {
+                VStack {
+                    Spacer()
+                    
+                    ProgressView()
+                    
+                    Spacer()
+                }
             }
         })
         .refreshable {

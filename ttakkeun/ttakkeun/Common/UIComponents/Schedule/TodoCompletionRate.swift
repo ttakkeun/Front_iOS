@@ -18,7 +18,9 @@ struct TodoCompletionRate: View {
     var body: some View {
         ZStack(alignment: .top, content: {
             Group {
-                makeRectangle(color: partColor(), height: 84)
+                if let parrItem = data.partItem {
+                    makeRectangle(color: partColor(partItem: parrItem), height: 84)
+                }
                 
                 makeRectangle(color: Color.completionFront, height: 81)
             }
@@ -32,16 +34,18 @@ struct TodoCompletionRate: View {
     
     private var contents: some View {
         VStack(alignment: .center, spacing: 7, content: {
-            faceIcon().image
-                .fixedSize()
-            
-            Text(data.partItem.toKorean())
-                .font(.Body3_semibold)
-                .foregroundStyle(Color.gray900)
-            
-            Text("\(percentage())%")
-                .font(.Body4_medium)
-                .foregroundStyle(Color.gray400)
+            if let partItem = data.partItem {
+                faceIcon(partItem: partItem).image
+                    .fixedSize()
+                
+                Text(partItem.toKorean())
+                    .font(.Body3_semibold)
+                    .foregroundStyle(Color.gray900)
+                
+                Text("\(percentage(partItem: partItem))%")
+                    .font(.Body4_medium)
+                    .foregroundStyle(Color.gray400)
+            }
             
         })
         .frame(maxWidth: 37, maxHeight: 69)
@@ -49,8 +53,8 @@ struct TodoCompletionRate: View {
 }
 
 extension TodoCompletionRate {
-    func percentage() -> Int {
-        switch data.partItem {
+    func percentage(partItem: PartItem) -> Int {
+        switch partItem {
         case .ear:
             return Int((Double(data.earCompleted) / Double(data.earTotal)) * 100)
         case .eye:
@@ -70,8 +74,8 @@ extension TodoCompletionRate {
             .frame(width: 60, height: height)
     }
     
-    func partColor() -> Color {
-        switch data.partItem {
+    func partColor(partItem: PartItem) -> Color {
+        switch partItem {
         case .ear:
             Color.afterEar
         case .eye:
@@ -85,8 +89,8 @@ extension TodoCompletionRate {
         }
     }
     
-    func faceIcon() -> Icon {
-        switch percentage() {
+    func faceIcon(partItem: PartItem) -> Icon {
+        switch percentage(partItem: partItem) {
         case 0..<20:
             return .sad
         case 20..<40:
@@ -100,11 +104,5 @@ extension TodoCompletionRate {
         default:
             return .neutral
         }
-    }
-}
-
-struct TodoCompletionRate_Preview: PreviewProvider {
-    static var previews: some View {
-        TodoCompletionRate(data: TodoCompleteResponse(partItem: .ear, earTotal: 20, earCompleted: 10, hairTotal: 1, hairCompleted: 1, clawTotal: 1, clawCompleted: 1, eyeTotal: 1, eyeCompleted: 1, teethTotal: 1, teethCompleted: 1))
     }
 }

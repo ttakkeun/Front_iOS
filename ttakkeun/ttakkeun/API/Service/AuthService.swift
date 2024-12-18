@@ -40,4 +40,16 @@ class AuthService: AuthServiceProtocol {
             .map(ResponseData<TokenResponse>.self)
             .eraseToAnyPublisher()
     }
+    
+    func deleteAppleAccount(authorizationCode: String) -> AnyPublisher<ResponseData<String>, MoyaError> {
+        return provider.requestPublisher(.deleteAppleAccount(authorizationCode: authorizationCode))
+            .map(ResponseData<String>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func logout() -> AnyPublisher<ResponseData<String>, MoyaError> {
+        return provider.requestPublisher(.logout)
+            .map(ResponseData<String>.self)
+            .eraseToAnyPublisher()
+    }
 }

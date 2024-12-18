@@ -13,6 +13,10 @@ import SwiftUI
 
 protocol ProductRecommendUseCaseProtocol {
     func executeGetAIRecommend(petId: Int) -> AnyPublisher<ResponseData<[ProductResponse]>, MoyaError>
+    
     func executeGetRankProduct(pageNum: Int) -> AnyPublisher<ResponseData<[ProductResponse]>, MoyaError>
+    
     func executeGetRankProductTag(tag: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<[ProductResponse]>, MoyaError>
+    
+    func executeLikeProduct(productId: Int) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError>
 }

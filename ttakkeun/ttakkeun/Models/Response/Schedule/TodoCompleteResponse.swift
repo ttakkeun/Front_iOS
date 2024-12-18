@@ -8,7 +8,7 @@
 import Foundation
 
 struct TodoCompleteResponse: Codable {
-    let partItem: PartItem
+    let partItem: PartItem? = nil
     
     let earTotal: Int
     let earCompleted: Int
@@ -20,4 +20,17 @@ struct TodoCompleteResponse: Codable {
     let eyeCompleted: Int
     let teethTotal: Int
     let teethCompleted: Int
+    
+    enum CodingKeys: CodingKey {
+        case earTotal
+        case earCompleted
+        case hairTotal
+        case hairCompleted
+        case clawTotal
+        case clawCompleted
+        case eyeTotal
+        case eyeCompleted
+        case teethTotal
+        case teethCompleted
+    }
 }

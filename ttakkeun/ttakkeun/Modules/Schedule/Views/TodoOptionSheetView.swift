@@ -11,6 +11,11 @@ struct TodoOptionSheetView: View {
     
     @ObservedObject var viewModel: TodoCheckViewModel
     @Binding var selectedTodo: TodoList
+    @Binding var isShowSheet: Bool
+    
+    @State private var showCalendar = false
+    @State private var selectedDate = Date()
+    @State private var actionType: TodoActionBtn? = nil
     
     var body: some View {
         VStack(alignment: .center, spacing: 30, content: {
@@ -19,8 +24,26 @@ struct TodoOptionSheetView: View {
             
             mainContents
         })
-        .safeAreaPadding(EdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0))
-        .frame(width: 394, height: 340)
+        .popover(isPresented: $showCalendar, content: {
+            CalendarPickerView(selectedDate: $selectedDate) { date in
+                guard let type = actionType else { return }
+                let formattedDate = DataFormatter.shared.formatDateForAPI(date)
+                
+                switch type {
+                case .anotherDay:
+                    viewModel.postAnotherDay(todoId: selectedTodo.todoID, newDate: formattedDate)
+                    isShowSheet = false
+                case .replaceTheDate:
+                    viewModel.patchTodoTransferAnotherDay(todoId: selectedTodo.todoID, newDate: formattedDate)
+                    isShowSheet = false
+                default:
+                    break
+                }
+            }
+            .presentationDragIndicator(.visible)
+            .presentationDetents([.fraction(0.5)])
+            .presentationCornerRadius(30)
+        })
     }
     
     private var mainContents: some View {
@@ -39,7 +62,7 @@ struct TodoOptionSheetView: View {
         HStack(content: {
             Spacer()
             
-            Text("면봉 사기")
+            Text(selectedTodo.todoName)
                 .font(.Body2_medium)
                 .foregroundStyle(Color.gray900)
             
@@ -59,10 +82,19 @@ struct TodoOptionSheetView: View {
     
     private var bottomButtonGroup: some View {
         VStack(alignment: .leading, spacing: 14, content: {
-            ForEach(TodoActionBtn.allCases, id: \.self) { type in
-                bottomButton(type, action: {
-                    bottomButtonAction(type)
-                })
+            
+            if selectedTodo.todoStatus {
+                ForEach(TodoActionBtn.checkedTask(), id: \.self) { type in
+                    bottomButton(type, action: {
+                        bottomButtonAction(type)
+                    })
+                }
+            } else {
+                ForEach(TodoActionBtn.uncheckTask(), id: \.self) { type in
+                    bottomButton(type, action: {
+                        bottomButtonAction(type)
+                    })
+                }
             }
         })
     }
@@ -101,7 +133,8 @@ extension TodoOptionSheetView {
         case .modify:
             print("수정")
         case .remove:
-            print("삭제")
+            viewModel.deleteTodo(todoId: selectedTodo.todoID)
+            isShowSheet = false
         }
     }
 }
@@ -127,11 +160,43 @@ extension TodoOptionSheetView {
     func bottomButtonAction(_ type: TodoActionBtn) -> Void {
         switch type {
         case .againTomorrow:
-            print("내일 또 하기")
+            viewModel.postRepeatTodo(todoId: selectedTodo.todoID)
+            isShowSheet = false
+            print("내일 또하기 클릭")
+        case .tomorrowDay:
+            viewModel.patchTodoTransferTomorrow(todoId: selectedTodo.todoID)
+            isShowSheet = false
+            print("내일하기 클릭")
         case .anotherDay:
-            print("다른 날 또 하기")
+            actionType = type
+            showCalendar = true
+            print("다른 날짜 또 하기 클릭")
         case .replaceTheDate:
-            print("날짜 바꾸기")
+            actionType = type
+            showCalendar = true
+            print("날짜 바꾸기 클릭")
         }
+    }
+}
+
+fileprivate struct CalendarPickerView: View {
+    @Binding var selectedDate: Date
+    @Environment(\.dismiss) var dismiss
+    
+    var onConfirm: (Date) -> Void
+    
+    var body: some View {
+            DatePicker("날짜 선택", selection: $selectedDate, displayedComponents: .date)
+                .datePickerStyle(.graphical)
+                .onChange(of: selectedDate) { newDate, oldValue in
+                    onConfirm(newDate)
+                    dismiss()
+                }
+    }
+}
+
+struct TOdoOptionSheetView_Preview: PreviewProvider {
+    static var previews: some View {
+        TodoOptionSheetView(viewModel: TodoCheckViewModel(partItem: .claw, container: DIContainer()), selectedTodo: .constant(.init(todoID: 1, todoName: "테스트입니다아아", todoStatus: true)), isShowSheet: .constant(true))
     }
 }
