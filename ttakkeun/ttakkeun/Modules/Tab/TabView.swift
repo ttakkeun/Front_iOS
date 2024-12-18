@@ -36,7 +36,7 @@ struct TabView: View {
                     case .home:
                         HomeView(container: container)
                     case .diagnosis:
-                        DiagnosticsView(container: container, showAlert: $showAlert, alertText: $alertText, aiCount: $aiCount, alertType: $alertType, actionYes: $actionYes)
+                        DiagnodsticsView(container: container, showAlert: $showAlert, alertText: $alertText, aiCount: $aiCount, alertType: $alertType, actionYes: $actionYes)
                     case .schedule:
                         ScheduleView(container: container)
                     case .suggestion:

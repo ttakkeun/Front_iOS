@@ -36,7 +36,6 @@ struct JournalListView: View {
             ZStack {
                 journalList
                 makeJournalListBtn
-//                    .position(x: geo.size.width * 0.8, y: geo.size.height * 0.78)
             }
             .navigationDestination(for: NavigationDestination.self) { destination in
                 NavigationRoutingView(destination: destination)

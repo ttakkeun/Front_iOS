@@ -36,8 +36,8 @@ class ProductRecommendUseCase: ProductRecommendUseCaseProtocol {
             .eraseToAnyPublisher()
     }
     
-    func executeLikeProduct(productId: Int) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError> {
-        return scheduleRepository.likeProduct(productId: productId)
+    func executeLikeProduct(productId: Int, likeData: LikePatchRequest) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError> {
+        return scheduleRepository.likeProduct(productId: productId, likeData: likeData)
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }

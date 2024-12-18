@@ -12,6 +12,10 @@ import CombineMoya
 class DiagnosticResultViewModel: ObservableObject {
     
     @Published var diagnosticResolutionData: DiagnosticResolutionResponse?
+    @Published var diagResultListResponse: DiagResultListResponse?
+    
+    @Published var isShowDetailDiag: Bool = false
+    @Published var selectedDiagId: Int? = nil
     
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()

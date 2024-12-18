@@ -53,7 +53,7 @@ struct RecommendView: View {
                 ProductSheetView(data: Binding(get: { product },
                                                set: { updateProduct in
                     viewModel.updateProduct(updateProduct)
-                }), isShowSheet: $viewModel.isShowSheetView)
+                }), isShowSheet: $viewModel.isShowSheetView, action: { viewModel.likeProduct(productId: product.productId, productData: viewModel.makeLikePatchRequest(data: product)) })
                 .presentationDetents([.fraction(0.68)])
                 .presentationDragIndicator(Visibility.hidden)
                 .presentationCornerRadius(30)
@@ -130,7 +130,7 @@ struct RecommendView: View {
             ScrollView(.horizontal, content: {
                 HStack(spacing: 10, content: {
                     ForEach($viewModel.aiProducts, id: \.id) { $data in
-                        RecentRecommendation(data: $data, type: .localDB)
+                        RecentRecommendation(data: $data, type: .localDB, action: { viewModel.likeProduct(productId: data.productId, productData: viewModel.makeLikePatchRequest(data: data)) })
                             .handleTapGesture(with: viewModel, data: data, source: .aiProduct)
                     }
                 })
@@ -160,7 +160,7 @@ struct RecommendView: View {
         VStack(spacing: 32, content: {
             if !viewModel.recommendProducts.isEmpty  {
                 ForEach(Array(viewModel.recommendProducts.enumerated()), id: \.offset) { index, product in
-                    RankRecommendation(data: $viewModel.recommendProducts[index], rank: index)
+                    RankRecommendation(data: $viewModel.recommendProducts[index], rank: index, action: { viewModel.likeProduct(productId: viewModel.recommendProducts[index].productId, productData: viewModel.makeLikePatchRequest(data: viewModel.recommendProducts[index])) } )
                         .handleTapGesture(with: viewModel, data: viewModel.recommendProducts[index], source: .userProduct)
                         .task {
                             if product == viewModel.recommendProducts.last && viewModel.canLoadMoarUserProduct {

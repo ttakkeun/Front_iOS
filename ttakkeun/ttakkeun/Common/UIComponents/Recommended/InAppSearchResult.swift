@@ -11,10 +11,12 @@ import Kingfisher
 struct InAppSearchResult: View {
     
     @Binding var data: ProductResponse
+    let action: () -> Void
     let size: CGFloat = 160
     
-    init(data: Binding<ProductResponse>) {
+    init(data: Binding<ProductResponse>, action: @escaping () -> Void) {
         self._data = data
+        self.action = action
     }
     
     var body: some View {
@@ -59,14 +61,8 @@ struct InAppSearchResult: View {
                 .font(.Body2_semibold)
                 .foregroundStyle(Color.gray900)
             
-            LikeButton(data: $data)
+            LikeButton(data: $data, action: action )
         })
         .frame(width: size)
-    }
-}
-
-struct InAppSearchResult_Preview: PreviewProvider {
-    static var previews: some View {
-        InAppSearchResult(data: .constant(ProductResponse(productId: 1, title: "아모스 녹차실감 산뜻한 타입 지성 모발용 <b>샴푸</b> 500g", image: "https://shopping-phinf.pstatic.net/main_2099178/20991784508.20191001111748.jpg", price: 8780, brand: "아모스", purchaseLink: "https://search.shopping.naver.com/catalog/20991784508", category1: "화장품/미용", category2: "헤어케어", category3: "샴푸", category4: "", totalLike: 9, likeStatus: false)))
     }
 }

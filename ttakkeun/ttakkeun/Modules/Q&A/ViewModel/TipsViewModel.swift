@@ -32,55 +32,76 @@ class TipsViewModel: ObservableObject {
         if let index = tipsResponse.firstIndex(where: { $0.tipId == tipID }) {
             tipsResponse[index].isLike.toggle()
             
-            sendLikeStatusToServer(tipID: tipID, isLiked: tipsResponse[index].isLike)
-                .sink { completion in
-                    if case .failure(let error) = completion {
-                        print("Error updating like status: \(error)")
-                        self.tipsResponse[index].isLike.toggle()
-                    }
-                } receiveValue: { success in
-                    print("Successfully updated like status for \(tipID): \(success)")
-                }
-                .store(in: &cancellables)
+            sendLikeStatusToServer(tipID: tipID)
         }
     }
     
     func toggleBookMark(for tipID: Int) {
         if let index = tipsResponse.firstIndex(where: { $0.tipId == tipID }) {
             tipsResponse[index].isScrap.toggle()
-            
-            sendBookMarkStatusToServer(tipID: tipID, isScrap: tipsResponse[index].isScrap)
-                .sink { completion in
-                    if case .failure(let error) = completion {
-                        print("Error updating like status: \(error)")
-                        self.tipsResponse[index].isScrap.toggle()
-                    }
-                } receiveValue: { success in
-                    print("Successfully updated like status for \(tipID): \(success)")
+         
+            sendBookMarkStatusToServer(tipID: tipID)
+        }
+    }
+    
+    private func sendLikeStatusToServer(tipID: Int) {
+        container.useCaseProvider.qnaUseCase.executeLikeTips(tipId: tipID)
+            .tryMap { responseData -> ResponseData<LikeTipsResponse> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
                 }
-                .store(in: &cancellables)
-        }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                print("TipsLike sServer: \(responseData)")
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("TipsLike Completed")
+                case .failure(let failure):
+                    print("TipsLike Failed: \(failure)")
+                }
+            },
+                  receiveValue: { responseData in
+                if let result = responseData.result {
+                    print("TipsLike: \(result)")
+                }
+            })
+            .store(in: &cancellables)
     }
     
-    private func sendLikeStatusToServer(tipID: Int, isLiked: Bool) -> AnyPublisher<Bool, Error> {
-        // 서버 요청 시뮬레이션
-        return Future { promise in
-            DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-                promise(.success(true)) // 성공 시 true 반환
+    private func sendBookMarkStatusToServer(tipID: Int) {
+        container.useCaseProvider.qnaUseCase.executeTouchScrap(tipId: tipID)
+            .tryMap { responseData -> ResponseData<TouchScrapResponse> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                print("BookMark Tip sServer: \(responseData)")
+                return responseData
             }
-        }
-        .receive(on: DispatchQueue.main)
-        .eraseToAnyPublisher()
-    }
-    
-    private func sendBookMarkStatusToServer(tipID: Int, isScrap: Bool) -> AnyPublisher<Bool, Error> {
-        return Future { promise in
-            DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-                promise(.success(true))
-            }
-        }
-        .receive(on: DispatchQueue.main)
-        .eraseToAnyPublisher()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("BookMark Tip Completed")
+                case .failure(let failure):
+                    print("BookMark Tip Failed: \(failure)")
+                }
+            },
+                  receiveValue: { responseData in
+                if let result = responseData.result {
+                    print("BookMark Tip: \(result)")
+                }
+            })
+            .store(in: &cancellables)
     }
 }
 

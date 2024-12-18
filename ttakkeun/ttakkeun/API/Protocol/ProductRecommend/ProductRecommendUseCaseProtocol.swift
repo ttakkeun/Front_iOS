@@ -18,5 +18,5 @@ protocol ProductRecommendUseCaseProtocol {
     
     func executeGetRankProductTag(tag: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<[ProductResponse]>, MoyaError>
     
-    func executeLikeProduct(productId: Int) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError>
+    func executeLikeProduct(productId: Int, likeData: LikePatchRequest) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError>
 }

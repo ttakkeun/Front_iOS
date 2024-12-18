@@ -89,9 +89,16 @@ class SearchViewModel: ObservableObject, TapGestureProduct, ProductUpdate {
             .store(in: &cancellables)
     }
     
-    
-    public func goToSearchView() {
-        
+    func makeLikePatchRequest(data: ProductResponse) -> LikePatchRequest {
+        return LikePatchRequest(title: data.title,
+                                image: data.image,
+                                price: data.price,
+                                brand: data.brand ?? "",
+                                link: data.purchaseLink,
+                                category1: data.category1 ?? "",
+                                category2: data.category2 ?? "",
+                                category3: data.category3 ?? "",
+                                category4: data.category4 ?? "")
     }
 }
 
@@ -258,5 +265,36 @@ extension SearchViewModel {
         self.localDbData = []
         self.isIitialLoading = true
         searchLocalDb(keyword: searchText, page: localPage)
+    }
+    
+    func likeProduct(productId: Int, productData: LikePatchRequest) {
+        container.useCaseProvider.productRecommendUseCase.executeLikeProduct(productId: productId, likeData: productData)
+            .tryMap { responseData -> ResponseData<LikeTipsResponse> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                
+                print("✅ ProductLike Server : \(responseData)")
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("✅ ProductLike Server Completed")
+                case .failure(let failure):
+                    print("❌ ProductLike Server Failure \(failure)")
+                }
+            },
+                  receiveValue: { responseData in
+                if let result = responseData.result {
+                    print("ProductLike: \(result)")
+                }
+            })
+            .store(in: &cancellables)
     }
 }

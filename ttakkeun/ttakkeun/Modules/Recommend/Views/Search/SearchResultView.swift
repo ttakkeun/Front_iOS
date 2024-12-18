@@ -28,7 +28,7 @@ struct SearchResultView: View {
                 ProductSheetView(data: Binding(get: { product },
                                                set: { updateProduct in
                     viewModel.updateProduct(updateProduct)
-                }), isShowSheet: $viewModel.isShowSheetView)
+                }), isShowSheet: $viewModel.isShowSheetView, action: { viewModel.likeProduct(productId: product.productId, productData: viewModel.makeLikePatchRequest(data: product)) })
                 .presentationDetents([.fraction(0.68)])
                 .presentationDragIndicator(Visibility.hidden)
                 .presentationCornerRadius(30)
@@ -61,7 +61,7 @@ struct SearchResultView: View {
                 ScrollView(.horizontal, content: {
                     HStack(spacing: 10, content: {
                         ForEach($viewModel.naverData, id: \.id) { $data in
-                            RecentRecommendation(data: $data, type: .naver)
+                            RecentRecommendation(data: $data, type: .naver, action: { viewModel.likeProduct(productId: data.productId, productData: viewModel.makeLikePatchRequest(data: data)) } )
                                 .handleTapGesture(with: viewModel, data: data, source: .searchNaverProduct)
                         }
                     })
@@ -90,8 +90,8 @@ struct SearchResultView: View {
         if !viewModel.localDBDataIsLoading {
             if !viewModel.localDbData.isEmpty {
                 LazyVGrid(columns: Array(repeating: GridItem(.fixed(162), spacing: 42), count: 2), spacing: 25, content: {
-                    ForEach($viewModel.localDbData, id: \.self) { $data in
-                        InAppSearchResult(data: $data)
+                    ForEach($viewModel.localDbData, id: \.id) { $data in
+                        InAppSearchResult(data: $data, action: { viewModel.likeProduct(productId: data.productId, productData: viewModel.makeLikePatchRequest(data: data)) })
                             .handleTapGesture(with: viewModel, data: data, source: .searchLocalProduct)
                             .onAppear {
                                 guard !viewModel.localDBDataIsLoading, viewModel.canLoadMore else { return }

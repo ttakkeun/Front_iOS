@@ -18,5 +18,5 @@ protocol ProductRecommendRepositoryProtocol {
     
     func getRankProductTag(tag: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<[ProductResponse]>, MoyaError>
     
-    func likeProduct(productId: Int) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError>
+    func likeProduct(productId: Int, likeData: LikePatchRequest) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError>
 }

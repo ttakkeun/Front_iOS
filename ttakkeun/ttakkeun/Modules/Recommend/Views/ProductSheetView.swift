@@ -17,9 +17,12 @@ struct ProductSheetView: View {
     @Binding var data: ProductResponse
     @Binding var isShowSheet: Bool
     
-    init(data: Binding<ProductResponse>, isShowSheet: Binding<Bool>) {
+    let action: () -> Void
+    
+    init(data: Binding<ProductResponse>, isShowSheet: Binding<Bool>, action: @escaping () -> Void) {
         self._data = data
         self._isShowSheet = isShowSheet
+        self.action = action
     }
     
     var body: some View {
@@ -113,7 +116,7 @@ struct ProductSheetView: View {
     
     private var productPriceInfo: some View {
         HStack(content: {
-            LikeButton(data: $data)
+            LikeButton(data: $data, action: action )
             
             Spacer()
             
@@ -152,6 +155,6 @@ struct ProductSheet_Preview: PreviewProvider {
                                                          category3: "미용목욕",
                                                          category4: "샴푸, 린스",
                                                          totalLike: 304,
-                                                         likeStatus: true)), isShowSheet: .constant(true))
+                                                         likeStatus: true)), isShowSheet: .constant(true), action: { print("hello!!@!@!@!") })
     }
 }

@@ -16,7 +16,7 @@ enum ProductRecommendAPITarget {
     /// 유저 추천 상품 태그 조회 API
     case getRankProductTag(tag: PartItem.RawValue, page: Int)
     
-    case likeProduct(productId: Int)
+    case likeProduct(productId: Int, likeData: LikePatchRequest)
 }
 
 extension ProductRecommendAPITarget: APITargetType {
@@ -29,7 +29,7 @@ extension ProductRecommendAPITarget: APITargetType {
             return "/api/product/rank/\(page)"
         case .getRankProductTag(let tag, let page):
             return "/api/product/tag/\(tag)/\(page)"
-        case .likeProduct(let productId):
+        case .likeProduct(_, let productId):
             return "/api/product/like/\(productId)"
         }
     }
@@ -39,14 +39,16 @@ extension ProductRecommendAPITarget: APITargetType {
         case .getAIRecommend, .getRankProduct, .getRankProductTag:
             return .get
         case .likeProduct:
-            return .patch
+            return .put
         }
     }
     
     var task: Moya.Task {
         switch self {
-        case .getAIRecommend, .getRankProduct, .getRankProductTag, .likeProduct:
+        case .getAIRecommend, .getRankProduct, .getRankProductTag:
             return .requestPlain
+        case .likeProduct(_, let data):
+            return .requestJSONEncodable(data)
         }
     }
     

@@ -282,6 +282,7 @@ extension TipsContentsCard {
             Button(action: {
                 withAnimation {
                     tipsButtonOption.heartAction()
+                    print("팁스 좋아요 누름")
                 }
             }, label: {
                 Image(systemName: data.isLike ? "suit.heart.fill" : "suit.heart")
@@ -294,6 +295,7 @@ extension TipsContentsCard {
             Button(action: {
                 withAnimation {
                     tipsButtonOption.scrapAction()
+                    print("팁스 스크랩 누름")
                 }
             }, label: {
                 Image(systemName: data.isScrap ? "bookmark.fill" : "bookmark")
