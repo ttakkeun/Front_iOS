@@ -12,10 +12,12 @@ struct RecentRecommendation: View {
     
     @Binding var data: ProductResponse
     let type: ProductLocation
+    let action: () -> Void
     
-    init(data: Binding<ProductResponse>, type: ProductLocation) {
+    init(data: Binding<ProductResponse>, type: ProductLocation, action: @escaping () -> Void) {
         self._data = data
         self.type = type
+        self.action = action
     }
     
     var body: some View {
@@ -73,7 +75,7 @@ struct RecentRecommendation: View {
         if type == .naver {
             Spacer()
             
-            LikeButton(data: $data)
+            LikeButton(data: $data, action: action )
         } else {
         }
     }
@@ -114,6 +116,6 @@ struct RecentRecommendation_Preview: PreviewProvider {
     @State static var data = ProductResponse(productId: 1, title: "아모스 녹차실감 산뜻한 타입 지성 모발용 <b>샴푸</b> 500g", image: "https://shopping-phinf.pstatic.net/main_2099178/20991784508.20191001111748.jpg", price: 8780, brand: "아모스", purchaseLink: "https://search.shopping.naver.com/catalog/20991784508", category1: "화장품/미용", category2: "헤어케어", category3: "샴푸", category4: "", totalLike: 9, likeStatus: false)
     
     static var previews: some View {
-        RecentRecommendation(data: $data, type: .naver)
+        RecentRecommendation(data: $data, type: .naver, action: { print("hello1111") })
     }
 }

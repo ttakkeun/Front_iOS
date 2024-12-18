@@ -78,6 +78,12 @@ enum Icon: String {
     case bubbleLogo = "bubbleLogo"
     case diagnosisTopBg = "diagnosisTopBg"
     
+    case bones1 = "bones1"
+    case bones2 = "bones2"
+    case bones3 = "bones3"
+    case bones4 = "bones4"
+    case bones5 = "bones5"
+    
     // MARK: - Schedule
     case downArrow = "downArrow"
     case todoPlus = "todoPlus"

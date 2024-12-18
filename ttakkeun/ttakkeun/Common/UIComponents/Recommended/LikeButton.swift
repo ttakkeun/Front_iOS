@@ -10,6 +10,12 @@ import SwiftUI
 struct LikeButton: View {
     
     @Binding var data: ProductResponse
+    let action: () -> Void
+    
+    init(data: Binding<ProductResponse>, action: @escaping () -> Void) {
+        self._data = data
+        self.action = action
+    }
     
     var body: some View {
             Button(action: {
@@ -38,6 +44,8 @@ struct LikeButton: View {
     
     func toggleLike() {
         data.likeStatus.toggle()
+        action()
+        print("상품 좋아요 누름")
             if data.likeStatus {
                 data.totalLike = (data.totalLike ?? 0) + 1
             } else {
