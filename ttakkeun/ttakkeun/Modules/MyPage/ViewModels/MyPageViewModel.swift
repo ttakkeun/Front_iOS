@@ -12,6 +12,12 @@ import CombineMoya
 
 class MyPageViewModel: ObservableObject {
     
+    let container: DIContainer
+    
+    init(container: DIContainer) {
+        self.container = container
+    }
+    
     
     // MARK: - ImagePicker
     var profileImage: [UIImage] = []

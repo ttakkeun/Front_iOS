@@ -9,14 +9,18 @@ import SwiftUI
 
 struct MyPageView: View {
     
+    @EnvironmentObject var container: DIContainer
+    @StateObject var viewModel: MyPageViewModel
+    
+    init(container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+    }
+    
     var body: some View {
         VStack(alignment: .center, spacing: 37, content: {
-            CustomNavigation(action: { print("hello world") },
+            CustomNavigation(action: { container.navigationRouter.pop() },
                              title: "마이페이지",
-                             currentPage: nil,
-                             naviIcon: Image(systemName: "chevron.backward"),
-                             width: 8,
-                             height: 16)
+                             currentPage: nil)
             
             myInfo
             
@@ -151,9 +155,10 @@ struct MyPageView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            MyPageView()
+            MyPageView(container: DIContainer())
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
+                .environmentObject(DIContainer())
         }
     }
 }

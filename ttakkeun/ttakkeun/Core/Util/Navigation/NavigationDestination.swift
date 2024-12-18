@@ -14,4 +14,5 @@ enum NavigationDestination: Hashable {
     case makeJournalist // 일지 생성 네비게이션
     case productSearch
     case writeTipsView(category: ExtendPartItem)
+    case myPage
 }

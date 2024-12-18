@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TopStatusBar: View {
     
+    @EnvironmentObject var container: DIContainer
+    
     let showDivider: Bool
     
     init(showDivider: Bool = true) {
@@ -49,10 +51,15 @@ struct TopStatusBar: View {
     
     private func rightHStack() -> HStack<some View> {
         return HStack(spacing: 8) {
-            Icon.alarm.image
-                .fixedSize()
-            Icon.setting.image
-                .fixedSize()
+            
+            Spacer()
+            
+            Button(action: {
+                container.navigationRouter.push(to: .myPage)
+            }, label: {
+                Icon.setting.image
+                    .fixedSize()
+            })
         }
     }
 }
