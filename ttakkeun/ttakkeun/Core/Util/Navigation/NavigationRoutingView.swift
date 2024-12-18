@@ -32,6 +32,10 @@ struct NavigationRoutingView: View {
             
         case .writeTipsView(let category):
             WriteTipsView(category: category, container: container)
+            
+        case .myPage:
+            MyPageView(container: container)
+                .environmentObject(container)
         }
     }
 }

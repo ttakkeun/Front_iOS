@@ -25,6 +25,8 @@ struct RecommendView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 0, content: {
             TopStatusBar()
+                .environmentObject(container)
+            
             ScrollView(.vertical, content: {
                 
                 VStack(spacing: 24, content: {

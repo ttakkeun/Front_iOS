@@ -26,6 +26,7 @@ struct HomeView: View {
         ZStack(alignment: .bottom, content: {
             VStack(alignment: .center, spacing: 14, content: {
                 TopStatusBar(showDivider: false)
+                    .environmentObject(container)
                 
                 HomeProfileCard(viewModel: homeProfileViewModel)
                 

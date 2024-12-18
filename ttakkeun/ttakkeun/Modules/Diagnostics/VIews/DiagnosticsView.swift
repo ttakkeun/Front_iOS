@@ -38,6 +38,7 @@ struct DiagnosticsView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 12, content: {
             TopStatusBar()
+                .environmentObject(container)
             
             DiagnosingHeader(diagnosingValue: $diagnosingValue, journalListViewModel: journalListViewModel)
             
