@@ -11,6 +11,7 @@ struct InquireView: View {
     
     //TODO: 스웨거 안나와서 일단 뷰만 돌리기 위한 임시변수, viewModel 만들어야 함!
     @State private var detail: String = ""
+    @State private var email: String = ""
     
     var body: some View {
         VStack(alignment: .center, spacing: 25, content: {
@@ -19,6 +20,8 @@ struct InquireView: View {
                              currentPage: nil)
             
             reportContent
+            
+            emailCheck
             
             Spacer()
             
@@ -82,6 +85,16 @@ struct InquireView: View {
             })
             
             //TODO: - 사진 선택하면 선택한 사진을 일렬로 배치할 수 있도록 해야 함
+        })
+    }
+    
+    private var emailCheck: some View {
+        VStack(alignment: .leading, spacing: 13, content: {
+            Text("연락 받을 이메일")
+                .font(.H4_bold)
+                .foregroundStyle(Color.gray900)
+        
+            CustomTextField(text: $email, placeholder: "입력해주세요.", cornerRadius: 10, maxWidth: 355, maxHeight: 56)
         })
     }
 }
