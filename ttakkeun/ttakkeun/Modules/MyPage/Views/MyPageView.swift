@@ -22,7 +22,7 @@ struct MyPageView: View {
     }
     
     var body: some View {
-        if !viewModel.isLoading {
+//        if !viewModel.isLoading {
             ZStack(content: {
                 VStack(alignment: .center, spacing: 37, content: {
                     CustomNavigation(action: { container.navigationRouter.pop() },
@@ -41,29 +41,28 @@ struct MyPageView: View {
                         viewModel.editName(newUsername: viewModel.inputNickname)
                     }), nickNameValue: $viewModel.inputNickname)
                 }
+                
+                if isDeleteAccountBtnClicked {
+                    CustomAlert(alertText: Text("탈퇴하기"), alertSubText: Text("정말 따끈을 떠나시겠어요?"), alertAction: .init(showAlert: $isDeleteAccountBtnClicked, yes: { print("ok") }))
+                }
+                
+                if isProfileDeleteBtnClicked {
+                    CustomAlert(alertText: Text("프로필 삭제하기"), alertSubText: Text("해당 프로필을 삭제하시겠습니까?"), alertAction: .init(showAlert: $isProfileDeleteBtnClicked, yes: { print("ok") }))
+                }
             })
             .navigationBarBackButtonHidden(true)
-        } else {
-            VStack {
-                
-                Spacer()
-                
-                ProgressView(label: {
-                    LoadingDotsText(text: "잠시만 기다려주세요")
-                })
-                
-                Spacer()
-            }
-            
-            if isDeleteAccountBtnClicked {
-                CustomAlert(alertText: Text("탈퇴하기"), alertSubText: Text("정말 따끈을 떠나시겠어요?"), alertAction: .init(showAlert: $isDeleteAccountBtnClicked, yes: { print("ok") }))
-            }
-            
-            if isProfileDeleteBtnClicked {
-                CustomAlert(alertText: Text("프로필 삭제하기"), alertSubText: Text("해당 프로필을 삭제하시겠습니까?"), alertAction: .init(showAlert: $isProfileDeleteBtnClicked, yes: { print("ok") }))
-            }
-        })
-        .navigationBarBackButtonHidden(true)
+//        } else {
+//            VStack {
+//                
+//                Spacer()
+//                
+//                ProgressView(label: {
+//                    LoadingDotsText(text: "잠시만 기다려주세요")
+//                })
+//                
+//                Spacer()
+//            }
+//        }
     }
     
     //MARK: - Compoents
@@ -129,11 +128,11 @@ struct MyPageView: View {
         VStack(alignment: .center, spacing: 21,content: {
             ///앱 정보 박스
             MyPageInfoBox(myPageInfo: MyPageInfo(
-                            title: "앱 정보",
-                            boxBtn: [
-                                BtnInfo(name: "이용약관 및 정책", date: nil, action: { container.navigationRouter.push(to: .appInfo) })
-                            ]
-                        ), versionInfo: "v1.0.0")
+                title: "앱 정보",
+                boxBtn: [
+                    BtnInfo(name: "이용약관 및 정책", date: nil, action: { container.navigationRouter.push(to: .appInfo) })
+                ]
+            ), versionInfo: "v1.0.0")
             
             ///이용정보 박스
             MyPageInfoBox(myPageInfo: MyPageInfo(
@@ -146,13 +145,13 @@ struct MyPageView: View {
             
             ///계정 박스
             MyPageInfoBox(myPageInfo: MyPageInfo(
-                            title: "계정",
-                            boxBtn: [
-                                BtnInfo(name: "로그아웃하기", date: nil, action: { print("로그아웃 버튼 눌림") }),
-                                BtnInfo(name: "프로필 삭제하기", date: nil, action: { print("프로필 삭제 버튼 눌림") }),
-                                BtnInfo(name: "탈퇴하기", date: nil, action: { print("탈퇴 버튼 눌림") })
-                            ]
-                        ))
+                title: "계정",
+                boxBtn: [
+                    BtnInfo(name: "로그아웃하기", date: nil, action: { print("로그아웃 버튼 눌림") }),
+                    BtnInfo(name: "프로필 삭제하기", date: nil, action: { print("프로필 삭제 버튼 눌림") }),
+                    BtnInfo(name: "탈퇴하기", date: nil, action: { print("탈퇴 버튼 눌림") })
+                ]
+            ))
         })
     }
 }

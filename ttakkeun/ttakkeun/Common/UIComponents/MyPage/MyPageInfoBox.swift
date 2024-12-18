@@ -59,9 +59,13 @@ struct MyPageInfoBox: View {
             }) {
                 Text(button.name)
                     .font(.Body3_medium)
-                    .foregroundStyle(Color.gray900)
+                    .foregroundStyle(changeColor(text: button.name) ? Color.red : Color.gray900)
             }
         }
+    }
+    
+    func changeColor(text: String) -> Bool {
+        return text == "탈퇴하기"
     }
 }
 
