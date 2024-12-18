@@ -63,9 +63,7 @@ struct InquireView: View {
     /// 신고 내용
     private var reportDetail: some View {
         VStack(alignment: .leading, spacing: 18,content: {
-            Text("문의 내용을 작성해주세요.")
-                .font(.H4_bold)
-                .foregroundStyle(Color.gray900)
+            makeTitle(title: "문의 내용을 작성해주세요.")
             
             //TODO: text Binding, maxTextCount 수정
             TextEditor(text: $detail)
@@ -76,9 +74,7 @@ struct InquireView: View {
     
     private var imageAdd: some View {
         VStack(alignment: .leading, spacing: 13, content: {
-            Text("이미지 첨부")
-                .font(.H4_bold)
-                .foregroundStyle(Color.gray900)
+            makeTitle(title: "이미지 첨부")
             
             Button(action: {
                 //TODO: - 이미지 피커 연결
@@ -100,9 +96,7 @@ struct InquireView: View {
     
     private var emailCheck: some View {
         VStack(alignment: .leading, spacing: 13, content: {
-            Text("연락 받을 이메일")
-                .font(.H4_bold)
-                .foregroundStyle(Color.gray900)
+            makeTitle(title: "연락 받을 이메일")
         
             CustomTextField(text: $email, placeholder: "입력해주세요.", cornerRadius: 10, maxWidth: 355, maxHeight: 56)
         })
@@ -111,9 +105,7 @@ struct InquireView: View {
     private var agreementCheck: some View {
         VStack(alignment: .leading, spacing: 13, content: {
             HStack(alignment: .center, spacing: 91, content: {
-                Text("개인정보 수집 및 이용 약관 동의")
-                    .font(.H4_bold)
-                    .foregroundStyle(Color.gray900)
+                makeTitle(title: "개인정보 수집 및 이용 약관 동의")
                 
                 Button(action: {
                     showAgreementSheet = true
@@ -153,6 +145,15 @@ struct InquireView: View {
 private struct FieldGroup {
     let title: String
     let text: Binding<String>
+}
+
+//MARK: - function
+extension InquireView {
+    private func makeTitle(title: String) -> some View {
+        Text(title)
+            .font(.H4_bold)
+            .foregroundStyle(Color.gray900)
+    }
 }
 
 //MARK: - Preview
