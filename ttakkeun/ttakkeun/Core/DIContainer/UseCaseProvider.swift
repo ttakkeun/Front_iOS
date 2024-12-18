@@ -15,6 +15,7 @@ protocol UseCaseProtocol {
     var journalUseCase: JournalUseCase { get set }
     var searchUseCase: SearchUseCase { get set }
     var qnaUseCase: QnAUseCase { get set }
+    var myPageUseCase: MyPageUseCase { get set }
 }
 
 class UseCaseProvider: UseCaseProtocol {
@@ -26,6 +27,7 @@ class UseCaseProvider: UseCaseProtocol {
     var journalUseCase: JournalUseCase
     var searchUseCase: SearchUseCase
     var qnaUseCase: QnAUseCase
+    var myPageUseCase: MyPageUseCase
     
     
     init() {
@@ -36,5 +38,6 @@ class UseCaseProvider: UseCaseProtocol {
         self.journalUseCase = JournalUseCase()
         self.searchUseCase = SearchUseCase()
         self.qnaUseCase = QnAUseCase()
+        self.myPageUseCase = MyPageUseCase()
     }
 }
