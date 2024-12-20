@@ -31,7 +31,7 @@ class ProductRecommendRepository: ProductRecommendRepositoryProtocol {
         return productService.getRankProductTagData(tag: tag, page: page)
     }
     
-    func likeProduct(productId: Int, likeData: LikePatchRequest) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError> {
+    func likeProduct(productId: Int, likeData: LikePatchRequest) -> AnyPublisher<ResponseData<LikeProductResponse>, MoyaError> {
         return productService.likeProductData(productId: productId, likeData: likeData)
     }
 }

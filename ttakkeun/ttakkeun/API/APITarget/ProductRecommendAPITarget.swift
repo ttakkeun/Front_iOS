@@ -29,8 +29,8 @@ extension ProductRecommendAPITarget: APITargetType {
             return "/api/product/rank/\(page)"
         case .getRankProductTag(let tag, let page):
             return "/api/product/tag/\(tag)/\(page)"
-        case .likeProduct(_, let productId):
-            return "/api/product/like/\(productId)"
+        case .likeProduct(let id, _):
+            return "/api/product/like/\(id)"
         }
     }
     

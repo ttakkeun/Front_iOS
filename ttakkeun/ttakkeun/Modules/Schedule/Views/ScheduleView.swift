@@ -12,7 +12,7 @@ struct ScheduleView: View {
     @StateObject var completionViewModel: TodoCompletionViewModel
     @StateObject var calendarViewModel: CalendarViewModel
     @EnvironmentObject var container: DIContainer
-    @EnvironmentObject var appflowViewModel: AppFlowViewModel
+    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     
     init(container: DIContainer) {
         self._completionViewModel = .init(wrappedValue: .init(container: container))
@@ -24,7 +24,7 @@ struct ScheduleView: View {
         VStack(alignment: .center, spacing: 0, content: {
             TopStatusBar()
                 .environmentObject(container)
-                .environmentObject(appflowViewModel)
+                .environmentObject(appFlowViewModel)
             
             ScrollView(.vertical, content: {
                 VStack(alignment: .center, spacing: 24, content: {
@@ -39,11 +39,17 @@ struct ScheduleView: View {
                 })
                 .padding(.top, 5)
                 .padding(.bottom, 110)
+                .padding(.horizontal, 20)
             })
+            .frame(maxWidth: .infinity)
+            .ignoresSafeArea(.all)
         })
         .background(Color.scheduleBg)
         .task {
             completionViewModel.getCompletionData()
+        }
+        .onAppear {
+            UIApplication.shared.hideKeyboard()
         }
     }
     
@@ -77,7 +83,7 @@ struct ScheduleView: View {
                 if !completionViewModel.isLoading {
                     if let data = completionViewModel.completionData {
                         ForEach(PartItem.allCases, id: \.self) { part in
-                            TodoCompletionRate(data: data)
+                            TodoCompletionRate(data: data, partItem: part)
                         }
                     } else {
                         Spacer()

@@ -46,17 +46,6 @@ class TipsViewModel: ObservableObject {
     
     private func sendLikeStatusToServer(tipID: Int) {
         container.useCaseProvider.qnaUseCase.executeLikeTips(tipId: tipID)
-            .tryMap { responseData -> ResponseData<LikeTipsResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                print("TipsLike sServer: \(responseData)")
-                return responseData
-            }
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -67,9 +56,7 @@ class TipsViewModel: ObservableObject {
                 }
             },
                   receiveValue: { responseData in
-                if let result = responseData.result {
-                    print("TipsLike: \(result)")
-                }
+                print("responseData: \(responseData)")
             })
             .store(in: &cancellables)
     }

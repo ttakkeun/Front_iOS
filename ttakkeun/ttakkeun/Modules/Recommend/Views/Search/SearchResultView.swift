@@ -94,7 +94,7 @@ struct SearchResultView: View {
                         InAppSearchResult(data: $data, action: { viewModel.likeProduct(productId: data.productId, productData: viewModel.makeLikePatchRequest(data: data)) })
                             .handleTapGesture(with: viewModel, data: data, source: .searchLocalProduct)
                             .onAppear {
-                                guard !viewModel.localDBDataIsLoading, viewModel.canLoadMore else { return }
+                                guard !viewModel.localDBDataIsLoading else { return }
                                 
                                 if data == viewModel.localDbData.last {
                                     print("🔵 마지막 항목 도달 - 다음 페이지 로딩 시작")

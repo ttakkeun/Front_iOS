@@ -72,7 +72,7 @@ extension QnAAPITarget: APITargetType {
         case .getTipsPart(let category, let page):
             return .requestParameters(parameters: ["category": category, "page": page], encoding: URLEncoding.default)
         case .writeTips(let data):
-            return .requestJSONEncodable(data)
+            return .requestParameters(parameters: ["title": data.title, "content": data.content, "category": data.category], encoding: URLEncoding.queryString)
         case .patchTipsImage(_, let images):
             var formData = [MultipartFormData]()
             for (index, image) in images.enumerated() {

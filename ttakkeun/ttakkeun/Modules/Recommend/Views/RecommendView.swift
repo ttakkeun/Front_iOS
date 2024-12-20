@@ -46,11 +46,6 @@ struct RecommendView: View {
             })
         })
         .background(Color.scheduleBg)
-        .navigationDestination(for: NavigationDestination.self) { destination in
-            NavigationRoutingView(destination: destination)
-                .environmentObject(container)
-                .environmentObject(appFlowViewModel)
-        }
         .sheet(isPresented: $viewModel.isShowSheetView, content: {
             if let product = viewModel.selectedData {
                 ProductSheetView(data: Binding(get: { product },
@@ -69,6 +64,11 @@ struct RecommendView: View {
                     .transition(.opacity)
             }
         })
+        .navigationDestination(for: NavigationDestination.self) { destination in
+            NavigationRoutingView(destination: destination)
+                .environmentObject(container)
+                .environmentObject(appFlowViewModel)
+        }
     }
     
     // MARK: - Top Controller

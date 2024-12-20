@@ -160,9 +160,17 @@ extension TodoCheckViewModel {
                 }
                 
             },
-                  receiveValue: { responseData in
+                  receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                
                 if let result = responseData.result {
-                    print("MakeTodo ResponseData: \(result)")
+                    
+                    let newTodo = TodoList(todoID: result.todoId,
+                                           todoName: self.newTodoText, todoStatus: result.todoStatus)
+                    
+                    self.todos.append(newTodo)
+                    self.newTodoText = ""
+                    self.isAddingNewTodoToggle()
                 }
             })
             .store(in: &cancellables)

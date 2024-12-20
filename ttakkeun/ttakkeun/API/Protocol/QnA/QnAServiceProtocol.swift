@@ -30,5 +30,5 @@ protocol QnAServiceProtocol {
     
     func deleteMyTipsData(tipId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
     
-    func likeTipsData(tipId: Int) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError>
+    func likeTipsData(tipId: Int) -> AnyPublisher<LikeTipsResponse, MoyaError>
 }

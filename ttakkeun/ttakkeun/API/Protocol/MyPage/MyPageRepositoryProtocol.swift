@@ -15,4 +15,8 @@ protocol MyPageRepositoryProtocol {
     func getUserInfo() -> AnyPublisher<ResponseData<UserInfoResponse>, MoyaError>
     
     func editUserName(newUsername: String) -> AnyPublisher<ResponseData<String>, MoyaError>
+    
+    func logout() -> AnyPublisher<ResponseData<String>, MoyaError>
+    
+    func deleteProfile(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
 }

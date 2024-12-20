@@ -37,9 +37,9 @@ class ProductRecommendService: ProductRecommendServiceProtocol {
             .eraseToAnyPublisher()
     }
     
-    func likeProductData(productId: Int, likeData: LikePatchRequest) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError> {
+    func likeProductData(productId: Int, likeData: LikePatchRequest) -> AnyPublisher<ResponseData<LikeProductResponse>, MoyaError> {
         return provider.requestPublisher(.likeProduct(productId: productId, likeData: likeData))
-            .map(ResponseData<LikeTipsResponse>.self)
+            .map(ResponseData<LikeProductResponse>.self)
             .eraseToAnyPublisher()
     }
 }

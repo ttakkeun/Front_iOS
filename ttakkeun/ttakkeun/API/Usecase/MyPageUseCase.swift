@@ -28,4 +28,16 @@ class MyPageUseCase: MyPageUseCaseProtocol {
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }
+    
+    func executeLogout() -> AnyPublisher<ResponseData<String>, MoyaError> {
+        return repository.logout()
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
+    
+    func executeDeleteProfile(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError> {
+        return repository.deleteProfile(petId: petId)
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
 }

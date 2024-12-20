@@ -12,6 +12,7 @@ import CombineMoya
 
 class MyPageService: MyPageServiceProtocol {
     
+    
     private let provider: MoyaProvider<MyPageAPITarget>
     
     init(provider: MoyaProvider<MyPageAPITarget> = APIManager.shared.createProvider(for: MyPageAPITarget.self)) {
@@ -27,6 +28,18 @@ class MyPageService: MyPageServiceProtocol {
     func userNameDate(newUsername: String) -> AnyPublisher<ResponseData<String>, MoyaError> {
         return provider.requestPublisher(.editUserName(newUsername: newUsername))
             .map(ResponseData<String>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func logoutData() -> AnyPublisher<ResponseData<String>, MoyaError> {
+        return provider.requestPublisher(.logout)
+            .map(ResponseData<String>.self)
+            .eraseToAnyPublisher()
+    }
+    
+    func deleteProfileData(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError> {
+        return provider.requestPublisher(.deleteProfile(petId: petId))
+            .map(ResponseData<EmptyResponse>.self)
             .eraseToAnyPublisher()
     }
 }

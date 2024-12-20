@@ -41,7 +41,9 @@ struct TipsView: View {
             Text("🔥\(viewModel.isSelectedCategory.toKorean())")
                 .font(.H2_bold)
                 .foregroundStyle(Color.gray900)
+                .frame(width: 358, alignment: .leading)
         }
+        
     }
     
     private var tipContents: some View {
@@ -79,10 +81,16 @@ struct TipsView: View {
                 })
                 .padding(.bottom, 180)
             } else {
-                VStack {
+                HStack {
                     Spacer()
                     
-                    ProgressView()
+                    VStack(alignment: .center) {
+                        Spacer()
+                        
+                        ProgressView()
+                        
+                        Spacer()
+                    }
                     
                     Spacer()
                 }

@@ -129,14 +129,8 @@ extension TodoCard {
     func addNewTodo() {
         guard !viewModel.newTodoText.isEmpty else { return }
         
-        let newTodo = TodoList(todoID: Int.random(in: 1...214748364),
-                               todoName: viewModel.newTodoText, todoStatus: false)
-        
-        viewModel.makeTodoContetns(makeTodoData: MakeTodoRequest(petId: UserState.shared.getPetId(), todoCategory: viewModel.partItem.rawValue, todoName: newTodo.todoName))
-        
-        viewModel.todos.append(newTodo)
-        viewModel.newTodoText = ""
-        viewModel.isAddingNewTodoToggle()
+        viewModel.makeTodoContetns(makeTodoData: MakeTodoRequest(petId: UserState.shared.getPetId(), todoCategory: viewModel.partItem.rawValue, todoName: viewModel.newTodoText))
+        viewModel.makeTodoContetns(makeTodoData: MakeTodoRequest(petId: UserState.shared.getPetId(), todoCategory: viewModel.partItem.rawValue, todoName: viewModel.newTodoText))
     }
     
     func makeButton(action: @escaping () -> Void, image: Image) -> some View {

@@ -53,4 +53,12 @@ class AppFlowViewModel: ObservableObject {
     public func selectProfile() {
         appState = .tabView
     }
+    
+    public func logout() {
+        appState = .login
+    }
+    
+    public func deleteProfile() {
+        appState = .profile
+    }
 }

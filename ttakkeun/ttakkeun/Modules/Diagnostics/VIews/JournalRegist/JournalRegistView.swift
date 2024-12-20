@@ -38,6 +38,9 @@ struct JournalRegistView: View {
                 .controlSize(.extraLarge)
             }
         }
+        .onAppear {
+            UIApplication.shared.hideKeyboard()
+        }
     }
 }
 

@@ -68,6 +68,11 @@ struct DiagnosticsView: View {
             DiagnosingFlowView(viewModel: journalListViewModel)
                 .environmentObject(container)
         })
+        .navigationDestination(for: NavigationDestination.self) { destination in
+            NavigationRoutingView(destination: destination)
+                .environmentObject(container)
+                .environmentObject(appFlowViewModel)
+        }
     }
     
     @ViewBuilder
@@ -78,7 +83,7 @@ struct DiagnosticsView: View {
                 .environmentObject(container)
                 .environmentObject(appFlowViewModel)
         case .diagnosticResults:
-            DiagnosListView(viewModel: diagnosticViewModel)
+            DiagnosListView(viewModel: diagnosticViewModel, selectedPartItem: $diagnosingValue.selectedPartItem)
         }
     }
 }

@@ -134,4 +134,67 @@ extension MyPageViewModel {
             })
             .store(in: &cancellalbes)
     }
+    
+    func logout() {
+        container.useCaseProvider.myPageUseCase.executeLogout()
+            .tryMap { responseData -> ResponseData<String> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("Logout Completed")
+                case .failure(let failure):
+                    print("Logout Failed: \(failure)")
+                }
+            },
+                  receiveValue: { responseData in
+                
+                if let _ = responseData.result {
+                    KeyChainManager.standard.deleteSession(for: "ttakkeunUser")
+                }
+            })
+            .store(in: &cancellalbes)
+    }
+    
+    func deleteProfile() {
+        container.useCaseProvider.myPageUseCase.executeDeleteProfile(petId: UserState.shared.getPetId())
+            .tryMap { responseData -> ResponseData<EmptyResponse> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                
+                print("UserProfileDelete")
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("UserProfileDelete Completed")
+                case .failure(let failure):
+                    print("UserProfileDelete Failed: \(failure)")
+                }
+            },
+                  receiveValue: {responseData in
+                
+                if let _ = responseData.result {
+                    UserState.shared.clearProfile()
+                }
+            })
+            .store(in: &cancellalbes)
+    }
 }

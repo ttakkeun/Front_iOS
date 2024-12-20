@@ -224,7 +224,7 @@ extension RecommendationProductViewModel {
     
     func likeProduct(productId: Int, productData: LikePatchRequest) {
         container.useCaseProvider.productRecommendUseCase.executeLikeProduct(productId: productId, likeData: productData)
-            .tryMap { responseData -> ResponseData<LikeTipsResponse> in
+            .tryMap { responseData -> ResponseData<LikeProductResponse> in
                 if !responseData.isSuccess {
                     throw APIError.serverError(message: responseData.message, code: responseData.code)
                 }

@@ -15,4 +15,8 @@ protocol MyPageUseCaseProtocol {
     func executeMyPage() -> AnyPublisher<ResponseData<UserInfoResponse>, MoyaError>
     
     func executeEditUserNameDate(newUsername: String) -> AnyPublisher<ResponseData<String>, MoyaError>
+    
+    func executeLogout() -> AnyPublisher<ResponseData<String>, MoyaError>
+    
+    func executeDeleteProfile(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
 }

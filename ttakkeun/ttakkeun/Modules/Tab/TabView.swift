@@ -76,6 +76,11 @@ struct TabView: View {
             .environmentObject(container)
             .environmentObject(appFlowViewModel)
         }
+        .navigationDestination(for: NavigationDestination.self) { destination in
+            NavigationRoutingView(destination: destination)
+                .environmentObject(container)
+                .environmentObject(appFlowViewModel)
+        }
     }
 }
 

@@ -55,7 +55,7 @@ class QnARepository: QnARepositoryProtocol {
         return qnaService.deleteMyTipsData(tipId: tipId)
     }
     
-    func likeTips(tipId: Int) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError> {
+    func likeTips(tipId: Int) -> AnyPublisher<LikeTipsResponse, MoyaError> {
         return qnaService.likeTipsData(tipId: tipId)
     }
     

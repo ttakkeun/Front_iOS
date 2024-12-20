@@ -14,12 +14,16 @@ class UserState: ObservableObject {
     private var petName: String
     private var petId: Int
     
+    private var loginType: SocialLoginType
+    
     init(
         petName: String = "",
-        petId: Int = 0
+        petId: Int = 0,
+        loginType: SocialLoginType = .apple
     ) {
         self.petName = petName
         self.petId = petId
+        self.loginType = loginType
     }
     
     public func setPetId(_ petId: Int) {
@@ -36,6 +40,10 @@ class UserState: ObservableObject {
     
     public func setUserEmail(_ userEmail: String) {
         UserDefaults.standard.setValue(userEmail, forKey: "UserEmail")
+    }
+    
+    public func setLoginType(_ loginType: SocialLoginType) {
+        UserDefaults.standard.setValue(loginType, forKey: "UserLoginType")
     }
     
     public func getPetId() -> Int {
@@ -60,5 +68,18 @@ class UserState: ObservableObject {
         }
         
         return userEmail
+    }
+    
+    public func getLoginType() -> SocialLoginType {
+        if let loginTypeRawValue = UserDefaults.standard.string(forKey: "UserLoginType"),
+           let loginType = SocialLoginType(rawValue: loginTypeRawValue) {
+            return loginType
+        }
+        return .apple
+    }
+    
+    public func clearProfile() {
+        self.petName = ""
+        self.petId = 0
     }
 }

@@ -15,4 +15,8 @@ protocol MyPageServiceProtocol {
     func getUserInfoData() -> AnyPublisher<ResponseData<UserInfoResponse>, MoyaError>
     
     func userNameDate(newUsername: String) -> AnyPublisher<ResponseData<String>, MoyaError>
+    
+    func logoutData() -> AnyPublisher<ResponseData<String>, MoyaError>
+    
+    func deleteProfileData(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
 }

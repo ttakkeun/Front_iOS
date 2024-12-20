@@ -71,7 +71,7 @@ class QnAUseCase: QnAUseCaseProtocol {
             .eraseToAnyPublisher()
     }
     
-    func executeLikeTips(tipId: Int) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError> {
+    func executeLikeTips(tipId: Int) -> AnyPublisher<LikeTipsResponse, MoyaError> {
         return repository.likeTips(tipId: tipId)
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()

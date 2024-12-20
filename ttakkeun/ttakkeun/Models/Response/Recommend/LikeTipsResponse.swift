@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LikeTipsResponse: Codable {
+struct LikeProductResponse: Codable {
     var totalLikes: Int
-    var like: Bool
+    var isLike: Bool
 }
