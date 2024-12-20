@@ -68,7 +68,7 @@ struct NavigationRoutingView: View {
                 .environmentObject(container)
             
         case .myInquire:
-            MyInquireView(container: container)
+            MyInquireBtnView(container: container)
                 .environmentObject(container)
             
         case .reportDetailBtn(let selectedCategory):

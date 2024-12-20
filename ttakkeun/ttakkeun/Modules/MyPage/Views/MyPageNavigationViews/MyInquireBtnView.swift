@@ -1,5 +1,5 @@
 //
-//  MyInquireView.swift
+//  MyInquireBtnView.swift
 //  ttakkeun
 //
 //  Created by 황유빈 on 12/16/24.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// 내가 문의한 내용 보기
-struct MyInquireView: View {
+struct MyInquireBtnView: View {
     
     @EnvironmentObject var container: DIContainer
     @StateObject var viewModel: MyPageViewModel
@@ -53,13 +53,13 @@ struct MyInquireView: View {
 }
 
 //MARK: - Preview
-struct MyInquireView_Preview: PreviewProvider {
+struct MyInquireBtnView_Preview: PreviewProvider {
     
     static let devices = ["iPhone 11", "iPhone 16 Pro"]
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            MyInquireView(container: DIContainer())
+            MyInquireBtnView(container: DIContainer())
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
                 .environmentObject(DIContainer())

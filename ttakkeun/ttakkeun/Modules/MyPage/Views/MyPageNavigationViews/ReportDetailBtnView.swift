@@ -15,6 +15,8 @@ struct ReportDetailBtnView: View {
     @EnvironmentObject var container: DIContainer
     @StateObject var viewModel: MyPageViewModel
     
+    @State private var selectedIndex: Int? = nil // 선택된 버튼의 인덱스
+    
     init(container: DIContainer, selectedCategory: String) {
         self._viewModel = .init(wrappedValue: .init(container: container))
         self.selectedCategory = selectedCategory
@@ -36,7 +38,7 @@ struct ReportDetailBtnView: View {
             
             MainButton(btnText: "신고하기", width: 349, height: 63, action: {
                 //TODO: - 신고하기 버튼 눌렸을 때 액션 필요
-                print("신고하기 버튼 눌림")}, color: Color.mainPrimary
+                print("신고하기 버튼 눌림")}, color: selectedIndex != nil ? Color.mainPrimary : Color.checkBg
             )
         })
         .navigationBarBackButtonHidden(true)
@@ -56,8 +58,16 @@ struct ReportDetailBtnView: View {
     /// Detail Info 볼 수 있는 버튼들
     private var reportBtns: some View {
         VStack(alignment: .center, spacing: 17, content: {
-            ForEach(btnInfoArray, id: \.id) { btnInfo in
-                SelectBtnBox(btnInfo: btnInfo)
+            ForEach(btnInfoArray.indices, id: \.self) { index in
+                SelectBtnBox(
+                    btnInfo: btnInfoArray[index],
+                    isSelected: Binding(
+                        get: { selectedIndex == index },
+                        set: { isSelected in
+                            selectedIndex = index
+                        }
+                    )
+                )
             }
         })
     }

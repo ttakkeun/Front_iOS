@@ -15,6 +15,7 @@ struct MyPageView: View {
     @StateObject var viewModel: MyPageViewModel
     @State private var isNickBtnClicked: Bool = false
     @State private var isProfileDeleteBtnClicked: Bool = false
+    @State private var isLogoutBtnClicked: Bool = false
     
     init(container: DIContainer) {
         self._viewModel = .init(wrappedValue: .init(container: container))
@@ -39,6 +40,10 @@ struct MyPageView: View {
                     CustomAlert(alertText: Text("닉네임 수정하기"), alertSubText: Text(UserState.shared.getUserName()), alertAction: .init(showAlert: $isNickBtnClicked, yes: {
                         viewModel.editName(newUsername: viewModel.inputNickname)
                     }), nickNameValue: $viewModel.inputNickname)
+                }
+                
+                if isLogoutBtnClicked {
+                    CustomAlert(alertText: Text("로그아웃 하시겠습니까?"), alertSubText: Text("해당 계정으로 다시 로그인 하신다면 기존에 사용하시던 \n데이터 그대로 다시 이용하실 수 있습니다."), alertAction: .init(showAlert: $isLogoutBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
                 }
                 
                 if isProfileDeleteBtnClicked {

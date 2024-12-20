@@ -10,18 +10,21 @@ import SwiftUI
 struct SelectBtnBox: View {
    
     var btnInfo: BtnInfo
+    @Binding var isSelected: Bool
     
     //MARK: - Init
     
     /// Description
     /// - Parameters:
     ///   - btnInfo : 해당 버튼에 대한 정보 담은 구조체
-    init(btnInfo: BtnInfo) {
+    init(btnInfo: BtnInfo, isSelected: Binding<Bool> = .constant(false)) {
         self.btnInfo = btnInfo
+        self._isSelected = isSelected
     }
     
     var body: some View {
         Button(action: {
+            isSelected.toggle()
             btnInfo.action()
         }, label: {
             HStack(alignment: .center, content: {
@@ -39,22 +42,22 @@ struct SelectBtnBox: View {
                         .foregroundStyle(Color.gray400)
                 }
             })
-            .padding(.horizontal, 17)
-            .frame(width:349, height: 56)
+            .frame(width:314, height: 20)
+            .padding(18)
         })
-        .overlay(
+        .background {
             RoundedRectangle(cornerRadius: 10)
-                .fill(Color.clear)
+                .fill(isSelected ? Color.mainPrimary : Color.clear)
                 .stroke(Color.gray200, lineWidth: 1)
-        )
+        }
+
     }
 }
 
 //MARK: - Preview
 struct SelectBtnBox_Preview: PreviewProvider {
     static var previews: some View {
-        
-        
+    
         SelectBtnBox(btnInfo: BtnInfo(name: "서비스 이용약관", date: "24.01.01", action: {print("서비스 이용약관 버튼 눌림")}))
             .previewLayout(.sizeThatFits)
     }
