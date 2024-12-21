@@ -12,10 +12,14 @@ import CombineMoya
 class DiagnosticResultViewModel: ObservableObject {
     
     @Published var diagnosticResolutionData: DiagnosticResolutionResponse?
-    @Published var diagResultListResponse: DiagResultListResponse?
+    @Published var diagResultListResponse: [diagDetailData] = []
     
     @Published var isShowDetailDiag: Bool = false
     @Published var selectedDiagId: Int? = nil
+    
+    @Published var isFetching: Bool = false
+    @Published var canLoadMore: Bool = true
+    @Published var currentPage: Int = 0
     
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
@@ -50,6 +54,58 @@ class DiagnosticResultViewModel: ObservableObject {
                   receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
                 self.diagnosticResolutionData = responseData.result
+            })
+            .store(in: &cancellables)
+    }
+    
+    public func getDiagResultList(category: PartItem.RawValue, page: Int, refresh: Bool = false) {
+        
+        guard !isFetching, canLoadMore || refresh else { return }
+        
+        if refresh {
+            currentPage = 0
+            diagResultListResponse.removeAll()
+            canLoadMore = true
+        }
+        
+        isFetching = true
+        
+        container.useCaseProvider.journalUseCase.executeGetDiagList(petId: UserState.shared.getPetId(), category: category, page: page)
+            .tryMap { responseData -> ResponseData<DiagResultListResponse> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                print("✅ getDiagLit: \(responseData)")
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                
+                isFetching = false
+                
+                switch completion {
+                case .finished:
+                    print("✅ getDiagLit Completed")
+                case .failure(let failure):
+                    print("❌ getDiagLit Failure: \(failure)")
+                    canLoadMore = false
+                }
+                
+            },
+                  receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                if let newRecords = responseData.result?.diagnoses, !newRecords.isEmpty {
+                    self.diagResultListResponse.append(contentsOf: newRecords)
+                    self.currentPage += 1
+                    canLoadMore = true
+                } else {
+                    canLoadMore = false
+                }
             })
             .store(in: &cancellables)
     }

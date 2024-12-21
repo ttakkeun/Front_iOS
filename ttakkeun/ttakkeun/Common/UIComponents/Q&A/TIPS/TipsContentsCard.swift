@@ -210,7 +210,7 @@ struct TipsContentsCard: View {
                         .frame(width: 12, height: 12)
                         .foregroundStyle(Color.gray600)
                     
-                    Text(data.recommendCount <= 999 ? "\(data.recommendCount)" : "999+")
+                    Text((data.recommendCount ?? 0) <= 999 ? "\(data.recommendCount ?? 0)" : "999+")
                         .font(.Body4_medium)
                         .foregroundStyle(Color.gray600)
                 })

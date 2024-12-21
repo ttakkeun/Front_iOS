@@ -11,6 +11,8 @@ import Moya
 enum MyPageAPITarget {
     case getUserInfo
     case editUserName(newUsername: String)
+    case logout
+    case deleteProfile(petId: Int)
 }
 
 extension MyPageAPITarget: APITargetType {
@@ -20,6 +22,10 @@ extension MyPageAPITarget: APITargetType {
             return "/api/mypage/info"
         case .editUserName:
             return "/api/mypage/username"
+        case .logout:
+            return "/api/auth/logout"
+        case .deleteProfile(let petId):
+            return "/api/pet-profile/\(petId)"
         }
     }
     
@@ -29,12 +35,16 @@ extension MyPageAPITarget: APITargetType {
             return .get
         case .editUserName:
             return .patch
+        case .logout:
+            return .post
+        case .deleteProfile:
+            return .delete
         }
     }
     
     var task: Task {
         switch self {
-        case .getUserInfo:
+        case .getUserInfo, .logout, .deleteProfile:
             return .requestPlain
         case .editUserName(let newUsername):
             return .requestParameters(parameters: ["newUsername": newUsername], encoding: JSONEncoding.default)

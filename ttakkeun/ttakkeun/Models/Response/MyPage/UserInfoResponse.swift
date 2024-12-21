@@ -9,6 +9,6 @@ import Foundation
 
 struct UserInfoResponse: Codable {
     var memberId: Int
-    var username: String
-    var email: String
+    var username: String?
+    var email: String?
 }

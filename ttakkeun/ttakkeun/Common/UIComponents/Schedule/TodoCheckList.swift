@@ -27,6 +27,8 @@ struct TodoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
         self.viewModel = viewModel
         self.partItem = partItem
         self.checkAble = checkAble
+        
+        print("data: \(data)")
     }
     
     var body: some View {
@@ -43,6 +45,7 @@ struct TodoCheckList<ViewModel: TodoCheckProtocol & ObservableObject>: View {
             Button(action: {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     viewModel.toggleTodoStatus(for: partItem, todoID: data.id)
+                    print("선택한 투두 아이디: \(data.todoID)")
                     viewModel.sendTodoStatus(todoId: data.todoID)
                 }
             }, label: {

@@ -8,7 +8,7 @@
 import Foundation
 
 struct TodoCompleteResponse: Codable {
-    let partItem: PartItem? = nil
+    var partItem: PartItem? = nil
     
     let earTotal: Int
     let earCompleted: Int

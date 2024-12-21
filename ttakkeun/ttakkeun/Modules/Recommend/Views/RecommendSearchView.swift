@@ -41,6 +41,9 @@ struct RecommendSearchView: View {
             }
         })
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            UIApplication.shared.hideKeyboard()
+        }
     }
     
     

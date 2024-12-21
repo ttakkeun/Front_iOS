@@ -30,5 +30,5 @@ protocol QnARepositoryProtocol {
     
     func deleteMyTips(tipId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
     
-    func likeTips(tipId: Int) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError>
+    func likeTips(tipId: Int) -> AnyPublisher<LikeTipsResponse, MoyaError>
 }

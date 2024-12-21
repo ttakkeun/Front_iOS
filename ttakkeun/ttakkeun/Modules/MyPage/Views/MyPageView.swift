@@ -22,7 +22,7 @@ struct MyPageView: View {
     }
     
     var body: some View {
-//        if !viewModel.isLoading {
+        if !viewModel.isLoading {
             ZStack(content: {
                 VStack(alignment: .center, spacing: 37, content: {
                     CustomNavigation(action: { container.navigationRouter.pop() },
@@ -51,18 +51,18 @@ struct MyPageView: View {
                 }
             })
             .navigationBarBackButtonHidden(true)
-//        } else {
-//            VStack {
-//                
-//                Spacer()
-//                
-//                ProgressView(label: {
-//                    LoadingDotsText(text: "잠시만 기다려주세요")
-//                })
-//                
-//                Spacer()
-//            }
-//        }
+        } else {
+            VStack {
+                
+                Spacer()
+                
+                ProgressView(label: {
+                    LoadingDotsText(text: "잠시만 기다려주세요")
+                })
+                
+                Spacer()
+            }
+        }
     }
     
     //MARK: - Compoents
@@ -86,11 +86,11 @@ struct MyPageView: View {
             VStack(alignment: .leading, spacing: 6,content: {
                 
                 if let userInfo = viewModel.userInfo {
-                    Text(userInfo.username)
+                    Text(userInfo.username ?? "사용자 닉네임을 가져오지 못했습니다.")
                         .font(.H4_bold)
                         .foregroundStyle(Color.gray900)
                     
-                    Text(verbatim: "\(userInfo.email)")
+                    Text(verbatim: "\(userInfo.email ?? "사용자 이메일을 가져오지 못했습니다.")")
                         .font(.Body4_semibold)
                         .foregroundStyle(Color.gray900)
                 }
@@ -146,9 +146,21 @@ struct MyPageView: View {
             MyPageInfoBox(myPageInfo: MyPageInfo(
                 title: "계정",
                 boxBtn: [
-                    BtnInfo(name: "로그아웃하기", date: nil, action: { isLogoutBtnClicked.toggle() }),
-                    BtnInfo(name: "프로필 삭제하기", date: nil, action: { isProfileDeleteBtnClicked.toggle()}),
-                    BtnInfo(name: "탈퇴하기", date: nil, action: { container.navigationRouter.push(to: .deleteAccount) })
+                    BtnInfo(name: "로그아웃하기",
+                            date: nil,
+                            action: {
+                                viewModel.logout()
+                                container.navigationRouter.pop()
+                                appFlowViewModel.logout()
+                            }),
+                    BtnInfo(name: "프로필 삭제하기",
+                            date: nil,
+                            action: {
+                                viewModel.deleteProfile()
+                                container.navigationRouter.pop()
+                                appFlowViewModel.deleteProfile()
+                            }),
+                    BtnInfo(name: "탈퇴하기", date: nil, action: { print("탈퇴 버튼 눌림") })
                 ]
             ))
         })

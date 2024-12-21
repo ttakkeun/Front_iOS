@@ -30,5 +30,5 @@ protocol QnAUseCaseProtocol {
     
     func executeDeleteMyTips(tipId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
     
-    func executeLikeTips(tipId: Int) -> AnyPublisher<ResponseData<LikeTipsResponse>, MoyaError>
+    func executeLikeTips(tipId: Int) -> AnyPublisher<LikeTipsResponse, MoyaError>
 }

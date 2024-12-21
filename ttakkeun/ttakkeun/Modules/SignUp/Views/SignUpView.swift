@@ -54,8 +54,10 @@ struct SignUpView: View {
                     switch socialType {
                     case .kakao:
                         viewModel.signUpKakao(signUpRequet: returnSignUpData())
+                        UserState.shared.setLoginType(.kakao)
                     case .apple:
                         viewModel.signUpApple(signUpRequet: returnSignUpData())
+                        UserState.shared.setLoginType(.apple)
                     }
                 }
             },

@@ -23,7 +23,6 @@ struct WriteTipsView: View {
             CustomNavigation(action: {
                 viewModel.goToBeforePage()
             }, title: "TIP 작성", currentPage: nil)
-            
             categoryTitle
             
             inputTextString
@@ -35,9 +34,6 @@ struct WriteTipsView: View {
             MainButton(btnText: "공유하기", width: 353, height: 56, action: {
                 if !viewModel.title.isEmpty && !viewModel.textContents.isEmpty {
                     viewModel.writeTips()
-                    if !viewModel.registTipsLoading {
-                        viewModel.goToBeforePage()
-                    }
                 }
             }, color: Color.mainPrimary)
         })
@@ -46,12 +42,27 @@ struct WriteTipsView: View {
         .navigationBarBackButtonHidden(true)
         .overlay(alignment: .center, content: {
             if viewModel.registTipsLoading {
-                ProgressView(label: {
-                    LoadingDotsText(text: "작성한 Tips를 생성 중입니다.")
-                        .controlSize(.extraLarge)
-                })
-            }
+                    ZStack {
+                        Color.black
+                            .opacity(0.5)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity).ignoresSafeArea(.all)
+                        
+                        VStack {
+                            ProgressView(label: {
+                                LoadingDotsText(text: "작성한 Tips를 생성 중입니다.")
+                            })
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                .controlSize(.large)
+                        }
+                        .padding()
+                        .background(Color.gray.opacity(0.8))
+                    }
+                }
         })
+        .ignoresSafeArea(.keyboard)
+        .onAppear {
+            UIApplication.shared.hideKeyboard()
+        }
     }
     
     private var categoryTitle: some View {
@@ -77,7 +88,7 @@ struct WriteTipsView: View {
             
             TextEditor(text: $viewModel.textContents)
                 .customStyleTipsEditor(text: $viewModel.textContents, placeholder: placeholder, maxTextCount: 230, border: Color.clear)
-                .frame(height: 257)
+                .frame(maxHeight: 257)
         })
     }
 }

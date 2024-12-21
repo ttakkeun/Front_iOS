@@ -40,7 +40,7 @@ class TipsWriteViewModel: ObservableObject, ImageHandling {
     }
     
     private func makeWriteTipsRequest() -> WriteTipsRequest {
-        return WriteTipsRequest(title: title, content: textContents, category: category.id)
+        return WriteTipsRequest(title: title, content: textContents, category: category.toPartItemRawValue() ?? "EAR")
     }
     
     // MARK: - ImageHandling
@@ -68,6 +68,8 @@ extension TipsWriteViewModel {
 extension TipsWriteViewModel {
     public func writeTips() {
         registTipsLoading = true
+        
+        print("팁스 생성 데이터: \(makeWriteTipsRequest())")
         
         container.useCaseProvider.qnaUseCase.executeWriteTipsData(data: makeWriteTipsRequest())
             .tryMap { responseData -> ResponseData<TipsResponse> in
@@ -102,6 +104,8 @@ extension TipsWriteViewModel {
                         registTipsLoading = false
                         print("✅ WriteTipsResponse: \(String(describing: responseData.result))")
                     }
+                
+                self.goToBeforePage()
             })
             .store(in: &cancellables)
     }

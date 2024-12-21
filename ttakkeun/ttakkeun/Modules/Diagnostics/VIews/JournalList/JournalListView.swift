@@ -97,6 +97,8 @@ struct JournalListView: View {
                              }
                          }
                          .task {
+                             guard !viewModel.recordList.isEmpty else { return }
+                             
                              if record == viewModel.recordList.last && viewModel.canLoadMore {
                                  viewModel.getJournalList(category: selectedPartItem.rawValue, page: viewModel.currentPage)
                              }

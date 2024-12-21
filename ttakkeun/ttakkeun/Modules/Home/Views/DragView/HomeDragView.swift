@@ -56,7 +56,7 @@ struct HomeDragView: View {
         GeometryReader { geometry in
             
             let screenHeight = geometry.size.height
-            let minOffset: CGFloat = screenHeight * 0.45
+            let minOffset: CGFloat = screenHeight * 0.41
             let maxOffset: CGFloat = screenHeight * 0.07
             
             VStack(alignment: .center, spacing: 13) {

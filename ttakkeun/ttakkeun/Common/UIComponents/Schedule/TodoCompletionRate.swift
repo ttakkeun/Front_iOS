@@ -9,10 +9,11 @@ import SwiftUI
 
 struct TodoCompletionRate: View {
     
-    let data: TodoCompleteResponse
+    var data: TodoCompleteResponse
     
-    init(data: TodoCompleteResponse) {
+    init(data: TodoCompleteResponse, partItem: PartItem) {
         self.data = data
+        self.data.partItem = partItem
     }
     
     var body: some View {

@@ -13,7 +13,7 @@ struct TipsResponse: Identifiable, Codable, Hashable {
     var category: PartItem
     var title: String
     var content: String
-    var recommendCount: Int
+    var recommendCount: Int?
     var createdAt: String
     var imageUrls: [String]?
     var authorName: String
