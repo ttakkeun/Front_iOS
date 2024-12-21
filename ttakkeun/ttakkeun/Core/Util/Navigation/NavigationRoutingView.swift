@@ -79,6 +79,9 @@ struct NavigationRoutingView: View {
             ReportView(container: container)
                 .environmentObject(container)
             
+        case .agreementData(let selectedAgreementData):
+            TermsView(selectedAgreement: selectedAgreementData)
+                .environmentObject(container)
         }
     }
 }

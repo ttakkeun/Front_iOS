@@ -9,9 +9,12 @@ import SwiftUI
 
 struct TermsView: View {
     
-    
     @EnvironmentObject var container: DIContainer
     var selectedAgreement: AgreementData
+    
+    init(selectedAgreement: AgreementData) {
+        self.selectedAgreement = selectedAgreement
+    }
     
     var body: some View {
         VStack(alignment: .center, spacing: 35, content: {
@@ -55,6 +58,7 @@ struct TermsView: View {
             })
             
         })
+        .navigationBarBackButtonHidden(true)
     }
 }
 

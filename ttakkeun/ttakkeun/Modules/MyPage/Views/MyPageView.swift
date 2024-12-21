@@ -146,7 +146,7 @@ struct MyPageView: View {
             MyPageInfoBox(myPageInfo: MyPageInfo(
                 title: "계정",
                 boxBtn: [
-                    BtnInfo(name: "로그아웃하기", date: nil, action: { print("로그아웃 버튼 눌림") }),
+                    BtnInfo(name: "로그아웃하기", date: nil, action: { isLogoutBtnClicked.toggle() }),
                     BtnInfo(name: "프로필 삭제하기", date: nil, action: { isProfileDeleteBtnClicked.toggle()}),
                     BtnInfo(name: "탈퇴하기", date: nil, action: { container.navigationRouter.push(to: .deleteAccount) })
                 ]

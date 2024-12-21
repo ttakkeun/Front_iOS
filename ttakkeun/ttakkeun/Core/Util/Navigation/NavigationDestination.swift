@@ -25,4 +25,5 @@ enum NavigationDestination: Hashable {
     case myInquire
     case reportDetailBtn(selectedCategory: String)
     case writeReport
+    case agreementData(selectedAgreementData: AgreementData)
 }

@@ -92,7 +92,7 @@ struct DeleteAccountView: View {
                     * 회원 탈퇴 후에는 동일한 이메일 주소로 재가입이 가능합니다. 다만, 이전 가입 시의 데이터는 유지되지 않으며, 새로운 계정으로 서비스 이용을 시작하게 됩니다.
                 """)
                 .font(.Body4_medium)
-                .foregroundStyle(Color.gray300)
+                .foregroundStyle(Color.gray700)
             })
             .frame(width: 315, height: 272, alignment: .leading)
             .padding(.horizontal, 17)
@@ -154,6 +154,7 @@ struct DeleteAccountView: View {
                     .font(.Body3_medium)
                     .foregroundStyle(Color.gray900)
                 
+                //TODO: - 주석 제거 필요
                 Text(verbatim: "rwd4533@naver.com")
 //                Text("\(UserState.shared.getUserEmail())")
                     .font(.Body3_medium)
