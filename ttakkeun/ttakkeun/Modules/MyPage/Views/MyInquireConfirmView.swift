@@ -21,10 +21,6 @@ struct MyInquireConfirmView: View {
         self.inquiryResponse = inquiryResponse
     }
     
-    //TODO: 임시변수! 뷰모델로 실제 데이터 불러와야 함
-    @State private var content: String = "이러저러해서 이런저런점이 불만이에요"
-    @State private var email: String = "alkfe@naver.com"
-    
     var body: some View {
         VStack(alignment: .center, spacing: 25, content: {
             CustomNavigation(action: { container.navigationRouter.pop() },

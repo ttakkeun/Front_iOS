@@ -12,6 +12,7 @@ struct MyInquireBtnView: View {
     
     @EnvironmentObject var container: DIContainer
     @StateObject var viewModel: MyPageViewModel
+
     
     let btnInfoArray: [BtnInfo] = [
         //TODO: 버튼 액션 필요함

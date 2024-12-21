@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MyInquiryResponse: Equatable, Codable {
+struct MyInquiryResponse: Equatable, Codable, Hashable {
     var contents: String
     var email: String
     var inquiryType: String

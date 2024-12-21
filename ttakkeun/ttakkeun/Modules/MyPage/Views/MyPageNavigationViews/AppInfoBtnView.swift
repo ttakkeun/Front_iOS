@@ -16,8 +16,8 @@ struct AppInfoBtnView: View {
         return [
             //TODO: 버튼 액션 필요함
             BtnInfo(name: "서비스 이용 약관", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[0]))}),
-            BtnInfo(name: "개인정보 수집 및 이용 동의서", date: nil, action: {print("개인정보 수집 및 이용 동의서 버튼 눌림")}),
-            BtnInfo(name: "마케팅 정보 수신 동의서", date: nil, action: {print("마케팅 정보 수신 동의서 버튼 눌림")})
+            BtnInfo(name: "개인정보 수집 및 이용 동의서", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[1]))}),
+            BtnInfo(name: "마케팅 정보 수신 동의서", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[2]))})
         ]
     }
     

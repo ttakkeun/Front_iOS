@@ -16,9 +16,9 @@ struct InquireBtnView: View {
     init(container: DIContainer) {
         self._viewModel = .init(wrappedValue: .init(container: container))
         self.btnInfoArray = [
-            BtnInfo(name: "서비스 이용 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedCategory: "서비스 이용 문의"))}),
-            BtnInfo(name: "광고 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedCategory: "광고 문의"))}),
-            BtnInfo(name: "제휴 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedCategory: "제휴 문의"))})
+            BtnInfo(name: "서비스 이용 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedInquiryCategory: "서비스 이용 문의"))}),
+            BtnInfo(name: "광고 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedInquiryCategory: "광고 문의"))}),
+            BtnInfo(name: "제휴 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedInquiryCategory: "제휴 문의"))})
         ]
     }
     
@@ -38,6 +38,10 @@ struct InquireBtnView: View {
             Spacer()
         })
         .navigationBarBackButtonHidden(true)
+        .navigationDestination(for: NavigationDestination.self) { destination in
+            NavigationRoutingView(destination: destination)
+                .environmentObject(container)
+        }
     }
     
     //MARK: - Components

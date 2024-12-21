@@ -42,6 +42,10 @@ struct ReportDetailBtnView: View {
             )
         })
         .navigationBarBackButtonHidden(true)
+        .navigationDestination(for: NavigationDestination.self) { destination in
+            NavigationRoutingView(destination: destination)
+                .environmentObject(container)
+        }
     }
     
     private var reportBtnsForEachCategory: some View {

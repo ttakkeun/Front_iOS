@@ -63,16 +63,16 @@ struct NavigationRoutingView: View {
             ReportBtnView(container: container)
                 .environmentObject(container)
             
-        case .writeInquire(let selectedCategory):
-            InquireView(container: container, selectedCategory: selectedCategory)
+        case .writeInquire(let selectedInquiryCategory):
+            InquireView(container: container, selectedCategory: selectedInquiryCategory)
                 .environmentObject(container)
             
         case .myInquire:
             MyInquireBtnView(container: container)
                 .environmentObject(container)
             
-        case .reportDetailBtn(let selectedCategory):
-            ReportDetailBtnView(container: container, selectedCategory: selectedCategory)
+        case .reportDetailBtn(let selectedReportCategory):
+            ReportDetailBtnView(container: container, selectedCategory: selectedReportCategory)
                 .environmentObject(container)
             
         case .writeReport:
@@ -81,6 +81,10 @@ struct NavigationRoutingView: View {
             
         case .agreementData(let selectedAgreementData):
             TermsView(selectedAgreement: selectedAgreementData)
+                .environmentObject(container)
+            
+        case .myInquiryConfirm(let selectedInquiryData):
+            MyInquireConfirmView(container: container, inquiryResponse: selectedInquiryData)
                 .environmentObject(container)
         }
     }
