@@ -9,19 +9,30 @@ import SwiftUI
 
 struct InquireView: View {
     
+    @EnvironmentObject var container: DIContainer
+    @StateObject var viewModel: MyPageViewModel
+    
+    @State private var showAgreementSheet: Bool = false
+    
+    let selectedCategory: String
+    private let agreement = AgreementDetailData.loadEmailAgreements()
+    
+    init(container: DIContainer, selectedCategory: String) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+        self.selectedCategory = selectedCategory
+    }
+    
     //TODO: 스웨거 안나와서 일단 뷰만 돌리기 위한 임시변수, viewModel 만들어야 함!
     @State private var detail: String = ""
     @State private var email: String = ""
     @State private var isAgreementCheck: Bool = false
-    @State private var isMainBtnClicked: Bool = false
+    @State private var isInquireMainBtnClicked: Bool = false
     
-    @State private var showAgreementSheet: Bool = false
-    private let agreement = AgreementDetailData.loadEmailAgreements()
     
     var body: some View {
         ZStack(content: {
             VStack(alignment: .center, spacing: 25, content: {
-                CustomNavigation(action: { print("hello world") },
+                CustomNavigation(action: { container.navigationRouter.pop() },
                                  title: "문의하기",
                                  currentPage: nil)
                 
@@ -34,7 +45,7 @@ struct InquireView: View {
                 Spacer()
                 
                 MainButton(btnText: "문의하기", width: 349, height: 63,
-                           action: { isMainBtnClicked.toggle()}, color: isMainButtonEnabled() ? Color.mainPrimary : Color.checkBg)
+                           action: { isInquireMainBtnClicked.toggle()}, color: isMainButtonEnabled() ? Color.mainPrimary : Color.checkBg)
                 .disabled(!isMainButtonEnabled())
             })
             .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
@@ -43,10 +54,11 @@ struct InquireView: View {
                     .presentationCornerRadius(30)
             }
             
-            if isMainBtnClicked {
-                CustomAlert(alertText: Text("문의내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록 하겠습니다. \n영업시간 2~3일 이내에 이메일로 답변을 받아보실 수 있습니다."), alertAction: .init(showAlert: $isMainBtnClicked, yes: { print("ok") }))
+            if isInquireMainBtnClicked {
+                CustomAlert(alertText: Text("문의내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록 하겠습니다. \n영업시간 2~3일 이내에 이메일로 답변을 받아보실 수 있습니다."), alertAction: .init(showAlert: $isInquireMainBtnClicked, yes: { print("ok") }))
             }
         })
+        .navigationBarBackButtonHidden(true)
     }
     
     //MARK: - Components
@@ -54,7 +66,7 @@ struct InquireView: View {
     private var reportContent: some View {
         VStack(alignment: .leading, spacing: 17, content: {
             //TODO: - '>' 뒤에 카테고리는 앞에 뷰에서 어떤 버튼을 선택하느냐에 따라 달라져야함
-            Text("문의하기 > 서비스 이용 문의")
+            Text("문의하기 > \(selectedCategory)")
                 .font(.Body4_medium)
                 .foregroundStyle(Color.gray400)
             
@@ -173,9 +185,10 @@ struct InquireView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            InquireView()
+            InquireView(container: DIContainer(), selectedCategory: "서비스 이용 문의")
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
+                .environmentObject(DIContainer())
         }
     }
 }

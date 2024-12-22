@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 /// 로그인 시 동의항목 데이터
-struct AgreementData: Identifiable, Codable {
+struct AgreementData: Identifiable, Codable, Equatable, Hashable {
     var id = UUID()
     var title: String
     var isMandatory: Bool
@@ -22,7 +22,7 @@ struct AgreementData: Identifiable, Codable {
 }
 
 // 각 조항의 제목과 내용을 담는 구조체
-struct SectionData: Codable {
+struct SectionData: Codable, Equatable, Hashable {
     var section: String
     var text: String
 }

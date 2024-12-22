@@ -14,8 +14,8 @@ struct MyPageView: View {
     
     @StateObject var viewModel: MyPageViewModel
     @State private var isNickBtnClicked: Bool = false
-    @State private var isDeleteAccountBtnClicked: Bool = false
     @State private var isProfileDeleteBtnClicked: Bool = false
+    @State private var isLogoutBtnClicked: Bool = false
     
     init(container: DIContainer) {
         self._viewModel = .init(wrappedValue: .init(container: container))
@@ -42,12 +42,12 @@ struct MyPageView: View {
                     }), nickNameValue: $viewModel.inputNickname)
                 }
                 
-                if isDeleteAccountBtnClicked {
-                    CustomAlert(alertText: Text("탈퇴하기"), alertSubText: Text("정말 따끈을 떠나시겠어요?"), alertAction: .init(showAlert: $isDeleteAccountBtnClicked, yes: { print("ok") }))
+                if isLogoutBtnClicked {
+                    CustomAlert(alertText: Text("로그아웃 하시겠습니까?"), alertSubText: Text("해당 계정으로 다시 로그인 하신다면 기존에 사용하시던 \n데이터 그대로 다시 이용하실 수 있습니다."), alertAction: .init(showAlert: $isLogoutBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
                 }
                 
                 if isProfileDeleteBtnClicked {
-                    CustomAlert(alertText: Text("프로필 삭제하기"), alertSubText: Text("해당 프로필을 삭제하시겠습니까?"), alertAction: .init(showAlert: $isProfileDeleteBtnClicked, yes: { print("ok") }))
+                    CustomAlert(alertText: Text("해당 프로필을 삭제하시겠습니까?"), alertSubText: Text("해당 프로필에 저장된 데이터는 모두 삭제됩니다. \n삭제된 데이터는 다시 복원할 수 없습니다."), alertAction: .init(showAlert: $isProfileDeleteBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
                 }
             })
             .navigationBarBackButtonHidden(true)
@@ -118,8 +118,8 @@ struct MyPageView: View {
     private var tipsBtns: some View {
         HStack(alignment: .center, spacing: 13, content: {
             //TODO: 버튼 액션 필요(해당 페이지로 넘어가야 함)
-            makeButton(text: "내가 쓴 tips", image: Icon.tips.image, action: {print("내가 쓴 tips 버튼 눌림")})
-            makeButton(text: "내가 스크랩한 tips", image: Icon.scrap.image, action: {print("내가 스크랩한 tips 버튼 눌림")})
+            makeButton(text: "내가 쓴 tips", image: Icon.tips.image, action: {container.navigationRouter.push(to: .myTips)})
+            makeButton(text: "내가 스크랩한 tips", image: Icon.scrap.image, action: {container.navigationRouter.push(to: .myScrapTips)})
         })
     }
     
@@ -138,8 +138,7 @@ struct MyPageView: View {
             MyPageInfoBox(myPageInfo: MyPageInfo(
                 title: "이용 정보",
                 boxBtn: [
-                    BtnInfo(name: "문의하기", date: nil, action: { print("문의하기 버튼 눌림") }),
-                    BtnInfo(name: "신고하기", date: nil, action: { print("신고하기 버튼 눌림") })
+                    BtnInfo(name: "문의하기", date: nil, action: { container.navigationRouter.push(to: .inquireBtn) })
                 ]
             ))
             

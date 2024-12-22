@@ -1,5 +1,5 @@
 //
-//  MyInquireView.swift
+//  MyInquireBtnView.swift
 //  ttakkeun
 //
 //  Created by 황유빈 on 12/16/24.
@@ -8,7 +8,11 @@
 import SwiftUI
 
 /// 내가 문의한 내용 보기
-struct MyInquireView: View {
+struct MyInquireBtnView: View {
+    
+    @EnvironmentObject var container: DIContainer
+    @StateObject var viewModel: MyPageViewModel
+
     
     let btnInfoArray: [BtnInfo] = [
         //TODO: 버튼 액션 필요함
@@ -16,9 +20,13 @@ struct MyInquireView: View {
         BtnInfo(name: "앱 회원가입이 안되는데 어떻게 해야하나요?", date: "24.06.20", action: {print("내가 문의한 내용 버튼2")})
     ]
     
+    init(container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+    }
+    
     var body: some View {
         VStack(alignment: .center, spacing: 40, content: {
-            CustomNavigation(action: { print("hello world") },
+            CustomNavigation(action: { container.navigationRouter.pop() },
                              title: "문의하기",
                              currentPage: nil)
             
@@ -26,6 +34,7 @@ struct MyInquireView: View {
             
             Spacer()
         })
+        .navigationBarBackButtonHidden(true)
     }
     
     //MARK: - Components
@@ -45,15 +54,16 @@ struct MyInquireView: View {
 }
 
 //MARK: - Preview
-struct MyInquireView_Preview: PreviewProvider {
+struct MyInquireBtnView_Preview: PreviewProvider {
     
     static let devices = ["iPhone 11", "iPhone 16 Pro"]
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            MyInquireView()
+            MyInquireBtnView(container: DIContainer())
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
+                .environmentObject(DIContainer())
         }
     }
 }

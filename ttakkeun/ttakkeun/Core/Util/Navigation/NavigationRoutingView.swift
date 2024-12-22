@@ -42,7 +42,50 @@ struct NavigationRoutingView: View {
         case .appInfo:
             AppInfoBtnView()
                 .environmentObject(container)
+            
+        case .myTips:
+            MyTipsView(container: container)
+                .environmentObject(container)
+            
+        case .myScrapTips:
+            MyScrapTipsView(container: container)
+                .environmentObject(container)
+            
+        case .deleteAccount:
+            DeleteAccountView(container: container)
+                .environmentObject(container)
+            
+        case .inquireBtn:
+            InquireBtnView(container: container)
+                .environmentObject(container)
+            
+        case .reportBtn:
+            ReportBtnView(container: container)
+                .environmentObject(container)
+            
+        case .writeInquire(let selectedInquiryCategory):
+            InquireView(container: container, selectedCategory: selectedInquiryCategory)
+                .environmentObject(container)
+            
+        case .myInquire:
+            MyInquireBtnView(container: container)
+                .environmentObject(container)
+            
+        case .reportDetailBtn(let selectedReportCategory):
+            ReportDetailBtnView(container: container, selectedCategory: selectedReportCategory)
+                .environmentObject(container)
+            
+        case .writeReport:
+            ReportView(container: container)
+                .environmentObject(container)
+            
+        case .agreementData(let selectedAgreementData):
+            TermsView(selectedAgreement: selectedAgreementData)
+                .environmentObject(container)
+            
+        case .myInquiryConfirm(let selectedInquiryData):
+            MyInquireConfirmView(container: container, inquiryResponse: selectedInquiryData)
+                .environmentObject(container)
         }
-    
     }
 }

@@ -9,15 +9,22 @@ import SwiftUI
 
 struct ReportView: View {
     
+    @EnvironmentObject var container: DIContainer
+    @StateObject var viewModel: MyPageViewModel
+    
+    @State private var isReportMainBtnClicked: Bool = false
+    
     //TODO: 스웨거 안나와서 일단 뷰만 돌리기 위한 임시변수, viewModel 만들어야 함!
     @State private var detail: String = ""
     
-    @State private var isReportMainBtnClicked: Bool = false
+    init(container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+    }
     
     var body: some View {
         ZStack(content: {
             VStack(alignment: .center, spacing: 25, content: {
-                CustomNavigation(action: { print("hello world") },
+                CustomNavigation(action: { container.navigationRouter.pop() },
                                  title: "신고하기",
                                  currentPage: nil)
                 
@@ -32,9 +39,10 @@ struct ReportView: View {
             .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
             
             if isReportMainBtnClicked {
-                CustomAlert(alertText: Text("신고내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록. \n검토 후 신고내용을 반영하여 조치를 취하겠습니다."), alertAction: .init(showAlert: $isReportMainBtnClicked, yes: { print("ok") }))
+                CustomAlert(alertText: Text("신고내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록 하겠습니다. \n검토 후 신고내용을 반영하여 조치를 취하겠습니다."), alertAction: .init(showAlert: $isReportMainBtnClicked, yes: { print("ok") }))
             }
         })
+        .navigationBarBackButtonHidden(true)
     }
     
     //MARK: - Components
@@ -105,9 +113,10 @@ struct ReportView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            ReportView()
+            ReportView(container: DIContainer())
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
+                .environmentObject(DIContainer())
         }
     }
 }

@@ -12,12 +12,14 @@ struct AppInfoBtnView: View {
     
     @EnvironmentObject var container: DIContainer
     
-    let btnInfoArray: [BtnInfo] = [
-        //TODO: 버튼 액션 필요함
-        BtnInfo(name: "서비스 이용 약관", date: nil, action: {print("서비스 이용 약관 버튼 눌림")}),
-        BtnInfo(name: "개인정보 수집 및 이용 동의서", date: nil, action: {print("개인정보 수집 및 이용 동의서 버튼 눌림")}),
-        BtnInfo(name: "마케팅 정보 수신 동의서", date: nil, action: {print("마케팅 정보 수신 동의서 버튼 눌림")})
-    ]
+    var btnInfoArray: [BtnInfo] {
+        return [
+            //TODO: 버튼 액션 필요함
+            BtnInfo(name: "서비스 이용 약관", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[0]))}),
+            BtnInfo(name: "개인정보 수집 및 이용 동의서", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[1]))}),
+            BtnInfo(name: "마케팅 정보 수신 동의서", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[2]))})
+        ]
+    }
     
     var body: some View {
         VStack(alignment: .center, spacing: 40, content: {
@@ -28,6 +30,10 @@ struct AppInfoBtnView: View {
             Spacer()
         })
         .navigationBarBackButtonHidden(true)
+        .navigationDestination(for: NavigationDestination.self) { destination in
+            NavigationRoutingView(destination: destination)
+                .environmentObject(container)
+        }
     }
     
     //MARK: - Components

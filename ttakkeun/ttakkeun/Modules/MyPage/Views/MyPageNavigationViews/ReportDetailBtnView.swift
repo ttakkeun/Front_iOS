@@ -12,13 +12,23 @@ struct ReportDetailBtnView: View {
     
     let selectedCategory: String
     
+    @EnvironmentObject var container: DIContainer
+    @StateObject var viewModel: MyPageViewModel
+    
+    @State private var selectedIndex: Int? = nil // 선택된 버튼의 인덱스
+    
+    init(container: DIContainer, selectedCategory: String) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+        self.selectedCategory = selectedCategory
+    }
+    
     var btnInfoArray: [BtnInfo] {
         return ReportDetailBtnView.getCategoryButtons(for: selectedCategory)
     }
     
     var body: some View {
         VStack(alignment: .center, spacing: 32, content: {
-            CustomNavigation(action: { print("hello world") },
+            CustomNavigation(action: { container.navigationRouter.pop() },
                              title: "신고하기",
                              currentPage: nil)
             
@@ -28,9 +38,14 @@ struct ReportDetailBtnView: View {
             
             MainButton(btnText: "신고하기", width: 349, height: 63, action: {
                 //TODO: - 신고하기 버튼 눌렸을 때 액션 필요
-                print("신고하기 버튼 눌림")}, color: Color.mainPrimary
+                print("신고하기 버튼 눌림")}, color: selectedIndex != nil ? Color.mainPrimary : Color.checkBg
             )
         })
+        .navigationBarBackButtonHidden(true)
+        .navigationDestination(for: NavigationDestination.self) { destination in
+            NavigationRoutingView(destination: destination)
+                .environmentObject(container)
+        }
     }
     
     private var reportBtnsForEachCategory: some View {
@@ -47,8 +62,16 @@ struct ReportDetailBtnView: View {
     /// Detail Info 볼 수 있는 버튼들
     private var reportBtns: some View {
         VStack(alignment: .center, spacing: 17, content: {
-            ForEach(btnInfoArray, id: \.id) { btnInfo in
-                SelectBtnBox(btnInfo: btnInfo)
+            ForEach(btnInfoArray.indices, id: \.self) { index in
+                SelectBtnBox(
+                    btnInfo: btnInfoArray[index],
+                    isSelected: Binding(
+                        get: { selectedIndex == index },
+                        set: { isSelected in
+                            selectedIndex = index
+                        }
+                    )
+                )
             }
         })
     }
@@ -127,9 +150,10 @@ struct ReportDetailBtnView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            ReportDetailBtnView(selectedCategory: "스팸/광고")
+            ReportDetailBtnView(container: DIContainer(), selectedCategory: "스팸/광고")
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
+                .environmentObject(DIContainer())
         }
     }
 }
