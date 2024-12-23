@@ -50,6 +50,11 @@ struct MyPageView: View {
                     CustomAlert(alertText: Text("해당 프로필을 삭제하시겠습니까?"), alertSubText: Text("해당 프로필에 저장된 데이터는 모두 삭제됩니다. \n삭제된 데이터는 다시 복원할 수 없습니다."), alertAction: .init(showAlert: $isProfileDeleteBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
                 }
             })
+            .navigationDestination(for: NavigationDestination.self) { destination in
+                NavigationRoutingView(destination: destination)
+                    .environmentObject(container)
+                    .environmentObject(appFlowViewModel)
+            }
             .navigationBarBackButtonHidden(true)
         } else {
             VStack {

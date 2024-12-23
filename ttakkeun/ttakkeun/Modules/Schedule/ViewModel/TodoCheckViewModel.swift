@@ -78,7 +78,7 @@ extension TodoCheckViewModel {
                     throw APIError.emptyResult
                 }
                 
-                print("TodoListData Server : \(responseData)")
+                print("TodoListGet Data Server : \(responseData)")
                 return responseData
             }
             .receive(on: DispatchQueue.main)
@@ -88,9 +88,9 @@ extension TodoCheckViewModel {
                 
                 switch completion {
                 case .finished:
-                    print("TodoListData Get Completed")
+                    print("TodoListGet Data Completed")
                 case .failure(let failure):
-                    print("TodoListData Get Failure: \(failure)")
+                    print("TodoListGet Data Failure: \(failure)")
                 }
             },
                   receiveValue: { [weak self] responseData in
@@ -98,6 +98,7 @@ extension TodoCheckViewModel {
                 
                 if let responseData = responseData.result {
                     self.scheduleData = responseData
+                    self.fileterTodos()
                 }
                 
                 isLoading = false

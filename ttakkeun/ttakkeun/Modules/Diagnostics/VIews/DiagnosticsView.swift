@@ -41,7 +41,7 @@ struct DiagnosticsView: View {
                 .environmentObject(container)
                 .environmentObject(appFlowViewModel)
             
-            DiagnosingHeader(diagnosingValue: $diagnosingValue, journalListViewModel: journalListViewModel)
+            DiagnosingHeader(diagnosingValue: $diagnosingValue, journalListViewModel: journalListViewModel, diagnosticViewModel: diagnosticViewModel)
             
             if diagnosingValue.selectedSegment == .journalList {
                 DiagnosingActionBar(diagnosingValue: $diagnosingValue, viewModel: journalListViewModel)

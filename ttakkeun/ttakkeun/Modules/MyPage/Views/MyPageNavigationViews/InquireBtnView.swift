@@ -11,18 +11,11 @@ import SwiftUI
 struct InquireBtnView: View {
     
     @EnvironmentObject var container: DIContainer
-    @StateObject var viewModel: MyPageViewModel
+    @StateObject var viewModel: InquireViewModel
     
     init(container: DIContainer) {
         self._viewModel = .init(wrappedValue: .init(container: container))
-        self.btnInfoArray = [
-            BtnInfo(name: "서비스 이용 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedInquiryCategory: "서비스 이용 문의"))}),
-            BtnInfo(name: "광고 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedInquiryCategory: "광고 문의"))}),
-            BtnInfo(name: "제휴 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedInquiryCategory: "제휴 문의"))})
-        ]
     }
-    
-    var btnInfoArray: [BtnInfo]
     
     var body: some View {
         VStack(alignment: .center, spacing: 40, content: {
@@ -57,10 +50,18 @@ struct InquireBtnView: View {
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
 
-            ForEach(btnInfoArray, id: \.id) { btnInfo in
+            ForEach(makeBtnInfoArray(), id: \.id) { btnInfo in
                 SelectBtnBox(btnInfo: btnInfo)
             }
         })
+    }
+    
+    private func makeBtnInfoArray() -> [BtnInfo] {
+        return [
+            BtnInfo(name: "서비스 이용 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedInquiryCategory: "서비스 이용 문의"))}),
+            BtnInfo(name: "광고 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedInquiryCategory: "광고 문의"))}),
+            BtnInfo(name: "제휴 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedInquiryCategory: "제휴 문의"))})
+        ]
     }
     
 }

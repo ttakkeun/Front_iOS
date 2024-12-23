@@ -12,21 +12,13 @@ struct AppInfoBtnView: View {
     
     @EnvironmentObject var container: DIContainer
     
-    var btnInfoArray: [BtnInfo] {
-        return [
-            //TODO: 버튼 액션 필요함
-            BtnInfo(name: "서비스 이용 약관", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[0]))}),
-            BtnInfo(name: "개인정보 수집 및 이용 동의서", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[1]))}),
-            BtnInfo(name: "마케팅 정보 수신 동의서", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[2]))})
-        ]
-    }
-    
     var body: some View {
         VStack(alignment: .center, spacing: 40, content: {
             CustomNavigation(action: { container.navigationRouter.pop() },
                              title: "이용약관 및 정책",
                              currentPage: nil)
             infoBtns
+            
             Spacer()
         })
         .navigationBarBackButtonHidden(true)
@@ -40,10 +32,18 @@ struct AppInfoBtnView: View {
     /// Detail Info 볼 수 있는 버튼들
     private var infoBtns: some View {
         VStack(alignment: .center, spacing: 17, content: {
-            ForEach(btnInfoArray, id: \.id) { btnInfo in
+            ForEach(btnInfoArray(), id: \.id) { btnInfo in
                 SelectBtnBox(btnInfo: btnInfo)
             }
         })
+    }
+    
+    private func btnInfoArray() -> [BtnInfo] {
+        return [
+            BtnInfo(name: "서비스 이용 약관", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[0]))}),
+            BtnInfo(name: "개인정보 수집 및 이용 동의서", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[1]))}),
+            BtnInfo(name: "마케팅 정보 수신 동의서", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[2]))})
+        ]
     }
     
 }

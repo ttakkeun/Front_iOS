@@ -10,12 +10,8 @@ import Combine
 import CombineMoya
 
 class HomeTodoViewModel: ObservableObject, TodoCheckProtocol {
-    func sendTodoStatus(todoId: Int) {
-        //TODO: - TodoAction
-    }
-    
-    
     @Published var inputDate: TodoDateRequest
+    
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
     
@@ -111,6 +107,37 @@ extension HomeTodoViewModel {
                 guard let self = self else { return }
                 if let responseData = responseData.result {
                     processFetchData(responseData)
+                }
+            })
+            .store(in: &cancellables)
+    }
+    
+    func sendTodoStatus(todoId: Int) {
+        container.useCaseProvider.scheduleUseCase.executePatchTodoCheck(todoId: todoId)
+            .tryMap { responseData -> ResponseData<TodoCheckResponse> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                
+                print("patchTodoStatus Server : \(responseData)")
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("patchTodoStatus Get Completed")
+                case .failure(let failure):
+                    print("patchTodoStatus Get Failure: \(failure)")
+                }
+                
+            }, receiveValue: { responseData in
+                if let responseData = responseData.result {
+                    print("투두 체크 상태: \(responseData)")
                 }
             })
             .store(in: &cancellables)

@@ -16,10 +16,12 @@ struct DiagnosingHeader: View {
     
     @Binding var diagnosingValue: DiagnosingValue
     @ObservedObject var journalListViewModel: JournalListViewModel
+    @ObservedObject var diagnosticViewModel: DiagnosticResultViewModel
     
-    init(diagnosingValue: Binding<DiagnosingValue>, journalListViewModel: JournalListViewModel) {
+    init(diagnosingValue: Binding<DiagnosingValue>, journalListViewModel: JournalListViewModel, diagnosticViewModel: DiagnosticResultViewModel) {
         self._diagnosingValue = diagnosingValue
         self.journalListViewModel = journalListViewModel
+        self.diagnosticViewModel = diagnosticViewModel
     }
     
     var body: some View {
@@ -38,10 +40,20 @@ struct DiagnosingHeader: View {
                 Button(action: {
                     withAnimation(.easeInOut(duration: 0.4)) {
                         diagnosingValue.selectedPartItem = item
-                        journalListViewModel.recordList.removeAll()
-                        journalListViewModel.currentPage = 0
-                        journalListViewModel.canLoadMore = true
-                        journalListViewModel.getJournalList(category: item.rawValue, page: 0)
+                        switch diagnosingValue.selectedSegment {
+                            
+                        case .journalList:
+                            journalListViewModel.recordList.removeAll()
+                            journalListViewModel.currentPage = 0
+                            journalListViewModel.canLoadMore = true
+                            journalListViewModel.getJournalList(category: item.rawValue, page: 0)
+                            
+                        case .diagnosticResults:
+                            diagnosticViewModel.diagResultListResponse.removeAll()
+                            diagnosticViewModel.currentPage = 0
+                            diagnosticViewModel.canLoadMore = true
+                            diagnosticViewModel.getDiagResultList(category: item.rawValue, page: 0)
+                        }
                     }
                 }, label: {
                     Text(item.toKorean())

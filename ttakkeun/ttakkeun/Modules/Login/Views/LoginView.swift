@@ -73,7 +73,7 @@ struct LoginView: View {
             })
             
             Button(action: {
-                print("카카오")
+                viewModel.kakaoLogin()
             }, label: {
                 Icon.kakaoLogin.image
                     .fixedSize()
