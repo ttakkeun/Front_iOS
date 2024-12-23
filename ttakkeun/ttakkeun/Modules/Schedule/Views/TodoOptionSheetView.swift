@@ -47,7 +47,7 @@ struct TodoOptionSheetView: View {
     }
     
     private var mainContents: some View {
-        VStack(alignment: .leading, spacing: 24, content: {
+        VStack(alignment: .center, spacing: 24, content: {
             
             title
             
@@ -55,7 +55,6 @@ struct TodoOptionSheetView: View {
             
             bottomButtonGroup
         })
-        .safeAreaPadding(EdgeInsets(top: 0, leading: 40, bottom: 47, trailing: 42))
     }
     
     private var title: some View {
@@ -78,6 +77,7 @@ struct TodoOptionSheetView: View {
                 })
             }
         })
+        .frame(width: 315, alignment: .center)
     }
     
     private var bottomButtonGroup: some View {
@@ -97,6 +97,7 @@ struct TodoOptionSheetView: View {
                 }
             }
         })
+        .frame(width: 315, alignment: .leading)
     }
 }
 
@@ -195,8 +196,10 @@ fileprivate struct CalendarPickerView: View {
     }
 }
 
-struct TOdoOptionSheetView_Preview: PreviewProvider {
+struct TodoOptionSheetView_Preview: PreviewProvider {
     static var previews: some View {
         TodoOptionSheetView(viewModel: TodoCheckViewModel(partItem: .claw, container: DIContainer()), selectedTodo: .constant(.init(todoID: 1, todoName: "테스트입니다아아", todoStatus: true)), isShowSheet: .constant(true))
+            .presentationCornerRadius(30)
+            .presentationDetents([.fraction(0.45)])
     }
 }
