@@ -18,7 +18,7 @@ enum JournalAPITarget {
     case makeJournal(category: PartItem.RawValue, data: SelectedAnswerRequest, questionImage: [Int: [UIImage]]) // 일지 생성
     case getAnswerList(category: PartItem.RawValue) // 일지 질문 및 답변 조회
     case deleteJournal(recordId: Int) // 일지 삭제
-    case searchGetJournal(category: PartItem.RawValue, page: Int, date: String) //일지 기록 검색
+    case searchGetJournal(category: PartItem.RawValue, date: String) //일지 기록 검색
     
     /* --- 진단 --- */
     
@@ -44,7 +44,7 @@ extension JournalAPITarget: APITargetType {
             return "/api/record/register/\(category)"
         case .deleteJournal(let recordId):
             return "/api/record/\(recordId)"
-        case .searchGetJournal(let category, _, _):
+        case .searchGetJournal(let category, _):
             return "/api/record/search/\(UserState.shared.getPetId())/\(category)"
         case .makeDiagnosis:
             return "/api/diagnose/loading"
@@ -85,8 +85,8 @@ extension JournalAPITarget: APITargetType {
             return .uploadMultipart(formData)
         case .deleteJournal:
             return .requestPlain
-        case .searchGetJournal(_, let page, let date):
-            return .requestParameters(parameters: ["page": page, "date": date], encoding: URLEncoding.default)
+        case .searchGetJournal(_, let date):
+            return .requestParameters(parameters: ["date": date], encoding: URLEncoding.default)
         case .makeDiagnosis(let data):
             return .requestJSONEncodable(data)
         case .updateNaverDiag(let data):

@@ -31,10 +31,6 @@ struct InquireBtnView: View {
             Spacer()
         })
         .navigationBarBackButtonHidden(true)
-        .navigationDestination(for: NavigationDestination.self) { destination in
-            NavigationRoutingView(destination: destination)
-                .environmentObject(container)
-        }
     }
     
     //MARK: - Components
@@ -58,9 +54,9 @@ struct InquireBtnView: View {
     
     private func makeBtnInfoArray() -> [BtnInfo] {
         return [
-            BtnInfo(name: "서비스 이용 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedInquiryCategory: "서비스 이용 문의"))}),
-            BtnInfo(name: "광고 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedInquiryCategory: "광고 문의"))}),
-            BtnInfo(name: "제휴 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedInquiryCategory: "제휴 문의"))})
+            BtnInfo(name: "서비스 이용 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedInquiryCategory: .SERVICE))}),
+            BtnInfo(name: "광고 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedInquiryCategory: .AD))}),
+            BtnInfo(name: "제휴 문의", date: nil, action: { container.navigationRouter.push(to: .writeInquire(selectedInquiryCategory: .PARTNERSHIP))})
         ]
     }
     

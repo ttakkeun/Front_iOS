@@ -58,6 +58,7 @@ extension HomeRecommendViewModel {
                 
                 if case .failure(let error) = completion {
                     print("Home Get AIProduct Failed: \(error)")
+                    aiProduct = []
                 }
             }, receiveValue: { [weak self] aiProductData in
                 guard let self = self else { return }

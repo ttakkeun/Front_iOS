@@ -13,6 +13,8 @@ enum MyPageAPITarget {
     case editUserName(newUsername: String)
     case logout
     case deleteProfile(petId: Int)
+    
+    case getMyInquire
 }
 
 extension MyPageAPITarget: APITargetType {
@@ -26,6 +28,8 @@ extension MyPageAPITarget: APITargetType {
             return "/api/auth/logout"
         case .deleteProfile(let petId):
             return "/api/pet-profile/\(petId)"
+        case .getMyInquire:
+            return "/api/inquiry/myInquiry"
         }
     }
     
@@ -39,12 +43,14 @@ extension MyPageAPITarget: APITargetType {
             return .post
         case .deleteProfile:
             return .delete
+        case .getMyInquire:
+            return .get
         }
     }
     
     var task: Task {
         switch self {
-        case .getUserInfo, .logout, .deleteProfile:
+        case .getUserInfo, .logout, .deleteProfile, .getMyInquire:
             return .requestPlain
         case .editUserName(let newUsername):
             return .requestParameters(parameters: ["newUsername": newUsername], encoding: JSONEncoding.default)

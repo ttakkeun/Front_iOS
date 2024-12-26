@@ -25,7 +25,7 @@ protocol JournalServiceProtocol {
     
     func deleteJournalData(recordId: Int) -> AnyPublisher<ResponseData<DeleteJournal>, MoyaError>
     
-    func searchGetJournalData(category: PartItem.RawValue, page: Int, date: String) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError>
+    func searchGetJournalData(category: PartItem.RawValue, date: String) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError>
     
     /* --- 진단 --- */
     

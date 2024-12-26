@@ -31,17 +31,23 @@ struct HomeAIProduct: View {
                     })
                     .scrollIndicators(.visible)
                 } else {
-                    HStack {
-                        
-                        Spacer()
-                        
-                        NotRecommend(recommendType: .aiRecommend)
-                        
-                        Spacer()
-                    }
+                    empyetView
                 }
+            } else {
+                empyetView
             }
         })
+    }
+    
+    private var empyetView: some View {
+        HStack {
+            
+            Spacer()
+            
+            NotRecommend(recommendType: .aiRecommend)
+            
+            Spacer()
+        }
     }
 }
 

@@ -50,8 +50,8 @@ class JournalUseCase: JournalUseCaseProtocol {
             .eraseToAnyPublisher()
     }
     
-    func executeSearchGetJournal(category: PartItem.RawValue, page: Int, date: String) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError> {
-        return journalRepository.searchGetJournal(category: category, page: page, date: date)
+    func executeSearchGetJournal(category: PartItem.RawValue, date: String) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError> {
+        return journalRepository.searchGetJournal(category: category, date: date)
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }

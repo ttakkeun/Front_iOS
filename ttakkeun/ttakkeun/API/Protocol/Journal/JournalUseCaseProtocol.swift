@@ -25,7 +25,7 @@ protocol JournalUseCaseProtocol {
     
     func executeDeleteJournal(recordId: Int) -> AnyPublisher<ResponseData<DeleteJournal>, MoyaError>
     
-    func executeSearchGetJournal(category: PartItem.RawValue, page: Int, date: String) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError>
+    func executeSearchGetJournal(category: PartItem.RawValue, date: String) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError>
     
     /* --- 진단 --- */
     

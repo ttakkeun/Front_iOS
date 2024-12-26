@@ -10,13 +10,18 @@ import SwiftUI
 struct MakeProfileView: View {
     
     @StateObject var viewModel: MakeProfileViewModel
+    @Binding var showFullScreen: Bool
+    
     @EnvironmentObject var container: DIContainer
     @Environment(\.dismiss) var dismiss
     
     
-    init(container: DIContainer
+    init(
+        container: DIContainer,
+        showFullScreen: Binding<Bool>
     ) {
         self._viewModel = StateObject(wrappedValue: .init(container: container))
+        self._showFullScreen = showFullScreen
     }
     
     var body: some View {
@@ -48,6 +53,25 @@ struct MakeProfileView: View {
         }
         .sheet(isPresented: $viewModel.isImagePickerPresented, content: {
             ImagePicker(imageHandler: viewModel, selectedLimit: 1)
+        })
+        .overlay(alignment: .center, content: {
+            if viewModel.isLoading {
+                    ZStack {
+                        Color.black
+                            .opacity(0.5)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity).ignoresSafeArea(.all)
+                        
+                        VStack {
+                            ProgressView(label: {
+                                LoadingDotsText(text: "반려동물 프로필 생성 중입니다.")
+                            })
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                .controlSize(.large)
+                        }
+                        .padding()
+                        .background(Color.gray.opacity(0.8))
+                    }
+                }
         })
     }
     
@@ -202,7 +226,9 @@ struct MakeProfileView: View {
             height: 56,
             action: {
                 if viewModel.isProfileCompleted {
-                    viewModel.makePetProfile()
+                    viewModel.makePetProfile {
+                        self.showFullScreen.toggle()
+                    }
                 }
             },
             color: viewModel.isProfileCompleted ? Color.mainPrimary : Color.gray200)
@@ -246,11 +272,4 @@ fileprivate struct FieldGroup {
     let title: String
     let mustMark: Bool
     let isFieldEnable: Bool
-}
-
-
-struct MakeProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        MakeProfileView(container: DIContainer())
-    }
 }

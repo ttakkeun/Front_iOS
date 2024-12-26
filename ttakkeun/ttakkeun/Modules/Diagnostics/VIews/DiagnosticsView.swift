@@ -58,6 +58,7 @@ struct DiagnosticsView: View {
                 )
                 .onChange(of: journalListViewModel.selectedDate, {
                     journalListViewModel.isCalendarPresented = false
+                    journalListViewModel.searchGetJournal(category: diagnosingValue.selectedPartItem.rawValue, date: DataFormatter.shared.formatDateForAPI(journalListViewModel.selectedDate))
                 })
                 .datePickerStyle(GraphicalDatePickerStyle())
                 .presentationDragIndicator(.visible)
@@ -68,11 +69,6 @@ struct DiagnosticsView: View {
             DiagnosingFlowView(viewModel: journalListViewModel)
                 .environmentObject(container)
         })
-        .navigationDestination(for: NavigationDestination.self) { destination in
-            NavigationRoutingView(destination: destination)
-                .environmentObject(container)
-                .environmentObject(appFlowViewModel)
-        }
     }
     
     @ViewBuilder

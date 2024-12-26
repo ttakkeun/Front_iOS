@@ -40,4 +40,10 @@ class MyPageUseCase: MyPageUseCaseProtocol {
             .mapError { $0 as MoyaError }
             .eraseToAnyPublisher()
     }
+    
+    func executeGetMyInquir() -> AnyPublisher<ResponseData<[MyInquiryResponse]>, MoyaError> {
+        return repository.getMyInquire()
+            .mapError { $0 as MoyaError }
+            .eraseToAnyPublisher()
+    }
 }

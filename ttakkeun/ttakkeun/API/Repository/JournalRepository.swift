@@ -40,8 +40,8 @@ class JournalRepository: JournalRepositoryProtocol {
         return journalService.deleteJournalData(recordId: recordId)
     }
     
-    func searchGetJournal(category: PartItem.RawValue, page: Int, date: String) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError> {
-        return journalService.searchGetJournalData(category: category, page: page, date: date)
+    func searchGetJournal(category: PartItem.RawValue, date: String) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError> {
+        return journalService.searchGetJournalData(category: category, date: date)
     }
     
     /* --- 진단 --- */

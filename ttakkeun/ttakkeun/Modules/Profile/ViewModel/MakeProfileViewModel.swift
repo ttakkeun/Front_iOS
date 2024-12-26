@@ -109,9 +109,9 @@ extension MakeProfileViewModel: ImageHandling {
 
 extension MakeProfileViewModel {
     
-    public func makePetProfile() {
+    public func makePetProfile(completion: (() -> Void)? = nil) {
         isLoading = true
-        
+
         container.useCaseProvider.petProfileUseCase.executeMakePetProfile(petInfo: requestData)
             .tryMap { responseData -> ResponseData<MakePetProfileResponse> in
                 if !responseData.isSuccess {
@@ -126,22 +126,20 @@ extension MakeProfileViewModel {
                 return responseData
             }
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                guard let self = self else { return }
-                self.isLoading = false
+            .sink(receiveCompletion: {completionStatus in
                 
-                switch completion {
+                switch completionStatus {
                 case .finished:
                     print("PetProfile Make Complete")
                 case .failure(let failure):
-                    print("PetPRofile Make Failure: \(failure)")
+                    print("PetProfile Make Failure: \(failure)")
                 }
             }, receiveValue: { [weak self] petProfileResponse in
                 guard let self = self else { return }
-                handleMakePetProfileResponse(petId: petProfileResponse.result?.petId)
+                self.handleMakePetProfileResponse(petId: petProfileResponse.result?.petId)
                 
                 if let petId = petProfileResponse.result?.petId {
-                    patchPetProfileImage(petId: petId)
+                    self.patchPetProfileImage(petId: petId, completion: completion)
                 }
             })
             .store(in: &cancellables)
@@ -157,7 +155,7 @@ extension MakeProfileViewModel {
     
     // MARK: - patchPetProfileImage
     
-    public func patchPetProfileImage(petId: Int) {
+    public func patchPetProfileImage(petId: Int, completion: (() -> Void)? = nil) {
         if !getImages().isEmpty {
             container.useCaseProvider.petProfileUseCase.executePatchPetProfileImage(petId: petId, image: getImages()[0])
                 .tryMap { responseData -> ResponseData<PatchPetImageResponse> in
@@ -172,21 +170,26 @@ extension MakeProfileViewModel {
                     return responseData
                 }
                 .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { completion in
-                    switch completion {
+                .sink(receiveCompletion: { [weak self] completionStatus in
+                    guard let self = self else { return }
+                    
+                    self.isLoading = false
+                    
+                    switch completionStatus {
                     case .finished:
                         print("Patch PetProfile Image Complete")
+                        completion?() // 성공 시 completion 호출
                         self.container.navigationRouter.pop()
                     case .failure(let failure):
                         print("Patch PetProfile Image Failure: \(failure)")
                     }
                 }, receiveValue: { [weak self] patchPetProfileResponse in
                     guard let self = self else { return }
-                    handleProfileImageUrlResponse(imageUrl: patchPetProfileResponse.result?.petImageUrl)
+                    self.handleProfileImageUrlResponse(imageUrl: patchPetProfileResponse.result?.petImageUrl)
                 })
                 .store(in: &cancellables)
         } else {
-            self.container.navigationRouter.pop()
+            completion?() // 이미지가 없는 경우에도 completion 호출
         }
     }
     

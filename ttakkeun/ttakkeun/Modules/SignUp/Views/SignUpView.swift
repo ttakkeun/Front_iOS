@@ -66,6 +66,9 @@ struct SignUpView: View {
         })
         .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
         .navigationBarBackButtonHidden()
+        .onAppear {
+            UIApplication.shared.hideKeyboard()
+        }
     }
     
     private var emailField: some View {

@@ -70,16 +70,16 @@ struct TabView: View {
                         FloatingCircle(isShowFloating: $isShowFloating)
                     }
                 }
+                .navigationDestination(for: NavigationDestination.self) { destination in
+                    NavigationRoutingView(destination: destination)
+                        .environmentObject(container)
+                        .environmentObject(appFlowViewModel)
+                }
                 .safeAreaPadding(EdgeInsets(top: 60, leading: 0, bottom: 0, trailing: 0))
                 .ignoresSafeArea(.all)
             }
             .environmentObject(container)
             .environmentObject(appFlowViewModel)
-        }
-        .navigationDestination(for: NavigationDestination.self) { destination in
-            NavigationRoutingView(destination: destination)
-                .environmentObject(container)
-                .environmentObject(appFlowViewModel)
         }
     }
 }

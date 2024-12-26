@@ -24,7 +24,7 @@ class JournalListViewModel: ObservableObject {
     
     @Published var showAiDiagnosing: Bool = false
     @Published var showFullScreenAI: Bool = false
-    @Published var aiPoint: Int = 10
+    @Published var aiPoint: Int = 0
     
     // MARK: - Calendar
     @Published var isCalendarPresented: Bool = false
@@ -109,8 +109,6 @@ extension JournalListViewModel {
             }
         }, receiveValue: { [weak self] responseData in
             guard let self = self else { return }
-            
-            self.journalListData = responseData.result
             
             if let newRecords = responseData.result?.recordList, !newRecords.isEmpty {
                 self.recordList.append(contentsOf: newRecords)
@@ -274,4 +272,105 @@ extension JournalListViewModel {
             })
             .store(in: &cancellables)
     }
+    
+    public func getUserPoint() {
+        
+        container.useCaseProvider.journalUseCase.executeGetUserPoint()
+            .tryMap { responseData -> ResponseData<DiagUserPoint> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                
+                print("✅ GetUserPoint: \(String(describing: responseData.result))")
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("✅ GetUserPoint Completed")
+                    
+                case .failure(let failure):
+                    print("❌ GetUserPoint Failure: \(failure)")
+                }
+            },
+                  receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                if let responseData = responseData.result {
+                    self.aiPoint = responseData.point + 1
+                }
+            })
+            .store(in: &cancellables)
+    }
+    
+    public func patchUserPoint() {
+        
+        container.useCaseProvider.journalUseCase.executePatchUserPoint()
+            .tryMap { responseData -> ResponseData<DiagUserPoint> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                
+                print("✅ PatchUserPoint: \(String(describing: responseData.result))")
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("✅ PatchUserPoint Completed")
+                    
+                case .failure(let failure):
+                    print("❌ PatchUserPoint Failure: \(failure)")
+                }
+            },
+                  receiveValue: { responseData in
+                if let responseData = responseData.result {
+                    print("현재 유저 포인트: \(responseData.point)")
+                }
+            })
+            .store(in: &cancellables)
+    }
+    
+    public func searchGetJournal(category: PartItem.RawValue, date: String) {
+        container.useCaseProvider.journalUseCase.executeSearchGetJournal(category: category, date: date)
+            .tryMap { responseData -> ResponseData<JournalListResponse> in
+                if !responseData.isSuccess {
+                    throw APIError.serverError(message: responseData.message, code: responseData.code)
+                }
+                
+                guard let _ = responseData.result else {
+                    throw APIError.emptyResult
+                }
+                
+                print("✅ SearchGetJournalList: \(String(describing: responseData.result))")
+                return responseData
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("✅ SearchGetJournalList Completed")
+                    
+                case .failure(let failure):
+                    print("❌ SearchGetJournalList Failure: \(failure)")
+                }
+            }, receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                if let responseData = responseData.result {
+                    self.recordList.removeAll()
+                    self.recordList = responseData.recordList
+                }
+            })
+            .store(in: &cancellables)
+    }
+    
 }

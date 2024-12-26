@@ -37,12 +37,15 @@ struct ProfileView: View {
             })
             .frame(maxWidth: .infinity)
             .background(viewModel.backgroudColor)
-            .task {
+            .onAppear {
                 viewModel.updateBackgroundColor()
                 viewModel.getPetProfile()
             }
-            .fullScreenCover(isPresented: $viewModel.showFullScreen, content: {
-                MakeProfileView(container: container)
+            .fullScreenCover(isPresented: $viewModel.showFullScreen, onDismiss: {
+                viewModel.updateBackgroundColor()
+                viewModel.getPetProfile()
+            },content: {
+                MakeProfileView(container: container, showFullScreen: $viewModel.showFullScreen)
             })
     }
     

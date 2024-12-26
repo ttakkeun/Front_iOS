@@ -42,4 +42,10 @@ class MyPageService: MyPageServiceProtocol {
             .map(ResponseData<EmptyResponse>.self)
             .eraseToAnyPublisher()
     }
+    
+    func getMyInquireData() -> AnyPublisher<ResponseData<[MyInquiryResponse]>, MoyaError> {
+        return provider.requestPublisher(.getMyInquire)
+            .map(ResponseData<[MyInquiryResponse]>.self)
+            .eraseToAnyPublisher()
+    }
 }

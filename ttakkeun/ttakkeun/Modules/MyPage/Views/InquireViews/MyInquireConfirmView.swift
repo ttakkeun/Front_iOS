@@ -11,13 +11,9 @@ import Kingfisher
 struct MyInquireConfirmView: View {
     
     @EnvironmentObject var container: DIContainer
-    @StateObject var viewModel: MyPageViewModel
-    
-    //TODO: - 뷰모델 필요
     var inquiryResponse: MyInquiryResponse
     
-    init(container: DIContainer, inquiryResponse: MyInquiryResponse) {
-        self._viewModel = .init(wrappedValue: .init(container: container))
+    init(inquiryResponse: MyInquiryResponse) {
         self.inquiryResponse = inquiryResponse
     }
     
@@ -68,13 +64,16 @@ struct MyInquireConfirmView: View {
         VStack(alignment: .leading, spacing: 13, content: {
             makeTitle(title: "이미지 첨부")
             
-            //TODO: - 사진 선택하면 선택한 사진을 일렬로 배치할 수 있도록 해야 함, 오빠 코드 참고해서 하긴 했는데, 확인 부탁
             if !inquiryResponse.imageUrl.isEmpty {
                 ScrollView(.horizontal, content: {
                     LazyHGrid(rows: Array(repeating: GridItem(.fixed(80)), count: 1), content: {
                         ForEach(inquiryResponse.imageUrl, id: \.self) { image in
                             if let url = URL(string: image) {
                                 KFImage(url)
+                                    .placeholder {
+                                        ProgressView()
+                                            .controlSize(.mini)
+                                    }
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 80, height: 80)
@@ -87,7 +86,7 @@ struct MyInquireConfirmView: View {
                         }
                     })
                 })
-                .frame(maxWidth: 312, maxHeight: 80)
+                .frame(maxWidth: 351, maxHeight: 80)
                 .padding(.horizontal, 3)
             } else {
                 EmptyView()
@@ -99,16 +98,10 @@ struct MyInquireConfirmView: View {
         VStack(alignment: .leading, spacing: 13, content: {
             makeTitle(title: "연락 받을 이메일")
         
-            CustomTextField(text: .constant(inquiryResponse.email), placeholder: "", cornerRadius: 10, maxWidth: 351, maxHeight: 56)
+            CustomTextField(text: .constant(""), placeholder: inquiryResponse.email, cornerRadius: 10, maxWidth: 351, maxHeight: 56)
                 .disabled(true)
         })
     }
-}
-
-//MARK: - Data Structure
-private struct FieldGroup {
-    let title: String
-    let text: Binding<String>
 }
 
 //MARK: - function
@@ -131,6 +124,7 @@ struct MyInquireConfirmView_Preview: PreviewProvider {
         inquiryType: "서비스 이용문의",
         imageUrl: [
             "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg",
+            "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzExMDFfMTQg%2FMDAxNjk4ODA3NjI2MzA3.6qhR_i6-hxPfRDzIR7bWHOwJHaHT2TuWCAtPdr2hs5wg.QlJ16FQF5KoWbuzUeDqteoLYW2UgPm-YTLF700V-4fQg.JPEG.iansnap%2F%25BF%25F8%25BA%25BB_%2528276%2529.jpg&type=sc960_832",
             "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzExMDFfMTQg%2FMDAxNjk4ODA3NjI2MzA3.6qhR_i6-hxPfRDzIR7bWHOwJHaHT2TuWCAtPdr2hs5wg.QlJ16FQF5KoWbuzUeDqteoLYW2UgPm-YTLF700V-4fQg.JPEG.iansnap%2F%25BF%25F8%25BA%25BB_%2528276%2529.jpg&type=sc960_832"
         ],
         created_at: "24.07.15"
@@ -138,7 +132,7 @@ struct MyInquireConfirmView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            MyInquireConfirmView(container: DIContainer(), inquiryResponse: inquiryData)
+            MyInquireConfirmView(inquiryResponse: inquiryData)
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
                 .environmentObject(DIContainer())

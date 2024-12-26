@@ -64,11 +64,6 @@ struct RecommendView: View {
                     .transition(.opacity)
             }
         })
-        .navigationDestination(for: NavigationDestination.self) { destination in
-            NavigationRoutingView(destination: destination)
-                .environmentObject(container)
-                .environmentObject(appFlowViewModel)
-        }
     }
     
     // MARK: - Top Controller

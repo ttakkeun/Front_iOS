@@ -50,11 +50,6 @@ struct HomeView: View {
             homeRecommendViewModel.aiProduct = nil
             homeRecommendViewModel.userProduct = nil
         }
-        .navigationDestination(for: NavigationDestination.self) { destination in
-            NavigationRoutingView(destination: destination)
-                .environmentObject(container)
-                .environmentObject(appFlowViewModel)
-        }
     }
     
     @ViewBuilder

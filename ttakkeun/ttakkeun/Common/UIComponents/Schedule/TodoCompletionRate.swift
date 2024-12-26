@@ -57,18 +57,24 @@ extension TodoCompletionRate {
     func percentage(partItem: PartItem) -> Int {
         switch partItem {
         case .ear:
-            return Int((Double(data.earCompleted) / Double(data.earTotal)) * 100)
+            return calculatePercentage(completed: data.earCompleted, total: data.earTotal)
         case .eye:
-            return Int((Double(data.eyeCompleted) / Double(data.eyeTotal)) * 100)
+            return calculatePercentage(completed: data.eyeCompleted, total: data.eyeTotal)
         case .hair:
-            return Int((Double(data.hairCompleted) / Double(data.hairTotal)) * 100)
+            return calculatePercentage(completed: data.hairCompleted, total: data.hairTotal)
         case .claw:
-            return Int((Double(data.clawCompleted) / Double(data.clawTotal)) * 100)
+            return calculatePercentage(completed: data.clawCompleted, total: data.clawTotal)
         case .teeth:
-            return Int((Double(data.teethCompleted) / Double(data.teethTotal)) * 100)
+            return calculatePercentage(completed: data.teethCompleted, total: data.teethTotal)
         }
     }
-    
+
+    private func calculatePercentage(completed: Int, total: Int) -> Int {
+        guard total > 0 else {
+            return 0 // 분모가 0일 때 기본값 설정
+        }
+        return Int((Double(completed) / Double(total)) * 100)
+    }
     func makeRectangle(color: Color, height: CGFloat) -> some View {
         UnevenRoundedRectangle(topLeadingRadius: 30, bottomLeadingRadius: 10, bottomTrailingRadius: 10, topTrailingRadius: 30)
             .foregroundStyle(color)

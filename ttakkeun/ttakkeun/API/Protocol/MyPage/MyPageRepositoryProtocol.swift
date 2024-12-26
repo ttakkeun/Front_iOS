@@ -19,4 +19,6 @@ protocol MyPageRepositoryProtocol {
     func logout() -> AnyPublisher<ResponseData<String>, MoyaError>
     
     func deleteProfile(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
+    
+    func getMyInquire() -> AnyPublisher<ResponseData<[MyInquiryResponse]>, MoyaError>
 }

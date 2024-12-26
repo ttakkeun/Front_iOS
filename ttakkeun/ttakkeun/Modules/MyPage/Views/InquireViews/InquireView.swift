@@ -10,33 +10,31 @@ import SwiftUI
 struct InquireView: View {
     
     @EnvironmentObject var container: DIContainer
-    @StateObject var viewModel: MyPageViewModel
+    @StateObject var viewModel: InquireViewModel
     
     @State private var showAgreementSheet: Bool = false
     
-    let selectedCategory: String
+    let selectedCategory: InquiryType
     private let agreement = AgreementDetailData.loadEmailAgreements()
     
-    init(container: DIContainer, selectedCategory: String) {
+    init(container: DIContainer, selectedCategory: InquiryType) {
         self._viewModel = .init(wrappedValue: .init(container: container))
         self.selectedCategory = selectedCategory
     }
     
-    //TODO: 스웨거 안나와서 일단 뷰만 돌리기 위한 임시변수, viewModel 만들어야 함!
-    @State private var detail: String = ""
-    @State private var email: String = ""
-    @State private var isAgreementCheck: Bool = false
-    @State private var isInquireMainBtnClicked: Bool = false
-    
     
     var body: some View {
         ZStack(content: {
-            VStack(alignment: .center, spacing: 25, content: {
+            VStack(alignment: .leading, spacing: 25, content: {
                 CustomNavigation(action: { container.navigationRouter.pop() },
                                  title: "문의하기",
                                  currentPage: nil)
                 
                 reportContent
+                
+                inputReport
+                
+                imageAdd
                 
                 emailCheck
                 
@@ -45,84 +43,96 @@ struct InquireView: View {
                 Spacer()
                 
                 MainButton(btnText: "문의하기", width: 349, height: 63,
-                           action: { isInquireMainBtnClicked.toggle()}, color: isMainButtonEnabled() ? Color.mainPrimary : Color.checkBg)
+                           action: { viewModel.isInquireMainBtnClicked.toggle()}, color: isMainButtonEnabled() ? Color.mainPrimary : Color.checkBg)
                 .disabled(!isMainButtonEnabled())
             })
-            .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
+            .safeAreaPadding(EdgeInsets(top: 10, leading: 0, bottom: 20, trailing: 0))
             .sheet(isPresented: $showAgreementSheet) {
                 AgreementSheetView(agreement: agreement)
                     .presentationCornerRadius(30)
             }
+            .sheet(isPresented: $viewModel.isImagePickerPresented, content: {
+                ImagePicker(imageHandler: viewModel, selectedLimit: 3)
+            })
             
-            if isInquireMainBtnClicked {
-                CustomAlert(alertText: Text("문의내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록 하겠습니다. \n영업시간 2~3일 이내에 이메일로 답변을 받아보실 수 있습니다."), alertAction: .init(showAlert: $isInquireMainBtnClicked, yes: { print("ok") }))
+            if viewModel.isInquireMainBtnClicked {
+                CustomAlert(alertText: Text("문의내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록 하겠습니다. \n영업시간 2~3일 이내에 이메일로 답변을 받아보실 수 있습니다."), alertAction: .init(showAlert: $viewModel.isInquireMainBtnClicked, yes: {
+                    container.navigationRouter.pop()
+                    
+                }))
             }
         })
+        .onAppear {
+            UIApplication.shared.hideKeyboard()
+        }
+        .ignoresSafeArea(.keyboard)
         .navigationBarBackButtonHidden(true)
     }
     
     //MARK: - Components
     ///정보 입력 필드
     private var reportContent: some View {
-        VStack(alignment: .leading, spacing: 17, content: {
-            //TODO: - '>' 뒤에 카테고리는 앞에 뷰에서 어떤 버튼을 선택하느냐에 따라 달라져야함
-            Text("문의하기 > \(selectedCategory)")
-                .font(.Body4_medium)
-                .foregroundStyle(Color.gray400)
-            
-            reportDetail
-            
-            imageAdd
-        })
+        
+        Text("문의하기 > \(selectedCategory.toKorean())")
+            .font(.Body4_medium)
+            .foregroundStyle(Color.gray400)
     }
     
     
     /// 신고 내용
-    private var reportDetail: some View {
-        VStack(alignment: .leading, spacing: 18,content: {
-            makeTitle(title: "문의 내용을 작성해주세요.")
+    private var inputReport: some View {
+        VStack(alignment: .leading, spacing: 18, content: {
+            makeTitle(title: "문의 내용을 작성해주세요. (필수)")
             
-            //TODO: text Binding, maxTextCount 수정
-            TextEditor(text: $detail)
-                .customStyleTipsEditor(text: $detail, placeholder: "최대 300자 이내", maxTextCount: 300, backColor: Color.white)
-                .frame(width: 351, height: 200)
+            TextEditor(text: $viewModel.reportContents)
+                .customStyleTipsEditor(text: $viewModel.reportContents, placeholder: "최대 250자 이내", maxTextCount: 250, backColor: Color.white)
+                .frame(width: 351, height: 180)
         })
     }
     
     private var imageAdd: some View {
-        VStack(alignment: .leading, spacing: 13, content: {
-            makeTitle(title: "이미지 첨부")
+        VStack(alignment: .leading, spacing: 1, content: {
+            makeTitle(title: "이미지 등록하기")
             
-            Button(action: {
-                //TODO: - 이미지 피커 연결
-            }, label: {
-                Text("파일 선택하기")
-                    .font(.Body4_medium)
-                    .foregroundStyle(Color.gray400)
-                    .frame(width: 100, height: 27)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 40)
-                            .fill(Color.clear)
-                            .stroke(Color.gray400, lineWidth: 1)
-                    )
+            HStack(alignment: .top, spacing: 5, content: {
+                CameraButton(cameraText: Text("\(viewModel.selectedImageCount) / 3"), action: {
+                    if viewModel.selectedImageCount <= 2 {
+                        viewModel.showImagePicker()
+                    }
+                })
+                showSelectedImage
             })
-            
-            //TODO: - 사진 선택하면 선택한 사진을 일렬로 배치할 수 있도록 해야 함
         })
+        .frame(width: 351)
+    }
+    
+    private var showSelectedImage: some View {
+        ScrollView(.horizontal) {
+            LazyHGrid(rows: [GridItem(.fixed(80))], spacing: 10) { // GridItem 크기 조정
+                ForEach(0..<viewModel.getImages().count, id: \.self) { index in
+                    imageAddAndRemove(for: index, image: viewModel.getImages()[index])
+                }
+            }
+            .padding(.top, 5)
+            .padding(.bottom, 8)
+            .padding(.horizontal, 5)
+        }
     }
     
     private var emailCheck: some View {
         VStack(alignment: .leading, spacing: 13, content: {
-            makeTitle(title: "연락 받을 이메일")
+            makeTitle(title: "연락 받을 이메일 (필수)")
         
-            CustomTextField(text: $email, placeholder: "입력해주세요.", cornerRadius: 10, maxWidth: 355, maxHeight: 56)
+            CustomTextField(text: $viewModel.email, placeholder: "입력해주세요.", cornerRadius: 10, maxWidth: 355, maxHeight: 56)
         })
     }
     
     private var agreementCheck: some View {
         VStack(alignment: .leading, spacing: 13, content: {
-            HStack(alignment: .center, spacing: 91, content: {
-                makeTitle(title: "개인정보 수집 및 이용 약관 동의")
+            HStack(alignment: .center, content: {
+                makeTitle(title: "개인정보 수집 및 이용 약관 동의 (필수)")
+                
+                Spacer()
                 
                 Button(action: {
                     showAgreementSheet = true
@@ -141,9 +151,9 @@ struct InquireView: View {
             HStack(alignment: .center, spacing: 8, content: {
                 
                 Button(action: {
-                    isAgreementCheck.toggle()
+                    viewModel.isAgreementCheck.toggle()
                 }, label: {
-                    (isAgreementCheck ? Icon.check.image : Icon.uncheck.image)
+                    (viewModel.isAgreementCheck ? Icon.check.image : Icon.uncheck.image)
                         .resizable()
                         .frame(width: 25, height: 25)
                 })
@@ -153,28 +163,70 @@ struct InquireView: View {
                     .font(.Body2_medium)
                     .foregroundStyle(Color.gray400)
             })
-        
         })
+        .frame(width: 351)
     }
-}
-
-//MARK: - Data Structure
-private struct FieldGroup {
-    let title: String
-    let text: Binding<String>
 }
 
 //MARK: - function
 extension InquireView {
     private func makeTitle(title: String) -> some View {
-        Text(title)
-            .font(.H4_bold)
-            .foregroundStyle(Color.gray900)
+        let keyword = "(필수)"
+        
+        return Group {
+            if title.contains(keyword) {
+                let components = title.split(separator: " ", omittingEmptySubsequences: false)
+                
+                HStack(spacing: 0) {
+                    ForEach(components, id: \.self) { part in
+                        if part.contains(keyword) {
+                            Text(" \(part)")
+                                .font(.Body4_medium)
+                                .foregroundStyle(Color.red)
+                        } else {
+                            Text(part)
+                                .font(.H4_bold)
+                                .foregroundStyle(Color.gray900)
+                        }
+                    }
+                }
+            } else {
+                Text(title)
+                    .font(.H4_bold)
+                    .foregroundStyle(Color.gray900)
+            }
+        }
     }
     
     // Main 버튼 활성화 조건 함수
     private func isMainButtonEnabled() -> Bool {
-        return !detail.isEmpty && !email.isEmpty && isAgreementCheck
+        return !viewModel.reportContents.isEmpty && !viewModel.email.isEmpty && viewModel.isAgreementCheck
+    }
+    
+    
+    private func imageAddAndRemove(for index: Int, image: UIImage) -> some View {
+        ZStack(alignment: .topLeading, content: {
+            Image(uiImage: image)
+                .resizable()
+                .frame(width: 80, height: 80)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .overlay(content: {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.clear)
+                        .stroke(Color.gray200, lineWidth: 1)
+                })
+            
+            Button(action: {
+                viewModel.removeImage(at: index)
+            }, label: {
+                Icon.imageRemove.image
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 20, height: 20)
+                    .padding([.horizontal, .vertical], -3)
+            })
+        })
+        .frame(width: 80, height: 80)
     }
 }
 
@@ -185,7 +237,7 @@ struct InquireView_Preview: PreviewProvider {
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in
-            InquireView(container: DIContainer(), selectedCategory: "서비스 이용 문의")
+            InquireView(container: DIContainer(), selectedCategory: .PARTNERSHIP)
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
                 .environmentObject(DIContainer())

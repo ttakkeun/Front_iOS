@@ -32,4 +32,8 @@ class MyPageRepository: MyPageRepositoryProtocol {
     func deleteProfile(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError> {
         return myPageService.deleteProfileData(petId: petId)
     }
+    
+    func getMyInquire() -> AnyPublisher<ResponseData<[MyInquiryResponse]>, MoyaError> {
+        return myPageService.getMyInquireData()
+    }
 }

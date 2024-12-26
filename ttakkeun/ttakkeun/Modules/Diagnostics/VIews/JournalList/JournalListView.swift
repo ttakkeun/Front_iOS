@@ -37,11 +37,6 @@ struct JournalListView: View {
                 journalList
                 makeJournalListBtn
             }
-            .navigationDestination(for: NavigationDestination.self) { destination in
-                NavigationRoutingView(destination: destination)
-                    .environmentObject(container)
-                    .environmentObject(appFlowViewModel)
-            }
         .onChange(of: viewModel.showAiDiagnosing, {
             showAlert = true
             alertText = self.alertTextString()
@@ -149,6 +144,8 @@ struct JournalListView: View {
                         container.navigationRouter.push(to: .makeJournalist)
                     } else {
                         if viewModel.selectedCnt >= 1 {
+                            viewModel.patchUserPoint()
+                            viewModel.getUserPoint()
                             viewModel.showAiDiagnosing.toggle()
                         }
                     }

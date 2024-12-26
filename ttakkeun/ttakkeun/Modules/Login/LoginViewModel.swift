@@ -85,6 +85,9 @@ extension LoginViewModel {
     // MARK: - SignApple
     
     public func loginApple(signUpRequest: SignUpRequest) {
+        
+        print("SignUpRequest: \(signUpRequest)")
+        
         isLoading = true
         
         container.useCaseProvider.authUseCase.executeAppleLogin(signUpRequest: signUpRequest)

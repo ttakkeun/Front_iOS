@@ -84,7 +84,7 @@ struct NavigationRoutingView: View {
                 .environmentObject(container)
             
         case .myInquiryConfirm(let selectedInquiryData):
-            MyInquireConfirmView(container: container, inquiryResponse: selectedInquiryData)
+            MyInquireConfirmView(inquiryResponse: selectedInquiryData)
                 .environmentObject(container)
         }
     }

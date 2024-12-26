@@ -50,8 +50,8 @@ class JournalService: JournalServiceProtocol {
             .eraseToAnyPublisher()
     }
     
-    func searchGetJournalData(category: PartItem.RawValue, page: Int, date: String) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError> {
-        return provider.requestPublisher(.searchGetJournal(category: category, page: page, date: date))
+    func searchGetJournalData(category: PartItem.RawValue, date: String) -> AnyPublisher<ResponseData<JournalListResponse>, MoyaError> {
+        return provider.requestPublisher(.searchGetJournal(category: category, date: date))
             .map(ResponseData<JournalListResponse>.self)
             .eraseToAnyPublisher()
     }

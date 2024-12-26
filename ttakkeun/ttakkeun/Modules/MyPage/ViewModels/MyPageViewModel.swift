@@ -26,39 +26,6 @@ class MyPageViewModel: ObservableObject {
     @Published var inputNickname: String = ""
     
     var cancellalbes = Set<AnyCancellable>()
-    
-    
-    // MARK: - ImagePicker
-    
-    
-    var profileImage: [UIImage] = []
-    
-    @Published var isImagePickerPresented: Bool = false
-    
-    var selectedImageCount: Int = 0
-}
-
-extension MyPageViewModel: ImageHandling {
-    
-    func addImage(_ images: UIImage) {
-        if !profileImage.isEmpty {
-            profileImage.removeAll()
-        }
-        
-        profileImage.append(images)
-    }
-    
-    func removeImage(at index: Int) {
-        profileImage.remove(at: index)
-    }
-    
-    func showImagePicker() {
-        isImagePickerPresented = true
-    }
-    
-    func getImages() -> [UIImage] {
-        profileImage
-    }
 }
 
 extension MyPageViewModel {
@@ -82,7 +49,7 @@ extension MyPageViewModel {
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
                 
-                isLoading = true
+                isLoading = false
                 
                 switch completion {
                 case .finished:
@@ -135,7 +102,7 @@ extension MyPageViewModel {
             .store(in: &cancellalbes)
     }
     
-    func logout() {
+    func logout(completion: @escaping (Result<Void, Error>) -> Void) {
         container.useCaseProvider.myPageUseCase.executeLogout()
             .tryMap { responseData -> ResponseData<String> in
                 if !responseData.isSuccess {
@@ -149,16 +116,16 @@ extension MyPageViewModel {
                 return responseData
             }
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                switch completion {
+            .sink(receiveCompletion: { completionResult in
+                switch completionResult {
                 case .finished:
-                    print("Logout Completed")
-                case .failure(let failure):
-                    print("Logout Failed: \(failure)")
+                    // 성공 시 Result<Void, Error>에서 성공 케이스를 반환
+                    completion(.success(()))
+                case .failure(let error):
+                    // 실패 시 Result<Void, Error>에서 에러를 반환
+                    completion(.failure(error))
                 }
-            },
-                  receiveValue: { responseData in
-                
+            }, receiveValue: { responseData in
                 if let _ = responseData.result {
                     KeyChainManager.standard.deleteSession(for: "ttakkeunUser")
                 }

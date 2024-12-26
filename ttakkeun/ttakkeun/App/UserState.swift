@@ -43,7 +43,7 @@ class UserState: ObservableObject {
     }
     
     public func setLoginType(_ loginType: SocialLoginType) {
-        UserDefaults.standard.setValue(loginType, forKey: "UserLoginType")
+        UserDefaults.standard.setValue(loginType.rawValue, forKey: "UserLoginType")
     }
     
     public func getPetId() -> Int {

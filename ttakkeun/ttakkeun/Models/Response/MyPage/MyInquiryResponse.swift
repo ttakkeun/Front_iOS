@@ -7,10 +7,15 @@
 
 import Foundation
 
-struct MyInquiryResponse: Equatable, Codable, Hashable {
+struct MyInquiryResponse: Equatable, Codable, Hashable, Identifiable {
+    var id = UUID()
     var contents: String
     var email: String
     var inquiryType: String
     var imageUrl: [String]
     var created_at: String
+    
+    enum CodingKeys: String, CodingKey {
+        case contents, email, inquiryType, imageUrl, created_at
+    }
 }

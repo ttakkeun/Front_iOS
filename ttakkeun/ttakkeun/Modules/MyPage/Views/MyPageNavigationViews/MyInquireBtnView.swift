@@ -11,14 +11,7 @@ import SwiftUI
 struct MyInquireBtnView: View {
     
     @EnvironmentObject var container: DIContainer
-    @StateObject var viewModel: MyPageViewModel
-
-    
-    let btnInfoArray: [BtnInfo] = [
-        //TODO: 버튼 액션 필요함
-        BtnInfo(name: "이 사람 이상해요.", date: "24.09.20", action: {print("내가 문의한 내용 버튼1")}),
-        BtnInfo(name: "앱 회원가입이 안되는데 어떻게 해야하나요?", date: "24.06.20", action: {print("내가 문의한 내용 버튼2")})
-    ]
+    @StateObject var viewModel: InquireViewModel
     
     init(container: DIContainer) {
         self._viewModel = .init(wrappedValue: .init(container: container))
@@ -30,11 +23,19 @@ struct MyInquireBtnView: View {
                              title: "문의하기",
                              currentPage: nil)
             
-            inquireBtns
+            if !viewModel.isLoading {
+                inquireBtns
+            } else {
+                ProgressView()
+                    .controlSize(.large)
+            }
             
             Spacer()
         })
         .navigationBarBackButtonHidden(true)
+        .task {
+            viewModel.getMyInquire()
+        }
     }
     
     //MARK: - Components
@@ -45,26 +46,12 @@ struct MyInquireBtnView: View {
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
 
-            ForEach(btnInfoArray, id: \.id) { btnInfo in
-                SelectBtnBox(btnInfo: btnInfo)
+            ForEach(viewModel.myInquiryData, id: \.id) { btnInfo in
+                SelectBtnBox(btnInfo: BtnInfo(name: btnInfo.contents, date: DataFormatter.shared.convertToKoreanTime(from: btnInfo.created_at), action: {
+                    container.navigationRouter.push(to: .myInquiryConfirm(selectedInquiryData: btnInfo))
+                }))
             }
         })
     }
     
 }
-
-//MARK: - Preview
-struct MyInquireBtnView_Preview: PreviewProvider {
-    
-    static let devices = ["iPhone 11", "iPhone 16 Pro"]
-    
-    static var previews: some View {
-        ForEach(devices, id: \.self) { device in
-            MyInquireBtnView(container: DIContainer())
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewDisplayName(device)
-                .environmentObject(DIContainer())
-        }
-    }
-}
-
