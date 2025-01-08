@@ -30,7 +30,19 @@ class LoginViewModel: ObservableObject {
         self.container = container
         self.appFlowViewModel = appFlowViewModel
         self.appleLoginManager.onAuthorizationCompleted = { [weak self] authorization, email, name in
-            self?.loginApple(signUpRequest: SignUpRequest(identityToken: authorization, email: email ?? "", name: name))
+            
+            guard let self = self else { return }
+            
+            if let name = name, !name.isEmpty {
+                UserState.shared.setUserName(name)
+            }
+            
+            
+            if let email = email, !email.isEmpty {
+                UserState.shared.setUserEmail(email)
+            }
+            
+            self.loginApple(signUpRequest: SignUpRequest(identityToken: authorization, email: UserState.shared.getUserEmail(), name: UserState.shared.getUserName()))
         }
     }
     

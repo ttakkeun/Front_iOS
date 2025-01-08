@@ -119,7 +119,7 @@ extension MyPageViewModel {
             .sink(receiveCompletion: { completionResult in
                 switch completionResult {
                 case .finished:
-                    // 성공 시 Result<Void, Error>에서 성공 케이스를 반환
+                    KeyChainManager.standard.deleteSession(for: "ttakkeunUser")
                     completion(.success(()))
                 case .failure(let error):
                     // 실패 시 Result<Void, Error>에서 에러를 반환
@@ -127,7 +127,7 @@ extension MyPageViewModel {
                 }
             }, receiveValue: { responseData in
                 if let _ = responseData.result {
-                    KeyChainManager.standard.deleteSession(for: "ttakkeunUser")
+                    
                 }
             })
             .store(in: &cancellalbes)
