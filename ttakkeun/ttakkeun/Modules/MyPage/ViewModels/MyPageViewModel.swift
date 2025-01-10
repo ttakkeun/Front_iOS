@@ -86,9 +86,9 @@ extension MyPageViewModel {
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
-                    print("getUserName Completed")
+                    print("Edit UserName Completed")
                 case .failure(let failure):
-                    print("getUserName Failed: \(failure)")
+                    print("Edit UserName Failed: \(failure)")
                 }
             },
                   receiveValue: { [weak self] responseData in

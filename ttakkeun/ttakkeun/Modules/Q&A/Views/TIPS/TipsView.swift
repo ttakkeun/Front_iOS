@@ -27,11 +27,11 @@ struct TipsView: View {
             })
         }
         .safeAreaPadding(EdgeInsets(top: 0, leading: 19, bottom: 0, trailing: 19))
-        .navigationDestination(for: NavigationDestination.self) { detination in
-            NavigationRoutingView(destination: detination)
-                .environmentObject(container)
-                .environmentObject(appFlowViewModel)
-        }
+//        .navigationDestination(for: NavigationDestination.self) { detination in
+//            NavigationRoutingView(destination: detination)
+//                .environmentObject(container)
+//                .environmentObject(appFlowViewModel)
+//        }
         
     }
     

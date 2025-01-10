@@ -22,10 +22,10 @@ struct AppInfoBtnView: View {
             Spacer()
         })
         .navigationBarBackButtonHidden(true)
-        .navigationDestination(for: NavigationDestination.self) { destination in
-            NavigationRoutingView(destination: destination)
-                .environmentObject(container)
-        }
+//        .navigationDestination(for: NavigationDestination.self) { destination in
+//            NavigationRoutingView(destination: destination)
+//                .environmentObject(container)
+//        }
     }
     
     //MARK: - Components

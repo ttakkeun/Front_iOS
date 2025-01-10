@@ -40,4 +40,14 @@ class KakaoLoginManager {
             }
         }
     }
+    
+    func getUserName(completion: @escaping (Result<String, Error>) -> Void) {
+        UserApi.shared.me { user, error in
+            if let error = error {
+                completion(.failure(error))
+            } else if let user = user, let nickname = user.kakaoAccount?.profile?.nickname {
+                completion(.success(nickname))
+            }
+        }
+    }
 }

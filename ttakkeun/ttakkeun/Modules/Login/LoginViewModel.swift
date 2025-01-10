@@ -63,7 +63,14 @@ class LoginViewModel: ObservableObject {
                 self?.kakaoLoginManager.getUserEmail(accessToken: oauth) { [weak self] result in
                     switch result {
                     case .success(let email):
-                        self?.loginKakao(signUpRequest: SignUpRequest(identityToken: oauth, email: email, name: ""))
+                        self?.kakaoLoginManager.getUserName { [weak self] result in
+                            switch result {
+                            case .success(let nickname):
+                                self?.loginKakao(signUpRequest: SignUpRequest(identityToken: oauth, email: email, name: nickname))
+                            case .failure(let failure):
+                                print("카카오 닉네임 받아오지 못했습니다. \(failure)")
+                            }
+                        }
                     case .failure(let failure):
                         print("카카오로부터 이메일을 받아오지 못했습니다. \(failure)")
                     }

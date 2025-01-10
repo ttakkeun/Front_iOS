@@ -19,6 +19,7 @@ struct MyPageView: View {
     
     init(container: DIContainer) {
         self._viewModel = .init(wrappedValue: .init(container: container))
+        self.viewModel.getUserInfo()
     }
     
     var body: some View {

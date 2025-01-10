@@ -12,11 +12,8 @@ struct MyScrapTipsView: View {
     @EnvironmentObject var container: DIContainer
     @StateObject var viewModel: MyPageViewModel
     
-    @State var response: [TipsResponse]
-    
     init(container: DIContainer) {
         self._viewModel = .init(wrappedValue: .init(container: container))
-        self.response = MyTipsView.sampleTips
     }
     
     var body: some View {
@@ -26,27 +23,28 @@ struct MyScrapTipsView: View {
                              currentPage: nil)
             
             ScrollView(.vertical, content: {
-                contents
+//                contents
             })
         })
         .navigationBarBackButtonHidden(true)
     }
     
     /// 내가 스크랩한 tips 콘텐츠들
-    private var contents: some View {
-        LazyVStack(spacing: 20) {
-            ForEach($response, id: \.id) { $tip in
-                TipsContentsCard(
-                    data: $tip,
-                    tipsType: .scrapTips,
-                    tipsButtonOption: TipsButtonOption(
-                        //TODO: - 좋아요, 스크랩 버튼 액션 필요
-                        heartAction: { print("좋아요 버튼 눌림") },
-                        scrapAction: { print("스크랩 버튼 눌림") })
-                )
-            }
-        }
-    }
+    // TODO: - MYScrap
+//    private var contents: some View {
+//        LazyVStack(spacing: 20) {
+//            ForEach($response, id: \.id) { $tip in
+//                TipsContentsCard(
+//                    data: $tip,
+//                    tipsType: .scrapTips,
+//                    tipsButtonOption: TipsButtonOption(
+//                        //TODO: - 좋아요, 스크랩 버튼 액션 필요
+//                        heartAction: { print("좋아요 버튼 눌림") },
+//                        scrapAction: { print("스크랩 버튼 눌림") })
+//                )
+//            }
+//        }
+//    }
 }
 
 extension MyScrapTipsView {
