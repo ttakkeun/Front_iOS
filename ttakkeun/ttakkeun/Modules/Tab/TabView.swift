@@ -58,7 +58,6 @@ struct TabView: View {
                     }
                     
                     /* Floating */
-                    
                     if selectedTab == .qna && qnaSegmentValue == .tips {
                         if isShowFloating {
                             Color.btnBg.opacity(0.6)
