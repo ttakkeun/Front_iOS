@@ -42,7 +42,7 @@ struct JournalRegistContents: View {
             
             Spacer()
             
-            MainButton(btnText: "다음", width: 339, height: 63, action: {
+            MainButton(btnText: "다음", height: 63, action: {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     if viewModel.selectedPart != nil {
                         viewModel.currentPage += 1
@@ -132,7 +132,7 @@ extension JournalRegistContents {
     
     func changePageBtn() -> some View {
         HStack(alignment: .center, spacing: 9, content: {
-            MainButton(btnText: "이전", width: 122, height: 63, action: {
+            MainButton(btnText: "이전", height: 63, action: {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     if viewModel.currentPage == 2 {
                         viewModel.getQuestions = nil
@@ -143,7 +143,7 @@ extension JournalRegistContents {
                 }
             }, color: Color.alertNo)
             
-            MainButton(btnText: viewModel.currentPage == 5 ? "완료" : viewModel.isNextEnabled ? "다음" : "답변이 선택되지 않았습니다.", width: 208, height: 63, action: {
+            MainButton(btnText: viewModel.currentPage == 5 ? "완료" : viewModel.isNextEnabled ? "다음" : "답변이 선택되지 않았습니다.", height: 63, action: {
                 
                 withAnimation(.easeInOut(duration: 0.2)) {
                     if viewModel.currentPage < 5 {

@@ -31,7 +31,7 @@ struct WriteTipsView: View {
             
             Spacer()
             
-            MainButton(btnText: "공유하기", width: 353, height: 56, action: {
+            MainButton(btnText: "공유하기", height: 56, action: {
                 if !viewModel.title.isEmpty && !viewModel.textContents.isEmpty {
                     viewModel.writeTips()
                 }

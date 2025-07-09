@@ -42,7 +42,7 @@ struct DiagnosingResultDetailView: View {
                     
                     Spacer().frame(height: 34)
                     
-                    MainButton(btnText: "확인", width: 343, height: 63, action: {
+                    MainButton(btnText: "확인", height: 63, action: {
                         showFullScreenAI = false
                     }, color: Color.mainPrimary)
                 })

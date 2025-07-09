@@ -32,7 +32,7 @@ struct ReportView: View {
                 
                 Spacer()
                 
-                MainButton(btnText: "신고하기", width: 349, height: 63, action: {
+                MainButton(btnText: "신고하기", height: 63, action: {
                     isReportMainBtnClicked.toggle()}, color: detail.isEmpty ? Color.checkBg : Color.mainPrimary)
                 .disabled(detail.isEmpty)
             })

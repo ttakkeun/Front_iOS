@@ -222,7 +222,6 @@ struct MakeProfileView: View {
     private var registerBtn: some View {
         MainButton(
             btnText: "등록하기",
-            width: 330,
             height: 56,
             action: {
                 if viewModel.isProfileCompleted {

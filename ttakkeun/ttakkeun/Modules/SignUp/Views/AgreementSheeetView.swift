@@ -9,51 +9,66 @@ import SwiftUI
 
 struct AgreementSheeetView: View {
     
+    // MARK: - Property
     var agreement: AgreementData
     
+    
+    // MARK: - Constants
+    fileprivate enum AgreementSheetConstants {
+        static let sectionVspacing: CGFloat = 10
+        static let contentsVspacing: CGFloat = 15
+        
+        static let safeTopPdding: CGFloat = 30
+        static let sectionBottomPadding: CGFloat = 10
+        static let sectionHorizonPadding: CGFloat = 20
+    }
+    
+    // MARK: - Init
     init(agreement: AgreementData) {
         self.agreement = agreement
     }
     
+    
+    // MARK: - Body
     var body: some View {
-        VStack {
-            titleText
-            contentText
-        }
-        .padding(.top, 20)
+        ScrollView(.vertical, content: {
+            VStack(spacing: AgreementSheetConstants.contentsVspacing, content: {
+                titleText
+                contentText
+            })
+        })
+        .contentMargins(.top, AgreementSheetConstants.safeTopPdding, for: .scrollContent)
     }
     
     private var titleText: some View {
         Text(agreement.title)
             .font(.headline)
-            .padding()
     }
     
     private var contentText: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 15, content: {
-                ForEach(agreement.detailText, id: \.section) { section in
-                    VStack(alignment: .leading, spacing: 10, content: {
-                        Text(section.section)
-                            .font(.Body2_bold)
-                            .foregroundStyle(Color.gray900)
-                        
-                        let paragraphs = section.text.components(separatedBy: "\n")
-                        ForEach(paragraphs, id: \.self) { paragraph in
-                            Text(paragraph)
-                                .font(.Body3_medium)
-                                .foregroundStyle(Color.gray900)
-                                .padding(.bottom, 1)
-                        }
-                    })
-                    .padding(.bottom, 10)
-                    .padding(.horizontal, 20)
-                }
-            })
-            .padding(.horizontal, 10)
-        }
-        .frame(maxHeight: .infinity).ignoresSafeArea(.all)
-        .padding(.bottom, 10)
+        VStack(alignment: .leading, spacing: AgreementSheetConstants.contentsVspacing, content: {
+            ForEach(agreement.detailText, id: \.section) { section in
+                sectionContents(section: section)
+            }
+        })
+        .contentMargins(.bottom, AgreementSheetConstants.sectionBottomPadding, for: .scrollContent)
+    }
+    
+    private func sectionContents(section: SectionData) -> some View {
+        VStack(alignment: .leading, spacing: AgreementSheetConstants.sectionVspacing, content: {
+            Text(section.section)
+                .font(.Body2_bold)
+                .foregroundStyle(Color.gray900)
+            
+            let paragraphs = section.text.components(separatedBy: "\n")
+            ForEach(paragraphs, id: \.self) { paragraph in
+                Text(paragraph)
+                    .font(.Body3_medium)
+                    .foregroundStyle(Color.gray900)
+            }
+        })
+        .padding(.bottom, AgreementSheetConstants.sectionBottomPadding)
+        .padding(.horizontal, AgreementSheetConstants.sectionHorizonPadding)
     }
 }
 

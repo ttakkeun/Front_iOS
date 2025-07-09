@@ -1,0 +1,14 @@
+//
+//  UIConstants.swift
+//  ttakkeun
+//
+//  Created by Apple Coding machine on 7/9/25.
+//
+
+import Foundation
+
+enum UIConstants {
+    static let safeLeading: CGFloat = 27
+    static let safeTrailing: CGFloat = 25
+    static let safeTop: CGFloat = 48
+}

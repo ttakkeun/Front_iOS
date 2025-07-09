@@ -20,23 +20,25 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            switch appFlowViewModel.appState {
-            case .onBoarding:
-                OnboardingView()
-                    .environmentObject(appFlowViewModel)
-            case .login:
-                LoginView(viewModel: LoginViewModel(container: container, appFlowViewModel: appFlowViewModel))
-                    .environmentObject(container)
-                    .environmentObject(appFlowViewModel)
-            case .profile:
-                ProfileView(container: container)
-                    .environmentObject(container)
-                    .environmentObject(appFlowViewModel)
-            case .tabView:
-                TabView()
-                    .environmentObject(container)
-                    .environmentObject(appFlowViewModel)
-            }
+            SignUpView(socialType: .apple, singUpRequest: SignUpRequest(identityToken: "1123", email: "apple@example.com", name: "정의찬"), container: DIContainer(), appFlowViewModel: AppFlowViewModel())
+                .environmentObject(DIContainer())
+//            switch appFlowViewModel.appState {
+//            case .onBoarding:
+//                OnboardingView()
+//                    .environmentObject(appFlowViewModel)
+//            case .login:
+//                LoginView(viewModel: LoginViewModel(container: container, appFlowViewModel: appFlowViewModel))
+//                    .environmentObject(container)
+//                    .environmentObject(appFlowViewModel)
+//            case .profile:
+//                ProfileView(container: container)
+//                    .environmentObject(container)
+//                    .environmentObject(appFlowViewModel)
+//            case .tabView:
+//                TabView()
+//                    .environmentObject(container)
+//                    .environmentObject(appFlowViewModel)
+//            }
         }
     }
 }

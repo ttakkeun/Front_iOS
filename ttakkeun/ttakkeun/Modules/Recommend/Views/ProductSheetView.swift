@@ -36,7 +36,7 @@ struct ProductSheetView: View {
             productInfoGroup
                 .padding(.top, 12)
             
-            MainButton(btnText: "구매하러 가기", width: 342, height: 59, action: {
+            MainButton(btnText: "구매하러 가기", height: 59, action: {
                 openSite(data.purchaseLink)
             }, color: Color.mainPrimary)
         })

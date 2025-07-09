@@ -253,7 +253,6 @@ struct EditProfileView: View {
     private var registerBtn: some View {
         MainButton(
             btnText: "수정하기",
-            width: 330,
             height: 56,
             action: {
                 if viewModel.isNameFieldFilled && viewModel.isProfileCompleted && viewModel.isBirthFieldFilled && viewModel.isNeutralizationFieldFilled && viewModel.isNeutralizationFieldFilled {

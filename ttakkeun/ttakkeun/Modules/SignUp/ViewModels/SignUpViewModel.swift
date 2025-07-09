@@ -8,13 +8,14 @@
 import Foundation
 import Combine
 
+@Observable
 class SignUpViewModel: ObservableObject {
-    @Published var agreements: [AgreementData] = AgreementDetailData.loadAgreements()
-    @Published var selectedAgreement: AgreementData?
-    @Published var tokenResponse: TokenResponse? = nil
+    var agreements: [AgreementData] = AgreementDetailData.loadAgreements()
+    var selectedAgreement: AgreementData?
+    var tokenResponse: TokenResponse? = nil
     
-    @Published var userEmail: String = ""
-    @Published var userNickname: String = "" {
+    var userEmail: String = ""
+    var userNickname: String = "" {
         didSet {
             if userNickname.count > 8 {
                 userNickname = String(userNickname.prefix(8))

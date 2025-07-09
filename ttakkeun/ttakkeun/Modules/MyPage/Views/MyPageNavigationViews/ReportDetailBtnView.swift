@@ -36,7 +36,7 @@ struct ReportDetailBtnView: View {
             
             Spacer()
             
-            MainButton(btnText: "신고하기", width: 349, height: 63, action: {
+            MainButton(btnText: "신고하기", height: 63, action: {
                 //TODO: - 신고하기 버튼 눌렸을 때 액션 필요
                 print("신고하기 버튼 눌림")}, color: selectedIndex != nil ? Color.mainPrimary : Color.checkBg
             )

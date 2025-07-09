@@ -9,13 +9,21 @@ import SwiftUI
 
 struct MainButton: View {
     
+    // MARK: - Property
+    
     var btnText: String
-    var width: CGFloat
     var height: CGFloat
     var action: () -> Void
     var color: Color
     
-    //MARK: - Init
+    // MARK: - Constants
+    
+    fileprivate enum MainButtonConstants {
+        static let cornerRadius: CGFloat = 10
+        static let bottomPadding: CGFloat = 20
+    }
+    
+    // MARK: - Init
     
     /// Description
     /// - Parameters:
@@ -25,35 +33,39 @@ struct MainButton: View {
     ///   - action: {print("helloworld")} 이런식으로 작성
     ///   - color: .primaryColor_Main, .productCard_Color
     init(btnText: String,
-         width: CGFloat,
-         height: CGFloat,
+         height: CGFloat = 53,
          action: @escaping () -> Void,
          color: Color
     ) {
         self.btnText = btnText
-        self.width = width
         self.height = height
         self.action = action
         self.color = color
     }
     
+    // MARK: - Init
     var body: some View {
         Button(action: {
             action()
         }, label: {
-            Text(btnText)
-                .frame(width: width, height: height)
-                .font(.Body2_semibold)
-                .foregroundStyle(Color.gray900)
-                .background(color)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+            ZStack {
+                RoundedRectangle(cornerRadius: MainButtonConstants.cornerRadius)
+                    .fill(color)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: height)
+                
+                Text(btnText)
+                    .font(.Body2_semibold)
+                    .foregroundStyle(Color.gray900)
+            }
         })
+        .padding(.bottom, MainButtonConstants.bottomPadding)
     }
 }
 
 struct MainButton_Preview: PreviewProvider {
     static var previews: some View {
-        MainButton(btnText: "구매하러가기", width: 353, height: 59, action: {print("hello")}, color: .mainPrimary)
+        MainButton(btnText: "구매하러가기", height: 59, action: {print("hello")}, color: .mainPrimary)
             .previewLayout(.sizeThatFits)
     }
 }

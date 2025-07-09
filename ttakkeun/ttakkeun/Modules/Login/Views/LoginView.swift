@@ -84,7 +84,7 @@ struct LoginView: View {
 
 struct LoginView_Preview: PreviewProvider {
     
-    static let devices = ["iPhone 11", "iPhone 15 Pro"]
+    static let devices = ["iPhone 11", "iPhone 16 Pro"]
     
     static var previews: some View {
         ForEach(devices, id: \.self) { device in

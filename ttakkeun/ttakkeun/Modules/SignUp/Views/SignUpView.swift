@@ -9,14 +9,42 @@ import SwiftUI
 
 struct SignUpView: View {
     
+    // MARK: - Property
     @EnvironmentObject var container: DIContainer
-    
-    @StateObject var viewModel: SignUpViewModel
-    
+    @State var viewModel: SignUpViewModel
     @State var signUpRequest: SignUpRequest
     
     let socialType: SocialLoginType
     
+    // MARK: - Constants
+    fileprivate enum SignUpConstants {
+        static let topVspacing: CGFloat = 10
+        static let agreementVspacing: CGFloat = 16
+        static let totalHspacing: CGFloat = 16
+        static let agreementHspacing: CGFloat = 17
+        static let individualAgreementVspacing: CGFloat = 20
+        static let userInfoVspacing: CGFloat = 10
+        
+        static let totalContentsPadding: CGFloat = 16
+        static let agreementPadding: CGFloat = 15
+        
+        static let topSpacerHeight: CGFloat = 76
+        static let totalAgreementHeight: CGFloat = 68
+        static let cornerRadius: CGFloat = 10
+        static let sheetCornerRadius: CGFloat = 20
+        static let checkBoxSize: CGFloat = 30
+        
+        static let customNavigationText: String = "본인확인"
+        static let topNaviIconText: String = "xmark"
+        static let emailFieldText: String = "이메일"
+        static let nicknameFieldText: String = "닉네임"
+        static let nicknamePlaceholder: String = "닉네임을 지어주세요(최대 8자)"
+        static let agreementText: String = "동의 항목"
+        static let totalAgreementText: String = "전체 동의"
+        static let mainButtonText: String = "완료"
+    }
+    
+    // MARK: - Init
     init(
         socialType: SocialLoginType,
         singUpRequest: SignUpRequest,
@@ -25,138 +53,146 @@ struct SignUpView: View {
     ) {
         self.socialType = socialType
         self.signUpRequest = singUpRequest
-        self._viewModel = StateObject(wrappedValue: SignUpViewModel(container: container, appFlowViewModel: appFlowViewModel))
+        self.viewModel = .init(container: container, appFlowViewModel: appFlowViewModel)
     }
     
+    // MARK: - Contents
     var body: some View {
-        VStack(alignment: .center, spacing: 43, content: {
-            CustomNavigation(action: { container.navigationRouter.pop() },
-                             title: "본인확인",
-                             currentPage: nil,
-                             naviIcon: Image(systemName: "xmark"),
-                             width: 14,
-                             height: 14)
-            
-            
-            emailField
-            
-            nicknameField
-            
-            agreementPart
-            
-            Spacer()
-            
-            MainButton(btnText: "완료",
-                       width: 330,
-                       height: 56,
-                       action: {
-                if viewModel.isAllMandatoryChecked {
-                    switch socialType {
-                    case .kakao:
-                        viewModel.signUpKakao(signUpRequet: returnSignUpData())
-                        UserState.shared.setLoginType(.kakao)
-                    case .apple:
-                        viewModel.signUpApple(signUpRequet: returnSignUpData())
-                        UserState.shared.setLoginType(.apple)
-                    }
-                }
-            },
-                       color: viewModel.isAllMandatoryChecked ? Color.mainPrimary : Color.gray200)
-            .disabled(!viewModel.isAllMandatoryChecked)
-        })
-        .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
-        .navigationBarBackButtonHidden()
-        .onAppear {
-            UIApplication.shared.hideKeyboard()
+        NavigationStack {
+            VStack(alignment: .center, spacing: .zero, content: {
+                topContents
+                Spacer().frame(maxHeight: SignUpConstants.topSpacerHeight)
+                middleContents
+                Spacer()
+                bottomContents
+            })
+            .ignoresSafeArea(.keyboard)
+            .safeAreaPadding(EdgeInsets(top: UIConstants.safeTop, leading: UIConstants.safeLeading, bottom: .zero, trailing: UIConstants.safeTrailing))
+            .navigationBarBackButtonHidden(true)
+            .navigationBarTitleDisplayMode(.inline)
+            .customNavigation(title: SignUpConstants.customNavigationText, leadingAction: {
+                container.navigationRouter.pop()
+            }, naviIcon: Image(systemName: SignUpConstants.topNaviIconText))
+            .sheet(item: $viewModel.selectedAgreement) { item in
+                AgreementSheeetView(agreement: item)
+                    .presentationDragIndicator(.visible)
+                    .presentationCornerRadius(SignUpConstants.sheetCornerRadius)
+            }
         }
     }
     
+    // MARK: - TopContents
+    private var topContents: some View {
+        VStack(alignment: .leading, spacing: SignUpConstants.topVspacing, content: {
+            emailField
+            nicknameField
+        })
+    }
     private var emailField: some View {
-        makeUserInfo(title: "이메일", placeholder: signUpRequest.email, value: .constant(""))
+        makeUserInfo(title: SignUpConstants.emailFieldText, placeholder: signUpRequest.email, value: .constant(""))
             .disabled(true)
     }
     
     private var nicknameField: some View {
-        makeUserInfo(title: "닉네임", placeholder: "닉네임을 지어주세요(최대 8자)", value: $viewModel.userNickname)
+        makeUserInfo(title: SignUpConstants.nicknameFieldText, placeholder: SignUpConstants.nicknamePlaceholder, value: $viewModel.userNickname)
     }
     
-    private var agreementPart: some View {
-        VStack(alignment: .leading, spacing: 16, content: {
-            makeTitle(text: "동의 항목")
-            
+    // MARK: - MiddleContents
+    private var middleContents: some View {
+        VStack(alignment: .leading, spacing: SignUpConstants.agreementVspacing, content: {
+            makeTitle(text: SignUpConstants.agreementText)
             totalAgreement
-            
             agreementGroup
         })
-        .frame(width: 341, height: 255)
     }
     
+    @ViewBuilder
     private var agreementGroup: some View {
-        LazyVGrid(columns: [GridItem(.flexible())], alignment: .leading, spacing: 20, content: {
+        VStack(alignment: .leading, spacing: SignUpConstants.individualAgreementVspacing, content: {
             ForEach(viewModel.agreements, id: \.id) { item in
-                HStack(alignment: .center, spacing: 17, content: {
-                    
-                    Button(action: {
-                        viewModel.toggleCheck(for: item)
-                    }, label: {
-                        checkButtonImage(for: item.isChecked)
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                    })
-                    
-                    Button(action: {
-                        viewModel.selectedAgreement = item
-                    }, label: {
-                        Text(item.title)
-                            .font(.Body2_regular)
-                            .foregroundStyle(Color.gray900)
-                            .underline(true, color: Color.gray500)
-                    })
-                })
+                individualAgreement(item: item)
             }
-            .padding(.leading, 15)
+            .padding(.leading, SignUpConstants.agreementPadding)
         })
-        .frame(width: 341, height: 130)
-        .sheet(item: $viewModel.selectedAgreement) { item in
-            AgreementSheeetView(agreement: item)
-                .presentationDragIndicator(.visible)
-                .presentationCornerRadius(20)
-        }
+    }
+    
+    private func individualAgreement(item: AgreementData) -> some View {
+        HStack(alignment: .center, spacing: SignUpConstants.agreementHspacing, content: {
+            
+            Button(action: {
+                viewModel.toggleCheck(for: item)
+            }, label: {
+                checkButtonImage(for: item.isChecked)
+                    .resizable()
+                    .frame(width: SignUpConstants.checkBoxSize, height: SignUpConstants.checkBoxSize)
+            })
+            
+            Button(action: {
+                viewModel.selectedAgreement = item
+            }, label: {
+                Text(item.title)
+                    .font(.Body2_regular)
+                    .foregroundStyle(Color.gray900)
+                    .underline(true, color: Color.gray500)
+            })
+        })
     }
     
     private var totalAgreement: some View {
-        HStack(alignment: .center, spacing: 16, content: {
+        ZStack(alignment: .leading, content: {
+            RoundedRectangle(cornerRadius: SignUpConstants.cornerRadius)
+                .fill(Color.clear)
+                .stroke(Color.grayBorder)
+                .frame(height: SignUpConstants.totalAgreementHeight)
+            
+            totalInContents
+        })
+    }
+    
+    private var totalInContents: some View {
+        HStack(alignment: .center, spacing: SignUpConstants.totalHspacing, content: {
             Button(action: {
                 viewModel.toggleAllAgreements()
             }, label: {
                 checkButtonImage(for: viewModel.isAllChecked)
                     .resizable()
-                    .frame(width: 30, height: 30)
+                    .frame(width: SignUpConstants.checkBoxSize, height: SignUpConstants.checkBoxSize)
             })
             
-            Text("전체동의")
+            Text(SignUpConstants.totalAgreementText)
                 .font(.Body2_bold)
                 .foregroundStyle(Color.gray900)
         })
-        .frame(width: 102, height: 30)
-        .padding(.vertical, 19)
-        .padding(.leading, 16)
-        .padding(.trailing, 223)
-        .overlay(content: {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.clear)
-                .stroke(Color.grayBorder)
-        })
+        .padding(.leading, SignUpConstants.totalContentsPadding)
+    }
+    
+    // MARK: - BottomContents
+    private var bottomContents: some View {
+        MainButton(btnText: SignUpConstants.mainButtonText,
+                   action: {
+            if viewModel.isAllMandatoryChecked {
+                switch socialType {
+                case .kakao:
+                    viewModel.signUpKakao(signUpRequet: returnSignUpData())
+                    UserState.shared.setLoginType(.kakao)
+                case .apple:
+                    viewModel.signUpApple(signUpRequet: returnSignUpData())
+                    UserState.shared.setLoginType(.apple)
+                }
+            }
+        },
+                   color: viewModel.isAllMandatoryChecked ? Color.mainPrimary : Color.gray200)
+        .disabled(!viewModel.isAllMandatoryChecked)
     }
 }
 
 extension SignUpView {
-    
     func makeUserInfo(title: String, placeholder: String, value: Binding<String>) -> VStack<some View> {
-        return VStack(alignment: .leading, spacing: 10, content: {
+        return VStack(alignment: .leading, spacing: SignUpConstants.userInfoVspacing, content: {
             makeTitle(text: title)
             
-            CustomTextField(text: value, placeholder: placeholder)
+            TextField("", text: value, prompt: makePlaceholder(text: placeholder))
+                .textFieldStyle(ttakkeunTextFieldStyle())
         })
     }
     
@@ -167,11 +203,17 @@ extension SignUpView {
     }
     
     func checkButtonImage(for ischecked: Bool) -> Image {
-        return ischecked ? Icon.check.image : Icon.uncheck.image
+        return ischecked ? Image(.check) : Image(.uncheck)
     }
     
     func returnSignUpData() -> SignUpRequest {
         return SignUpRequest(identityToken: signUpRequest.identityToken, email: signUpRequest.email, name: viewModel.userNickname)
+    }
+    
+    func makePlaceholder(text: String) -> Text {
+        Text(text)
+            .font(.Body3_medium)
+            .foregroundStyle(.gray400)
     }
 }
 

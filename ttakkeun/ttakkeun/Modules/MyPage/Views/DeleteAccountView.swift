@@ -61,7 +61,7 @@ struct DeleteAccountView: View {
             
             Spacer()
             
-            MainButton(btnText: "다음", width: 349, height: 63, action: {
+            MainButton(btnText: "다음", height: 63, action: {
                 withAnimation {
                     currentPage = 2
                 }
@@ -133,13 +133,13 @@ struct DeleteAccountView: View {
             Spacer()
             
             HStack(alignment: .center, spacing: 10, content: {
-                MainButton(btnText: "이전", width: 122, height: 63, action: {
+                MainButton(btnText: "이전", height: 63, action: {
                     withAnimation {
                         currentPage = 1
                     }
                 }, color: Color.answerBg)
                 
-                MainButton(btnText: "탈퇴하기", width: 219, height: 63, action: {isDeleteAccountMainBtnClicked.toggle()}, color: myAccountIsChecked ? Color.mainPrimary : Color.checkBg)
+                MainButton(btnText: "탈퇴하기", height: 63, action: {isDeleteAccountMainBtnClicked.toggle()}, color: myAccountIsChecked ? Color.mainPrimary : Color.checkBg)
                     .disabled(!myAccountIsChecked)
             })
             .frame(width: 351)

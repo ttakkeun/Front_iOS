@@ -42,7 +42,7 @@ struct InquireView: View {
                 
                 Spacer()
                 
-                MainButton(btnText: "문의하기", width: 349, height: 63,
+                MainButton(btnText: "문의하기", height: 63,
                            action: { viewModel.isInquireMainBtnClicked.toggle()}, color: isMainButtonEnabled() ? Color.mainPrimary : Color.checkBg)
                 .disabled(!isMainButtonEnabled())
             })
