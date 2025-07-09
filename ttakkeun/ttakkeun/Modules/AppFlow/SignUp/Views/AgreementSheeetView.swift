@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 회원 가입 시 동의 항목 뷰
 struct AgreementSheeetView: View {
     
     // MARK: - Property

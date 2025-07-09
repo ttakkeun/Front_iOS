@@ -11,7 +11,8 @@ struct PetProfileResponse: Codable, Hashable {
     var result: [PetProfileDetail]
 }
 
-struct PetProfileDetail: Codable, Hashable{
+struct PetProfileDetail: Codable, Hashable, Identifiable {
+    let id: UUID = .init()
     var petId: Int
     var name: String
     var image: String?

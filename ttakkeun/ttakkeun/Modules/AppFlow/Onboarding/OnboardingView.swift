@@ -8,6 +8,7 @@
 import SwiftUI
 import Lottie
 
+/// 온보딩 화면
 struct OnboardingView: View {
     
     @EnvironmentObject var viewModel: AppFlowViewModel

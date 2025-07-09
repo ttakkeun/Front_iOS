@@ -10,27 +10,38 @@ import SwiftUI
 import Combine
 import CombineMoya
 
-class ProfileViewModel: ObservableObject {
-    
+@Observable
+class ProfileViewModel {
+    // MARK: - Property
     let colors: [Color] = [Color.card001, Color.card002, Color.card003, Color.card004, Color.card005, Color.mainPrimary]
     var usedColor: [Color] = []
-    @Published var backgroudColor: Color = .white
+    var backgroudColor: Color = .white
+    var petProfileResponse: PetProfileResponse? = .init(result: [
+        .init(petId: 01, name: "테스트1", type: .cat, birth: "222222"),
+        .init(petId: 02, name: "테스트2", type: .dog, birth: "222222"),
+        .init(petId: 03, name: "테스트3", type: .cat, birth: "222222"),
+        .init(petId: 04, name: "테스트4", type: .cat, birth: "222222"),
+        .init(petId: 05, name: "테스트5", type: .cat, birth: "222222"),
+        .init(petId: 06, name: "테스트6", type: .cat, birth: "222222"),
+    ])
     
-    @Published var isLastedCard: Bool = true
-    @Published var titleName: String = ""
-    @Published var petProfileResponse: PetProfileResponse?
-    @Published var isLoading: Bool = true
+    // MARK: - StateProperty
+    var isLastedCard: Bool = true
+    var isLoading: Bool = false
+    var showFullScreen: Bool = false
+    var titleName: String = ""
     
-    @Published var showFullScreen: Bool = false
-    
+    // MARK: - Dependency
     let container: DIContainer
     private var cancellalbes = Set<AnyCancellable>()
     
+    // MARK: - Init
     init(container: DIContainer) {
         self.container = container
     }
     
-    public func updateBackgroundColor() {
+    // MARK: - Method
+    public func updateBackgroundColor() async {
         if usedColor.count == colors.count {
             usedColor.removeAll()
         }
@@ -44,6 +55,7 @@ class ProfileViewModel: ObservableObject {
         usedColor.append(newColor)
         withAnimation(.easeInOut(duration: 0.5)) {
         self.backgroudColor = newColor
+            print(backgroudColor)
         }
     }
 }
@@ -53,6 +65,7 @@ class ProfileViewModel: ObservableObject {
 extension ProfileViewModel {
     public func getPetProfile() {
         isLoading = true
+        defer { isLoading = false }
         
         container.useCaseProvider.petProfileUseCase.executegetPetProfile()
             .tryMap { responseData -> ResponseData<PetProfileResponse> in
