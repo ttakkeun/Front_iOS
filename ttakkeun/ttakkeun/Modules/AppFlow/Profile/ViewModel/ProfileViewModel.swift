@@ -16,14 +16,7 @@ class ProfileViewModel {
     let colors: [Color] = [Color.card001, Color.card002, Color.card003, Color.card004, Color.card005, Color.mainPrimary]
     var usedColor: [Color] = []
     var backgroudColor: Color = .white
-    var petProfileResponse: PetProfileResponse? = .init(result: [
-        .init(petId: 01, name: "테스트1", type: .cat, birth: "222222"),
-        .init(petId: 02, name: "테스트2", type: .dog, birth: "222222"),
-        .init(petId: 03, name: "테스트3", type: .cat, birth: "222222"),
-        .init(petId: 04, name: "테스트4", type: .cat, birth: "222222"),
-        .init(petId: 05, name: "테스트5", type: .cat, birth: "222222"),
-        .init(petId: 06, name: "테스트6", type: .cat, birth: "222222"),
-    ])
+    var petProfileResponse: PetProfileResponse?
     
     // MARK: - StateProperty
     var isLastedCard: Bool = true
@@ -55,7 +48,6 @@ class ProfileViewModel {
         usedColor.append(newColor)
         withAnimation(.easeInOut(duration: 0.5)) {
         self.backgroudColor = newColor
-            print(backgroudColor)
         }
     }
 }

@@ -20,8 +20,9 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            SignUpView(socialType: .apple, singUpRequest: SignUpRequest(identityToken: "1123", email: "apple@example.com", name: "정의찬"), container: DIContainer(), appFlowViewModel: AppFlowViewModel())
+            ProfileView(container: DIContainer())
                 .environmentObject(DIContainer())
+                .environmentObject(AppFlowViewModel())
 //            switch appFlowViewModel.appState {
 //            case .onBoarding:
 //                OnboardingView()

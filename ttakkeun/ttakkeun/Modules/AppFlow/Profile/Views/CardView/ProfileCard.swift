@@ -73,7 +73,7 @@ struct ProfileCard: View {
                     .fill(Color.white)
                     .shadow04()
             }
-            .offset(y: ProfileCardConstants.topContentsOffset)
+            .padding(.top, ProfileCardConstants.topContentsOffset)
         })
     }
     

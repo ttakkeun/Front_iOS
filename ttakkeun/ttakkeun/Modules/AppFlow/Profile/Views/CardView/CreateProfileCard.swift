@@ -76,10 +76,10 @@ struct CreateProfileCard: View {
                 .fill(Color.mainPrimary)
                 .shadow04()
         }
-        .offset(y: CreateProfileCardConstants.profileDefaultOffset)
+        .padding(.top, CreateProfileCardConstants.profileDefaultOffset)
     }
 }
 
-#Preview {
+#Preview(traits: .sizeThatFitsLayout) {
     CreateProfileCard(showFullScreen: .constant(true))
 }
