@@ -65,7 +65,7 @@ struct ProfileView: View {
                 viewModel.getPetProfile()
             }
         },content: {
-            MakeProfileView(container: container, showFullScreen: $viewModel.showFullScreen)
+            MakeProfileView(container: container)
         })
     }
     

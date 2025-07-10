@@ -9,15 +9,36 @@ import Foundation
 import SwiftUI
 import Combine
 import CombineMoya
+import PhotosUI
 
-class MakeProfileViewModel: ObservableObject {
+@Observable
+class MakeProfileViewModel {
     
-    // MARK: - Search
+    // MARK: - StateProperty
+    var showingVarietySearch = false
+    var showImagePickerPresented: Bool = false
+    var isLoading: Bool = false
     
-    @Published var showingVarietySearch = false
-    @Published var searchVariety: String = ""
-    @Published var isLoading: Bool = false
+    // MARK: - FieldProperty
+    var isProfileCompleted: Bool = false
+    var isNameFieldFilled: Bool = false {
+        didSet { checkFilledStates() }
+    }
+    var isTypeFieldFilled: Bool = false {
+        didSet { checkFilledStates() }
+    }
+    var isVarietyFieldFilled: Bool = false {
+        didSet { checkFilledStates() }
+    }
+    var isBirthFieldFilled: Bool = false {
+        didSet { checkFilledStates() }
+    }
+    var isNeutralizationFieldFilled: Bool = false {
+        didSet { checkFilledStates() }
+    }
     
+    // MARK: - Property
+    var searchVariety: String = ""
     var filteredDogVarieties: [PetVarietyData] {
         if searchVariety.isEmpty {
             return PetVarietyData.allCases.filter { $0.isDog}
@@ -25,7 +46,6 @@ class MakeProfileViewModel: ObservableObject {
             return PetVarietyData.allCases.filter { $0.isDog && $0.rawValue.contains(searchVariety) }
         }
     }
-    
     var filteredCatVarieties: [PetVarietyData] {
         if searchVariety.isEmpty {
             return PetVarietyData.allCases.filter { $0.isCat}
@@ -33,85 +53,48 @@ class MakeProfileViewModel: ObservableObject {
             return PetVarietyData.allCases.filter { $0.isCat && $0.rawValue.contains(searchVariety) }
         }
     }
+    var requestData: PetInfo = PetInfo(name: "", type: nil, variety: "", birth: "", neutralization: nil)
     
+    var selectedItem: PhotosPickerItem?
+    var selectedImage: UIImage?
+  
+    // MARK: - Dependency
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
     
+    // MARK: - Init
     init(container: DIContainer
     ) {
         self.container = container
     }
     
-    // MARK: - Field
-    
-    @Published var requestData: PetInfo = PetInfo(name: "", type: nil, variety: "", birth: "", neutralization: nil)
-    
-    @Published var isProfileCompleted: Bool = false
-    
-    @Published var isNameFieldFilled: Bool = false {
-        didSet { checkFilledStates() }
-    }
-    
-    @Published var isTypeFieldFilled: Bool = false {
-        didSet { checkFilledStates() }
-    }
-    
-    @Published var isVarietyFieldFilled: Bool = false {
-        didSet { checkFilledStates() }
-    }
-    
-    @Published var isBirthFieldFilled: Bool = false {
-        didSet { checkFilledStates() }
-    }
-    
-    @Published var isNeutralizationFieldFilled: Bool = false {
-        didSet { checkFilledStates() }
-    }
+    // MARK: - Method
     
     private func checkFilledStates() {
         isProfileCompleted = isNameFieldFilled && isTypeFieldFilled && isVarietyFieldFilled && isBirthFieldFilled && isNeutralizationFieldFilled
     }
     
-    
-    // MARK: - ImagePicker
-    
-    var profileImage: [UIImage] = []
-    
-    @Published var isImagePickerPresented: Bool = false
-    
-    var selectedImageCount: Int = 0
-}
-
-extension MakeProfileViewModel: ImageHandling {
-    
-    func addImage(_ images: UIImage) {
-        if !profileImage.isEmpty {
-            profileImage.removeAll()
-        }
+    public func loadImage(_ item: PhotosPickerItem?) async {
+        guard let item = item else { return }
         
-        profileImage.append(images)
-    }
-    
-    func removeImage(at index: Int) {
-        profileImage.remove(at: index)
-    }
-    
-    func showImagePicker() {
-        isImagePickerPresented = true
-    }
-    
-    func getImages() -> [UIImage] {
-        profileImage
+        do {
+            if let data = try await item.loadTransferable(type: Data.self),
+               let uiImage = UIImage(data: data) {
+                self.selectedImage = uiImage
+            }
+        } catch {
+            print("이미지 로드 실패", error.localizedDescription)
+        }
     }
 }
 
-    // MARK: - API Method
+// MARK: - API Method
 
 extension MakeProfileViewModel {
     
     public func makePetProfile(completion: (() -> Void)? = nil) {
         isLoading = true
-
+        
         container.useCaseProvider.petProfileUseCase.executeMakePetProfile(petInfo: requestData)
             .tryMap { responseData -> ResponseData<MakePetProfileResponse> in
                 if !responseData.isSuccess {
@@ -136,7 +119,6 @@ extension MakeProfileViewModel {
                 }
             }, receiveValue: { [weak self] petProfileResponse in
                 guard let self = self else { return }
-                self.handleMakePetProfileResponse(petId: petProfileResponse.result?.petId)
                 
                 if let petId = petProfileResponse.result?.petId {
                     self.patchPetProfileImage(petId: petId, completion: completion)
@@ -144,20 +126,11 @@ extension MakeProfileViewModel {
             })
             .store(in: &cancellables)
     }
-    
-    private func handleMakePetProfileResponse(petId: Int?) {
-        if let petId = petId {
-            print("생성된 펫 id: \(petId)")
-        } else {
-            print("생성된 펫 id 정보 없음: 0")
-        }
-    }
-    
     // MARK: - patchPetProfileImage
     
     public func patchPetProfileImage(petId: Int, completion: (() -> Void)? = nil) {
-        if !getImages().isEmpty {
-            container.useCaseProvider.petProfileUseCase.executePatchPetProfileImage(petId: petId, image: getImages()[0])
+        if let selectedImage = selectedImage {
+            container.useCaseProvider.petProfileUseCase.executePatchPetProfileImage(petId: petId, image: selectedImage)
                 .tryMap { responseData -> ResponseData<PatchPetImageResponse> in
                     if !responseData.isSuccess {
                         throw APIError.serverError(message: responseData.message, code: responseData.code)
@@ -183,22 +156,12 @@ extension MakeProfileViewModel {
                     case .failure(let failure):
                         print("Patch PetProfile Image Failure: \(failure)")
                     }
-                }, receiveValue: { [weak self] patchPetProfileResponse in
-                    guard let self = self else { return }
-                    self.handleProfileImageUrlResponse(imageUrl: patchPetProfileResponse.result?.petImageUrl)
+                }, receiveValue: { patchPetProfileResponse in
+                    print("펫 이미지 생성: \(patchPetProfileResponse)")
                 })
                 .store(in: &cancellables)
         } else {
-            completion?() // 이미지가 없는 경우에도 completion 호출
+            completion?()
         }
     }
-    
-    private func handleProfileImageUrlResponse(imageUrl: String?) {
-        if let imageUrl = imageUrl {
-            print("생성된 펫 이미지 주소: \(imageUrl)")
-        } else {
-            print("생성된 펫 이미지 정보 없음: 0")
-        }
-    }
-    
 }

@@ -20,9 +20,8 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ProfileView(container: DIContainer())
+            MakeProfileView(container: DIContainer())
                 .environmentObject(DIContainer())
-                .environmentObject(AppFlowViewModel())
 //            switch appFlowViewModel.appState {
 //            case .onBoarding:
 //                OnboardingView()

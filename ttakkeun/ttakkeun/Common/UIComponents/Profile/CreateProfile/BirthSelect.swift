@@ -27,31 +27,34 @@ struct BirthSelect: View {
     }
     
     var body: some View {
-        HStack(alignment: .center, spacing: 0, content: {
+        HStack(alignment: .center, spacing: .zero, content: {
             CustomPicker(selectedValue: $selectedYear, title: "연도",
                          range: Array(startYear()...currentYear()).map { $0 },
                          updateAction: { updateBirthDate() })
             
-            Divider()
-                .frame(width: 1, height: 44)
-                .background(Color.gray200)
+            makeDivider()
             
             CustomPicker(selectedValue: $selectedMonth, title: "월",
                          range: Array(1...12).map { $0 },
                          updateAction: { updateBirthDate() })
             
-            Divider()
-                .frame(width: 1, height: 44)
-                .background(Color.gray200)
+            makeDivider()
             
             CustomPicker(selectedValue: $selectedDay, title: "일",
                          range: dayRange(), updateAction: { updateBirthDate() })
         })
-        .frame(width: 331, height: 44)
+        .frame(maxWidth: .infinity)
+        .frame(height: 44)
         .overlay(content: {
             RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.gray200, lineWidth: 1)
+                .stroke(Color.gray200, style: .init())
         })
+    }
+    
+    private func makeDivider() -> some View {
+        Divider()
+            .frame(width: 1, height: 44)
+            .background(Color.gray200)
     }
 }
 

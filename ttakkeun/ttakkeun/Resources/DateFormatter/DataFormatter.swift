@@ -11,6 +11,7 @@ import SwiftUI
 final class DataFormatter {
     static let shared = DataFormatter()
     
+    // FIXME: - 나중에 삭제할 부분
     public func formattedDate(from dateString: String) -> String {
         let inputFormatter = DateFormatter()
         inputFormatter.dateFormat = "yyyy-MM-dd"

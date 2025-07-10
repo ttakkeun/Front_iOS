@@ -6,228 +6,265 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct MakeProfileView: View {
     
-    @StateObject var viewModel: MakeProfileViewModel
-    @Binding var showFullScreen: Bool
-    
+    // MARK: - Property
+    @State var viewModel: MakeProfileViewModel
     @EnvironmentObject var container: DIContainer
     @Environment(\.dismiss) var dismiss
     
-    
-    init(
-        container: DIContainer,
-        showFullScreen: Binding<Bool>
-    ) {
-        self._viewModel = StateObject(wrappedValue: .init(container: container))
-        self._showFullScreen = showFullScreen
+    // MARK: - Constants
+    fileprivate enum MakeProfileConstants {
+        static let fieldVspacing: CGFloat = 10
+        static let mainVspacing: CGFloat = 25
+        static let fieldsVspacing: CGFloat = 20
+        
+        static let safeHorizonPadding: CGFloat = 31
+        static let safeTopPadding: CGFloat = 33
+        static let varietyLeadingPadding: CGFloat = 22
+        static let varietyTrailingPadding: CGFloat = 16
+        
+        static let profileImageSize: CGFloat = 120
+        static let checkImageSize: CGFloat = 18
+        static let varietyIconSize: CGFloat = 16
+        static let varietyHeight: CGFloat = 44
+        
+        static let cornerRadius: CGFloat = 10
+        
+        static let profileImage: String = "questionmark.circle.fill"
+        static let namePlaceholder: String = "반려동물의 이름을 입력해주세요."
+        
+        static let nameText: String = "이름"
+        static let petTypeText: String = "반려동물 종류"
+        static let varietyFieldText: String = "품종"
+        static let birthDayFieldText: String = "생년월일"
+        static let neutralFieldText: String = "중성화여부"
+        
+        static let petTypeDogName: String = "강아지"
+        static let petTypeCatName: String = "고양이"
+        static let varietyFieldGuideText: String = "반려동물의 품종을 선택해주세요"
+        static let neutralYesText: String = "예"
+        static let neutralNoText: String = "아니오"
+        static let registerBtnText: String = "등록하기"
     }
     
+    // MARK: - Init
+    init(
+        container: DIContainer,
+    ) {
+        self.viewModel = .init(container: container)
+    }
+    
+    // MARK: - Body
     var body: some View {
-        VStack {
-            CustomNavigation(
-                action: {
-                    dismiss()
-                }, title: "프로필 생성", currentPage: nil)
-            
-            Spacer().frame(height: 20)
-            
+        VStack(spacing: MakeProfileConstants.mainVspacing, content: {
             profileImage
-            
-            Spacer().frame(height: 25)
-            
             inputFieldGroup
-            
             Spacer()
-            
             registerBtn
-        }
-        .safeAreaPadding(EdgeInsets(top: 7, leading: 0, bottom: 20, trailing: 0))
-        .navigationBarBackButtonHidden(true)
-        .onAppear {
-            UIApplication.shared.hideKeyboard()
-        }
+        })
+        .safeAreaPadding(.horizontal, MakeProfileConstants.safeHorizonPadding)
+        .safeAreaPadding(.top, MakeProfileConstants.safeTopPadding)
         .sheet(isPresented: $viewModel.showingVarietySearch) {
             VarietySearchView(viewModel: viewModel)
         }
-        .sheet(isPresented: $viewModel.isImagePickerPresented, content: {
-            ImagePicker(imageHandler: viewModel, selectedLimit: 1)
-        })
-        .overlay(alignment: .center, content: {
-            if viewModel.isLoading {
-                    ZStack {
-                        Color.black
-                            .opacity(0.5)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity).ignoresSafeArea(.all)
-                        
-                        VStack {
-                            ProgressView(label: {
-                                LoadingDotsText(text: "반려동물 프로필 생성 중입니다.")
-                            })
-                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                                .controlSize(.large)
-                        }
-                        .padding()
-                        .background(Color.gray.opacity(0.8))
-                    }
-                }
-        })
-    }
-    
-    private var inputFieldGroup: some View {
-        VStack(alignment: .center, spacing: 20, content: {
-            Group {
-                nameField
-                typeField
-                varietyField
-                birthField
-                neutralizationField
+        .photosPicker(isPresented: $viewModel.showImagePickerPresented,
+                      selection: $viewModel.selectedItem,
+                      matching: .images,
+                      photoLibrary: .shared())
+        .loadingOverlay(isLoading: viewModel.isLoading, loadingTextType: .createProfile)
+        .onChange(of: viewModel.selectedItem, { old, new in
+            Task {
+                await viewModel.loadImage(new)
             }
         })
     }
     
+    // MARK: - FieldGroup
+    private var inputFieldGroup: some View {
+        VStack(alignment: .center, spacing: MakeProfileConstants.fieldsVspacing, content: {
+            Group {
+                makeFieldView(contents: {
+                    nameField
+                }, fieldGroup: .init(title: MakeProfileConstants.nameText, mustMark: true, isFieldEnable: viewModel.isNameFieldFilled))
+                
+                makeFieldView(contents: {
+                    typeField
+                }, fieldGroup: .init(title: MakeProfileConstants.petTypeText, mustMark: true, isFieldEnable: viewModel.isTypeFieldFilled))
+                
+                makeFieldView(contents: {
+                    varietyField
+                }, fieldGroup: .init(title: MakeProfileConstants.varietyFieldText, mustMark: true, isFieldEnable: viewModel.isVarietyFieldFilled))
+                
+                makeFieldView(contents: {
+                    birthField
+                }, fieldGroup: .init(title: MakeProfileConstants.birthDayFieldText, mustMark: false, isFieldEnable: viewModel.isBirthFieldFilled))
+                
+                makeFieldView(contents: {
+                    neutralizationField
+                }, fieldGroup: .init(title: MakeProfileConstants.neutralFieldText, mustMark: true, isFieldEnable: viewModel.isNeutralizationFieldFilled))
+            }
+        })
+    }
+    
+    // MARK: - Profile
+    /// 상단 프로파일 이미지
     @ViewBuilder
     private var profileImage: some View {
         VStack {
             Button(action: {
-                viewModel.showImagePicker()
+                viewModel.showImagePickerPresented.toggle()
             }, label: {
-                if viewModel.profileImage.isEmpty {
-                    Image(systemName: "questionmark.circle.fill")
-                        .resizable()
-                        .frame(width: 120, height: 120)
-                        .aspectRatio(contentMode: .fill)
-                        .tint(Color.gray300)
+                if let image = viewModel.selectedImage {
+                    makeProfileImage(image: Image(uiImage: image))
+                        .shadow02()
+                        .clipShape(Circle())
                 } else {
-                    if let image = viewModel.profileImage.first {
-                        Image(uiImage: image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 120, height: 120)
-                            .shadow02()
-                            .clipShape(Circle())
-                    }
+                    makeProfileImage(image: Image(systemName: MakeProfileConstants.profileImage))
+                        .tint(Color.gray300)
                 }
             })
         }
     }
     
+    /// 프로파일 이미지 생성 함수
+    /// - Parameter image: 이미지 값
+    /// - Returns: 이미지 반환
+    private func makeProfileImage(image: Image) -> some View {
+        image
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: MakeProfileConstants.profileImageSize, height: MakeProfileConstants.profileImageSize)
+    }
+    
+    // MARK: - NameTextField
+    /// 이름 입력 텍스트 필드
     private var nameField: some View {
-        VStack(alignment: .leading, spacing: 10, content: {
-            makeFieldTitle(fieldGroup: FieldGroup(title: "이름", mustMark: true, isFieldEnable: viewModel.isNameFieldFilled))
-            
-            makeNameTextField()
-        })
-        .frame(width: 331, height: 78, alignment: .leading)
+        TextField("",
+                  text: Binding(
+                    get: { viewModel.requestData.name },
+                    set: {
+                        viewModel.requestData.name = $0
+                        viewModel.isNameFieldFilled = !$0.isEmpty
+                    }),
+                  prompt: placeholderText(MakeProfileConstants.namePlaceholder))
+        .textFieldStyle(ttakkeunTextFieldStyle())
+        .submitLabel(.done)
     }
     
+    // MARK: - Dog or Cat Type
+    /// 반려 동물 펫 타입 필드
     private var typeField: some View {
-        VStack(alignment: .leading, spacing: 10, content: {
-            makeFieldTitle(fieldGroup: FieldGroup(title: "반려동물 종류", mustMark: true, isFieldEnable: viewModel.isTypeFieldFilled))
-            
-            ProfileTwoButton(
-                selectedButton: Binding(
-                    get: { viewModel.requestData.type?.toKorean() },
-                    set: { newValue in
-                        if newValue == "강아지" {
-                            viewModel.requestData.type = .dog
-                        } else if newValue == "고양이" {
-                            viewModel.requestData.type = .cat
-                        }
-                        viewModel.isTypeFieldFilled = true
-                    }
-                ),
-                firstButton: ButtonOption(
-                    textTitle: "강아지",
-                    action: {}
-                ),
-                secondButton: ButtonOption(
-                    textTitle: "고양이",
-                    action: {}
-                )
+        ProfileTwoButton(
+            selectedButton: Binding(
+                get: { viewModel.requestData.type?.toKorean() },
+                set: { _ in
+                    viewModel.isTypeFieldFilled = true
+                }
+            ),
+            firstButton: ButtonOption(
+                textTitle: MakeProfileConstants.petTypeDogName,
+                action: {
+                    viewModel.requestData.type = .dog
+                }
+            ),
+            secondButton: ButtonOption(
+                textTitle: MakeProfileConstants.petTypeCatName,
+                action: {
+                    viewModel.requestData.type = .cat
+                }
             )
-        })
-        .frame(width: 331, height: 74)
+        )
     }
     
+    // MARK: - Varieties
+    /// 품종 필드
     private var varietyField: some View {
-        VStack(alignment: .leading, spacing: 10, content: {
-            makeFieldTitle(fieldGroup: FieldGroup(title: "품종", mustMark: true, isFieldEnable: viewModel.isVarietyFieldFilled))
-            
-            Button(action: {
-                viewModel.showingVarietySearch.toggle()
-            }, label: {
-                ZStack(alignment: .center, content: {
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray200)
-                        .frame(width: 331, height: 44)
-                        .foregroundStyle(Color.clear)
-                    HStack {
-                        Text(viewModel.requestData.variety.isEmpty == false ? viewModel.requestData.variety : "반려동물의 품종을 선택해주세요")
-                            .font(.Body3_semibold)
-                            .foregroundStyle(viewModel.requestData.variety.isEmpty == false ? Color.gray900 : Color.gray200)
-                        
-                        Spacer()
-                        
-                        Icon.bottomArrow.image
-                            .resizable()
-                            .frame(width: 16, height: 16)
-                    }
-                    .frame(width: 300, alignment: .leading)
-                })
+        Button(action: {
+            viewModel.showingVarietySearch.toggle()
+        }, label: {
+            ZStack(alignment: .center, content: {
+                RoundedRectangle(cornerRadius: MakeProfileConstants.cornerRadius)
+                    .fill(Color.clear)
+                    .stroke(Color.gray200, style: .init())
+                    .frame(height: MakeProfileConstants.varietyHeight)
+                
+                varieyFieldInContents
             })
         })
-        .frame(width: 331, height: 74)
     }
     
+    /// 품종 선택 내부 가이드 표시
+    private var varieyFieldInContents: some View {
+        HStack {
+            Text(viewModel.requestData.variety.isEmpty == false ? viewModel.requestData.variety : MakeProfileConstants.varietyFieldGuideText)
+                .font(.Body3_semibold)
+                .foregroundStyle(viewModel.requestData.variety.isEmpty == false ? Color.gray900 : Color.gray200)
+            
+            Spacer()
+            
+            Image(.bottomArrow)
+                .resizable()
+                .frame(width: MakeProfileConstants.varietyIconSize, height: MakeProfileConstants.varietyIconSize)
+        }
+        .padding(.leading, MakeProfileConstants.varietyLeadingPadding)
+        .padding(.trailing, MakeProfileConstants.varietyTrailingPadding)
+    }
+    
+    // MARK: - BirthDay
+    /// 생년월일 필드
     private var birthField: some View {
-        VStack(alignment: .leading, spacing: 10, content: {
-            makeFieldTitle(fieldGroup: FieldGroup(title: "생년월일", mustMark: false, isFieldEnable: viewModel.isBirthFieldFilled))
-            
-            BirthSelect(
-                birthDate: Binding(
-                    get: { viewModel.requestData.birth },
-                    set: {
-                        viewModel.requestData.birth = $0
-                        viewModel.isBirthFieldFilled = !$0.isEmpty
-                    }
-                ),
-                isBirthFilled: $viewModel.isBirthFieldFilled)
-        })
+        BirthSelect(
+            birthDate: Binding(
+                get: { viewModel.requestData.birth },
+                set: {
+                    viewModel.requestData.birth = $0
+                    viewModel.isBirthFieldFilled = !$0.isEmpty
+                }
+            ),
+            isBirthFilled: $viewModel.isBirthFieldFilled)
     }
     
+    // MARK: - Neutralization
+    /// 중성화 여부
     private var neutralizationField: some View {
-        VStack(alignment: .leading, spacing: 10, content: {
-            makeFieldTitle(fieldGroup: FieldGroup(title: "중성화여부", mustMark: true, isFieldEnable: viewModel.isNeutralizationFieldFilled))
-            
-            ProfileTwoButton(
-                selectedButton: Binding(get: { viewModel.requestData.neutralization == nil ? nil : (viewModel.requestData.neutralization! ? "예" : "아니오") },
-                                        set: { newValue in
-                                            viewModel.requestData.neutralization = (newValue == "예")
-                                            viewModel.isNeutralizationFieldFilled = true
-                                        }),
-                firstButton: ButtonOption(
-                    textTitle: "예",
-                    action: {
-                    }), secondButton: ButtonOption(
-                        textTitle: "아니오",
-                        action: {
-                        }
-                    ))
-        })
-        .frame(width: 331, height: 74)
+        ProfileTwoButton(
+            selectedButton: Binding(
+                get: {
+                    viewModel.requestData.neutralization == nil ? nil : (
+                        viewModel.requestData.neutralization! ? MakeProfileConstants.neutralYesText : MakeProfileConstants.neutralNoText
+                    )
+                },
+                set: { newValue in
+                    viewModel.requestData.neutralization = (
+                        newValue == MakeProfileConstants.neutralYesText
+                    )
+                    viewModel.isNeutralizationFieldFilled = true
+                }),
+            firstButton: ButtonOption(
+                textTitle: MakeProfileConstants.neutralYesText,
+                action: {
+                }),
+            secondButton: ButtonOption(
+                textTitle: MakeProfileConstants.neutralNoText,
+                action: {
+                }
+            )
+        )
     }
     
+    // MARK: - RegistButton
+    /// 등록 버튼
     private var registerBtn: some View {
         MainButton(
-            btnText: "등록하기",
-            height: 56,
+            btnText: MakeProfileConstants.registerBtnText,
             action: {
-                if viewModel.isProfileCompleted {
-                    viewModel.makePetProfile {
-                        self.showFullScreen.toggle()
-                    }
+                guard viewModel.isProfileCompleted else { return }
+                
+                viewModel.makePetProfile {
+                    dismiss()
                 }
             },
             color: viewModel.isProfileCompleted ? Color.mainPrimary : Color.gray200)
@@ -236,39 +273,33 @@ struct MakeProfileView: View {
 
 extension MakeProfileView {
     
-    fileprivate func makeFieldTitle(fieldGroup: FieldGroup) -> HStack<some View> {
+    private func makeFieldTitle(fieldGroup: CreateProfileFieldValue) -> HStack<some View> {
         return HStack(content: {
             NameTag(titleText: fieldGroup.title, mustMark: fieldGroup.mustMark)
             
             if fieldGroup.isFieldEnable {
-                Icon.check.image
-                    .frame(width: 18, height: 18)
+                Image(.check)
+                    .frame(width: MakeProfileConstants.checkImageSize, height: MakeProfileConstants.checkImageSize)
             }
         })
     }
     
-    func makeNameTextField() -> CustomTextField {
-        return CustomTextField(
-            keyboardType: .default,
-            text: Binding(
-                get: { viewModel.requestData.name },
-                set: {
-                    viewModel.requestData.name = $0
-                    viewModel.isNameFieldFilled = !$0.isEmpty
-                }
-            ),
-            placeholder: "반려동물의 이름을 입력해주세요",
-            fontSize: 14,
-            cornerRadius: 10,
-            padding: 23,
-            maxWidth: 331,
-            maxHeight: 44
-        )
+    private func placeholderText(_ text: String) -> Text {
+        Text(text)
+            .font(.Body3_medium)
+            .foregroundStyle(Color.gray400)
+    }
+    
+    private func makeFieldView<Content: View>(@ViewBuilder contents: @escaping () -> Content, fieldGroup: CreateProfileFieldValue) -> some View {
+        VStack(alignment: .leading, spacing: MakeProfileConstants.fieldVspacing, content: {
+            makeFieldTitle(fieldGroup: fieldGroup)
+            
+            contents()
+        })
     }
 }
 
-fileprivate struct FieldGroup {
-    let title: String
-    let mustMark: Bool
-    let isFieldEnable: Bool
+#Preview {
+    MakeProfileView(container: DIContainer())
+        .environmentObject(DIContainer())
 }
