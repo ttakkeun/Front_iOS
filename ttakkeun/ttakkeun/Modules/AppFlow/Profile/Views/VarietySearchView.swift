@@ -9,74 +9,60 @@ import SwiftUI
 
 struct VarietySearchView: View {
     
-    @ObservedObject var viewModel: MakeProfileViewModel
+    // MARK: - Property
+    @Bindable var viewModel: MakeProfileViewModel
+    
+    // MARK: - Constants
+    fileprivate enum VarietySearchConstants {
+        static let navigationTitle: String = "품종 검색"
+        static let dogTitle: String = "강아지"
+        static let catTitle: String = "고양이"
+        static let searchPlaceholder: String = "검색어를 입력하세요!"
+        
+        static let headerSize: CGFloat = 30
+    }
     
     var body: some View {
         NavigationStack {
-            
             List {
-                Section(content: {
-                    ForEach(viewModel.filteredDogVarieties, id: \.self) { item in
-                        Button(action: {
-                            viewModel.requestData.variety = item.rawValue
-                            viewModel.isVarietyFieldFilled = true
-                            viewModel.showingVarietySearch = false
-                        }, label: {
-                            Text(item.rawValue)
-                        })
-                    }
-                }, header: {
-                    Text("강아지")
-                        .font(.suit(type: .extraBold, size: 30))
-                        .foregroundStyle(Color.black)
-                })
-                
-                Section(content: {
-                    ForEach(viewModel.filteredCatVarieties, id: \.self) { item in
-                        Button(action: {
-                            viewModel.requestData.variety = item.rawValue
-                            viewModel.isVarietyFieldFilled = true
-                            viewModel.showingVarietySearch = false
-                        }, label: {
-                            Text(item.rawValue)
-                        })
-                    }
-                }, header: {
-                    Text("고양이")
-                        .font(.suit(type: .extraBold, size: 30))
-                        .foregroundStyle(Color.black)
-                })
+                makeSection(data: viewModel.filteredDogVarieties, text: VarietySearchConstants.dogTitle)
+                makeSection(data: viewModel.filteredCatVarieties, text: VarietySearchConstants.catTitle)
             }
-            .listStyle(PlainListStyle())
-            .navigationTitle("품종 검색")
             .searchable(
                 text: $viewModel.searchVariety,
                 placement: .navigationBarDrawer(displayMode: .always),
-                prompt: "검색어를 입력하세요."
+                prompt: VarietySearchConstants.searchPlaceholder
             )
             .font(.Body2_medium)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar(content: {
-                HStack {
-                    Button(action: {
-                        viewModel.showingVarietySearch = false
-                    }, label: {
-                        Image(systemName: "xmark")
-                            .renderingMode(.template)
-                            .foregroundStyle(Color.black)
-                            .fontWeight(.regular)
-                            .frame(width: 14, height: 14)
-                    })
-                    
-                    Spacer()
-                }
-            })
-            .toolbarRole(.navigationStack)
+            .navigationTitle(VarietySearchConstants.navigationTitle)
         }
-        .clipShape(UnevenRoundedRectangle(topLeadingRadius: 10, topTrailingRadius: 10))
-        
-        .onAppear(perform: {
-            UIApplication.shared.hideKeyboard()
+    }
+    
+    /// 섹션 생성
+    /// - Parameters:
+    ///   - data: 동물품종 데이터
+    ///   - text: 상단 타이틀 이름
+    /// - Returns: 뷰 반환
+    private func makeSection(data: [PetVarietyData], text: String) -> some View {
+        Section(content: {
+            ForEach(data, id: \.self) { item in
+                Button(action: {
+                    viewModel.requestData.variety = item.rawValue
+                    viewModel.isVarietyFieldFilled = true
+                    viewModel.showingVarietySearch = false
+                }, label: {
+                    Text(item.rawValue)
+                        .foregroundStyle(Color.black)
+                })
+            }
+        }, header: {
+            Text(text)
+                .font(.suit(type: .extraBold, size: VarietySearchConstants.headerSize))
+                .foregroundStyle(Color.black)
         })
     }
+}
+
+#Preview {
+    VarietySearchView(viewModel: .init(container: DIContainer()))
 }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// TODO: - 크기 동적인지 확인 필요
 struct CustomPicker: View {
     
     @Binding var selectedValue: Int?
@@ -42,7 +43,6 @@ struct CustomPicker: View {
                 .foregroundStyle(selectedValue == nil ? Color.gray400 : Color.black)
                 .font(.Body3_medium)
                 .frame(width: 110, height: 44)
-
         })
     }
 }
