@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 회원가입뷰
 struct SignUpView: View {
     
     // MARK: - Property
@@ -58,26 +59,24 @@ struct SignUpView: View {
     
     // MARK: - Contents
     var body: some View {
-        NavigationStack {
-            VStack(alignment: .center, spacing: .zero, content: {
-                topContents
-                Spacer().frame(maxHeight: SignUpConstants.topSpacerHeight)
-                middleContents
-                Spacer()
-                bottomContents
-            })
-            .ignoresSafeArea(.keyboard)
-            .safeAreaPadding(EdgeInsets(top: UIConstants.safeTop, leading: UIConstants.safeLeading, bottom: .zero, trailing: UIConstants.safeTrailing))
-            .navigationBarBackButtonHidden(true)
-            .navigationBarTitleDisplayMode(.inline)
-            .customNavigation(title: SignUpConstants.customNavigationText, leadingAction: {
-                container.navigationRouter.pop()
-            }, naviIcon: Image(systemName: SignUpConstants.topNaviIconText))
-            .sheet(item: $viewModel.selectedAgreement) { item in
-                AgreementSheeetView(agreement: item)
-                    .presentationDragIndicator(.visible)
-                    .presentationCornerRadius(SignUpConstants.sheetCornerRadius)
-            }
+        VStack(alignment: .center, spacing: .zero, content: {
+            topContents
+            Spacer().frame(maxHeight: SignUpConstants.topSpacerHeight)
+            middleContents
+            Spacer()
+            bottomContents
+        })
+        .ignoresSafeArea(.keyboard)
+        .safeAreaPadding(EdgeInsets(top: UIConstants.safeTop, leading: UIConstants.safeLeading, bottom: .zero, trailing: UIConstants.safeTrailing))
+        .navigationBarBackButtonHidden(true)
+        .navigationBarTitleDisplayMode(.inline)
+        .customNavigation(title: SignUpConstants.customNavigationText, leadingAction: {
+            container.navigationRouter.pop()
+        }, naviIcon: Image(systemName: SignUpConstants.topNaviIconText))
+        .sheet(item: $viewModel.selectedAgreement) { item in
+            AgreementSheeetView(agreement: item)
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(SignUpConstants.sheetCornerRadius)
         }
     }
     

@@ -10,27 +10,31 @@ import SwiftUI
 import Combine
 import CombineMoya
 
-class ProfileViewModel: ObservableObject {
-    
+@Observable
+class ProfileViewModel {
+    // MARK: - Property
     let colors: [Color] = [Color.card001, Color.card002, Color.card003, Color.card004, Color.card005, Color.mainPrimary]
     var usedColor: [Color] = []
-    @Published var backgroudColor: Color = .white
+    var backgroudColor: Color = .white
+    var petProfileResponse: PetProfileResponse?
     
-    @Published var isLastedCard: Bool = true
-    @Published var titleName: String = ""
-    @Published var petProfileResponse: PetProfileResponse?
-    @Published var isLoading: Bool = true
+    // MARK: - StateProperty
+    var isLastedCard: Bool = true
+    var isLoading: Bool = false
+    var showFullScreen: Bool = false
+    var titleName: String = ""
     
-    @Published var showFullScreen: Bool = false
-    
+    // MARK: - Dependency
     let container: DIContainer
     private var cancellalbes = Set<AnyCancellable>()
     
+    // MARK: - Init
     init(container: DIContainer) {
         self.container = container
     }
     
-    public func updateBackgroundColor() {
+    // MARK: - Method
+    public func updateBackgroundColor() async {
         if usedColor.count == colors.count {
             usedColor.removeAll()
         }
@@ -53,6 +57,7 @@ class ProfileViewModel: ObservableObject {
 extension ProfileViewModel {
     public func getPetProfile() {
         isLoading = true
+        defer { isLoading = false }
         
         container.useCaseProvider.petProfileUseCase.executegetPetProfile()
             .tryMap { responseData -> ResponseData<PetProfileResponse> in
