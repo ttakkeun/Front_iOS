@@ -7,6 +7,7 @@
 
 import Foundation
 
+// FIXME: - 삭제 필요
 class UserState: ObservableObject {
     
     static let shared = UserState()
