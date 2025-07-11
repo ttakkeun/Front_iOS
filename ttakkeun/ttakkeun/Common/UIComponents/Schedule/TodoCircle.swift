@@ -9,9 +9,16 @@ import SwiftUI
 
 struct TodoCircle: View {
     
+    // MARK: - Property
     var partItem: PartItem
     var isBefore: Bool
     
+    // MARK: - Constants
+    fileprivate enum TodoCircleConstants {
+        static let iconSize: CGFloat = 51
+    }
+    
+    // MARK: - Init
     init(partItem: PartItem, isBefore: Bool) {
         self.partItem = partItem
         self.isBefore = isBefore
@@ -22,11 +29,11 @@ struct TodoCircle: View {
             if isBefore {
                 Circle()
                     .fill(partItem.toColor())
-                    .frame(width: 51, height: 51)
+                    .frame(width: TodoCircleConstants.iconSize, height: TodoCircleConstants.iconSize)
             } else {
                 Circle()
                     .fill(partItem.toAfterColor())
-                    .frame(width: 51, height: 51)
+                    .frame(width: TodoCircleConstants.iconSize, height: TodoCircleConstants.iconSize)
             }
             partItem.toImage()
                 .fixedSize()

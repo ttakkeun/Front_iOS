@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeAIProduct: View {
     
-    @StateObject var viewModel: HomeRecommendViewModel
+    @State var viewModel: HomeRecommendViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16, content: {

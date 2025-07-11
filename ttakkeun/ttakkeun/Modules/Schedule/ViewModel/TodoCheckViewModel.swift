@@ -9,14 +9,15 @@ import SwiftUI
 import Combine
 import CombineMoya
 
-class TodoCheckViewModel: ObservableObject, TodoCheckProtocol {
+@Observable
+class TodoCheckViewModel: TodoCheckProtocol {
     
-    @Published var scheduleData: ScheduleInquiryResponse?
-    @Published var todos: [TodoList] = []
-    @Published var newTodoText: String = ""
-    @Published var isAddingNewTodo = false
+    var scheduleData: ScheduleInquiryResponse?
+    var todos: [TodoList] = []
+    var newTodoText: String = ""
+    var isAddingNewTodo = false
     
-    @Published var isLoading: Bool = false
+    var isLoading: Bool = false
     
     let partItem: PartItem
     let container: DIContainer

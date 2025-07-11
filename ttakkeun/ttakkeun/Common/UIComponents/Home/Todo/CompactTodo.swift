@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CompactTodo: View {
     
-    @ObservedObject var viewModel: HomeTodoViewModel
+    @Bindable var viewModel: HomeTodoViewModel
     var partItem: PartItem
     
     init(viewModel: HomeTodoViewModel, partItem: PartItem) {

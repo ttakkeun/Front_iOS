@@ -9,116 +9,152 @@ import SwiftUI
 
 struct HomeDragView: View {
     
-    @State private var offset: CGFloat
-    @State private var lastOffset: CGFloat
-    @GestureState private var dragOffset: CGFloat = 0
+    // MARK: - Property
+    @State private var hasAppeared = false
+    @State private var offset: CGFloat = .zero
+    @State private var lastOffset: CGFloat = .zero
+    @GestureState private var dragOffset: CGFloat = .zero
     
-    @Bindable var homeProfileCardViewModel: HomeProfileCardViewModel
-    @ObservedObject var homeRecommendViewModel: HomeRecommendViewModel
-    @ObservedObject var homeTodoViewModel: HomeTodoViewModel
+    @State var homeRecommendViewModel: HomeRecommendViewModel
+    @State var homeTodoViewModel: HomeTodoViewModel
+    let petType: ProfileType
     
-    init(
-        homeProfileCardViewModel: HomeProfileCardViewModel,
-        homeRecommendViewModel: HomeRecommendViewModel,
-        homeTodoViewModel: HomeTodoViewModel
-    ) {
-        _offset = State(initialValue: 0)
-        _lastOffset = State(initialValue: 0)
-        self.homeProfileCardViewModel = homeProfileCardViewModel
-        self.homeRecommendViewModel = homeRecommendViewModel
-        self.homeTodoViewModel = homeTodoViewModel
-    }
-    
-    var body: some View {
+    // MARK: - Constants
+    fileprivate enum HomeDragConstants {
+        static let dragVspacing: CGFloat = 22
         
-        if homeRecommendViewModel.aiRecommendIsLoading ||
-                   homeRecommendViewModel.userRecommendIsLoading ||
-                   homeTodoViewModel.todoIsLoading {
-            loadingView
-        } else {
-            bottomDrag
+        static let indicatorWidth: CGFloat = 40
+        static let indicatorHeight: CGFloat = 5
+        
+        static let minScreenHeight: CGFloat = 0.345
+        static let maxScreenHeight: CGFloat = 0.058
+        
+        static let compactComponentVspacing: CGFloat = 24
+        static let cornerRadius: CGFloat = 30
+        static let threshold: CGFloat = 5
+        static let safeTopPadding: CGFloat = 8
+        
+        static let indicatorUpText: String = "chevron.up"
+        static let indicatorDownText: String = "chevron.down"
+    }
+    
+    // MARK: - Init
+    init(container: DIContainer, petType: ProfileType) {
+        self.homeRecommendViewModel = .init(container: container)
+        self.homeTodoViewModel = .init(container: container)
+        self.petType = petType
+    }
+    
+    // MARK: - Body
+    var body: some View {
+        let screenHeight = getScreenSize().height
+        let minOffset: CGFloat = screenHeight * HomeDragConstants.minScreenHeight
+        let maxOffset: CGFloat = screenHeight * HomeDragConstants.maxScreenHeight
+        let midPoint = (minOffset + maxOffset) / 2
+        
+        VStack(spacing: HomeDragConstants.dragVspacing, content: {
+            dragIndicator
+            compactComponents
+        })
+        .safeAreaPadding(.top, HomeDragConstants.safeTopPadding)
+        .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background {
+            UnevenRoundedRectangle(topLeadingRadius: HomeDragConstants.cornerRadius, topTrailingRadius: HomeDragConstants.cornerRadius)
+                .fill(Color.white)
+                .ignoresSafeArea()
+        }
+        .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
+        // TODO: : task 작성 필요 데이터 조회 데이터
+        .offset(y: offset + dragOffset)
+        .gesture(dragGesture(minOffset: minOffset, maxOffset: maxOffset, midPoint: midPoint))
+        .task {
+            await initializeOffset(screenHeight: screenHeight, minOffset: minOffset)
         }
     }
     
-    private var loadingView: some View {
-        VStack {
-            Spacer()
-            ProgressView("잠시만 기다려주세요...")
-                .progressViewStyle(CircularProgressViewStyle())
-                .controlSize(.large)
-            Spacer()
-        }
-        .frame(maxWidth: .infinity)
-        .ignoresSafeArea()
+    
+    // MARK: TopContents
+    /// 상단 인디케이터
+    /// - Parameter minOffset: 높이 조절에 따른 인디케이터 조절
+    /// - Returns: 뷰 반환
+    private var dragIndicator: some View {
+        Capsule()
+            .fill(Color.gray)
+            .frame(width: HomeDragConstants.indicatorWidth, height: HomeDragConstants.indicatorHeight)
     }
     
-    private var bottomDrag: some View {
-        GeometryReader { geometry in
-            
-            let screenHeight = geometry.size.height
-            let minOffset: CGFloat = screenHeight * 0.41
-            let maxOffset: CGFloat = screenHeight * 0.07
-            
-            VStack(alignment: .center, spacing: 13) {
-                Image(systemName: offset == minOffset ? "chevron.up" : "chevron.down")
-                    .resizable()
-                    .frame(width: 38, height: 15)
-                    .padding(.top, 10)
-                    .padding(.bottom, 5)
-                
-                compactComponents(petType: homeProfileCardViewModel.profileData?.type)
-                
-                Spacer()
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.white)
-            .clipShape(RoundedRectangle(cornerRadius: 30))
-            .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
-            .offset(y: offset + dragOffset)
-            .gesture(
-                DragGesture()
-                    .updating($dragOffset, body: { value, state, _ in
-                        let newOffset = offset + value.translation.height
-                        if newOffset > minOffset {
-                            state = minOffset - offset
-                        } else if newOffset < maxOffset {
-                            state = maxOffset - offset
-                        } else {
-                            state = value.translation.height
-                        }
-                    })
-                    .onEnded { value in
-                        let threshold: CGFloat = 50
-                        withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.5, blendDuration: 0.2)) {
-                            if value.translation.height < -threshold {
-                                offset = maxOffset
-                            } else {
-                                offset = minOffset
-                            }
-                        }
-                        lastOffset = offset
-                    }
-            )
-            .onAppear {
-                offset = screenHeight
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    withAnimation(.spring(response: 1.4, dampingFraction: 0.8)) {
-                        offset = minOffset
-                    }
-                }
-            }
-        }
-    }
-    
-    private func compactComponents(petType: ProfileType?) -> some View {
+    // MARK: - BottomContents
+    private var compactComponents: some View {
         ScrollView(.vertical, content: {
-            VStack(alignment: .leading, spacing: 24, content: {
+            VStack(alignment: .leading, spacing: HomeDragConstants.compactComponentVspacing, content: {
                 HomeTodo(viewModel: homeTodoViewModel)
-                HomeAIProduct(viewModel: homeRecommendViewModel)
-                HomeTop(viewModel: homeRecommendViewModel, petType: homeProfileCardViewModel.profileData?.type)
+//                HomeAIProduct(viewModel: homeRecommendViewModel)
+//                HomeTop(viewModel: homeRecommendViewModel, petType: petType)
             })
-            .safeAreaPadding(EdgeInsets(top: 0, leading: 19, bottom: 0, trailing: 20))
-            .padding(.bottom, 80)
+            .contentMargins(.horizontal, UIConstants.defaultSafeHorizon, for: .scrollContent)
+            .contentMargins(.bottom, UIConstants.safeBottom, for: .scrollContent)
         })
     }
+    
+    private func dragGesture(minOffset: CGFloat, maxOffset: CGFloat, midPoint: CGFloat) -> some Gesture {
+        DragGesture()
+            .updating($dragOffset, body: { value, state, _ in
+                let newOffset = offset + value.translation.height
+                if newOffset > minOffset {
+                    state = minOffset - offset
+                } else if newOffset < maxOffset {
+                    state = maxOffset - offset
+                } else {
+                    state = value.translation.height
+                }
+            })
+            .onEnded { value in
+                let dragAmount = value.translation.height
+                offset += dragAmount
+                offset = offset.clamped(to: maxOffset...minOffset)
+                
+                let threshold: CGFloat = HomeDragConstants.threshold
+                withAnimation(.easeInOut(duration: 0.4)) {
+                    if dragAmount < -threshold {
+                        offset = maxOffset
+                    } else if dragAmount > threshold {
+                        offset = minOffset
+                    } else {
+                        offset = (lastOffset < midPoint) ? maxOffset : minOffset
+                    }
+                }
+                lastOffset = offset
+            }
+    }
+    
+    @MainActor
+    private func initializeOffset(screenHeight: CGFloat, minOffset: CGFloat) async {
+        if !hasAppeared {
+            hasAppeared = true
+            
+            offset = screenHeight
+            try? await Task.sleep(nanoseconds: 300_000_000)
+            
+            withAnimation(.spring(response: 1.4, dampingFraction: 0.8)) {
+                offset = minOffset
+            }
+        }
+    }
+}
+
+extension Comparable {
+    func clamped(to limits: ClosedRange<Self>) -> Self {
+        return min(max(self, limits.lowerBound), limits.upperBound)
+    }
+}
+
+#Preview {
+    HomeDragView(container: DIContainer(), petType: .cat)
+}
+
+#Preview("Home") {
+    HomeView(container: DIContainer())
+        .environmentObject(DIContainer())
+        .environmentObject(AppFlowViewModel())
 }

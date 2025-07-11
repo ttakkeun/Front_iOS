@@ -63,7 +63,6 @@ struct ProfileCardBack: View {
             Spacer()
             refreshButton
         }
-        .padding(.horizontal, ProfileCardConstants.bottomAreaHorizonPadding)
         .padding(.top, ProfileCardConstants.bottomAreaTopPadding)
         .padding(.bottom, ProfileCardConstants.bottomAreaBottomPadding)
     }

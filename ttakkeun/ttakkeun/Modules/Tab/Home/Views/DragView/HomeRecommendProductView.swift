@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeTop: View {
     
-    @ObservedObject var viewModel: HomeRecommendViewModel
+    @Bindable var viewModel: HomeRecommendViewModel
     let petType: ProfileType?
     
     var body: some View {

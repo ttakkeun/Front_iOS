@@ -66,15 +66,15 @@ enum PartItem: String, Codable, CaseIterable {
     func toImage() -> Image {
         switch self {
         case .ear:
-            return Icon.homeEar.image
+            return Image(.homeEar)
         case .eye:
-            return Icon.homeEye.image
+            return Image(.homeEye)
         case .hair:
-            return Icon.homeHair.image
+            return Image(.homeHair)
         case .claw:
-            return Icon.homeClaw.image
+            return Image(.homeClaw)
         case .teeth:
-            return Icon.homeTeeth.image
+            return Image(.homeTeeth)
         }
     }
 }

@@ -35,7 +35,6 @@ struct ProfileCardFront: View {
             bottomArea
             topArea
         }
-        .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
         .frame(maxWidth: .infinity)
         .frame(height: ProfileCardFrontConstants.profileCardHeight)
         .modifier(CustomCardModifier())
@@ -71,7 +70,7 @@ struct ProfileCardFront: View {
             Button(action: {
                 viewModel.isShowFront.toggle()
             }, label: {
-                Icon.changeCard.image
+                Image(.changeCard)
                     .resizable()
                     .frame(width: ProfileCardFrontConstants.refreshBtnSize, height: ProfileCardFrontConstants.refreshBtnSize)
             })

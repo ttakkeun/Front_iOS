@@ -41,7 +41,7 @@ struct TopStatusBar: View {
                 .font(.santokki(type: .regular, size: TopStatusConstants.leftFontSize))
                 .foregroundStyle(Color.black)
             
-            Icon.logo.image
+            Image(.logo)
                 .resizable()
                 .frame(width: TopStatusConstants.leftImageWidth, height: TopStatusConstants.leftImageHeight)
         })
@@ -52,7 +52,7 @@ struct TopStatusBar: View {
         Button(action: {
             container.navigationRouter.push(to: .myPage)
         }, label: {
-            Icon.setting.image
+            Image(.setting)
                 .fixedSize()
         })
     }

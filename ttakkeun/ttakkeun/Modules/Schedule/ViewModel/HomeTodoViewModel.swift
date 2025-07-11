@@ -9,8 +9,9 @@ import Foundation
 import Combine
 import CombineMoya
 
-class HomeTodoViewModel: ObservableObject, TodoCheckProtocol {
-    @Published var inputDate: TodoDateRequest
+@Observable
+class HomeTodoViewModel: TodoCheckProtocol {
+    var inputDate: TodoDateRequest
     
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
@@ -27,14 +28,20 @@ class HomeTodoViewModel: ObservableObject, TodoCheckProtocol {
         self.inputDate = TodoDateRequest(year: year, month: month, date: day)
     }
     
-    @Published var todoIsLoading: Bool = true
+    var todoIsLoading: Bool = false
+    var allTodosEmpty: Bool {
+        earTodos.isEmpty &&
+        hairTodos.isEmpty &&
+        clawTodos.isEmpty &&
+        eyeTodos.isEmpty &&
+        teethTodos.isEmpty
+    }
     
-    
-    @Published var earTodos: [TodoList] = []
-    @Published var hairTodos: [TodoList] = []
-    @Published var clawTodos: [TodoList] = []
-    @Published var eyeTodos: [TodoList] = []
-    @Published var teethTodos: [TodoList] = []
+    var earTodos: [TodoList] = []
+    var hairTodos: [TodoList] = []
+    var clawTodos: [TodoList] = []
+    var eyeTodos: [TodoList] = []
+    var teethTodos: [TodoList] = []
     
     var incompleteEarTodos: [TodoList] { earTodos.filter { !$0.todoStatus } }
     var incompleteEyeTodos: [TodoList] { eyeTodos.filter { !$0.todoStatus } }

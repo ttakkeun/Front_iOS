@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TodoOptionSheetView: View {
     
-    @ObservedObject var viewModel: TodoCheckViewModel
+    @Bindable var viewModel: TodoCheckViewModel
     @Binding var selectedTodo: TodoList
     @Binding var isShowSheet: Bool
     

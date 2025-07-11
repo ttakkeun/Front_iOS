@@ -12,46 +12,44 @@ struct HomeView: View {
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
     @EnvironmentObject var appFlowViewModel: AppFlowViewModel
-    
     @State var homeProfileViewModel: HomeProfileCardViewModel
-    @StateObject var homeTodoViewModel: HomeTodoViewModel
-    @StateObject var homeRecommendViewModel: HomeRecommendViewModel
+    
+    // MARK: - Constants
+    fileprivate enum HomeConstants {
+        static let topVspacing: CGFloat = 14
+    }
     
     // MARK: - Init
     init(container: DIContainer) {
         self.homeProfileViewModel = .init(container: container)
-        self._homeTodoViewModel = .init(wrappedValue: .init(container: container))
-        self._homeRecommendViewModel = .init(wrappedValue: .init(container: container))
     }
     
     // MARK: - Body
     var body: some View {
         ZStack(alignment: .bottom, content: {
-            VStack(alignment: .center, spacing: 14, content: {
-                TopStatusBar()
-                    .environmentObject(container)
-                    .environmentObject(appFlowViewModel)
-                
-                HomeProfileCard(viewModel: homeProfileViewModel)
-                
-                Spacer()
-            })
+            topContents
+            HomeDragView(container: container, petType: .cat)
         })
-//        .task {
-//            homeProfileViewModel.getSpecificProfile()
-//            homeTodoViewModel.getTodoSchedule()
-//            homeRecommendViewModel.getAIProduct()
-//            homeRecommendViewModel.getUserProduct()
-//        }
         .background(Color.mainPrimary)
-//        .onDisappear {
-//            homeProfileViewModel.profileData = nil
-//            homeRecommendViewModel.aiProduct = nil
-//            homeRecommendViewModel.userProduct = nil
-//        }
+    }
+    
+    // MARK: - TopContents
+    private var topContents: some View {
+        VStack(alignment: .center, spacing: HomeConstants.topVspacing, content: {
+            TopStatusBar()
+                .environmentObject(container)
+                .environmentObject(appFlowViewModel)
+            
+            HomeProfileCard(viewModel: homeProfileViewModel)
+            
+            Spacer()
+        })
+        .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
 }
 
 #Preview {
     HomeView(container: DIContainer())
+        .environmentObject(DIContainer())
+        .environmentObject(AppFlowViewModel())
 }

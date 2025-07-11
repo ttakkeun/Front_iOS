@@ -9,11 +9,12 @@ import Foundation
 import Combine
 import CombineMoya
 
-class HomeRecommendViewModel: ObservableObject {
-    @Published var aiProduct: [ProductResponse]?
-    @Published var userProduct: [ProductResponse]?
-    @Published var aiRecommendIsLoading: Bool = true
-    @Published var userRecommendIsLoading: Bool = true
+@Observable
+class HomeRecommendViewModel {
+    var aiProduct: [ProductResponse]?
+    var userProduct: [ProductResponse]?
+    var aiRecommendIsLoading: Bool = true
+    var userRecommendIsLoading: Bool = true
     
     private var aiCancellables = Set<AnyCancellable>()
     private var userCancellables = Set<AnyCancellable>()

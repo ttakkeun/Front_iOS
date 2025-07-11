@@ -9,20 +9,23 @@ import SwiftUI
 
 struct HomeTodo: View {
     
-    @StateObject var viewModel: HomeTodoViewModel
+    // MARK: - Property
+    @Bindable var viewModel: HomeTodoViewModel
     
+    // MARK: - Constants
+    fileprivate enum HomeTodoConstants {
+        static let titleText: String = "오늘의 일정 관리"
+        static let mainVspacing: CGFloat = 16
+    }
+    
+    // MARK: - Init
     var body: some View {
-        VStack(alignment: .leading, spacing: 16, content: {
-            Text("오늘의 일정관리")
-                .font(.H4_bold)
-                .foregroundStyle(Color.gray900)
+        VStack(alignment: .leading, spacing: HomeTodoConstants.mainVspacing, content: {
+            title
             
             if !viewModel.todoIsLoading {
-                
-                if viewModel.earTodos.isEmpty && viewModel.hairTodos.isEmpty && viewModel.clawTodos.isEmpty && viewModel.eyeTodos.isEmpty && viewModel.teethTodos.isEmpty {
-                    
+                if viewModel.allTodosEmpty {
                     notTodo
-                    
                 } else {
                     todoScrollView
                 }
@@ -30,17 +33,20 @@ struct HomeTodo: View {
         })
     }
     
-    @ViewBuilder
-    private var notTodo: HStack<some View> {
-        HStack {
-            Spacer()
-            
-            NotToDo()
-            
-            Spacer()
-        }
+    // MARK: - TopContents
+    /// 일정 관리 타이틀
+    private var title: some View {
+        Text(HomeTodoConstants.titleText)
+            .font(.H4_bold)
+            .foregroundStyle(Color.gray900)
     }
     
+    /// 투두 하나라도 없는 경우
+    private var notTodo: some View {
+        NotToDo()
+    }
+    
+    /// 투두 하나라도 있는 경우
     private var todoScrollView: some View {
         ScrollView(.horizontal, content: {
             LazyHGrid(rows: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 147)), count: 1), spacing: 12, content: {
@@ -71,4 +77,8 @@ struct HomeTodo: View {
         })
         .scrollIndicators(.visible)
     }
+}
+
+#Preview {
+    HomeTodo(viewModel: .init(container: DIContainer()))
 }

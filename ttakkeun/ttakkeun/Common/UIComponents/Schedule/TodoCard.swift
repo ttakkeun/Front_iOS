@@ -10,11 +10,11 @@ import SwiftUI
 /// 스케줄 탭 내부의 투두 항목
 struct TodoCard: View {
     
-    @StateObject var viewModel: TodoCheckViewModel
+    @State var viewModel: TodoCheckViewModel
     @EnvironmentObject var calendarViewModel: CalendarViewModel
     
     init(partItem: PartItem, container: DIContainer) {
-        self._viewModel = .init(wrappedValue: .init(partItem: partItem, container: container))
+        self.viewModel = .init(partItem: partItem, container: container)
     }
     
     var body: some View {

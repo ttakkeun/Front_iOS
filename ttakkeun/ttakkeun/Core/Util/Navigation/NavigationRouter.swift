@@ -10,18 +10,14 @@ import Combine
 
 protocol NavigationRoutable {
     var destination: [NavigationDestination] { get set }
-    
     func push(to view: NavigationDestination)
     func pop()
     func popToRootView()
 }
 
-class NavigationRouter: NavigationRoutable, ObservableObjectSettable {
-    var destination: [NavigationDestination] = [] {
-        didSet {
-            objectWillChange?.send()
-        }
-    }
+@Observable
+class NavigationRouter: NavigationRoutable {
+    var destination: [NavigationDestination] = []
     
     func push(to view: NavigationDestination) {
         destination.append(view)
@@ -32,8 +28,6 @@ class NavigationRouter: NavigationRoutable, ObservableObjectSettable {
     }
     
     func popToRootView() {
-        destination = []
+        destination.removeAll()
     }
-    
-    var objectWillChange: ObservableObjectPublisher?
 }
