@@ -1,13 +1,13 @@
 {
-  "originHash" : "93156da89acb784e1f1f9fc6880b784908567379d3910c151c4ea179b7650917",
+  "originHash" : "cb00a2c6469ac0008f15f0a34283d5cf601db972cf93ade3b68028bfa9638ab8",
   "pins" : [
     {
       "identity" : "alamofire",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Alamofire/Alamofire.git",
       "state" : {
-        "revision" : "e16d3481f5ed35f0472cb93350085853d754913f",
-        "version" : "5.10.1"
+        "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
+        "version" : "5.10.2"
       }
     },
     {
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/exyte/FloatingButton",
       "state" : {
-        "revision" : "cf77c2f124df1423d90a9a1985e9b9ccfa4b9b3e",
-        "version" : "1.3.0"
+        "revision" : "c1e3e6a641ef5bacbcbc2b2c80db54793f75f974",
+        "version" : "1.4.0"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/airbnb/lottie-spm",
       "state" : {
-        "revision" : "b842598f1295f3ffa1475b1580672d1fe5b83580",
-        "version" : "4.5.0"
+        "revision" : "04f2fd18cc9404a0a0917265a449002674f24ec9",
+        "version" : "4.5.2"
       }
     },
     {
