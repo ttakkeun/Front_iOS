@@ -10,10 +10,11 @@ import Moya
 import CombineMoya
 import Combine
 
-class LoginViewModel: ObservableObject {
+@Observable
+class LoginViewModel {
     
-    @Published var isLogin: Bool = false
-    @Published var isLoading: Bool = false
+    var isLogin: Bool = false
+    var isLoading: Bool = false
     
     let appleLoginManager = AppleLoginManager()
     let kakaoLoginManager = KakaoLoginManager()
