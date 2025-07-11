@@ -10,11 +10,22 @@ import Kingfisher
 
 struct ProfileImage: View {
     
+    // MARK: - Property
     let profileImageUrl: String?
     let imageSize: CGFloat
     
     @State var imageLoadFalse = false
     
+    // MARK: - Constants
+    fileprivate enum ProfileImageConstants {
+        static let imageMaxCount: Int = 2
+        static let imageInterval: TimeInterval = 2
+        static let imageOverlayOpacity: Double = 0.7
+        
+        static let systemImage: String = "person.circle.fill"
+    }
+    
+    // MARK: - Init
     init(
         profileImageUrl: String?,
         imageSize: CGFloat = 120
@@ -23,13 +34,14 @@ struct ProfileImage: View {
         self.imageSize = imageSize
     }
     
+    // MARK: - Body
     var body: some View {
         if let imageUrl = profileImageUrl,
            let url = URL(string: imageUrl), !imageLoadFalse {
             KFImage(url)
                 .placeholder {
                     loadingImage
-                }.retry(maxCount: 2, interval: .seconds(2))
+                }.retry(maxCount: ProfileImageConstants.imageMaxCount, interval: .seconds(ProfileImageConstants.imageInterval))
                 .onFailure { _ in
                     imageLoadFalse = true
                 }
@@ -38,14 +50,13 @@ struct ProfileImage: View {
                 .frame(width: imageSize, height: imageSize)
                 .clipShape(Circle())
                 .shadow05()
-        } else {
-            loadingFaieldImage
         }
     }
     
+    /// 이미지 로딩
     private var loadingImage: some View {
         ZStack {
-            makeImage()
+            noDataImage
             
             ProgressView()
                 .controlSize(.regular)
@@ -53,26 +64,15 @@ struct ProfileImage: View {
         }
     }
     
-    private var loadingFaieldImage: some View {
-        ZStack {
-            
-            makeImage()
-            
-            Text("이미지를 \n불러오지 못했습니다.")
-                .font(.Body5_medium)
-                .foregroundStyle(Color.white)
-                .multilineTextAlignment(.center)
-        }
-    }
-    
-    private func makeImage() -> some View {
-        Image(systemName: "person.circle.fill")
+    /// 이미지 없을 경우
+    private var noDataImage: some View {
+        Image(systemName: ProfileImageConstants.systemImage)
             .resizable()
             .frame(width: imageSize, height: imageSize)
             .tint(Color.gray400)
             .overlay(content: {
                 Circle()
-                    .fill(Color.black).opacity(0.7)
+                    .fill(Color.black).opacity(ProfileImageConstants.imageOverlayOpacity)
                     .frame(width: imageSize, height: imageSize)
             })
             .shadow05()

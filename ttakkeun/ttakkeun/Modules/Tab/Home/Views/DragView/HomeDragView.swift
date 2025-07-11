@@ -13,7 +13,7 @@ struct HomeDragView: View {
     @State private var lastOffset: CGFloat
     @GestureState private var dragOffset: CGFloat = 0
     
-    @ObservedObject var homeProfileCardViewModel: HomeProfileCardViewModel
+    @Bindable var homeProfileCardViewModel: HomeProfileCardViewModel
     @ObservedObject var homeRecommendViewModel: HomeRecommendViewModel
     @ObservedObject var homeTodoViewModel: HomeTodoViewModel
     

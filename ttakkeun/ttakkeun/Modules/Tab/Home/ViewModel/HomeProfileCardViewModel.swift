@@ -11,20 +11,25 @@ import Combine
 import CombineMoya
 import SwiftUI
 
-class HomeProfileCardViewModel: ObservableObject {
-    @Published var isShowFront: Bool = true
-    @Published var profileData: HomeProfileResponseData? = HomeProfileResponseData(name: "곰돌이", image: "https://flexible.img.hani.co.kr/flexible/normal/960/960/imgdb/resize/2019/0121/00501111_20190121.JPG", type: .dog, variety: "포메라니안", birth: "2024-11-03", neutralization: false) /*= nil*/
+@Observable
+class HomeProfileCardViewModel {
+    // MARK: - StateProperty
+    var isShowFront: Bool = true
+    var profileIsLoading: Bool = true
     
-    @Published var profileIsLoading: Bool = true
+    // MARK: - Property
+    var profileData: HomeProfileResponseData? = HomeProfileResponseData(name: "곰돌이", image: "https://flexible.img.hani.co.kr/flexible/normal/960/960/imgdb/resize/2019/0121/00501111_20190121.JPG", type: .dog, variety: "포메라니안", birth: "2024-11-03", neutralization: false) /*= nil*/
     
-    
+    // MARK: - Dependency
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
     
+    // MARK: - Init
     init(container: DIContainer) {
         self.container = container
     }
     
+    // MARK: - Method
     public func goToEditPetProfile() {
         container.navigationRouter.push(to: .editPetProfile(editPetInfo: returnEditProfile(), image: profileData?.image ?? ""))
     }

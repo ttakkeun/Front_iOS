@@ -7,60 +7,54 @@
 
 import SwiftUI
 
+/// 상단 로고 및 설정 창
 struct TopStatusBar: View {
     
+    // MARK: - Propertry
     @EnvironmentObject var container: DIContainer
     
-    let showDivider: Bool
-    
-    init(showDivider: Bool = true) {
-        self.showDivider = showDivider
+    // MARK: - Constant
+    fileprivate enum TopStatusConstants {
+        static let leftHspacing: CGFloat = 2
+        static let leftFontSize: CGFloat = 24
+        static let leftImageWidth: CGFloat = 54
+        static let leftImageHeight: CGFloat = 38
+        
+        static let rightHstack: CGFloat = 8
+        
+        static let leftLogoText: String = "따끈"
     }
     
+    // MARK: - Body
     var body: some View {
-        VStack(spacing: 3, content: {
-            HStack {
-                leftHStack()
-                
-                Spacer()
-                
-                rightHStack()
-            }
-            .safeAreaPadding(EdgeInsets(top: 7, leading: 0, bottom: 0, trailing: 0))
-            .frame(width: 353)
-            
-            if showDivider {
-                Divider()
-                    .background(Color.gray200)
-                    .frame(height: 1)
-            }
-        })
+        HStack {
+            leftHstack
+            Spacer()
+            rightBtn
+        }
     }
     
-    private func leftHStack() -> HStack<some View> {
-        return HStack(spacing: 2) {
-            Text("따끈")
-                .font(.santokki(type: .regular, size: 24))
+    /// 왼쪽 로고 영역
+    private var leftHstack: some View {
+        HStack(spacing: TopStatusConstants.leftHspacing, content: {
+            Text(TopStatusConstants.leftLogoText)
+                .font(.santokki(type: .regular, size: TopStatusConstants.leftFontSize))
                 .foregroundStyle(Color.black)
             
             Icon.logo.image
                 .resizable()
-                .frame(width: 54, height: 38)
-        }
+                .frame(width: TopStatusConstants.leftImageWidth, height: TopStatusConstants.leftImageHeight)
+        })
     }
     
-    private func rightHStack() -> HStack<some View> {
-        return HStack(spacing: 8) {
-            
-            Spacer()
-            
-            Button(action: {
-                container.navigationRouter.push(to: .myPage)
-            }, label: {
-                Icon.setting.image
-                    .fixedSize()
-            })
-        }
+    /// 오른쪽 옵션 버튼
+    private var rightBtn: some View {
+        Button(action: {
+            container.navigationRouter.push(to: .myPage)
+        }, label: {
+            Icon.setting.image
+                .fixedSize()
+        })
     }
 }
 

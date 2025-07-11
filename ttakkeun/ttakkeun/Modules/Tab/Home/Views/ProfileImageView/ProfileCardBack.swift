@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProfileCardBack: View {
     
-    @ObservedObject var viewModel: HomeProfileCardViewModel
+    @Bindable var viewModel: HomeProfileCardViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 17, content: {

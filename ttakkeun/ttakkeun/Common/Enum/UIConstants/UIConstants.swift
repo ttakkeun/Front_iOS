@@ -11,4 +11,5 @@ enum UIConstants {
     static let safeLeading: CGFloat = 27
     static let safeTrailing: CGFloat = 25
     static let safeTop: CGFloat = 48
+    static let defaultSafeHorizon: CGFloat = 20
 }

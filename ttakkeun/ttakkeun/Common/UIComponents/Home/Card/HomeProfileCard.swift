@@ -9,14 +9,16 @@ import SwiftUI
 
 struct HomeProfileCard: View {
     
-    @ObservedObject var viewModel: HomeProfileCardViewModel
+    // MARK: - Property
+    @Bindable var viewModel: HomeProfileCardViewModel
     
-    var body: some View {
-        homeProfileCard
+    // MARK: - Constants
+    fileprivate enum HomeProfileCardConstants {
+        static let duration: TimeInterval = 1.2
     }
     
-    @ViewBuilder
-    private var homeProfileCard: some View {
+    // MARK: - Body
+    var body: some View {
         ZStack {
             if viewModel.isShowFront {
                 ProfileCardFront(viewModel: viewModel)
@@ -24,7 +26,7 @@ struct HomeProfileCard: View {
                 ProfileCardBack(viewModel: viewModel)
             }
         }
-        .animation(.bouncy(duration: 1.2), value: viewModel.isShowFront)
+        .animation(.bouncy(duration: HomeProfileCardConstants.duration), value: viewModel.isShowFront)
     }
 }
 
