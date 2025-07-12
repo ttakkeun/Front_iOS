@@ -11,8 +11,8 @@ import CombineMoya
 
 @Observable
 class HomeRecommendViewModel {
-    var aiProduct: [ProductResponse]?
-    var userProduct: [ProductResponse]?
+    var aiProduct: [ProductResponse] = []
+    var userProduct: [ProductResponse] = []
     var aiRecommendIsLoading: Bool = true
     var userRecommendIsLoading: Bool = true
     
@@ -64,8 +64,10 @@ extension HomeRecommendViewModel {
             }, receiveValue: { [weak self] aiProductData in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.aiProduct = aiProductData.result
-                    print("aiProduct: \(String(describing: self.aiProduct))")
+                    if let result = aiProductData.result {
+                        self.aiProduct = result
+                        print("aiProduct: \(String(describing: self.aiProduct))")
+                    }
                 }
             })
             .store(in: &aiCancellables)
@@ -100,7 +102,9 @@ extension HomeRecommendViewModel {
             }, receiveValue: { [weak self] userProductData in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.userProduct = userProductData.result
+                    if let result = userProductData.result {
+                        self.userProduct = result
+                    }
                 }
             })
             .store(in: &userCancellables)

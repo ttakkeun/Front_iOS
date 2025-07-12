@@ -20,9 +20,7 @@ struct NavigationRoutingView: View {
                 .environmentObject(container)
             
         case .editPetProfile(_, _):
-//            EditProfileView(container: container,
-//                            editPetInfo: petInfo, image: image)
-            EditProfileView()
+            MakeProfileView(container: container)
                 .environmentObject(container)
             
         case .makeJournalist:

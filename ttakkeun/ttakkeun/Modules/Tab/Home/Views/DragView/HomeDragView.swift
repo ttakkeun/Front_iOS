@@ -85,16 +85,16 @@ struct HomeDragView: View {
     }
     
     // MARK: - BottomContents
+    /// 드래그 뷰 내부 컨텐츠
     private var compactComponents: some View {
         ScrollView(.vertical, content: {
             VStack(alignment: .leading, spacing: HomeDragConstants.compactComponentVspacing, content: {
                 HomeTodo(viewModel: homeTodoViewModel)
-//                HomeAIProduct(viewModel: homeRecommendViewModel)
-//                HomeTop(viewModel: homeRecommendViewModel, petType: petType)
+                HomeAIProduct(viewModel: homeRecommendViewModel)
+                HomeTop(viewModel: homeRecommendViewModel, petType: petType)
             })
-            .contentMargins(.horizontal, UIConstants.defaultSafeHorizon, for: .scrollContent)
-            .contentMargins(.bottom, UIConstants.safeBottom, for: .scrollContent)
         })
+        .contentMargins(.bottom, UIConstants.safeBottom, for: .scrollContent)
     }
     
     private func dragGesture(minOffset: CGFloat, maxOffset: CGFloat, midPoint: CGFloat) -> some Gesture {

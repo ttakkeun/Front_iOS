@@ -16,6 +16,8 @@ struct HomeTodo: View {
     fileprivate enum HomeTodoConstants {
         static let titleText: String = "오늘의 일정 관리"
         static let mainVspacing: CGFloat = 16
+        static let gridSpacing: CGFloat = 12
+        static let rowCount: Int = 1
     }
     
     // MARK: - Init
@@ -47,9 +49,10 @@ struct HomeTodo: View {
     }
     
     /// 투두 하나라도 있는 경우
+    @ViewBuilder
     private var todoScrollView: some View {
         ScrollView(.horizontal, content: {
-            LazyHGrid(rows: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 147)), count: 1), spacing: 12, content: {
+            LazyHStack(spacing: HomeTodoConstants.gridSpacing, content: {
                 if !viewModel.earTodos.isEmpty {
                     CompactTodo(viewModel: viewModel, partItem: .ear)
                 }
@@ -72,10 +75,8 @@ struct HomeTodo: View {
                     CompactTodo(viewModel: viewModel, partItem: .teeth)
                 }
             })
-            .frame(height: 180)
-            .padding(.horizontal, 5)
         })
-        .scrollIndicators(.visible)
+        .contentMargins(.bottom, UIConstants.horizonScrollBottomPadding, for: .scrollContent)
     }
 }
 

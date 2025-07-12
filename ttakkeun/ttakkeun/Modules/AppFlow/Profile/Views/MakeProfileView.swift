@@ -8,6 +8,7 @@
 import SwiftUI
 import PhotosUI
 
+/// 동물 프로필 생서 뷰
 struct MakeProfileView: View {
     
     // MARK: - Property
@@ -52,7 +53,7 @@ struct MakeProfileView: View {
     
     // MARK: - Init
     init(
-        container: DIContainer,
+        container: DIContainer
     ) {
         self.viewModel = .init(container: container)
     }

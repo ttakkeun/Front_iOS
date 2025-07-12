@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 투두 아이템 대표 이미지
 struct TodoCircle: View {
     
     // MARK: - Property
