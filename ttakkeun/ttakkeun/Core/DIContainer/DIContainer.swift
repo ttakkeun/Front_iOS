@@ -8,15 +8,14 @@
 import Foundation
 
 class DIContainer: ObservableObject {
-    let useCaseProvider: UseCaseProvider
-    var navigationRouter: NavigationRoutable & ObservableObjectSettable
+    @Published var useCaseProvider: UseCaseProvider
+    @Published var navigationRouter: NavigationRoutable
     
     init(
         useCaseProvider: UseCaseProvider = UseCaseProvider(),
-        navigationRouter: NavigationRoutable & ObservableObjectSettable = NavigationRouter()
+        navigationRouter: NavigationRoutable = NavigationRouter()
     ) {
         self.useCaseProvider = useCaseProvider
         self.navigationRouter = navigationRouter
-        self.navigationRouter.setObjectWillChange(objectWillChange)
     }
 }

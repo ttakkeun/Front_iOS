@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// FIXME: - 삭제
 struct LoadingDotsText: View {
     
     // MARK: - Property

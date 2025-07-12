@@ -7,6 +7,7 @@
 
 import Foundation
 
+// FIXME: - 삭제 필요
 class UserState: ObservableObject {
     
     static let shared = UserState()
@@ -34,6 +35,7 @@ class UserState: ObservableObject {
         self.petName = petName
     }
     
+    // FIXME: - 이건 살리지
     public func setUserName(_ userName: String) {
         UserDefaults.standard.setValue(userName, forKey: "UserNickname")
     }
@@ -53,7 +55,8 @@ class UserState: ObservableObject {
     public func getPetName() -> String {
         return self.petName
     }
-    
+
+    // FIXME: - 이건 살리기
     public func getUserName() -> String {
         guard let userName = UserDefaults.standard.string(forKey: "UserNickname") else {
             return "닉네임 정보 없음"

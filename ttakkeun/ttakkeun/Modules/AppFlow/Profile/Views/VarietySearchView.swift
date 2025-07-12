@@ -10,7 +10,7 @@ import SwiftUI
 struct VarietySearchView: View {
     
     // MARK: - Property
-    @Bindable var viewModel: MakeProfileViewModel
+    @Bindable var viewModel: ProfileFormViewModel
     
     // MARK: - Constants
     fileprivate enum VarietySearchConstants {
@@ -64,5 +64,5 @@ struct VarietySearchView: View {
 }
 
 #Preview {
-    VarietySearchView(viewModel: .init(container: DIContainer()))
+    VarietySearchView(viewModel: .init(mode: .create, container: DIContainer()))
 }

@@ -11,6 +11,7 @@ import KakaoSDKCommon
 @main
 struct ttakkeunApp: App {
     
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject var appFlowViewModel: AppFlowViewModel = .init()
     @StateObject var container: DIContainer = .init()
     
@@ -20,8 +21,9 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MakeProfileView(container: DIContainer())
-                .environmentObject(DIContainer())
+            TtakeunTab()
+                .environmentObject(container)
+                .environmentObject(appFlowViewModel)
 //            switch appFlowViewModel.appState {
 //            case .onBoarding:
 //                OnboardingView()
@@ -35,7 +37,7 @@ struct ttakkeunApp: App {
 //                    .environmentObject(container)
 //                    .environmentObject(appFlowViewModel)
 //            case .tabView:
-//                TabView()
+//                TtakeunTab()
 //                    .environmentObject(container)
 //                    .environmentObject(appFlowViewModel)
 //            }

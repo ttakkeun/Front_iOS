@@ -10,6 +10,7 @@ import SwiftUI
 import Combine
 import CombineMoya
 
+/// 여러 생성된 프로파일 뷰모델
 @Observable
 class ProfileViewModel {
     // MARK: - Property

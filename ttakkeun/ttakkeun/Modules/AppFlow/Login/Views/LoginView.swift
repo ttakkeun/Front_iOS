@@ -9,24 +9,42 @@ import SwiftUI
 
 struct LoginView: View {
     
+    // MARK: - Property
     @EnvironmentObject var container: DIContainer
     @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     
-    @StateObject var viewModel: LoginViewModel
+    @State var viewModel: LoginViewModel
     
+    // MARK: - Constants
+    fileprivate enum LoginConstants {
+        static let contentsVspacing: CGFloat = 17
+        static let logoVspacing: CGFloat = 5
+        
+        static let fontSize: CGFloat = 60
+        static let logoBgWidth: CGFloat = 229
+        static let logoBgHeight: CGFloat = 115
+        static let logoOffset: CGFloat = -10
+        static let logoTextSize: CGFloat = 14
+        
+        static let logoText: String = "따끈"
+        static let logoSubText: String = "'따끈'하게 '닦은', AI 반려동물 스킨케어 서비스"
+    }
+    
+    // MARK: - Init
+    init(container: DIContainer, appFlowViewModel: AppFlowViewModel) {
+        self.viewModel = .init(container: container, appFlowViewModel: appFlowViewModel)
+    }
+    
+    // MARK: - Body
     var body: some View {
         NavigationStack(path: $container.navigationRouter.destination) {
             VStack(alignment: .center) {
-                
                 Spacer()
-                
-                topLogoContents
-                
-                Spacer().frame(height: 200)
-                
-                loginButtons
+                topContents
+                Spacer()
+                appleLoginButton
             }
-            .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
+            .safeAreaPadding(.bottom, UIConstants.safeBottom)
             .navigationDestination(for: NavigationDestination.self) { destination in
                 NavigationRoutingView(destination: destination)
                     .environmentObject(container)
@@ -34,65 +52,64 @@ struct LoginView: View {
             }
         }
     }
-    
-    private var topLogoContents: some View {
-        VStack(alignment: .center, spacing: 17, content: {
-            ZStack(alignment: .bottom, content: {
-                Icon.logoBackground.image
-                    .resizable()
-                    .frame(width: 229, height: 115)
-                
-                logoTextAndImage
-                    .padding(.bottom, 20)
-            })
+    // MARK: - TopContents
+    /// 상단 탑 컨텐츠
+    private var topContents: some View {
+        VStack(alignment: .center, spacing: LoginConstants.contentsVspacing, content: {
+            logoContents
             
-            Text("'따끈'하게 '닦은', AI 반려동물 스킨케어 서비스")
-                .font(.Body3_medium)
+            Text(LoginConstants.logoSubText)
+                .font(.suit(type: .medium, size: LoginConstants.logoTextSize))
                 .foregroundStyle(Color.black)
         })
     }
     
+    /// 로고 백그라운드 결합
+    private var logoContents: some View {
+        ZStack(alignment: .bottom, content: {
+            Image(.logoBackground)
+                .resizable()
+                .frame(width: LoginConstants.logoBgWidth, height: LoginConstants.logoBgHeight)
+            
+            logoTextAndImage
+                .offset(y: LoginConstants.logoOffset)
+        })
+    }
+    
+    /// 상단 로고 및 이미지
     private var logoTextAndImage: some View {
-        VStack(alignment: .center, spacing: 5, content: {
-            Icon.logo.image
+        VStack(alignment: .center, spacing: LoginConstants.logoVspacing, content: {
+            Image(.logo)
                 .fixedSize()
-            Text("따끈")
-                .font(.santokki(type: .regular, size: 60))
+            Text(LoginConstants.logoText)
+                .font(.santokki(type: .regular, size: LoginConstants.fontSize))
                 .foregroundStyle(Color.black)
-                .frame(width: 116, height: 50)
         })
     }
     
-    private var loginButtons: some View {
-        VStack(alignment: .center, spacing: 20, content: {
-            Button(action: {
-                viewModel.appleLogin()
-            }, label: {
-                Icon.appleLogin.image
-                    .fixedSize()
-            })
-            
-            Button(action: {
-                viewModel.kakaoLogin()
-            }, label: {
-                Icon.kakaoLogin.image
-                    .fixedSize()
-            })
+    // MARK: - BottomContents
+    /// 애플 로그인 버튼
+    private var appleLoginButton: some View {
+        Button(action: {
+            viewModel.appleLogin()
+        }, label: {
+            Image(.appleLogin)
+                .fixedSize()
+        })
+    }
+    
+    private var kkakaoLoginButton: some View {
+        Button(action: {
+            viewModel.kakaoLogin()
+        }, label: {
+            Image(.kakaoButton)
+                .fixedSize()
         })
     }
 }
 
-struct LoginView_Preview: PreviewProvider {
-    
-    static let devices = ["iPhone 11", "iPhone 16 Pro"]
-    
-    static var previews: some View {
-        ForEach(devices, id: \.self) { device in
-            LoginView(viewModel: LoginViewModel(container: DIContainer(), appFlowViewModel: AppFlowViewModel()))
-                .environmentObject(DIContainer())
-                .environmentObject(AppFlowViewModel())
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewDisplayName(device)
-        }
-    }
+#Preview {
+    LoginView(container: DIContainer(), appFlowViewModel: AppFlowViewModel())
+        .environmentObject(DIContainer())
+        .environmentObject(AppFlowViewModel())
 }

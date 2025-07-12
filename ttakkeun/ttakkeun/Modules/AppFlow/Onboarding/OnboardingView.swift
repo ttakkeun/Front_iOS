@@ -11,8 +11,10 @@ import Lottie
 /// 온보딩 화면
 struct OnboardingView: View {
     
+    // MARK: - Property
     @EnvironmentObject var viewModel: AppFlowViewModel
     
+    // MARK: - Body
     var body: some View {
         ZStack() {
             RadialGradient(colors: [Color.onBoarding, .white], center: .center, startRadius: 0, endRadius: 260)

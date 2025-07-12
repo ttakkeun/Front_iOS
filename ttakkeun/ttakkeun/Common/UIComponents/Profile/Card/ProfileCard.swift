@@ -13,8 +13,8 @@ struct ProfileCard: View {
     
     // MARK: - Property
     @EnvironmentObject var appFlowViewModel: AppFlowViewModel
-    @AppStorage("petId") var petId: Int?
-    @AppStorage("petName") var petName: String?
+    @AppStorage(AppStorageKey.petId) var petId: Int?
+    @AppStorage(AppStorageKey.petName) var petName: String?
     
     /// 펫 프로필 데이터
     let data: PetProfileDetail

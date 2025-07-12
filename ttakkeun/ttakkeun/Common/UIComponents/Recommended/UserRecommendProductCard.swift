@@ -8,11 +8,29 @@
 import SwiftUI
 import Kingfisher
 
+/// 추천 제품 Top8
 struct UserRecommendProductCard: View {
     
+    // MARK: - Property
     let data: ProductResponse
     let rank: Int
     
+    // MARK: - Property
+    fileprivate enum UserRecommendProductConstants {
+        static let productVspacing: CGFloat = 4
+        
+        static let imageMaxCount: Int = 2
+        static let imageInterval: TimeInterval = 2
+        
+        static let imageWidth: CGFloat = 84
+        static let imageHeight: CGFloat = 98
+        
+        static let lineLimit: Int = 2
+        static let lineSpacing: CGFloat = 1.5
+        static let cornerRadius: CGFloat = 10
+    }
+    
+    // MARK: - Init
     init(_ data: ProductResponse,
          _ rank: Int
     ) {
@@ -20,27 +38,31 @@ struct UserRecommendProductCard: View {
         self.rank = rank
     }
     
+    // MARK: - Body
     var body: some View {
-        VStack(alignment: .leading, spacing: 4, content: {
-            ZStack(alignment: .bottomLeading, content: {
-                productImage
-                rankTag
-            })
-            .shadow03()
-            
+        VStack(alignment: .leading, spacing: UserRecommendProductConstants.productVspacing, content: {
+            topContents
             productInfo
         })
-        .frame(width: 84, height: 160)
     }
     
+    // MARK: - TopContents
+    private var topContents: some View {
+        ZStack(alignment: .bottomLeading, content: {
+            productImage
+            rankTag
+        })
+        .shadow03()
+    }
+    /// 랭크 태그
     @ViewBuilder
     private var rankTag: some View {
         ZStack {
             if (0...2).contains(rank) {
-                Icon.topRank.image
+                Image(.topRank)
                     .fixedSize()
             } else {
-                Icon.bottomRank.image
+                Image(.bottomRank)
                     .fixedSize()
             }
             Text("\(rank + 1)")
@@ -49,6 +71,7 @@ struct UserRecommendProductCard: View {
         }
     }
     
+    /// 제품 상품
     @ViewBuilder
     private var productImage: some View {
         if let url = URL(string: data.image) {
@@ -56,38 +79,46 @@ struct UserRecommendProductCard: View {
                 .placeholder {
                     ProgressView()
                         .controlSize(.regular)
-                }.retry(maxCount: 2, interval: .seconds(2))
+                }.retry(maxCount: UserRecommendProductConstants.imageMaxCount, interval: .seconds(UserRecommendProductConstants.imageInterval))
                 .onFailure { _ in
                     print("반료동물 추천 제품 이미지 로당 실패")
                 }
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(maxWidth: 84, maxHeight: 98)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .frame(maxWidth: .infinity, maxHeight: UserRecommendProductConstants.imageHeight)
+                .clipShape(RoundedRectangle(cornerRadius: UserRecommendProductConstants.cornerRadius))
         }
     }
     
-    @ViewBuilder
-    private var productInfo: VStack<some View> {
-        VStack(alignment: .leading, spacing: 4, content: {
-            Text(data.title.split(separator: "").joined(separator: "\u{200B}"))
-                .font(.Body5_medium)
+    // MARK: - BottomContents
+    /// 제품 정보
+    private var productInfo: some View {
+        VStack(alignment: .leading, spacing: UserRecommendProductConstants.productVspacing, content: {
+            productDiscrip
+            priceCompany
+        })
+        .frame(maxWidth: .infinity)
+    }
+    
+    private var productDiscrip: some View {
+        Text(data.title)
+            .font(.Body5_medium)
+            .foregroundStyle(Color.gray900)
+            .lineLimit(UserRecommendProductConstants.lineLimit)
+            .lineSpacing(UserRecommendProductConstants.lineSpacing)
+    }
+    
+    private var priceCompany: some View {
+        VStack(alignment: .leading, spacing: .zero, content: {
+            Text("\(data.price)원")
+                .font(.Body4_medium)
                 .foregroundStyle(Color.gray900)
-                .lineLimit(nil)
-                .lineSpacing(1.5)
             
-            VStack(alignment: .leading, spacing: 0, content: {
-                
-                Text("\(DataFormatter.shared.formattedPrice(from: data.price))원")
-                    .font(.Body4_medium)
-                    .foregroundStyle(Color.gray900)
-                
-                if let brand = data.brand {
-                    Text(brand)
-                        .font(.Detail2_regular)
-                        .foregroundStyle(Color.gray400)
-                }
-            })
+            if let brand = data.brand {
+                Text(brand)
+                    .font(.Detail2_regular)
+                    .foregroundStyle(Color.gray400)
+            }
         })
     }
 }

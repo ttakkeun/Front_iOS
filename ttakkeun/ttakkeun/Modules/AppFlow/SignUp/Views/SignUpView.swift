@@ -215,10 +215,3 @@ extension SignUpView {
             .foregroundStyle(.gray400)
     }
 }
-
-struct SignUpView_Preview: PreviewProvider {
-    static var previews: some View {
-        SignUpView(socialType: .apple, singUpRequest: SignUpRequest(identityToken: "1123", email: "apple@example.com", name: "정의찬"), container: DIContainer(), appFlowViewModel: AppFlowViewModel())
-            .environmentObject(DIContainer())
-    }
-}
