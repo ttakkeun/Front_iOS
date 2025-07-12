@@ -11,8 +11,9 @@ import Combine
 import CombineMoya
 import PhotosUI
 
+/// 프로파일 편집 및 생성 전용 뷰모델
 @Observable
-class MakeProfileViewModel {
+class ProfileFormViewModel {
     
     // MARK: - StateProperty
     var showingVarietySearch = false
@@ -57,18 +58,31 @@ class MakeProfileViewModel {
     
     var selectedItem: PhotosPickerItem?
     var selectedImage: UIImage?
+    var imageURL: String?
+    var mode: ProfileMode
   
     // MARK: - Dependency
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Init
-    init(container: DIContainer
-    ) {
+    init(mode: ProfileMode, container: DIContainer) {
+        self.mode = mode
         self.container = container
+        
+        if case let .edit(image, pet) = mode {
+            self.requestData = pet
+            self.imageURL = image
+        }
     }
-    
     // MARK: - Method
+    public func checkInEditMode() {
+        isNameFieldFilled = !requestData.name.isEmpty
+        isTypeFieldFilled = requestData.type != nil
+        isVarietyFieldFilled = !requestData.variety.isEmpty
+        isBirthFieldFilled = !requestData.birth.isEmpty
+        isNeutralizationFieldFilled = requestData.neutralization != nil
+    }
     
     private func checkFilledStates() {
         isProfileCompleted = isNameFieldFilled && isTypeFieldFilled && isVarietyFieldFilled && isBirthFieldFilled && isNeutralizationFieldFilled
@@ -86,11 +100,21 @@ class MakeProfileViewModel {
             print("이미지 로드 실패", error.localizedDescription)
         }
     }
+    
+    func submit(completion: @escaping () -> Void) {
+        switch mode {
+        case .create:
+            makePetProfile {
+                completion()
+            }
+        case .edit:
+            patchPetProfile()
+        }
+    }
 }
 
-// MARK: - API Method
-
-extension MakeProfileViewModel {
+// MARK: - CreatePetProfile
+extension ProfileFormViewModel {
     
     public func makePetProfile(completion: (() -> Void)? = nil) {
         isLoading = true
@@ -165,3 +189,38 @@ extension MakeProfileViewModel {
         }
     }
 }
+
+// MARK: - EditPetProfile
+extension ProfileFormViewModel {
+    public func patchPetProfile() {
+        let petId = UserDefaults.standard.integer(forKey: AppStorageKey.petId)
+        
+        container.useCaseProvider.petProfileUseCase.executePatchPetProfile(petId: petId, PetInfo: requestData)
+               .tryMap { responseData -> ResponseData<EditProfileResponse> in
+                   if !responseData.isSuccess {
+                       throw APIError.serverError(message: responseData.message, code: responseData.code)
+                   }
+                   
+                   guard let _ = responseData.result else {
+                       throw APIError.emptyResult
+                   }
+                   print("Patch PetProfile Server: \(responseData)")
+                   return responseData
+               }
+               .receive(on: DispatchQueue.main)
+               .sink(receiveCompletion: { [weak self] completion in
+                   guard let self = self else { return }
+                   switch completion {
+                   case .finished:
+                       print("Patch Pet Profile Completed")
+                       self.patchPetProfileImage(petId: UserState.shared.getPetId())
+                   case .failure(let failure):
+                       print("Patch Pet Profile Failure: \(failure)")
+                   }
+               }, receiveValue: { responseData in
+                   print("펫 프로필 수정 데이터: \(String(describing: responseData.result))")
+               })
+               .store(in: &cancellables)
+       }
+}
+

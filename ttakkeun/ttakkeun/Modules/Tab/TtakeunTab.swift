@@ -71,5 +71,7 @@ struct TtakeunTab: View {
 }
 
 #Preview {
-    Text("11")
+    TtakeunTab()
+        .environmentObject(DIContainer())
+        .environmentObject(AppFlowViewModel())
 }

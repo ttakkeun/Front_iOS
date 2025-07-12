@@ -19,10 +19,8 @@ struct NavigationRoutingView: View {
             SignUpView(socialType: type, singUpRequest: signUpRequest, container: container, appFlowViewModel: appFlowViewModel)
                 .environmentObject(container)
             
-        case .editPetProfile(_, _):
-//            EditProfileView(container: container,
-//                            editPetInfo: petInfo, image: image)
-            EditProfileView()
+        case .editPetProfile(let image, let petInfo):
+            ProfileFormView(mode: .edit(image: image, petInfo: petInfo), container: container)
                 .environmentObject(container)
             
         case .makeJournalist:

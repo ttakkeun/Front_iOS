@@ -1,0 +1,17 @@
+//
+//  AppStorageKey.swift
+//  ttakkeun
+//
+//  Created by Apple Coding machine on 7/12/25.
+//
+
+import Foundation
+
+/// 앱 스토리지 값 키
+enum AppStorageKey {
+    static let userNickname = "UserNickname"
+    static let userEmail = "UserEmail"
+    static let userLoginType = "UserLoginType"
+    static let petName = "PetName"
+    static let petId = "PetId"
+}

@@ -7,22 +7,23 @@
 
 import SwiftUI
 import PhotosUI
+import Kingfisher
 
-struct MakeProfileView: View {
+/// 동물 프로필 생서 뷰
+struct ProfileFormView: View {
     
     // MARK: - Property
-    @State var viewModel: MakeProfileViewModel
+    @State var viewModel: ProfileFormViewModel
     @EnvironmentObject var container: DIContainer
     @Environment(\.dismiss) var dismiss
     
     // MARK: - Constants
-    fileprivate enum MakeProfileConstants {
+    fileprivate enum ProfileFormConstants {
         static let fieldVspacing: CGFloat = 10
         static let mainVspacing: CGFloat = 25
-        static let fieldsVspacing: CGFloat = 20
         
         static let safeHorizonPadding: CGFloat = 31
-        static let safeTopPadding: CGFloat = 33
+        static let safeTopPadding: CGFloat = 5
         static let varietyLeadingPadding: CGFloat = 22
         static let varietyTrailingPadding: CGFloat = 16
         
@@ -32,6 +33,8 @@ struct MakeProfileView: View {
         static let varietyHeight: CGFloat = 44
         
         static let cornerRadius: CGFloat = 10
+        static let xmarkWidth: CGFloat = 18
+        static let xmarkHeight: CGFloat = 18
         
         static let profileImage: String = "questionmark.circle.fill"
         static let namePlaceholder: String = "반려동물의 이름을 입력해주세요."
@@ -48,25 +51,31 @@ struct MakeProfileView: View {
         static let neutralYesText: String = "예"
         static let neutralNoText: String = "아니오"
         static let registerBtnText: String = "등록하기"
+        static let closeButtonString: String = "xmark"
+        
+        static let profileMakeTitle: String = "프로필 등록"
+        static let profileEditTitle: String = "프로필 편집"
     }
     
     // MARK: - Init
     init(
-        container: DIContainer,
+        mode: ProfileMode,
+        container: DIContainer
     ) {
-        self.viewModel = .init(container: container)
+        self.viewModel = .init(mode: mode, container: container)
     }
     
     // MARK: - Body
     var body: some View {
-        VStack(spacing: MakeProfileConstants.mainVspacing, content: {
-            profileImage
+        VStack(spacing: ProfileFormConstants.mainVspacing, content: {
+            topNavi
+            profileImageSection
             inputFieldGroup
             Spacer()
             registerBtn
         })
-        .safeAreaPadding(.horizontal, MakeProfileConstants.safeHorizonPadding)
-        .safeAreaPadding(.top, MakeProfileConstants.safeTopPadding)
+        .safeAreaPadding(.horizontal, ProfileFormConstants.safeHorizonPadding)
+        .safeAreaPadding(.top, ProfileFormConstants.safeTopPadding)
         .sheet(isPresented: $viewModel.showingVarietySearch) {
             VarietySearchView(viewModel: viewModel)
         }
@@ -80,53 +89,120 @@ struct MakeProfileView: View {
                 await viewModel.loadImage(new)
             }
         })
+        .navigationBarBackButtonHidden(true)
+        .task {
+            viewModel.checkInEditMode()
+        }
     }
     
     // MARK: - FieldGroup
     private var inputFieldGroup: some View {
-        VStack(alignment: .center, spacing: MakeProfileConstants.fieldsVspacing, content: {
+        VStack(alignment: .center, spacing: .zero, content: {
             Group {
                 makeFieldView(contents: {
                     nameField
-                }, fieldGroup: .init(title: MakeProfileConstants.nameText, mustMark: true, isFieldEnable: viewModel.isNameFieldFilled))
+                }, fieldGroup: .init(title: ProfileFormConstants.nameText, mustMark: true, isFieldEnable: viewModel.isNameFieldFilled))
+                
+                Spacer()
                 
                 makeFieldView(contents: {
                     typeField
-                }, fieldGroup: .init(title: MakeProfileConstants.petTypeText, mustMark: true, isFieldEnable: viewModel.isTypeFieldFilled))
+                }, fieldGroup: .init(title: ProfileFormConstants.petTypeText, mustMark: true, isFieldEnable: viewModel.isTypeFieldFilled))
+                
+                Spacer()
                 
                 makeFieldView(contents: {
                     varietyField
-                }, fieldGroup: .init(title: MakeProfileConstants.varietyFieldText, mustMark: true, isFieldEnable: viewModel.isVarietyFieldFilled))
+                }, fieldGroup: .init(title: ProfileFormConstants.varietyFieldText, mustMark: true, isFieldEnable: viewModel.isVarietyFieldFilled))
+                
+                Spacer()
                 
                 makeFieldView(contents: {
                     birthField
-                }, fieldGroup: .init(title: MakeProfileConstants.birthDayFieldText, mustMark: false, isFieldEnable: viewModel.isBirthFieldFilled))
+                }, fieldGroup: .init(title: ProfileFormConstants.birthDayFieldText, mustMark: false, isFieldEnable: viewModel.isBirthFieldFilled))
+                
+                Spacer()
                 
                 makeFieldView(contents: {
                     neutralizationField
-                }, fieldGroup: .init(title: MakeProfileConstants.neutralFieldText, mustMark: true, isFieldEnable: viewModel.isNeutralizationFieldFilled))
+                }, fieldGroup: .init(title: ProfileFormConstants.neutralFieldText, mustMark: true, isFieldEnable: viewModel.isNeutralizationFieldFilled))
             }
         })
+    }
+    
+    // MARK: - TopClose
+    private var topNavi: some View {
+        ZStack {
+            mainTitle
+                .frame(maxWidth: .infinity, alignment: .center)
+                .font(.H3_bold)
+                .foregroundStyle(Color.black)
+            
+            topClose
+        }
+    }
+    @ViewBuilder
+    private var mainTitle: some View {
+        switch viewModel.mode {
+        case .create:
+            Text(ProfileFormConstants.profileMakeTitle)
+        case .edit:
+            Text(ProfileFormConstants.profileEditTitle)
+        }
+    }
+    
+    private var topClose: some View {
+        HStack {
+            Button(action: {
+                switch viewModel.mode {
+                case .create:
+                    dismiss()
+                case .edit:
+                    container.navigationRouter.pop()
+                }
+            }, label: {
+                Image(systemName: ProfileFormConstants.closeButtonString)
+                    .renderingMode(.template)
+                    .resizable()
+                    .frame(width: ProfileFormConstants.xmarkWidth, height: ProfileFormConstants.xmarkHeight)
+                    .foregroundStyle(Color.black)
+                
+            })
+            
+            Spacer()
+        }
     }
     
     // MARK: - Profile
     /// 상단 프로파일 이미지
     @ViewBuilder
-    private var profileImage: some View {
-        VStack {
-            Button(action: {
-                viewModel.showImagePickerPresented.toggle()
-            }, label: {
-                if let image = viewModel.selectedImage {
-                    makeProfileImage(image: Image(uiImage: image))
-                        .shadow02()
-                        .clipShape(Circle())
-                } else {
-                    makeProfileImage(image: Image(systemName: MakeProfileConstants.profileImage))
-                        .tint(Color.gray300)
-                }
-            })
-        }
+    private var profileImageSection: some View {
+        Button(action: {
+            viewModel.showImagePickerPresented.toggle()
+        }, label: {
+            if let image = viewModel.selectedImage {
+                makeProfileImage(image: Image(uiImage: image))
+                    .shadow02()
+                    .clipShape(Circle())
+            } else if let imageURL = viewModel.imageURL, let url = URL(string: imageURL) {
+                kingfisherProfile(url: url)
+            } else {
+                makeProfileImage(image: Image(systemName: ProfileFormConstants.profileImage))
+                    .tint(Color.gray300)
+            }
+        })
+    }
+    
+    private func kingfisherProfile(url: URL) -> some View {
+        KFImage(url)
+            .placeholder {
+                ProgressView()
+                    .controlSize(.regular)
+            }.retry(maxCount: 2, interval: .seconds(2))
+            .resizable()
+            .frame(width: 120, height: 120)
+            .aspectRatio(contentMode: .fill)
+            .clipShape(Circle())
     }
     
     /// 프로파일 이미지 생성 함수
@@ -136,7 +212,7 @@ struct MakeProfileView: View {
         image
             .resizable()
             .aspectRatio(contentMode: .fill)
-            .frame(width: MakeProfileConstants.profileImageSize, height: MakeProfileConstants.profileImageSize)
+            .frame(width: ProfileFormConstants.profileImageSize, height: ProfileFormConstants.profileImageSize)
     }
     
     // MARK: - NameTextField
@@ -149,7 +225,7 @@ struct MakeProfileView: View {
                         viewModel.requestData.name = $0
                         viewModel.isNameFieldFilled = !$0.isEmpty
                     }),
-                  prompt: placeholderText(MakeProfileConstants.namePlaceholder))
+                  prompt: placeholderText(ProfileFormConstants.namePlaceholder))
         .textFieldStyle(ttakkeunTextFieldStyle())
         .submitLabel(.done)
     }
@@ -165,13 +241,13 @@ struct MakeProfileView: View {
                 }
             ),
             firstButton: ButtonOption(
-                textTitle: MakeProfileConstants.petTypeDogName,
+                textTitle: ProfileFormConstants.petTypeDogName,
                 action: {
                     viewModel.requestData.type = .dog
                 }
             ),
             secondButton: ButtonOption(
-                textTitle: MakeProfileConstants.petTypeCatName,
+                textTitle: ProfileFormConstants.petTypeCatName,
                 action: {
                     viewModel.requestData.type = .cat
                 }
@@ -186,10 +262,10 @@ struct MakeProfileView: View {
             viewModel.showingVarietySearch.toggle()
         }, label: {
             ZStack(alignment: .center, content: {
-                RoundedRectangle(cornerRadius: MakeProfileConstants.cornerRadius)
+                RoundedRectangle(cornerRadius: ProfileFormConstants.cornerRadius)
                     .fill(Color.clear)
                     .stroke(Color.gray200, style: .init())
-                    .frame(height: MakeProfileConstants.varietyHeight)
+                    .frame(height: ProfileFormConstants.varietyHeight)
                 
                 varieyFieldInContents
             })
@@ -199,7 +275,7 @@ struct MakeProfileView: View {
     /// 품종 선택 내부 가이드 표시
     private var varieyFieldInContents: some View {
         HStack {
-            Text(viewModel.requestData.variety.isEmpty == false ? viewModel.requestData.variety : MakeProfileConstants.varietyFieldGuideText)
+            Text(viewModel.requestData.variety.isEmpty == false ? viewModel.requestData.variety : ProfileFormConstants.varietyFieldGuideText)
                 .font(.Body3_semibold)
                 .foregroundStyle(viewModel.requestData.variety.isEmpty == false ? Color.gray900 : Color.gray200)
             
@@ -207,10 +283,10 @@ struct MakeProfileView: View {
             
             Image(.bottomArrow)
                 .resizable()
-                .frame(width: MakeProfileConstants.varietyIconSize, height: MakeProfileConstants.varietyIconSize)
+                .frame(width: ProfileFormConstants.varietyIconSize, height: ProfileFormConstants.varietyIconSize)
         }
-        .padding(.leading, MakeProfileConstants.varietyLeadingPadding)
-        .padding(.trailing, MakeProfileConstants.varietyTrailingPadding)
+        .padding(.leading, ProfileFormConstants.varietyLeadingPadding)
+        .padding(.trailing, ProfileFormConstants.varietyTrailingPadding)
     }
     
     // MARK: - BirthDay
@@ -234,21 +310,21 @@ struct MakeProfileView: View {
             selectedButton: Binding(
                 get: {
                     viewModel.requestData.neutralization == nil ? nil : (
-                        viewModel.requestData.neutralization! ? MakeProfileConstants.neutralYesText : MakeProfileConstants.neutralNoText
+                        viewModel.requestData.neutralization! ? ProfileFormConstants.neutralYesText : ProfileFormConstants.neutralNoText
                     )
                 },
                 set: { newValue in
                     viewModel.requestData.neutralization = (
-                        newValue == MakeProfileConstants.neutralYesText
+                        newValue == ProfileFormConstants.neutralYesText
                     )
                     viewModel.isNeutralizationFieldFilled = true
                 }),
             firstButton: ButtonOption(
-                textTitle: MakeProfileConstants.neutralYesText,
+                textTitle: ProfileFormConstants.neutralYesText,
                 action: {
                 }),
             secondButton: ButtonOption(
-                textTitle: MakeProfileConstants.neutralNoText,
+                textTitle: ProfileFormConstants.neutralNoText,
                 action: {
                 }
             )
@@ -259,11 +335,10 @@ struct MakeProfileView: View {
     /// 등록 버튼
     private var registerBtn: some View {
         MainButton(
-            btnText: MakeProfileConstants.registerBtnText,
+            btnText: ProfileFormConstants.registerBtnText,
             action: {
                 guard viewModel.isProfileCompleted else { return }
-                
-                viewModel.makePetProfile {
+                viewModel.submit {
                     dismiss()
                 }
             },
@@ -271,7 +346,7 @@ struct MakeProfileView: View {
     }
 }
 
-extension MakeProfileView {
+extension ProfileFormView {
     
     private func makeFieldTitle(fieldGroup: CreateProfileFieldValue) -> HStack<some View> {
         return HStack(content: {
@@ -279,7 +354,7 @@ extension MakeProfileView {
             
             if fieldGroup.isFieldEnable {
                 Image(.check)
-                    .frame(width: MakeProfileConstants.checkImageSize, height: MakeProfileConstants.checkImageSize)
+                    .frame(width: ProfileFormConstants.checkImageSize, height: ProfileFormConstants.checkImageSize)
             }
         })
     }
@@ -291,7 +366,7 @@ extension MakeProfileView {
     }
     
     private func makeFieldView<Content: View>(@ViewBuilder contents: @escaping () -> Content, fieldGroup: CreateProfileFieldValue) -> some View {
-        VStack(alignment: .leading, spacing: MakeProfileConstants.fieldVspacing, content: {
+        VStack(alignment: .leading, spacing: ProfileFormConstants.fieldVspacing, content: {
             makeFieldTitle(fieldGroup: fieldGroup)
             
             contents()
@@ -300,6 +375,6 @@ extension MakeProfileView {
 }
 
 #Preview {
-    MakeProfileView(container: DIContainer())
+    ProfileFormView(mode: .create, container: DIContainer())
         .environmentObject(DIContainer())
 }

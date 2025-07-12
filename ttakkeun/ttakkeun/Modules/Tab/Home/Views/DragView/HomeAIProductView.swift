@@ -9,45 +9,51 @@ import SwiftUI
 
 struct HomeAIProduct: View {
     
-    @State var viewModel: HomeRecommendViewModel
+    // MARK: - Property
+    @Bindable var viewModel: HomeRecommendViewModel
+    @AppStorage(AppStorageKey.petName) var petName: String = ""
     
+    // MARK: Constants
+    fileprivate enum HomeAIProductConstants {
+        static let mainVspacing: CGFloat = 16
+        static let contentsHspacng: CGFloat = 12
+        static let cardPrefix: Int = 8
+        
+        static let notPetName: String = "따끈 따끈 AI 추천 제품"
+    }
+    
+    // MARK: - Body
     var body: some View {
-        VStack(alignment: .leading, spacing: 16, content: {
-            Text("\(UserState.shared.getPetName())를 위한 따끈 따끈 AI 추천 제품")
-                .font(.H4_bold)
-                .foregroundStyle(Color.gray900)
-            
-            if let resultData = viewModel.aiProduct {
-                if !resultData.isEmpty {
-                    ScrollView(.horizontal, content: {
-                        HStack(spacing: 12) {
-                            ForEach(resultData.prefix(8), id: \.self) { data in
-                                AIRecommendProductCard(data: data)
-                            }
-                        }
-                        .frame(height: 92)
-                        .padding(.horizontal, 5)
-                        .padding(.bottom, 10)
-                    })
-                    .scrollIndicators(.visible)
-                } else {
-                    empyetView
-                }
+        VStack(alignment: .leading, spacing: HomeAIProductConstants.mainVspacing, content: {
+            topTitle
+            if !viewModel.aiProduct.isEmpty {
+                bottomContents
             } else {
-                empyetView
+                NotRecommend(recommendType: .aiRecommend)
             }
         })
     }
     
-    private var empyetView: some View {
-        HStack {
-            
-            Spacer()
-            
-            NotRecommend(recommendType: .aiRecommend)
-            
-            Spacer()
-        }
+    // MARK: - TopContents
+    /// 섹션 타이틀
+    private var topTitle: some View {
+        Text("\(petName)를 위한 따끈 따끈 AI 추천 제품")
+            .font(.H4_bold)
+            .foregroundStyle(Color.gray900)
+    }
+    
+    // MARK: - BottomContents
+    /// AI 상품 있는 경우
+    private var bottomContents: some View {
+        ScrollView(.horizontal, content: {
+            LazyHStack(spacing: HomeAIProductConstants.contentsHspacng, content: {
+                ForEach(viewModel.aiProduct.prefix(HomeAIProductConstants.cardPrefix), id: \.id) { data in
+                    AIRecommendProductCard(data: data)
+                }
+            })
+            .fixedSize()
+        })
+        .contentMargins(.bottom, UIConstants.horizonScrollBottomPadding, for: .scrollContent)
     }
 }
 
