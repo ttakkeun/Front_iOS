@@ -11,6 +11,7 @@ import Combine
 import CombineMoya
 import SwiftUI
 
+/// 홈 상단 프로필 카드 뷰모델
 @Observable
 class HomeProfileCardViewModel {
     // MARK: - StateProperty
@@ -18,7 +19,7 @@ class HomeProfileCardViewModel {
     var profileIsLoading: Bool = true
     
     // MARK: - Property
-    var profileData: HomeProfileResponseData?
+    var profileData: HomeProfileResponseData? = .init(name: "안녕", image: "https://i.namu.wiki/i/HICmFT-j1u1ONk2pS6LAtLfRs_GlQ8OOF0PvJXBzcsLY_scex97rmw8WneoqRVDnFOjOHjcuFhbB5nLrKBv9TmQ_Ngf57yFnzJqGKDNVGBba85hzy4l4qBbT93QeV4JX0dshpFs64TNTMKajzlazZTowVWLWwF8gaZS-sBUl4VM.webp", type: .cat, variety: "이상해씨", birth: "2019-05-19", neutralization: true)
     
     // MARK: - Dependency
     let container: DIContainer
@@ -31,7 +32,7 @@ class HomeProfileCardViewModel {
     
     // MARK: - Method
     public func goToEditPetProfile() {
-        container.navigationRouter.push(to: .editPetProfile(editPetInfo: returnEditProfile(), image: profileData?.image ?? ""))
+        container.navigationRouter.push(to: .editPetProfile(image: profileData?.image ?? "", petInfo: returnEditProfile()))
     }
     
     private func returnEditProfile() -> PetInfo {
