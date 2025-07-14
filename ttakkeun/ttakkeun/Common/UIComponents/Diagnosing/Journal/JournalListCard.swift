@@ -31,6 +31,9 @@ struct JournalListCard: View {
         static let postitHeight: CGFloat = 14
         static let postitBottomPadding: CGFloat = 8
         
+        static let checkTopPadding: CGFloat = 75
+        static let checkLeadingPadding: CGFloat = 65
+        
         static let checkSize: CGFloat = 18
         static let checkIconText: String = "checkmark.circle"
     }
@@ -115,16 +118,11 @@ struct JournalListCard: View {
                     .foregroundStyle(Color.gray600)
                     .aspectRatio(contentMode: .fit)
                     .frame(width: JournalListCardConstants.checkSize, height: JournalListCardConstants.checkSize)
-                    .padding(.top, 75)
-                    .padding(.leading, 65)
+                    .padding(.top, JournalListCardConstants.checkTopPadding)
+                    .padding(.leading, JournalListCardConstants.checkLeadingPadding)
             }
         }
     }
-}
-
-struct JournalListCardData {
-    let data: JournalListItem
-    let part: PartItem
 }
 
 struct JournalListCard_Preview: PreviewProvider {
@@ -133,3 +131,5 @@ struct JournalListCard_Preview: PreviewProvider {
             .previewLayout(.sizeThatFits)
     }
 }
+
+

@@ -9,22 +9,28 @@ import SwiftUI
 
 struct JournalAnswerButton: View {
     
+    // MARK: - Property
     @Binding var isSelected: Bool
     let paddingValue: [CGFloat]
-    let width: CGFloat
     let data: AnswerDetailData
     let onSelect: () -> Void
     
+    // MARK: - Constants
+    fileprivate enum JournalAnswerConstants {
+        static let lineSpacing: CGFloat = 2
+        static let cornerRadius: CGFloat = 10
+        static let imageSize: CGFloat = 30
+    }
+    
+    // MARK: - Init
     init(
         isSelected: Binding<Bool>,
         paddingValue: [CGFloat] = [29, 28, 28, 24],
-        width: CGFloat = 301,
         data: AnswerDetailData,
         _ onSelect: @escaping () -> Void
     ) {
         self._isSelected = isSelected
         self.paddingValue = paddingValue
-        self.width = width
         self.data = data
         self.onSelect = onSelect
     }
@@ -38,38 +44,39 @@ struct JournalAnswerButton: View {
         })
     }
     
+    /// 버튼 모양
     private var buttonContents: some View {
         HStack(alignment: .center, content: {
             Text(data.answerText)
                 .font(.Body2_semibold)
                 .foregroundStyle(Color.gray900)
                 .lineLimit(nil)
-                .lineSpacing(2)
+                .lineSpacing(JournalAnswerConstants.lineSpacing)
                 .multilineTextAlignment(.leading)
             
             Spacer()
             
-            if isSelected {
-                Icon.answerCheck.image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 30, height: 30)
-            } else {
-                Icon.answerNotCheck.image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 30, height: 30)
-            }
+            isSelectedButton
         })
-        .frame(width: width, height: 42)
         .padding(.top, paddingValue[0])
         .padding(.bottom, paddingValue[1])
         .padding(.leading, paddingValue[2])
         .padding(.trailing, paddingValue[3])
         .background {
-            RoundedRectangle(cornerRadius: 10)
+            RoundedRectangle(cornerRadius: JournalAnswerConstants.cornerRadius)
                 .fill(isSelected ? Color.primarycolor200 : Color.answerBg)
+                .frame(maxWidth: .infinity)
         }
+    }
+    
+    @ViewBuilder
+    private var isSelectedButton: some View {
+        let image = isSelected ? Image(.answerCheck) : Image(.answerNotCheck)
+        
+        image
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: JournalAnswerConstants.imageSize, height: JournalAnswerConstants.imageSize)
     }
 }
 

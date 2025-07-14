@@ -76,9 +76,10 @@ struct DiagnosticsView: View {
     private var changeSegmentView: some View {
         switch diagnosingValue.selectedSegment {
         case .journalList:
-            JournalListView(viewModel: journalListViewModel, showAlert: $showAlert, alertText: $alertText, aiCount: $aiCount, alertType: $alertType, actionYes: $actionYes, selectedPartItem: $diagnosingValue.selectedPartItem)
-                .environmentObject(container)
-                .environmentObject(appFlowViewModel)
+            Text("11")
+//            JournalListView(viewModel: journalListViewModel, showAlert: $showAlert, alertText: $alertText, aiCount: $aiCount, alertType: $alertType, actionYes: $actionYes, selectedPartItem: $diagnosingValue.selectedPartItem)
+//                .environmentObject(container)
+//                .environmentObject(appFlowViewModel)
         case .diagnosticResults:
             DiagnosListView(viewModel: diagnosticViewModel, selectedPartItem: $diagnosingValue.selectedPartItem)
         }
