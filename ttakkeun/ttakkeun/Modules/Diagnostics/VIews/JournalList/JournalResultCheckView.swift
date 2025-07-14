@@ -10,7 +10,7 @@ import SwiftUI
 /// 일지 생성 시 작성한 질문과 답변 서버 전송 후, 전달 받는 뷰
 struct JournalResultCheckView: View {
     
-    @ObservedObject var viewModel: JournalListViewModel
+    @Bindable var viewModel: JournalListViewModel
     
     
     var body: some View {

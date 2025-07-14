@@ -10,7 +10,7 @@ import SwiftUI
 /// 진단 중 Flow View
 struct DiagnosingFlowView: View {
     
-    @ObservedObject var viewModel: JournalListViewModel
+    @Bindable var viewModel: JournalListViewModel
     @EnvironmentObject var container: DIContainer
     
     @ViewBuilder

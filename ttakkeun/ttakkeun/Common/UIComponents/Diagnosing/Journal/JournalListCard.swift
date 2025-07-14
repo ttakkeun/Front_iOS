@@ -7,75 +7,118 @@
 
 import SwiftUI
 
+/// 일지 목록 데이터 카드
 struct JournalListCard: View {
     
+    // MARK: - Property
     let cardData: JournalListCardData
     @Binding var isSelected: Bool
     
+    // MARK: - Constant
+    fileprivate enum JournalListCardConstants {
+        static let bottomAreaHorizonPadding: CGFloat = 10
+        static let bottomAreaBottomPadding: CGFloat = 9
+        static let bottomAreaToPadding: CGFloat = 16
+        static let dateVspacing: CGFloat = 3
+        static let topVspacing: CGFloat = 24
+        static let bottomAreaHeght: CGFloat = 105
+        
+        static let datePrefix: Int = 4
+        static let dropCount: Int = 5
+        
+        static let postitRadius: CGFloat = 4
+        static let postitWidth: CGFloat = 49
+        static let postitHeight: CGFloat = 14
+        static let postitBottomPadding: CGFloat = 8
+        
+        static let checkSize: CGFloat = 18
+        static let checkIconText: String = "checkmark.circle"
+    }
+    
+    // MARK: - Init
     init(cardData: JournalListCardData, isSelected: Binding<Bool>) {
         self.cardData = cardData
         self._isSelected = isSelected
     }
     
+    // MARK: - Body
     var body: some View {
         ZStack(alignment: .top, content: {
-            bottomPostit
-                .padding(.top, 8)
+            topArea
             topPostit
             
             if isSelected {
-                Image(systemName: "checkmark.circle")
-                    .resizable()
-                    .renderingMode(.template)
-                    .foregroundStyle(Color.gray600)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 18, height: 18)
-                    .padding(.top, 75)
-                    .padding(.leading, 65)
+                bottomCheck
             }
         })
+        .frame(height: JournalListCardConstants.bottomAreaHeght, alignment: .bottom)
     }
     
-    private var bottomPostit: some View {
-        VStack(spacing: 24, content: {
-            
-            HStack(content: {
-                Text("\(DataFormatter.shared.formattedDate(from: cardData.data.recordDate).prefix(4)) \n\(DataFormatter.shared.formattedDate(from: cardData.data.recordDate).dropFirst(5))")
-                    .font(.Body4_medium)
-                    .foregroundStyle(isSelected ? Color.gray200 : Color.gray900)
-                    .multilineTextAlignment(.center)
-                    .lineSpacing(3)
-                
-                Spacer()
-            })
-            .frame(alignment: .leading)
-            
-            HStack(content: {
-                Spacer()
-                
-                Text(DataFormatter.shared.formattedTime(from: cardData.data.recordTime))
-                    .font(.Body5_medium)
-                    .foregroundStyle(isSelected ? Color.gray200 : Color.gray900)
-            })
-            .frame(alignment: .trailing)
+    // MARK: - TopArea
+    private var topArea: some View {
+        VStack(alignment: .leading, spacing: JournalListCardConstants.topVspacing, content: {
+            topDateInfo
+            createTimeInfo
         })
-        .frame(width: 74, height: 70)
-        .padding(.top, 16)
-        .padding(.leading, 10)
-        .padding(.trailing, 11)
-        .padding(.bottom, 9)
+        .padding(.horizontal, JournalListCardConstants.bottomAreaHorizonPadding)
+        .padding(.top, JournalListCardConstants.bottomAreaToPadding)
+        .padding(.bottom, JournalListCardConstants.bottomAreaBottomPadding)
         .background {
             Rectangle()
                 .fill(Color.white)
                 .shadow03()
+                .frame(maxWidth: .infinity)
         }
     }
     
+    /// 상단 날짜 데이터
+    private var topDateInfo: some View {
+        VStack(alignment: .leading, spacing: JournalListCardConstants.dateVspacing, content: {
+            Text(cardData.data.recordDate.formattedDate().prefix(JournalListCardConstants.datePrefix))
+            Text(cardData.data.recordDate.formattedDate().dropFirst(JournalListCardConstants.dropCount))
+        })
+        .font(.Body4_medium)
+        .foregroundStyle(isSelected ? Color.gray200 : Color.gray900)
+        .multilineTextAlignment(.center)
+    }
+    
+    ///  하단 시간 데이터
+    private var createTimeInfo: some View {
+        HStack {
+            Spacer()
+            
+            Text(cardData.data.recordTime.formattedDate())
+                .font(.Body5_medium)
+                .foregroundStyle(isSelected ? Color.gray200 : Color.gray900)
+        }
+    }
+    
+    /// 상단 포스트잇
     private var topPostit: some View {
-        RoundedRectangle(cornerRadius: 4)
+        RoundedRectangle(cornerRadius: JournalListCardConstants.postitRadius)
             .fill(cardData.part.toColor())
-            .frame(width: 49, height: 14)
+            .frame(width: JournalListCardConstants.postitWidth, height: JournalListCardConstants.postitHeight)
             .shadow02()
+            .offset(y: -JournalListCardConstants.postitBottomPadding)
+    }
+    
+    // MARK: - BottomCheck
+    private var bottomCheck: some View {
+        VStack {
+            Spacer()
+            
+            HStack {
+                Spacer()
+                Image(systemName: JournalListCardConstants.checkIconText)
+                    .resizable()
+                    .renderingMode(.template)
+                    .foregroundStyle(Color.gray600)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: JournalListCardConstants.checkSize, height: JournalListCardConstants.checkSize)
+                    .padding(.top, 75)
+                    .padding(.leading, 65)
+            }
+        }
     }
 }
 
@@ -86,6 +129,7 @@ struct JournalListCardData {
 
 struct JournalListCard_Preview: PreviewProvider {
     static var previews: some View {
-        JournalListCard(cardData: JournalListCardData(data: JournalListItem(recordID: 0, recordDate: "2024-11-09", recordTime: "14:58:11.123"), part: .ear), isSelected: .constant(true))
+        JournalListCard(cardData: JournalListCardData(data: JournalListItem(recordID: 0, recordDate: "2024-11-09", recordTime: "14:58:11.123"), part: .ear), isSelected: .constant(false))
+            .previewLayout(.sizeThatFits)
     }
 }

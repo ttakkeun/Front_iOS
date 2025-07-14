@@ -10,7 +10,7 @@ import SwiftUI
 /// 진단 목록 뷰
 struct JournalListView: View {
     
-    @ObservedObject var viewModel: JournalListViewModel
+    @Bindable var viewModel: JournalListViewModel
     
     @EnvironmentObject var container: DIContainer
     @EnvironmentObject var appFlowViewModel: AppFlowViewModel

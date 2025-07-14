@@ -10,33 +10,34 @@ import Combine
 import CombineMoya
 import Moya
 
-class JournalListViewModel: ObservableObject {
+@Observable
+class JournalListViewModel {
     
-    @Published var isSelectionMode: Bool = false
-    @Published var selectedCnt: Int = 0
+    var isSelectionMode: Bool = false
+    var selectedCnt: Int = 0
     
-    @Published var journalResultData: JournalResultResponse? = JournalResultResponse(category: .claw, date: "123123", time: "123123", qnaList: [QnAListData(question: "qweqwe", answer: ["qweqweq"], image: nil)], etcString: "qweqweqw")
-    @Published var journalListData: JournalListResponse?
-    @Published var recordList: [JournalListItem] = []
+    var journalResultData: JournalResultResponse? = JournalResultResponse(category: .claw, date: "123123", time: "123123", qnaList: [QnAListData(question: "qweqwe", answer: ["qweqweq"], image: nil)], etcString: "qweqweqw")
+    var journalListData: JournalListResponse?
+    var recordList: [JournalListItem] = []
     
-    @Published var selectedItem: Set<Int> = []
-    @Published var showDetailJournalList: Bool = false
+    var selectedItem: Set<Int> = []
+    var showDetailJournalList: Bool = false
     
-    @Published var showAiDiagnosing: Bool = false
-    @Published var showFullScreenAI: Bool = false
-    @Published var aiPoint: Int = 0
+    var showAiDiagnosing: Bool = false
+    var showFullScreenAI: Bool = false
+    var aiPoint: Int = 0
     
     // MARK: - Calendar
-    @Published var isCalendarPresented: Bool = false
-    @Published var selectedDate: Date = Date()
+    var isCalendarPresented: Bool = false
+    var selectedDate: Date = Date()
     
     // MARK: - DetailJournalView
-    @Published var detailDataLoading: Bool = true
-    @Published var isShowDetailJournal: Bool = false
+    var detailDataLoading: Bool = true
+    var isShowDetailJournal: Bool = false
     
     // MARK: - MakeDiag
-    @Published var isShowMakeDiagLoading: Bool = true
-    @Published var diagResultResponse: DiagResultResponse?
+    var isShowMakeDiagLoading: Bool = true
+    var diagResultResponse: DiagResultResponse?
     
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
@@ -47,10 +48,10 @@ class JournalListViewModel: ObservableObject {
     
     // MARK: - Paging
     
-    @Published var isFetching: Bool = false
-    @Published var currentPage: Int = 0
-    @Published var canLoadMore: Bool = true
-    @Published var listIsLoading: Bool = true
+    var isFetching: Bool = false
+    var currentPage: Int = 0
+    var canLoadMore: Bool = true
+    var listIsLoading: Bool = true
     
     private func makeCreateDiagRequest() -> CreateDiagRequst {
         

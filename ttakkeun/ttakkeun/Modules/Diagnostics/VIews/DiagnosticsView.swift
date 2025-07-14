@@ -19,7 +19,7 @@ struct DiagnosticsView: View {
     @Binding var alertType: AlertType
     @Binding var actionYes: () -> Void
     
-    @StateObject var journalListViewModel: JournalListViewModel
+    @State var journalListViewModel: JournalListViewModel
     @StateObject var diagnosticViewModel: DiagnosticResultViewModel
     
     @State var diagnosingValue: DiagnosingValue = .init(selectedSegment: .journalList, selectedPartItem: .ear)
@@ -31,7 +31,7 @@ struct DiagnosticsView: View {
         self._alertType = alertType
         self._actionYes = actionYes
         
-        self._journalListViewModel = .init(wrappedValue: .init(container: container))
+        self.journalListViewModel = .init(container: container)
         self._diagnosticViewModel = .init(wrappedValue: .init(container: container))
     }
     
@@ -71,6 +71,7 @@ struct DiagnosticsView: View {
         })
     }
     
+    // FIXME: - Tab
     @ViewBuilder
     private var changeSegmentView: some View {
         switch diagnosingValue.selectedSegment {

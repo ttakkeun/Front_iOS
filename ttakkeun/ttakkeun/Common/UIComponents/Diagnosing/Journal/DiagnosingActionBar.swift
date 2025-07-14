@@ -10,7 +10,7 @@ import SwiftUI
 struct DiagnosingActionBar: View {
     
     @Binding var diagnosingValue: DiagnosingValue
-    @ObservedObject var viewModel: JournalListViewModel
+    @Bindable var viewModel: JournalListViewModel
     
     var body: some View {
         HStack(content: {
