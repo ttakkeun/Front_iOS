@@ -9,9 +9,29 @@ import SwiftUI
 
 struct DiagnosisTower: View {
     
+    // MARK: - Property
     let data: diagDetailData
-    let onTap: () -> Void // 클릭 이벤트
+    let onTap: () -> Void
     
+    
+    // MARK: - Constants
+    fileprivate enum DiagnosisTowerConstants {
+        static let blurValue: CGFloat = 0.5
+        static let imageHeight: CGFloat = 71
+        static let imageSpacer: CGFloat = 64
+        static let cgOffsets: [CGSize] = [
+            CGSize(width: -1, height: -1),
+            CGSize(width:  0, height: -1),
+            CGSize(width:  1, height: -1),
+            CGSize(width: -1, height:  0),
+            CGSize(width:  1, height:  0),
+            CGSize(width: -1, height:  1),
+            CGSize(width:  0, height:  1),
+            CGSize(width:  1, height:  1)
+        ]
+    }
+    
+    // MARK: - Init
     init(data: diagDetailData, onTap: @escaping () -> Void) {
         self.data = data
         self.onTap = onTap
@@ -19,69 +39,70 @@ struct DiagnosisTower: View {
     
     var body: some View {
         ZStack {
-            towerImage()
-            
-            HStack {
-                
-                contentsText(DataFormatter.shared.convertToKoreanTime(from: data.created_at))
-                
-                Spacer()
-                
-                contentsText(timeFormatter)
-            }
-            .frame(maxWidth: 165)
+            towerImage
+            diagInfoText
         }
         .onTapGesture {
-            onTap() // 클릭 시 부모 뷰에 이벤트 전달
+            onTap()
         }
     }
     
+    /// 일지 날짜 시간 데이터
+    private var diagInfoText: some View {
+        HStack {
+            contentsText(data.created_at.convertedToKoreanTimeDateString())
+            Spacer().frame(maxWidth: DiagnosisTowerConstants.imageSpacer)
+            contentsText(data.created_at.toHourMinuteString())
+        }
+    }
+    
+    /// 일지 점수에 연관된 뼈 이미지
+    private var towerImage: some View {
+        towerImageBranch()
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(maxWidth: .infinity)
+    }
+    
+    /// 날짜 및 시간 표시 데이터
+    /// - Parameter date: 날짜 데이터
+    /// - Returns: 텍스트 뷰 반환
     private func contentsText(_ date: String) -> some View {
         ZStack {
+            ForEach(DiagnosisTowerConstants.cgOffsets, id: \.self) { offset in
+                Text(date)
+                    .font(.Body2_bold)
+                    .foregroundStyle(.black)
+                    .offset(offset)
+            }
+
+            // 중앙 흰색 텍스트
             Text(date)
-                .font(.Body2_medium)
-                .foregroundColor(.clear) // 안쪽 색상 제거
-                .overlay(
-                    Text(date)
-                        .font(.Body2_medium)
-                        .foregroundColor(.black) // 외곽선 색상
-                        .offset(x: 0, y: 0) // 중앙에 겹침
-                        .blur(radius: 0.5) // 외곽선이 부드럽게
-                )
-            
-            Text(date)
-                .font(.system(size: 40, weight: .bold))
-                .foregroundColor(.white) // 내부 색상
+                .font(.Body2_bold)
+                .foregroundStyle(.white)
         }
     }
     
-    private func towerImage() -> Image {
+    private func towerImageBranch() -> Image {
         switch data.score {
         case 0...20:
-            return Icon.bones1.image
+            return Image(.bonesFirst)
         case 20...40:
-            return Icon.bones2.image
+            return Image(.bonesSecond)
         case 40...60:
-            return Icon.bones3.image
+            return Image(.bonesThird)
         case 60...80:
-            return Icon.bones4.image
+            return Image(.bonesFourth)
         case 80...100:
-            return Icon.bones5.image
+            return Image(.bonesFifth)
         default:
-            return Icon.bones1.image
+            return Image(.bonesFirst)
         }
     }
-    
-    private var timeFormatter: String {
-        let timeString = ISO8601DateFormatter()
-        
-        if let time = timeString.date(from: data.created_at) {
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "HH:mm"
-            let timePart = timeFormatter.string(from: time)
-            return timePart
-        } else {
-            return "Invalid Time"
-        }
-    }
+}
+
+#Preview {
+    DiagnosisTower(data: .init(diagnose_id: 0, created_at: "2025-07-15T12:32:54.260Z", score: 100), onTap: {
+        print("hello")
+    })
 }

@@ -9,9 +9,27 @@ import SwiftUI
 
 struct DiagnosListView: View {
     
+    // MARK: - Property
     @Bindable var viewModel: DiagnosticResultViewModel
     @Binding var selectedPartItem: PartItem
+    @AppStorage(AppStorageKey.petType) var petType: ProfileType = .dog
     
+    // MARK: - Constants
+    fileprivate enum DiagnosListConstants {
+        static let emptyDiagVspacing: CGFloat = 19
+        static let topPadding: CGFloat = 75
+        
+        static let topCatWidth: CGFloat = 114
+        static let topCatHeigt: CGFloat = 102
+            
+        static let catTowerOffset: CGFloat = 10
+        static let sheetCornerRadius: CGFloat = 30
+        static let zIndex: Double = 1
+        
+        static let emptyDiagListTitle: String = "아직 생성된 진단 기록이 없어요!! \n 일지 작성 후, 진단을 해보세요!"
+    }
+  
+    // MARK: - Body
     var body: some View {
         if viewModel.diagResultListResponse.isEmpty {
             emptyDiagList
@@ -20,67 +38,93 @@ struct DiagnosListView: View {
         }
     }
     
+    // MARK: - DiagList
+    /// 진단결과 리스트 뷰
     private var diagnosticList: some View {
         ScrollViewReader { scrollProxy in
             ScrollView(.vertical, content: {
                 ZStack(alignment: .top, content: {
-                    Icon.profileCat.image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 114, height: 102)
-                        .zIndex(1)
-                    
-                    LazyVStack(spacing: 0, content: {
-                        ForEach(viewModel.diagResultListResponse, id: \.id) { data in
-                                DiagnosisTower(data: data) {
-                                    viewModel.selectedDiagId = data.diagnose_id
-                                    viewModel.isShowDetailDiag = true
-                                }
-                                .task {
-                                    guard !viewModel.diagResultListResponse.isEmpty else { return }
-                                    
-                                    if data == viewModel.diagResultListResponse.last && viewModel.canLoadMore {
-                                        viewModel.getDiagResultList(category: self.selectedPartItem.rawValue, page: viewModel.currentPage)
-                                    }
-                                }
-                            }
-                        
-                        if viewModel.isFetching {
-                            ProgressView()
-                                .controlSize(.regular)
-                        }
-                       
-                    })
-                    .frame(alignment: .bottom)
-                    .padding(.top, 75)
-                    .padding(.bottom, 80)
-                    .zIndex(0)
+                    topCatImage
+                    diagTower
                 })
-                .frame(minHeight: 750)
             })
-            .frame(maxHeight: 590)
-            .onAppear {
+            .task {
                 if let lastID = viewModel.diagResultListResponse.last?.id {
-                    scrollProxy.scrollTo(lastID, anchor: .bottom) // 초기 위치를 마지막 항목으로 설정
+                    scrollProxy.scrollTo(lastID, anchor: .bottom)
                 }
             }
             .refreshable {
                 viewModel.getDiagResultList(category: selectedPartItem.rawValue, page: 0, refresh: true)
             }
+            .fullScreenCover(isPresented: $viewModel.isShowDetailDiag, content: {
+                if let id = viewModel.selectedDiagId {
+                    DiagnosingResultDetailView(viewModel: viewModel, showFullScreenAI: $viewModel.isShowDetailDiag, diagId: id)
+                        .presentationCornerRadius(DiagnosListConstants.sheetCornerRadius)
+                }
+            })
         }
-        .sheet(isPresented: $viewModel.isShowDetailDiag, content: {
-            if let id = viewModel.selectedDiagId {
-                DiagnosingResultDetailView(viewModel: viewModel, showFullScreenAI: .constant(false), diagId: id)
-                    .presentationCornerRadius(30)
-            }
-        })
     }
     
+    /// 뼈타워 상단 고정 고양이
+    private var topCatImage: some View {
+        Image(topImage())
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: DiagnosListConstants.topCatWidth, height: DiagnosListConstants.topCatHeigt)
+            .zIndex(DiagnosListConstants.zIndex)
+            .offset(y: DiagnosListConstants.catTowerOffset)
+    }
+    
+    /// 상단 고양이 또는 강아지 사진
+    /// - Returns: 이미지 리소스 반환
+    private func topImage() -> ImageResource {
+        petType == .cat ? .profileCat : .profileDog
+    }
+    
+    /// 진단 기록 뼈 타워
+    private var diagTower: some View {
+        LazyVStack(spacing: .zero, content: {
+            towerForEach
+            diagLoading
+        })
+        .frame(alignment: .bottom)
+        .padding(.bottom, UIConstants.safeBottom)
+        .padding(.top, DiagnosListConstants.topPadding)
+        .zIndex(.zero)
+    }
+    
+    @ViewBuilder
+    private var towerForEach: some View {
+        ForEach(viewModel.diagResultListResponse, id: \.id) { data in
+            DiagnosisTower(data: data) {
+                viewModel.selectedDiagId = data.diagnose_id
+                viewModel.isShowDetailDiag = true
+            }
+            .task {
+                guard !viewModel.diagResultListResponse.isEmpty else { return }
+                if data == viewModel.diagResultListResponse.last && viewModel.canLoadMore {
+                    viewModel.getDiagResultList(category: self.selectedPartItem.rawValue, page: viewModel.currentPage)
+                }
+            }
+        }
+    }
+    
+    /// 뼈 타워 로딩
+    @ViewBuilder
+    private var diagLoading: some View {
+        if viewModel.isFetching {
+            ProgressView()
+                .controlSize(.regular)
+        }
+    }
+    
+    // MARK: - Empty
+    /// 진단 결과 비었을 경우
     private var emptyDiagList: some View {
-        VStack(spacing: 19, content: {
+        VStack(spacing: DiagnosListConstants.emptyDiagVspacing, content: {
             Spacer()
             
-            Text("아직 생성된 진단 기록이 없어요!! \n 일지 작성 후, 진단을 해보세요!")
+            Text(DiagnosListConstants.emptyDiagListTitle)
                 .font(.Body2_medium)
                 .foregroundStyle(Color.gray400)
                 .multilineTextAlignment(.center)
@@ -88,4 +132,8 @@ struct DiagnosListView: View {
             Spacer()
         })
     }
+}
+
+#Preview {
+    DiagnosListView(viewModel: .init(container: DIContainer()), selectedPartItem: .constant(.ear))
 }

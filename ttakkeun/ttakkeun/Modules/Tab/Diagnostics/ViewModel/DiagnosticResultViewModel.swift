@@ -12,14 +12,17 @@ import CombineMoya
 @Observable
 class DiagnosticResultViewModel {
     
-    var diagnosticResolutionData: DiagnosticResolutionResponse? = .init(id: 0, score: 75, detailValue: "으아아으아아으아아으아아으아아", afterCare: "으아아으아아으아아으아아으아아으아아으아아으아아으아아", products: [
-        .init(title: "아껴주다 저자극 천연 복실복실 고양이 샴푸", image: "ss", lprice: 13000, brand: "쿠팡"),
-        .init(title: "아껴주다 저자극 천연 복실복실 고양이 샴푸", image: "ss", lprice: 14000, brand: "쿠팡"),
-        .init(title: "아껴주다 저자극 천연 복실복실 고양이 샴푸", image: "ss", lprice: 16000, brand: "쿠팡"),
-        .init(title: "아껴주다 저자극 천연 복실복실 고양이 샴푸", image: "ss", lprice: 13000, brand: "쿠팡"),
-        .init(title: "아껴주다 저자극 천연 복실복실 고양이 샴푸", image: "ss", lprice: 17000, brand: "쿠팡")
-    ])
-     var diagResultListResponse: [diagDetailData] = []
+    var diagnosticResolutionData: DiagnosticResolutionResponse?
+     var diagResultListResponse: [diagDetailData] = [
+        .init(diagnose_id: 0, created_at: "2025-07-15T12:32:54.260Z", score: 10),
+        .init(diagnose_id: 1, created_at: "2025-07-15T12:32:54.260Z", score: 30),
+        .init(diagnose_id: 2, created_at: "2025-07-15T12:32:54.260Z", score: 50),
+        .init(diagnose_id: 3, created_at: "2025-07-15T12:32:54.260Z", score: 70),
+        .init(diagnose_id: 4, created_at: "2025-07-15T12:32:54.260Z", score: 90),
+        .init(diagnose_id: 5, created_at: "2025-07-15T12:32:54.260Z", score: 20),
+        .init(diagnose_id: 6, created_at: "2025-07-15T12:32:54.260Z", score: 40),
+        .init(diagnose_id: 7, created_at: "2025-07-15T12:32:54.260Z", score: 60)
+     ]
     
      var isShowDetailDiag: Bool = false
      var selectedDiagId: Int? = nil

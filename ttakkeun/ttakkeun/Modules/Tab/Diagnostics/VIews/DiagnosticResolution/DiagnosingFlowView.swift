@@ -18,7 +18,7 @@ struct DiagnosingFlowView: View {
         if viewModel.isShowMakeDiagLoading {
             DiagnosingView()
         } else {
-            DiagnosingResultDetailView(viewModel: DiagnosticResultViewModel(container: container), showFullScreenAI: $viewModel.showFullScreenAI, diagId: viewModel.diagResultResponse?.result_id ?? 0)
+            DiagnosingResultDetailView(viewModel: .init(container: container), showFullScreenAI: $viewModel.showFullScreenAI, diagId: viewModel.diagResultResponse?.result_id ?? 0)
         }
     }
 }
