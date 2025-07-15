@@ -7,11 +7,23 @@
 
 import SwiftUI
 
+/// 카메라버튼
 struct CameraButton: View {
     
+    // MARK: - Property
     let cameraText: Text
     let action: () -> Void
     
+    // MARK: - Constants
+    fileprivate enum CameraButtonConstants {
+        static let cornerRadius: CGFloat = 10
+        static let rectangleSize: CGFloat = 80
+        static let cameraSize: CGFloat = 47
+        static let vSpacing: CGFloat = 5
+        static let topPadding: CGFloat = 3
+    }
+    
+    // MARK: - Init
     init(
         cameraText: Text,
         action: @escaping () -> Void
@@ -20,27 +32,29 @@ struct CameraButton: View {
         self.action = action
     }
     
+    // MARK: - Body
     var body: some View {
         Button(action: {
             action()
         }, label: {
             ZStack {
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: CameraButtonConstants.cornerRadius)
                     .fill(Color.answerBg)
                     .stroke(Color.gray200)
-                    .frame(width: 80, height: 80)
-                VStack(alignment: .center, spacing: 5, content: {
-                    Icon.camera.image
+                    .frame(width: CameraButtonConstants.rectangleSize, height: CameraButtonConstants.rectangleSize)
+                
+                VStack(alignment: .center, spacing: CameraButtonConstants.vSpacing, content: {
+                    Image(.camera)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 47, height: 47)
+                        .frame(width: CameraButtonConstants.cameraSize, height: CameraButtonConstants.cameraSize)
                     
                     cameraText
                         .font(.Body5_medium)
                         .foregroundStyle(Color.gray400)
                 })
             }
-            .padding(.top, 5)
         })
+        .padding(.top, CameraButtonConstants.topPadding)
     }
 }

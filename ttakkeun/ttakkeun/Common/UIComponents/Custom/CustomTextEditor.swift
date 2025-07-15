@@ -53,8 +53,8 @@ struct CustomTextEditor: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .padding(.vertical, 20)
-            .padding(.horizontal, 17)
+            .padding(.vertical, 15)
+            .padding(.horizontal, 12)
             .background(alignment: .topLeading, content: {
                 if text.isEmpty {
                     Text(placeholder)

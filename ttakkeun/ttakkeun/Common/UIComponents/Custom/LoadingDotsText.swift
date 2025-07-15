@@ -37,3 +37,26 @@ struct LoadingDotsText: View {
             })
     }
 }
+
+
+struct LoadingProgress: View {
+    
+    let text: String
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            
+            ProgressView(label: {
+                Text(text)
+                    .multilineTextAlignment(.center)
+                    .lineSpacing(2.5)
+                    .font(.Body3_medium)
+                    .foregroundStyle(Color.white)
+            })
+            .controlSize(.large)
+            
+            Spacer()
+        }
+    }
+}

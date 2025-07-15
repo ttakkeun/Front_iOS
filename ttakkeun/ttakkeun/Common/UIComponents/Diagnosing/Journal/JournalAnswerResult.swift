@@ -61,8 +61,7 @@ struct JournalAnswerResult: View {
             ForEach(data.answer, id: \.self) { answer in
                 JournalAnswerButton(isSelected: .constant(true),
                                     paddingValue: [18, 17, 24, 24],
-                                    data: AnswerDetailData(answerText: answer),
-                                    { print("nil") })
+                                    data: AnswerDetailData(answerText: answer))
                 .disabled(true)
             }
         })

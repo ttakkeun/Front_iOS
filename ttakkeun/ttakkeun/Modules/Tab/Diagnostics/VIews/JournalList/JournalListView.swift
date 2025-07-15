@@ -12,10 +12,10 @@ struct JournalListView: View {
     
     // MARK: - Property
     @Bindable var viewModel: JournalListViewModel
+    @Binding var selectedPartItem: PartItem
     @EnvironmentObject var container: DIContainer
     @Environment(AlertStateModel.self) var alert
-    @Binding var aiCount: Int
-    @Binding var selectedPartItem: PartItem
+    @AppStorage(AppStorageKey.aiCount) var aiCount: Int?
     
     // MARK: - Constants
     fileprivate enum JournalListConstants {
@@ -37,8 +37,6 @@ struct JournalListView: View {
         static let aiDiagnoseText: String = "따끈 AI 진단하기"
         static let emptyJournalText: String = "일지가 아직 없네요! \n오늘의 반려동물 일지를 작성해보세요!"
     }
-    
-    // TODO: - Alert 창 표시하기
     
     var body: some View {
         ZStack {
@@ -106,6 +104,7 @@ struct JournalListView: View {
             })
             .padding(.top, JournalListConstants.journalListTopPadding)
         })
+        .contentMargins(.horizontal, UIConstants.safeLeading, for: .scrollContent)
         .contentMargins(.bottom, UIConstants.safeBottom, for: .scrollContent)
         .refreshable {
             viewModel.getJournalList(category: selectedPartItem.rawValue, page: .zero, refresh: true)
@@ -232,7 +231,7 @@ extension JournalListView {
 }
 
 #Preview {
-    JournalListView(viewModel: .init(container: DIContainer()), aiCount: .constant(4), selectedPartItem: .constant(.claw))
+    JournalListView(viewModel: .init(container: DIContainer()), selectedPartItem: .constant(.claw))
         .environment(AlertStateModel())
         .environmentObject(DIContainer())
 }

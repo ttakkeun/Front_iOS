@@ -8,41 +8,43 @@
 import SwiftUI
 
 struct JournalRegistView: View {
-    @StateObject var viewModel: JournalRegistViewModel
+    
+    // MARK: - Property
+    var viewModel: JournalRegistViewModel
     @EnvironmentObject var container: DIContainer
     
-    init(container: DIContainer) {
-        self._viewModel = StateObject(wrappedValue: .init(petID: UserState.shared.getPetId(), container: container))
+    // MARK: - Constants
+    fileprivate enum JournalRegistConstants {
+        static let closeButton: String = "xmark"
+        static let navigationTitle: String = "일지 생성"
     }
     
+    // MARK: - DIContainer
+    init(container: DIContainer) {
+        self.viewModel = .init(container: container)
+    }
     
+    // MARK: - Body
     var body: some View {
-        ZStack {
-            VStack(alignment: .leading, spacing: 38, content: {
-                CustomNavigation(action: {
-                    container.navigationRouter.pop()
-                }, title: nil, currentPage: viewModel.currentPage)
-                
-                JournalRegistContents(viewModel: viewModel)
-            })
-            .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-            .navigationBarBackButtonHidden(true)
-            
-            if viewModel.makeJournalsLoading {
-                
-                Color.white.opacity(0.8).ignoresSafeArea(.all)
-                
-                ProgressView(label: {
-                    LoadingDotsText(text: "일지 생성 중입니다. \n잠시 기다려주세요")
-                })
-                .controlSize(.extraLarge)
-            }
-        }
-        .onAppear {
-            UIApplication.shared.hideKeyboard()
+        NavigationStack {
+            JournalRegistContents(viewModel: viewModel)
+                .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+                .navigationBarBackButtonHidden(true)
+                .customNavigation(
+                    title: JournalRegistConstants.navigationTitle,
+                    leadingAction: {
+                        container.navigationRouter
+                            .pop()
+                    },
+                    naviIcon: Image(systemName: JournalRegistConstants.closeButton),
+                    currentPage: viewModel.currentPage
+                )
+                .toolbarTitleDisplayMode(.inline)
+                .loadingOverlay(isLoading: viewModel.makeJournalsLoading, loadingTextType: .createJournal)
         }
     }
 }
+
 
 #Preview {
     JournalRegistView(container: DIContainer())

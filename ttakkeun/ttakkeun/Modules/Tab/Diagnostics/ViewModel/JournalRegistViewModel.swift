@@ -4,38 +4,29 @@
 //
 //  Created by 정의찬 on 11/11/24.
 //
-
-import Foundation
 import SwiftUI
 import UIKit
-import ImageIO
 import Combine
 import CombineMoya
 import Moya
+import PhotosUI
 
-class JournalRegistViewModel: ObservableObject {
+@Observable
+class JournalRegistViewModel {
 
-    @Published var currentPage: Int = 1
-    @Published var selectedPart: PartItem?
+    var currentPage: Int = 1
     
-    @Published var getQuestions: JournalQuestionResponse?
-    @Published var selectedAnswerData: SelectedAnswerRequest
-    @Published var isNextEnabled: Bool = false
+    // MARK: - Property
+    var selectedPart: PartItem?
+    let buttonList: [PartItem] = [.ear, .hair, .eye, .claw , .teeth]
+    var getQuestions: JournalQuestionResponse?
+    var selectedAnswerData: SelectedAnswerRequest
+    var questionImages: [Int: [UIImage]] = [:]
+    var imageItems: [PhotosPickerItem] = []
     
-    @Published var isImagePickerPresented: Bool = false
-    @Published var questionImages: [Int: [UIImage]] = [:]
-    
-    @Published var questionIsLoading: Bool = false
-    @Published var makeJournalsLoading: Bool = false
-    
-    @Published var isNextEnalbes:Bool = false
-    
-    let container: DIContainer
-    private var cancellables = Set<AnyCancellable>()
-    
-    init(petID: Int, container: DIContainer) {
-        selectedAnswerData = .init(petId: petID)
-        self.container = container
+    var currentQuestion: QuestionDetailData? {
+        guard let getQuestion = getQuestions, currentPage - 1 <= getQuestion.question.count else { return nil }
+        return getQuestion.question[currentPage - 2]
     }
     
     var selectedImageCount: Int {
@@ -43,44 +34,80 @@ class JournalRegistViewModel: ObservableObject {
         return questionImages[questionID]?.count ?? 0
     }
     
-    var currentQuestion: QuestionDetailData? {
-        guard let getQuestion = getQuestions, currentPage - 1 <= getQuestion.question.count else { return nil }
-        return getQuestion.question[currentPage - 2]
+    // MARK: - StateProperty
+    var isNextEnabled: Bool = false
+    var isImagePickerPresented: Bool = false
+    var questionIsLoading: Bool = false
+    var makeJournalsLoading: Bool = false
+    var isNextEnalbes:Bool = false
+    
+    // MARK: - Dependency
+    let container: DIContainer
+    private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: - Init
+    init(container: DIContainer) {
+        selectedAnswerData = .init(petId: UserDefaults.standard.integer(forKey: AppStorageKey.petId))
+        self.container = container
     }
     
+    // MARK: - Method
     func updateAnswer(for questionID: Int, selectedAnswer: [String]) {
         selectedAnswerData.answers[questionID] = selectedAnswer
     }
     
-    
+    func convertPickerItemsToUIImages(items: [PhotosPickerItem]) {
+        var loadedImages: [UIImage] = []
+        let dispatchGroup = DispatchGroup()
+
+        for item in items {
+            dispatchGroup.enter()
+            item.loadTransferable(type: Data.self) { result in
+                defer { dispatchGroup.leave() }
+                switch result {
+                case .success(let data):
+                    if let data = data, let image = UIImage(data: data) {
+                        loadedImages.append(image)
+                    }
+                case .failure(let error):
+                    print("Failed to load image: \(error.localizedDescription)")
+                }
+            }
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            self.addImage(loadedImages)
+        }
+    }
 }
 
-extension JournalRegistViewModel: ImageHandling {
-    func addImage(_ images: UIImage) {
-        guard let questionId = currentQuestion?.questionID else { return }
-        if questionImages[questionId]?.count ?? 0 < 5 {
-            DispatchQueue.global(qos: .userInitiated).async {
-                let downSampledImage = images.downSample(scale: 0.5)
-                DispatchQueue.main.async {
-                    self.questionImages[questionId, default: []].append(downSampledImage)
-                }
+extension JournalRegistViewModel: PhotoPickerHandle {
+    func addImage(_ images: [UIImage]) {
+        // guard let questionId = currentQuestion?.questionID else { return }
+        let questionId = 1
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            let originalImages = images
+
+            DispatchQueue.main.async {
+                self.questionImages[questionId] = Array(originalImages.prefix(5))
             }
         }
     }
     
     func removeImage(at index: Int) {
-        guard let questionID = currentQuestion?.questionID else { return }
+//        guard let questionID = currentQuestion?.questionID else { return }
+        let questionID = 1
         questionImages[questionID]?.remove(at: index)
-    }
-    
-    func showImagePicker() {
-        DispatchQueue.main.async {
-            self.isImagePickerPresented.toggle()
+        
+        if imageItems.indices.contains(index) {
+            imageItems.remove(at: index)
         }
     }
     
     func getImages() -> [UIImage] {
-        guard let questionID = currentQuestion?.questionID else { return [] }
+//        guard let questionID = currentQuestion?.questionID else { return [] }
+        let questionID = 1
         return questionImages[questionID] ?? []
     }
 }
@@ -162,29 +189,4 @@ extension JournalRegistViewModel {
                 .store(in: &cancellables)
         }
     }
-}
-
-
-extension UIImage {
-    /// 이미지 사이즈 조절, 데이터 타입으로 변환 후 리사징하기 떄문애 메모리 절약 효율적!!
-    /// 자세한 건 공지한 노션에 올려두었으니 꼭 읽어보시길 바랍니다
-    /// - Parameter scale: 이미지 자체 이미지를 1이라 정하고, 얼마큼 줄일것인지 스케일을 입력!!
-    /// - Returns: 스케일을 통해 리사이징된 이미지 반환
-    func downSample(scale: CGFloat) -> UIImage {
-        _ = [kCGImageSourceShouldCache: false] as CFDictionary
-            let data = self.pngData()! as CFData
-            let imageSource = CGImageSourceCreateWithData(data, nil)!
-            let maxPixel = max(self.size.width, self.size.height) * scale
-            let downSampleOptions = [
-                kCGImageSourceCreateThumbnailFromImageAlways: true,
-                kCGImageSourceShouldCacheImmediately: true,
-                kCGImageSourceCreateThumbnailWithTransform: true,
-                kCGImageSourceThumbnailMaxPixelSize: maxPixel
-            ] as CFDictionary
-
-            let downSampledImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, downSampleOptions)!
-
-            let newImage = UIImage(cgImage: downSampledImage)
-            return newImage
-        }
 }

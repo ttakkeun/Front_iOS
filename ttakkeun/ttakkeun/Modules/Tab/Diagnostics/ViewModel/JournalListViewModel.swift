@@ -16,9 +16,26 @@ class JournalListViewModel {
     var isSelectionMode: Bool = false
     var selectedCnt: Int = 0
     
-    var journalResultData: JournalResultResponse? = JournalResultResponse(category: .claw, date: "123123", time: "123123", qnaList: [QnAListData(question: "qweqwe", answer: ["qweqweq"], image: nil)], etcString: "qweqweqw")
+    var journalResultData: JournalResultResponse?
     var journalListData: JournalListResponse?
-    var recordList: [JournalListItem] = []
+    var recordList: [JournalListItem] = [
+        .init(recordID: 0, recordDate: "2024-12-03", recordTime: "11111"),
+        .init(recordID: 1, recordDate: "2024-12-03", recordTime: "11111"),
+        .init(recordID: 2, recordDate: "2024-12-03", recordTime: "11111"),
+        .init(recordID: 3, recordDate: "2024-12-03", recordTime: "11111"),
+        .init(recordID: 4, recordDate: "2024-12-03", recordTime: "11111"),
+        .init(recordID: 5, recordDate: "2024-12-03", recordTime: "11111"),
+        .init(recordID: 6, recordDate: "2024-12-03", recordTime: "11111"),
+        .init(recordID: 7, recordDate: "2024-12-03", recordTime: "11111"),
+        .init(recordID: 8, recordDate: "2024-12-03", recordTime: "11111"),
+        .init(recordID: 9, recordDate: "2024-12-03", recordTime: "11111"),
+        .init(recordID: 10, recordDate: "2024-12-03", recordTime: "11111"),
+        .init(recordID: 11, recordDate: "2024-12-03", recordTime: "11111"),
+        .init(recordID: 12, recordDate: "2024-12-03", recordTime: "11111"),
+        .init(recordID: 13, recordDate: "2024-12-03", recordTime: "11111"),
+        .init(recordID: 14, recordDate: "2024-12-03", recordTime: "11111"),
+        .init(recordID: 15, recordDate: "2024-12-03", recordTime: "11111")
+    ]
     
     var selectedItem: Set<Int> = []
     var showDetailJournalList: Bool = false

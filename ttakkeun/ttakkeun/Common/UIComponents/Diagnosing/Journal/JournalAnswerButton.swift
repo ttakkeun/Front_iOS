@@ -13,7 +13,6 @@ struct JournalAnswerButton: View {
     @Binding var isSelected: Bool
     let paddingValue: [CGFloat]
     let data: AnswerDetailData
-    let onSelect: () -> Void
     
     // MARK: - Constants
     fileprivate enum JournalAnswerConstants {
@@ -26,19 +25,16 @@ struct JournalAnswerButton: View {
     init(
         isSelected: Binding<Bool>,
         paddingValue: [CGFloat] = [29, 28, 28, 24],
-        data: AnswerDetailData,
-        _ onSelect: @escaping () -> Void
+        data: AnswerDetailData
     ) {
         self._isSelected = isSelected
         self.paddingValue = paddingValue
         self.data = data
-        self.onSelect = onSelect
     }
     
     var body: some View {
         Button(action: {
             isSelected.toggle()
-            onSelect()
         }, label: {
             buttonContents
         })
@@ -77,11 +73,5 @@ struct JournalAnswerButton: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: JournalAnswerConstants.imageSize, height: JournalAnswerConstants.imageSize)
-    }
-}
-
-struct JournalAnswerButton_Preview: PreviewProvider {
-    static var previews: some View {
-        JournalAnswerButton(isSelected: .constant(true), data: AnswerDetailData(answerID: UUID(), answerText: "asdasjkdhakjshdkjashdkjasdhakjsdhjaskdjhdk 나요"), { print("hello") })
     }
 }
