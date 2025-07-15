@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DiagnosListView: View {
     
-    @ObservedObject var viewModel: DiagnosticResultViewModel
+    @Bindable var viewModel: DiagnosticResultViewModel
     @Binding var selectedPartItem: PartItem
     
     var body: some View {

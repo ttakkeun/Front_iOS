@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 진단 등록 뷰
 struct JournalRegistView: View {
     
     // MARK: - Property
@@ -26,22 +27,19 @@ struct JournalRegistView: View {
     
     // MARK: - Body
     var body: some View {
-        NavigationStack {
             JournalRegistContents(viewModel: viewModel)
                 .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
                 .navigationBarBackButtonHidden(true)
                 .customNavigation(
                     title: JournalRegistConstants.navigationTitle,
                     leadingAction: {
-                        container.navigationRouter
-                            .pop()
+                        container.navigationRouter.pop()
                     },
                     naviIcon: Image(systemName: JournalRegistConstants.closeButton),
                     currentPage: viewModel.currentPage
                 )
                 .toolbarTitleDisplayMode(.inline)
                 .loadingOverlay(isLoading: viewModel.makeJournalsLoading, loadingTextType: .createJournal)
-        }
     }
 }
 

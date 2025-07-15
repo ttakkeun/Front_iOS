@@ -130,6 +130,7 @@ struct JournalListView: View {
     private var bottomContentsBtn: some View {
         VStack {
             Spacer()
+            
             HStack {
                 Spacer()
                 Button(action: {

@@ -10,32 +10,49 @@ import SwiftUI
 /// 진단 중 화면
 struct DiagnosingView: View {
     
+    // MARK: - Constants
+    fileprivate enum DiagnosingConstants {
+        static let mainVspacing: CGFloat = 24
+        static let logoWidth: CGFloat = 257
+        static let logoHeight: CGFloat = 168
+        static let contentsSpacer: CGFloat = 120
+        static let loadingText: String = "AI가 데이터를 분석 중입니다... \n잠시만 기다려주세요!"
+    }
+    
+    // MARK: - Body
     var body: some View {
         ZStack(alignment: .top, content: {
-            Icon.diagnosingBg.image
+           viewBg
+            mainContents
+        })
+    }
+    
+    /// 메인 백그라운드
+    private var viewBg: some View {
+        Image(.diagnosingBg)
+            .resizable()
+            .frame(maxWidth: .infinity, alignment: .top)
+            .frame(height: getScreenSize().height * 0.8)
+            .ignoresSafeArea()
+    }
+    
+    /// 로딩 메인 컨텐츠
+    private var mainContents: some View {
+        VStack(alignment: .center, spacing: DiagnosingConstants.mainVspacing, content: {
+            Spacer().frame(height: DiagnosingConstants.contentsSpacer)
+            ProgressView(label: {
+                LoadingDotsText(
+                    text: DiagnosingConstants.loadingText,
+                    color: .gray900
+                )
+            })
+            
+            Image(.bubbleLogo)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: .infinity)
-            
-            VStack(alignment: .center, spacing: 24, content: {
-                
-                Spacer().frame(height: 220)
-                
-                ProgressView(label: {
-                    LoadingDotsText(text: "AI가 데이터를 분석 중입니다... \n잠시만 기다려주세요! ")
-                })
-                .controlSize(.large)
-                
-                Icon.bubbleLogo.image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 257, height: 168)
-                
-                Spacer()
-            })
+                .frame(width: DiagnosingConstants.logoWidth, height: DiagnosingConstants.logoHeight)
+            Spacer()
         })
-        .frame(maxWidth: .infinity)
-        .ignoresSafeArea(.all)
     }
 }
 

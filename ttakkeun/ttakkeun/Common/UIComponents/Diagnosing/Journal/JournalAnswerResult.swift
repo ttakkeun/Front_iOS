@@ -39,9 +39,7 @@ struct JournalAnswerResult: View {
     var body: some View {
         VStack(alignment: .leading, spacing: JournalAnswerResultConstants.answerBoxVspacing, content: {
             selectedAnswerTitle
-            
             selectedAnswerList
-            
             selectedAnswerImage
         })
         .modifier(JournalResultBoxModifier())

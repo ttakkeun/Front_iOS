@@ -20,7 +20,7 @@ struct DiagnosticsView: View {
     @Binding var actionYes: () -> Void
     
     @State var journalListViewModel: JournalListViewModel
-    @StateObject var diagnosticViewModel: DiagnosticResultViewModel
+    @State var diagnosticViewModel: DiagnosticResultViewModel
     
     @State var diagnosingValue: DiagnosingValue = .init(selectedSegment: .journalList, selectedPartItem: .ear)
     
@@ -32,7 +32,7 @@ struct DiagnosticsView: View {
         self._actionYes = actionYes
         
         self.journalListViewModel = .init(container: container)
-        self._diagnosticViewModel = .init(wrappedValue: .init(container: container))
+        self.diagnosticViewModel = .init(container: container)
     }
     
     var body: some View {

@@ -11,154 +11,228 @@ import Charts
 /// 진단 결과 화면
 struct DiagnosingResultDetailView: View {
     
-    @ObservedObject var viewModel: DiagnosticResultViewModel
-    
+    // MARK: - Property
     @Binding var showFullScreenAI: Bool
+    @Bindable var viewModel: DiagnosticResultViewModel
     @EnvironmentObject var container: DIContainer
     
+    // MARK: - Constants
+    fileprivate enum DiagnosingResultConstants {
+        static let topHspacing: CGFloat = 10
+        static let topGraphHspacing: CGFloat = 19
+        static let textLineSpacing: CGFloat = 2.5
+        static let contentsHorizonPadding: CGFloat = 21
+        static let contentsVerticalPadding: CGFloat = 14
+        static let middleContentsVspacing: CGFloat = 15
+        static let middleVspacing: CGFloat = 22
+        
+        static let topBgHeight: CGFloat = 255
+        static let topLogoWidth: CGFloat = 162
+        static let topLogoHeight: CGFloat = 124
+        static let graphWidth: CGFloat = 168
+        static let graphHeight: CGFloat = 96
+        static let btnHeight: CGFloat = 63
+        static let middleTextHeight: CGFloat = 100
+        
+        static let topCornerRadius: CGFloat = 30
+        static let cornerRadius: CGFloat = 10
+        static let contentsCornerRadius: CGFloat = 20
+        static let chartSize: CGFloat = 70
+        
+        static let spacerMin: CGFloat = 34
+        static let chartInnerRadius: CGFloat = 0.7
+        static let angularInset: CGFloat = 1
+        static let opacity: Double = 0.5
+        
+        static let graphTitle: String = "총점"
+        static let scoreText: String = "Score"
+        static let remainingText: String = "Remaining"
+        static let diagResultText: String = "진단결과"
+        static let followManageText: String = "추후 관리법"
+        static let recommendProduct: String = "추천 제품"
+        static let btnText: String = "확인"
+        static let loadingText: String = "조금만 기다려주세요! \n진단 결과를 준비하고 있어요 😊"
+    }
+    
+    // MARK: - Init
     init (viewModel: DiagnosticResultViewModel, showFullScreenAI: Binding<Bool>, diagId: Int) {
         self.viewModel = viewModel
         self._showFullScreenAI = showFullScreenAI
         viewModel.getDiagResult(diagId: diagId)
     }
     
+    // MARK: - Body
     var body: some View {
         if let data = viewModel.diagnosticResolutionData {
             ScrollView(.vertical, content: {
                 VStack(content: {
                     topBackground(data: data)
-                    
-                    Spacer().frame(height: 24)
-                    
-                    makeResultDetail("진단 결과", data.detailValue)
-                    
-                    Spacer().frame(height: 22)
-                    
-                    makeResultDetail("추후 결과법", data.afterCare)
-                    
-                    Spacer().frame(height: 22)
-                    
-                    aiReferrenceProduct(data: data)
-                    
-                    Spacer().frame(height: 34)
-                    
-                    MainButton(btnText: "확인", height: 63, action: {
-                        showFullScreenAI = false
-                    }, color: Color.mainPrimary)
+                    Group {
+                        middleContents(data: data)
+                        Spacer(minLength: DiagnosingResultConstants.spacerMin)
+                        MainButton(btnText: DiagnosingResultConstants.btnText, height: DiagnosingResultConstants.btnHeight, action: {
+                            showFullScreenAI = false
+                        }, color: Color.mainPrimary)
+                    }
+                    .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
                 })
-                .safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 25, trailing: 0))
             })
-            .ignoresSafeArea(.all)
+            .ignoresSafeArea()
         } else {
-            VStack(content: {
-                Spacer()
-                
-                ProgressView(label: {
-                    LoadingDotsText(text: "조금만 기다려주세요! \n진단 결과를 준비하고 있어요 😊")
-                })
-                .controlSize(.large)
-                
-                Spacer()
-                
-            })
+            LoadingProgress(text: DiagnosingResultConstants.loadingText)
         }
     }
-}
-
-extension DiagnosingResultDetailView {
     
-    func aiReferrenceProduct(data: DiagnosticResolutionResponse) -> some View {
-        VStack(alignment: .leading, spacing: 15, content: {
-            Text("추천 상품")
-                .font(.H4_bold)
-                .foregroundStyle(Color.gray900)
-            
-            ForEach(data.products, id: \.self) { data in
-                DiagnosticAIProduct(data: data)
-            }
-        })
-    }
-    
-    func makeResultDetail(_ title: String, _ detail: String) -> some View {
-        VStack(alignment: .leading, spacing: 15, content: {
-            Text(title)
-                .font(.H4_bold)
-                .foregroundStyle(Color.gray900)
-            
-            Text(detail)
-                .frame(width: 320, alignment: .leading)
-                .font(.Body3_medium)
-                .foregroundStyle(Color.gray400)
-                .multilineTextAlignment(.leading)
-                .lineLimit(nil)
-                .lineSpacing(2.5)
-                .padding(.vertical, 16)
-                .padding(.horizontal, 23)
-                .background {
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.clear)
-                        .stroke(Color.gray200, lineWidth: 1)
-                }
-        })
-    }
-    
-    
+    // MARK: - TopContents
+    /// 상단 백그라운드 모양
+    /// - Parameter data: 진단 데이터
+    /// - Returns: 백그라운드 뷰 반환
     func topBackground(data: DiagnosticResolutionResponse) -> some View {
         ZStack {
-            Icon.diagnosisTopBg.image
+            Image(.diagnosisTopBg)
                 .resizable()
-                .ignoresSafeArea(.all)
-                .frame(maxWidth: .infinity, maxHeight: 255)
+                .frame(maxWidth: .infinity, maxHeight: DiagnosingResultConstants.topBgHeight)
             
-            HStack(spacing: 10, content: {
-                Icon.bubbleLogo.image
+            HStack(spacing: DiagnosingResultConstants.topHspacing, content: {
+                Image(.bubbleLogo)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 162, height: 124)
+                    .frame(width: DiagnosingResultConstants.topLogoWidth, height: DiagnosingResultConstants.topLogoHeight)
                 
                 makeResultGraph(data: data)
             })
         }
+        .ignoresSafeArea()
     }
     
+    /// 상단 그래프
+    /// - Parameter data: 진단 데이터
+    /// - Returns: 진단 그래프 뷰
     func makeResultGraph(data: DiagnosticResolutionResponse) -> some View {
-        HStack(alignment: .center, spacing: 19, content: {
-            Text("총점")
-                .font(.Body2_semibold)
-                .foregroundStyle(Color.gray900)
+        HStack(alignment: .center, spacing: DiagnosingResultConstants.topGraphHspacing, content: {
+            graphTitle
             
             ZStack(alignment: .center, content: {
-                Chart {
-                    SectorMark(
-                        angle: .value("Score", data.score),
-                        innerRadius: .ratio(0.7),
-                        angularInset: 1
-                    )
-                    .cornerRadius(30)
-                    .foregroundStyle(Color.redStar)
-                    
-                    SectorMark(
-                        angle: .value("Remaining", 100 - data.score),
-                        innerRadius: .ratio(0.7),
-                        angularInset: 1
-                    )
-                    .cornerRadius(30)
-                    .foregroundStyle(Color.gray900)
-                }
-                .frame(width: 70, height: 70)
+                chartView(data: data)
                 
                 Text("\(data.score)")
                     .font(.Body1_semibold)
                     .foregroundStyle(Color.gray900)
             })
         })
-        .frame(width: 117, height: 70)
-        .padding(.vertical, 13)
-        .padding(.leading, 23)
-        .padding(.trailing, 28)
+        .frame(minWidth: DiagnosingResultConstants.graphWidth)
+        .frame(height: DiagnosingResultConstants.graphHeight)
         .background {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.white).opacity(0.5)
+            RoundedRectangle(cornerRadius: DiagnosingResultConstants.cornerRadius)
+                .fill(Color.white).opacity(DiagnosingResultConstants.opacity)
         }
     }
+    
+    /// 그래프 타이틀
+    private var graphTitle: some View {
+        Text(DiagnosingResultConstants.graphTitle)
+            .font(.Body2_semibold)
+            .foregroundStyle(Color.gray900)
+    }
+    
+    /// 차트 뷰
+    /// - Parameter data: 차트 내부 데이터
+    /// - Returns: 차트 반환
+    private func chartView(data: DiagnosticResolutionResponse) -> some View {
+        Chart {
+            SectorMark(
+                angle: .value(DiagnosingResultConstants.scoreText, data.score),
+                innerRadius: .ratio(DiagnosingResultConstants.chartInnerRadius),
+                angularInset: DiagnosingResultConstants.chartInnerRadius
+            )
+            .cornerRadius(DiagnosingResultConstants.topCornerRadius)
+            .foregroundStyle(Color.redStar)
+            
+            SectorMark(
+                angle: .value(DiagnosingResultConstants.remainingText, 100 - data.score),
+                innerRadius: .ratio(DiagnosingResultConstants.chartInnerRadius),
+                angularInset: DiagnosingResultConstants.angularInset
+            )
+            .cornerRadius(DiagnosingResultConstants.topCornerRadius)
+            .foregroundStyle(Color.gray900)
+        }
+        .frame(width: DiagnosingResultConstants.chartSize, height: DiagnosingResultConstants.chartSize)
+    }
+    
+    // MARK: - MiddleContents
+    private func middleContents(data: DiagnosticResolutionResponse) -> some View {
+        VStack(alignment: .leading, spacing: DiagnosingResultConstants.middleVspacing, content: {
+            diagResultSection(data: data)
+            followManagement(data: data)
+            recommendProducts(data: data)
+        })
+    }
+    /// 진단 결과 섹션
+    /// - Parameter data: 진단 결과 사용 데이터
+    /// - Returns: 진단 결과 섹션
+    private func diagResultSection(data: DiagnosticResolutionResponse) -> some View {
+        sectionContents(DiagnosingResultConstants.diagResultText, {
+            contentsText(text: data.detailValue)
+        })
+    }
+    
+    /// 추후 관리법 섹션
+    /// - Parameter data: 추후 관리법 결과 사용 데이터
+    /// - Returns: 추후 결과 섹션
+    private func followManagement(data: DiagnosticResolutionResponse) -> some View {
+        sectionContents(DiagnosingResultConstants.followManageText, {
+            contentsText(text: data.afterCare)
+        })
+    }
+    
+    /// 추천 제품 섹션
+    /// - Parameter data: 추천 제품 사용 섹션
+    /// - Returns: 추천ㅇ 제품 섹션
+    private func recommendProducts(data: DiagnosticResolutionResponse) -> some View {
+        sectionContents(DiagnosingResultConstants.recommendProduct, {
+            ForEach(data.products, id: \.id) { data in
+                DiagnosticAIProduct(data: data)
+            }
+        })
+    }
+    
+    /// 컨텐츠 내부 텍스트
+    /// - Parameter text: 컨텐츠 내부 설명 텍스트
+    /// - Returns: 텍스트 반환
+    func contentsText(text: String) -> some View {
+        Text(text)
+            .font(.Body3_medium)
+            .foregroundStyle(Color.gray400)
+            .lineLimit(nil)
+            .multilineTextAlignment(.leading)
+            .lineSpacing(DiagnosingResultConstants.textLineSpacing)
+            .padding(.horizontal, DiagnosingResultConstants.contentsHorizonPadding)
+            .padding(.vertical, DiagnosingResultConstants.contentsVerticalPadding)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(height: DiagnosingResultConstants.middleTextHeight, alignment: .top)
+            .background {
+                RoundedRectangle(cornerRadius: DiagnosingResultConstants.contentsCornerRadius)
+                    .fill(Color.clear)
+                    .stroke(Color.gray200, style: .init())
+            }
+    }
+    
+    /// 중간 컨텐츠 생성
+    /// - Parameters:
+    ///   - title: 섹션 타이틀
+    ///   - contents: 컨텐츠 내용 기입
+    /// - Returns: 뷰 반환
+    func sectionContents(_ title: String, @ViewBuilder _ contents: () -> some View) -> some View {
+        VStack(alignment: .leading, spacing: DiagnosingResultConstants.middleContentsVspacing, content: {
+            Text(title)
+                .font(.H4_bold)
+                .foregroundStyle(Color.gray900)
+            
+            contents()
+        })
+    }
+}
+
+#Preview {
+    DiagnosingResultDetailView(viewModel: .init(container: DIContainer()), showFullScreenAI: .constant(true), diagId: 0)
 }

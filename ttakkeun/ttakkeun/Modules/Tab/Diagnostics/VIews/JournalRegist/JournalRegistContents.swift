@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// 일지 생성하여 일지 리스트 등록하기
+/// 일지 생성하여 일지 리스트 등록하기 내부 컨텐츠 뷰
 struct JournalRegistContents: View {
     
     // MARK: - Property
@@ -141,7 +141,6 @@ struct JournalRegistContents: View {
 }
 
 extension JournalRegistContents {
-    
     /// 상단 가이드 타이틀 및 서브 타이틀
     /// - Parameters:
     ///   - title: 타이틀 텍스트

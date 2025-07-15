@@ -9,17 +9,24 @@ import Foundation
 import Combine
 import CombineMoya
 
-class DiagnosticResultViewModel: ObservableObject {
+@Observable
+class DiagnosticResultViewModel {
     
-    @Published var diagnosticResolutionData: DiagnosticResolutionResponse?
-    @Published var diagResultListResponse: [diagDetailData] = []
+    var diagnosticResolutionData: DiagnosticResolutionResponse? = .init(id: 0, score: 75, detailValue: "으아아으아아으아아으아아으아아", afterCare: "으아아으아아으아아으아아으아아으아아으아아으아아으아아", products: [
+        .init(title: "아껴주다 저자극 천연 복실복실 고양이 샴푸", image: "ss", lprice: 13000, brand: "쿠팡"),
+        .init(title: "아껴주다 저자극 천연 복실복실 고양이 샴푸", image: "ss", lprice: 14000, brand: "쿠팡"),
+        .init(title: "아껴주다 저자극 천연 복실복실 고양이 샴푸", image: "ss", lprice: 16000, brand: "쿠팡"),
+        .init(title: "아껴주다 저자극 천연 복실복실 고양이 샴푸", image: "ss", lprice: 13000, brand: "쿠팡"),
+        .init(title: "아껴주다 저자극 천연 복실복실 고양이 샴푸", image: "ss", lprice: 17000, brand: "쿠팡")
+    ])
+     var diagResultListResponse: [diagDetailData] = []
     
-    @Published var isShowDetailDiag: Bool = false
-    @Published var selectedDiagId: Int? = nil
+     var isShowDetailDiag: Bool = false
+     var selectedDiagId: Int? = nil
     
-    @Published var isFetching: Bool = false
-    @Published var canLoadMore: Bool = true
-    @Published var currentPage: Int = 0
+     var isFetching: Bool = false
+     var canLoadMore: Bool = true
+     var currentPage: Int = 0
     
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()

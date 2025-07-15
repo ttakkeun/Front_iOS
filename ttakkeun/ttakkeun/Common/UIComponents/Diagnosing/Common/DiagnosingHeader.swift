@@ -16,7 +16,7 @@ struct DiagnosingHeader: View {
     
     @Binding var diagnosingValue: DiagnosingValue
     @Bindable var journalListViewModel: JournalListViewModel
-    @ObservedObject var diagnosticViewModel: DiagnosticResultViewModel
+    @Bindable var diagnosticViewModel: DiagnosticResultViewModel
     
     init(diagnosingValue: Binding<DiagnosingValue>, journalListViewModel: JournalListViewModel, diagnosticViewModel: DiagnosticResultViewModel) {
         self._diagnosingValue = diagnosingValue
