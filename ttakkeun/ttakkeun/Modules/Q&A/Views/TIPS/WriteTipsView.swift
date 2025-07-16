@@ -27,7 +27,7 @@ struct WriteTipsView: View {
             
             inputTextString
             
-            RegistAlbumImageView(viewModel: viewModel, maxImageCount: 3, titleText: "사진 등록(선택 사항)", subTitleText: "최대 3장", maxWidth: 353, maxHeight: 152)
+//            RegistAlbumImageView(viewModel: viewModel, maxImageCount: 3, titleText: "사진 등록(선택 사항)", subTitleText: "최대 3장", maxWidth: 353, maxHeight: 152)
             
             Spacer()
             

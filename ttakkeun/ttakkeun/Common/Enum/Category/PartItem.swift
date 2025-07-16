@@ -77,4 +77,19 @@ enum PartItem: String, Codable, CaseIterable {
             return Image(.homeTeeth)
         }
     }
+    
+    func toButtonImage() -> Image {
+        switch self {
+        case .ear:
+            return Image(.buttonEar)
+        case .eye:
+            return Image(.buttonEye)
+        case .hair:
+            return Image(.buttonHair)
+        case .claw:
+            return Image(.buttonClaw)
+        case .teeth:
+            return Image(.buttonTeeth)
+        }
+    }
 }

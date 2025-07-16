@@ -14,4 +14,6 @@ enum AppStorageKey {
     static let userLoginType = "UserLoginType"
     static let petName = "PetName"
     static let petId = "PetId"
+    static let petType = "PetType"
+    static let aiCount = "AICount"
 }

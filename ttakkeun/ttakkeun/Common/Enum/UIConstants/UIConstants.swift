@@ -12,6 +12,8 @@ enum UIConstants {
     static let safeTrailing: CGFloat = 25
     static let safeTop: CGFloat = 48
     static let safeBottom: CGFloat = 100
+    
     static let defaultSafeHorizon: CGFloat = 20
     static let horizonScrollBottomPadding: CGFloat = 10
+    static let topScrollPadding: CGFloat = 10
 }

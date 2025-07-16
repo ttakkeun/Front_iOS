@@ -91,8 +91,8 @@ final class DataFormatter {
         }
         return name
     }
-    
-    /// 서버 시간(UTC)을 받아 현재 한국 시간(KST)과 비교하여 경과 시간을 반환
+    // FIXME: - 삭제
+    ////// 서버 시간(UTC)을 받아 현재 한국 시간(KST)과 비교하여 경과 시간을 반환
     func convertToKoreanTime(from serverTime: String) -> String {
         // 1. ISO8601DateFormatter 설정
         let isoFormatter = ISO8601DateFormatter()

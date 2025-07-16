@@ -21,9 +21,7 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            TtakeunTab()
-                .environmentObject(container)
-                .environmentObject(appFlowViewModel)
+            JournalRegistContents(viewModel: .init(container: DIContainer()))
 //            switch appFlowViewModel.appState {
 //            case .onBoarding:
 //                OnboardingView()

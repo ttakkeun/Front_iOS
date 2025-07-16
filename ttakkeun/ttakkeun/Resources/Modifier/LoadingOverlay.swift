@@ -21,6 +21,7 @@ struct LoadingOverlay: ViewModifier {
     enum LoadingTextType: String {
         /// 프로필 생성 시 사용
         case createProfile = "반려동물 프로필 생성 중입니다."
+        case createJournal = "일지 생성 중입니다. \n잠시 기다려주세요"
     }
     
     init(isLoading: Bool, loadingTextType: LoadingTextType) {
