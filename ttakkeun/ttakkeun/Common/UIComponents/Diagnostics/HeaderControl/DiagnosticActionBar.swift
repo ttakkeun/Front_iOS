@@ -7,11 +7,20 @@
 
 import SwiftUI
 
+/// 진단 탭 상단 액션 바(현재 일지 기록 전용)
 struct DiagnosticActionBar: View {
     
+    // MARK: - Property
     @Binding var diagnosingValue: DiagnosingValue
     @Bindable var viewModel: JournalListViewModel
     
+    // MARK: - Constants
+    fileprivate enum DiagnosticActionConstants {
+        static let glassSize: CGFloat = 30
+        static let selectedAnimation: TimeInterval = 0.7
+    }
+    
+    // MARK: - Body
     var body: some View {
         HStack(content: {
             
@@ -29,6 +38,38 @@ struct DiagnosticActionBar: View {
         .padding(.top, 6)
     }
     
+    // MARK: - SelectedCount
+    /// 일지 선택된 갯수
+    private var selectedCount: some View {
+        Text("\(viewModel.selectedCnt)장 선택됨")
+            .font(.Body3_medium)
+            .foregroundStyle(Color.gray900)
+            .transition(.opacity)
+            .task {
+                withAnimation(.easeInOut(duration: DiagnosticActionConstants.selectedAnimation)) {
+                    viewModel.isSelectionMode = true
+                }
+            }
+    }
+    
+    // MARK: - Search
+    /// 검색 버튼
+    private var searchButton: some View {
+        Button(action: {
+            viewModel.isCalendarPresented.toggle()
+        }, label: {
+            Image(.glass)
+                .renderingMode(.template)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .foregroundStyle(Color.gray400)
+                .frame(width: DiagnosticActionConstants.glassSize, height: DiagnosticActionConstants.glassSize)
+        })
+    }
+    // MARK: - Search
+    
+    
+    // MARK: - Trassh
     private var rightAction: some View {
         HStack(spacing: 7, content: {
             if !viewModel.isSelectionMode {
@@ -42,32 +83,6 @@ struct DiagnosticActionBar: View {
         .frame(maxWidth: 102)
     }
     
-    
-    private var selectedCount: some View {
-        Text("\(viewModel.selectedCnt)장 선택됨")
-                .frame(maxWidth: 120, alignment: .leading)
-                .font(.Body3_medium)
-                .foregroundStyle(Color.gray900)
-                .transition(.opacity)
-                .onAppear {
-                    withAnimation(.easeInOut(duration: 0.7)) {
-                        viewModel.isSelectionMode = true
-                    }
-                }
-    }
-    
-    private var searchButton: some View {
-        Button(action: {
-            viewModel.isCalendarPresented.toggle()
-        }, label: {
-            Icon.glass.image
-                .renderingMode(.template)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .foregroundStyle(Color.gray400)
-                .frame(width: 30, height: 30)
-        })
-    }
     
     private var trashButton: some View {
         Button(action: {

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 진단 탭 상단 일지/진단 결과 컨트롤러
 struct DiagnosticHeader: View {
     
     // MARK: - Property
