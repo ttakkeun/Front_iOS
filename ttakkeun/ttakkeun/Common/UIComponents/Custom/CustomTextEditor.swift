@@ -53,12 +53,12 @@ struct CustomTextEditor: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .padding(.vertical, 20)
-            .padding(.horizontal, 17)
+            .padding(.vertical, 15)
+            .padding(.horizontal, 12)
             .background(alignment: .topLeading, content: {
                 if text.isEmpty {
                     Text(placeholder)
-                        .lineSpacing(10)
+                        .lineSpacing(1.0)
                         .padding(.vertical, 25)
                         .padding(.horizontal, 17)
                         .font(.Body4_medium)
@@ -70,6 +70,7 @@ struct CustomTextEditor: ViewModifier {
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .font(.Body3_medium)
             .foregroundStyle(Color.gray900)
+            .lineSpacing(2.5)
             .scrollContentBackground(.hidden)
             .overlay(alignment: .bottomTrailing, content: {
                 Text("\(text.count) / \(maxTextCount)")

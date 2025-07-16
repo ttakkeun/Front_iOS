@@ -8,7 +8,8 @@
 import Foundation
 
 /// 일지 생성 시 선택 및 입력했던 일지 내용 결과
-struct JournalResultResponse: Codable, Hashable {
+struct JournalResultResponse: Codable, Identifiable, Hashable {
+    let id: UUID = .init()
     let category: PartItem
     let date: String
     let time: String

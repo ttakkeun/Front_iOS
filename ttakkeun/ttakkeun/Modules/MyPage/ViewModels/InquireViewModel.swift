@@ -91,7 +91,7 @@ extension InquireViewModel: ImageHandling {
     
     func addImage(_ images: UIImage) {
         if inqureImages.count < 3 {
-            let downSampleImage = images.downSample(scale: 0.5)
+            let downSampleImage = images
             DispatchQueue.main.async {
                 self.inqureImages.append(downSampleImage)
             }

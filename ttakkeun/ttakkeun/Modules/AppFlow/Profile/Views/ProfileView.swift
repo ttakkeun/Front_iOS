@@ -40,7 +40,6 @@ struct ProfileView: View {
     var body: some View {
         VStack(alignment: .center, content: {
             Spacer()
-            
             if !viewModel.isLoading {
                 topTitle
                 middleContents
@@ -155,9 +154,9 @@ extension ProfileView {
     private func profileReadView(geometry: GeometryProxy, data: PetProfileDetail) -> some View {
         GeometryReader { item in
             ProfileCard(data: data)
+                .environmentObject(appFlowViewModel)
                 .scaleEffect(self.scaleValue(geometry: geometry, itemGeometry: item))
                 .animation(.bouncy, value: scaleValue(geometry: geometry, itemGeometry: item))
-                .environmentObject(appFlowViewModel)
                 .onChange(of: self.isCentered(geometry: geometry, itemGeometry: item)) {
                     changeProfileValue(geometry: geometry, item: item, data: data)
                 }

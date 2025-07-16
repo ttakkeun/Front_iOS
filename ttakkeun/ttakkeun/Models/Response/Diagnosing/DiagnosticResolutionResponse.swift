@@ -24,7 +24,8 @@ struct DiagnosticResolutionResponse: Codable, Identifiable {
 }
 
 
-struct AIProducts: Codable, Hashable {
+struct AIProducts: Codable, Hashable, Identifiable {
+    var id: UUID = .init()
     let title: String
     let image: String
     let lprice: Int

@@ -13,7 +13,6 @@ struct HomeView: View {
     @EnvironmentObject var container: DIContainer
     @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     @State var homeProfileViewModel: HomeProfileCardViewModel
-    
     // MARK: - Constants
     fileprivate enum HomeConstants {
         static let topVspacing: CGFloat = 14
@@ -30,7 +29,6 @@ struct HomeView: View {
             topContents
             HomeDragView(container: container, petType: .cat)
         })
-        .background(Color.mainPrimary)
     }
     
     // MARK: - TopContents

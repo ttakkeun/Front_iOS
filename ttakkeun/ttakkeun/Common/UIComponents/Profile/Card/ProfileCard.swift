@@ -15,6 +15,7 @@ struct ProfileCard: View {
     @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     @AppStorage(AppStorageKey.petId) var petId: Int?
     @AppStorage(AppStorageKey.petName) var petName: String?
+    @AppStorage(AppStorageKey.petType) var petType: ProfileType?
     
     /// 펫 프로필 데이터
     let data: PetProfileDetail
@@ -57,7 +58,6 @@ struct ProfileCard: View {
         Button(action: {
             Task {
                 await setAppStoreage()
-                
                 withAnimation(.easeInOut(duration: ProfileCardConstants.animationDuration), {
                     self.appFlowViewModel.selectProfile()
                 })
@@ -131,11 +131,13 @@ struct ProfileCard: View {
     private func setAppStoreage() async {
         petId = data.petId
         petName = data.name
+        petType = data.type
     }
 }
 
 struct ProfileCard_PreView: PreviewProvider {
     static var previews: some View {
         ProfileCard(data: PetProfileDetail(petId: 1, name: "zbzb", image: "https://i.namu.wiki/i/DT10KWR2W0wL373oAyaXxemQhlvL9fJmLVSbkfbmDEIKYh58psg4EljxPGRnBejIwk7Vu4HnYqSri02gUg2ABedxQqgHZ3wiWk7KcNL15FBLPlXxBWSORpHWAqKgiP6KF7I_BTLK_XrA8hpffU9Fqw.webp", type: .dog, birth: "2021-02-01"))
+            .environmentObject(AppFlowViewModel())
     }
 }

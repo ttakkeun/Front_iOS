@@ -6,39 +6,49 @@
 //
 
 import SwiftUI
+import PhotosUI
 
-struct RegistAlbumImageView<ViewModel: ImageHandling & ObservableObject>: View {
+/// 사진 앨범 선택 뷰
+struct RegistAlbumImageView<ViewModel: PhotoPickerHandle>: View {
     
-    @ObservedObject var viewModel: ViewModel
+    var viewModel: ViewModel
     
-    let maxImageCount: Int
     let titleText: String
     let subTitleText: String
+    
+    let maxImageCount: Int = 5
     var maxWidth: CGFloat = 355
     var maxHeight: CGFloat = 300
+    let lineSpacing: CGFloat = 2
+    let titleVSpacing: CGFloat = 5
+    let contentsVspacing: CGFloat = 16
+    let cameraHspacing: CGFloat = 5
+    let imageSize: CGFloat = 80
+    let cornerRadius: CGFloat = 10
+    let removeSize: CGFloat = 20
+    let buttonPadding: CGFloat = -3
+    let imageSpacing: CGFloat = 10
+    let horizonPadding: CGFloat = 3
     
+    // MARK: - Init
     init(
         viewModel: ViewModel,
-        maxImageCount: Int = 5,
         titleText: String,
         subTitleText: String
     ) {
         self.viewModel = viewModel
-        self.maxImageCount = maxImageCount
         self.titleText = titleText
         self.subTitleText = subTitleText
     }
     
     init(
         viewModel: ViewModel,
-        maxImageCount: Int = 5,
         titleText: String,
         subTitleText: String,
         maxWidth: CGFloat,
         maxHeight: CGFloat
     ) {
         self.viewModel = viewModel
-        self.maxImageCount = maxImageCount
         self.titleText = titleText
         self.subTitleText = subTitleText
         self.maxWidth = maxWidth
@@ -46,51 +56,52 @@ struct RegistAlbumImageView<ViewModel: ImageHandling & ObservableObject>: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8, content: {
+        VStack(alignment: .leading, spacing: contentsVspacing, content: {
+            topContents
+            cameraAlbum
+        })
+    }
+    
+    /// 상단 타이틀
+    private var topContents: some View {
+        VStack(alignment: .leading, spacing: titleVSpacing, content: {
             Text(titleText)
                 .font(.Body3_medium)
                 .foregroundStyle(Color.gray900)
                 .lineLimit(nil)
                 .multilineTextAlignment(.leading)
-                .lineSpacing(2)
+                .lineSpacing(lineSpacing)
             
             Text(subTitleText)
                 .font(.Body5_medium)
                 .foregroundStyle(Color.gray400)
-            
-            Spacer().frame(height: 2)
-            
-            cameraAlbum
-        })
-        .frame(maxWidth: maxWidth, maxHeight: maxHeight, alignment: .topLeading)
-        .sheet(isPresented: $viewModel.isImagePickerPresented, content: {
-            ImagePicker(imageHandler: viewModel, selectedLimit: (maxImageCount - viewModel.selectedImageCount))
         })
     }
     
+    /// 카메라 앨범 선택 버튼
     private var cameraAlbum: some View {
-        HStack(alignment: .top, spacing: 5, content: {
+        HStack(alignment: .top, spacing: cameraHspacing, content: {
             CameraButton(cameraText: Text("\(viewModel.selectedImageCount) / \(maxImageCount)"), action: {
                 if viewModel.selectedImageCount <= maxImageCount - 1 {
-                    viewModel.showImagePicker()
+                    viewModel.isImagePickerPresented.toggle()
                 }
             })
+            
             showSelectedImage
         })
     }
     
+    /// 선택된 이미지 보이기
     private var showSelectedImage: some View {
         ScrollView(.horizontal, content: {
-            LazyHGrid(rows: Array(repeating: GridItem(.fixed(80)), count: 1), spacing: 10, content: {
+            LazyHStack(spacing: imageSpacing, content: {
                 ForEach(0..<viewModel.getImages().count, id: \.self) { index in
                     imageAddAndRemove(for: index, image: viewModel.getImages()[index])
                 }
             })
-            .padding(.top, 5)
-            .padding(.bottom, 8)
-            .padding(.horizontal, 5)
         })
-        .frame(width: maxWidth - 88)
+        .contentMargins(.bottom, UIConstants.horizonScrollBottomPadding, for: .scrollContent)
+        .contentMargins([.horizontal, .top], horizonPadding, for: .scrollContent)
     }
 }
 
@@ -99,24 +110,23 @@ extension RegistAlbumImageView {
         ZStack(alignment: .topLeading, content: {
             Image(uiImage: image)
                 .resizable()
-                .frame(width: 80, height: 80)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .frame(width: imageSize, height: imageSize)
+                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
                 .overlay(content: {
-                    RoundedRectangle(cornerRadius: 10)
+                    RoundedRectangle(cornerRadius: cornerRadius)
                         .fill(Color.clear)
-                        .stroke(Color.gray200, lineWidth: 1)
+                        .stroke(Color.gray200, style: .init())
                 })
             
             Button(action: {
                 viewModel.removeImage(at: index)
             }, label: {
-                Icon.imageRemove.image
+                Image(.imageRemove)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 20, height: 20)
-                    .padding([.horizontal, .vertical], -3)
+                    .frame(width: removeSize, height: removeSize)
+                    .padding([.horizontal, .vertical], buttonPadding)
             })
         })
-        .frame(width: 80, height: 80)
     }
 }
