@@ -59,6 +59,7 @@ struct ProfileFormView: View {
     
     // MARK: - Init
     init(
+        mode: ProfileMode,
         container: DIContainer,
     ) {
         self.viewModel = .init(mode: mode, container: container)
