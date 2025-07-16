@@ -16,31 +16,50 @@ struct DiagnosticActionBar: View {
     
     // MARK: - Constants
     fileprivate enum DiagnosticActionConstants {
+        static let rightButtonSpacing: CGFloat = 7
+        
+        static let trashPadding: CGFloat = 2
+        static let buttonVerticalPadding: CGFloat = 8
+        static let buttonHorizonPadding: CGFloat = 21
+        static let horizonPadding: CGFloat = 33
+        
+        static let cornerRadius: CGFloat = 20
+        
         static let glassSize: CGFloat = 30
         static let selectedAnimation: TimeInterval = 0.7
+        static let trashAnimationTime: TimeInterval = 0.2
+        static let cancelText: String = "취소"
+        static let selectText: String = "선택"
     }
     
     // MARK: - Body
     var body: some View {
         HStack(content: {
-            
             if viewModel.isSelectionMode {
-                selectedCount
-                
-                Spacer()
-            } else {
-                Spacer()
+                leftSelectedCount
             }
-            
-            rightAction
+            Spacer()
+            rightButton
         })
-        .frame(maxWidth: 340)
-        .padding(.top, 6)
+        .safeAreaPadding(.horizontal, DiagnosticActionConstants.horizonPadding)
     }
     
-    // MARK: - SelectedCount
+    // MARK: - Right
+    /// 오른쪽 검색 모드 버튼
+    private var rightButton: some View {
+        HStack(spacing: DiagnosticActionConstants.rightButtonSpacing, content: {
+            if !viewModel.isSelectionMode {
+                searchButton
+            } else {
+                trashButton
+            }
+            cancelOrSelectButton
+        })
+    }
+    
+    // MARK: - Left
     /// 일지 선택된 갯수
-    private var selectedCount: some View {
+    private var leftSelectedCount: some View {
         Text("\(viewModel.selectedCnt)장 선택됨")
             .font(.Body3_medium)
             .foregroundStyle(Color.gray900)
@@ -66,35 +85,17 @@ struct DiagnosticActionBar: View {
                 .frame(width: DiagnosticActionConstants.glassSize, height: DiagnosticActionConstants.glassSize)
         })
     }
-    // MARK: - Search
     
-    
-    // MARK: - Trassh
-    private var rightAction: some View {
-        HStack(spacing: 7, content: {
-            if !viewModel.isSelectionMode {
-                searchButton
-            } else {
-                trashButton
-            }
-            
-            cancelOrSelectButton
-        })
-        .frame(maxWidth: 102)
-    }
-    
-    
+    // MARK: - Trash
+    /// 쓰레기 버튼
     private var trashButton: some View {
         Button(action: {
-            withAnimation(.easeIn(duration: 0.2)) {
+            withAnimation(.easeIn(duration: DiagnosticActionConstants.trashAnimationTime)) {
                 viewModel.deleteJournal(recordIds: viewModel.selectedItem, category: diagnosingValue.selectedPartItem.rawValue)
             }
         }, label: {
-            Icon.trash.image
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 30, height: 30)
-                .padding([.vertical, .horizontal], 2)
+            Image(.trash)
+                .padding([.vertical, .horizontal], DiagnosticActionConstants.trashAnimationTime)
                 .background {
                     Circle()
                         .fill(Color.checkBg)
@@ -102,37 +103,39 @@ struct DiagnosticActionBar: View {
         })
     }
     
+    /// 취소 선택 버튼
     private var cancelOrSelectButton: some View {
         Button(action: {
-            if !viewModel.isSelectionMode {
-                withAnimation(.easeInOut) {
-                    viewModel.isSelectionMode = true
-                    print(viewModel.isSelectionMode)
-                }
-            } else {
-                withAnimation(.easeInOut) {
-                    viewModel.isSelectionMode = false
-                    viewModel.selectedItem.removeAll()
-                    viewModel.selectedCnt = 0
-                }
-            }
+            cancelSelectButton()
         }, label: {
-            Text(viewModel.isSelectionMode ? "취소" : "선택")
+            Text(viewModel.isSelectionMode ? DiagnosticActionConstants.cancelText : DiagnosticActionConstants.selectText)
                 .font(.Body4_medium)
                 .foregroundStyle(Color.gray900)
-                .frame(width: 21, height: 16)
-                .padding(.vertical, 8)
-                .padding(.horizontal, 21)
+                .padding(.vertical, DiagnosticActionConstants.buttonVerticalPadding)
+                .padding(.horizontal, DiagnosticActionConstants.buttonHorizonPadding)
                 .background {
-                    RoundedRectangle(cornerRadius: 20)
+                    RoundedRectangle(cornerRadius: DiagnosticActionConstants.cornerRadius)
                         .fill(Color.checkBg)
                 }
         })
     }
+    
+    /// 취소 선택 버튼 액션
+    private func cancelSelectButton() {
+        if !viewModel.isSelectionMode {
+            withAnimation(.easeInOut) {
+                viewModel.isSelectionMode = true
+            }
+        } else {
+            withAnimation(.easeInOut) {
+                viewModel.isSelectionMode = false
+                viewModel.selectedItem.removeAll()
+                viewModel.selectedCnt = .zero
+            }
+        }
+    }
 }
 
-struct DiagnosingActionBar_Preview: PreviewProvider {
-    static var previews: some View {
-        DiagnosticActionBar(diagnosingValue: .constant(.init(selectedSegment: .journalList, selectedPartItem: .ear)), viewModel: JournalListViewModel(container: .init()))
-    }
+#Preview {
+    DiagnosticActionBar(diagnosingValue: .constant(.init(selectedSegment: .journalList, selectedPartItem: .ear)), viewModel: JournalListViewModel(container: .init()))
 }

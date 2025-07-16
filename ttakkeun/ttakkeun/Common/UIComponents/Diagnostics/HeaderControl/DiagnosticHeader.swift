@@ -55,7 +55,6 @@ struct DiagnosticHeader: View {
     }
     
     // MARK: - Button
-    
     /// 상단 아이템 버튼 액션
     /// - Parameter item: 버튼 아이템
     private func buttonAction(item: PartItem) {
