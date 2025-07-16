@@ -10,27 +10,15 @@ import SwiftUI
 /// 진단 목록 및 진단결과
 struct DiagnosticsView: View {
     
+    // MARK: - Property
     @EnvironmentObject var container: DIContainer
-    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
-    
-    @Binding var showAlert: Bool
-    @Binding var alertText: Text
-    @Binding var aiCount: Int
-    @Binding var alertType: AlertType
-    @Binding var actionYes: () -> Void
-    
+    @Environment(AlertStateModel.self) var alert
     @State var journalListViewModel: JournalListViewModel
     @State var diagnosticViewModel: DiagnosticResultViewModel
-    
     @State var diagnosingValue: DiagnosingValue = .init(selectedSegment: .journalList, selectedPartItem: .ear)
     
-    init(container: DIContainer, showAlert: Binding<Bool>, alertText: Binding<Text>, aiCount: Binding<Int>, alertType: Binding<AlertType>, actionYes: Binding<() -> Void>) {
-        self._showAlert = showAlert
-        self._alertText = alertText
-        self._aiCount = aiCount
-        self._alertType = alertType
-        self._actionYes = actionYes
-        
+    // MARK: - Init
+    init(container: DIContainer) {
         self.journalListViewModel = .init(container: container)
         self.diagnosticViewModel = .init(container: container)
     }
@@ -39,12 +27,11 @@ struct DiagnosticsView: View {
         VStack(alignment: .center, spacing: 12, content: {
             TopStatusBar()
                 .environmentObject(container)
-                .environmentObject(appFlowViewModel)
             
-            DiagnosingHeader(diagnosingValue: $diagnosingValue, journalListViewModel: journalListViewModel, diagnosticViewModel: diagnosticViewModel)
+            DiagnosticHeader(diagnosingValue: $diagnosingValue, journalListViewModel: journalListViewModel, diagnosticViewModel: diagnosticViewModel)
             
             if diagnosingValue.selectedSegment == .journalList {
-                DiagnosingActionBar(diagnosingValue: $diagnosingValue, viewModel: journalListViewModel)
+                DiagnosticActionBar(diagnosingValue: $diagnosingValue, viewModel: journalListViewModel)
             }
             
             changeSegmentView
@@ -65,10 +52,10 @@ struct DiagnosticsView: View {
                 .presentationDetents([.fraction(0.5)])
                 .presentationCornerRadius(30)
         })
-        .fullScreenCover(isPresented: $journalListViewModel.showFullScreenAI, content: {
-            DiagnosingFlowView(viewModel: journalListViewModel)
-                .environmentObject(container)
-        })
+//        .fullScreenCover(isPresented: $journalListViewModel.showFullScreenAI, content: {
+//            DiagnosingFlowView(viewModel: journalListViewModel)
+//                .environmentObject(container)
+//        })
     }
     
     // FIXME: - Tab
@@ -81,7 +68,8 @@ struct DiagnosticsView: View {
 //                .environmentObject(container)
 //                .environmentObject(appFlowViewModel)
         case .diagnosticResults:
-            DiagnosListView(viewModel: diagnosticViewModel, selectedPartItem: $diagnosingValue.selectedPartItem)
+//            DiagnosListView(viewModel: diagnosticViewModel, selectedPartItem: $diagnosingValue.selectedPartItem)
+            Text("11")
         }
     }
 }

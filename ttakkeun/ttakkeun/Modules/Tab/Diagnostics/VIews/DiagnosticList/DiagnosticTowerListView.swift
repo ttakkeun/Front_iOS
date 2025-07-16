@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct DiagnosListView: View {
+/// 진단 결과 뼈 타워 뷰
+struct DiagnosticTowerListView: View {
     
     // MARK: - Property
     @Bindable var viewModel: DiagnosticResultViewModel
@@ -44,7 +45,7 @@ struct DiagnosListView: View {
         ScrollViewReader { scrollProxy in
             ScrollView(.vertical, content: {
                 ZStack(alignment: .top, content: {
-                    topCatImage
+                    topCatDogImage
                     diagTower
                 })
             })
@@ -58,7 +59,7 @@ struct DiagnosListView: View {
             }
             .fullScreenCover(isPresented: $viewModel.isShowDetailDiag, content: {
                 if let id = viewModel.selectedDiagId {
-                    DiagnosingResultDetailView(viewModel: viewModel, showFullScreenAI: $viewModel.isShowDetailDiag, diagId: id)
+                    DiagnosticResultView(viewModel: viewModel, showFullScreenAI: $viewModel.isShowDetailDiag, diagId: id)
                         .presentationCornerRadius(DiagnosListConstants.sheetCornerRadius)
                 }
             })
@@ -66,7 +67,7 @@ struct DiagnosListView: View {
     }
     
     /// 뼈타워 상단 고정 고양이
-    private var topCatImage: some View {
+    private var topCatDogImage: some View {
         Image(topImage())
             .resizable()
             .aspectRatio(contentMode: .fit)
@@ -96,7 +97,7 @@ struct DiagnosListView: View {
     @ViewBuilder
     private var towerForEach: some View {
         ForEach(viewModel.diagResultListResponse, id: \.id) { data in
-            DiagnosisTower(data: data) {
+            DiagnosticTower(data: data) {
                 viewModel.selectedDiagId = data.diagnose_id
                 viewModel.isShowDetailDiag = true
             }
@@ -135,5 +136,5 @@ struct DiagnosListView: View {
 }
 
 #Preview {
-    DiagnosListView(viewModel: .init(container: DIContainer()), selectedPartItem: .constant(.ear))
+    DiagnosticTowerListView(viewModel: .init(container: DIContainer()), selectedPartItem: .constant(.ear))
 }

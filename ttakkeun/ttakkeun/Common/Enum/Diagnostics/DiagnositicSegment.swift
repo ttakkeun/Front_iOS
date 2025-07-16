@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DiagnosingSegment: String, CaseIterable, SegmentType {
+enum DiagnosticSegment: String, CaseIterable, SegmentType {
     case journalList = "일지목록"
     case diagnosticResults = "진단결과"
     

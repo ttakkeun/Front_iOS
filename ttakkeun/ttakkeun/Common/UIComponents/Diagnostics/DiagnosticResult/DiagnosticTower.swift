@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct DiagnosisTower: View {
+/// 뼈 타워
+struct DiagnosticTower: View {
     
     // MARK: - Property
     let data: diagDetailData
@@ -102,7 +103,7 @@ struct DiagnosisTower: View {
 }
 
 #Preview {
-    DiagnosisTower(data: .init(diagnose_id: 0, created_at: "2025-07-15T12:32:54.260Z", score: 100), onTap: {
+    DiagnosticTower(data: .init(diagnose_id: 0, created_at: "2025-07-15T12:32:54.260Z", score: 100), onTap: {
         print("hello")
     })
 }

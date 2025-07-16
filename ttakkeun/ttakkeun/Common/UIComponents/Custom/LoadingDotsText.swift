@@ -7,9 +7,7 @@
 
 import SwiftUI
 
-
-struct LoadingDotsText: View {
-    
+struct LoadingDotsText: View {    
     // MARK: - Property
     @State private var dotCount: Int
     let color: Color

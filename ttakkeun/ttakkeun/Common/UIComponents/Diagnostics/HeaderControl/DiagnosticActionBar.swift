@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DiagnosingActionBar: View {
+struct DiagnosticActionBar: View {
     
     @Binding var diagnosingValue: DiagnosingValue
     @Bindable var viewModel: JournalListViewModel
@@ -118,6 +118,6 @@ struct DiagnosingActionBar: View {
 
 struct DiagnosingActionBar_Preview: PreviewProvider {
     static var previews: some View {
-        DiagnosingActionBar(diagnosingValue: .constant(.init(selectedSegment: .journalList, selectedPartItem: .ear)), viewModel: JournalListViewModel(container: .init()))
+        DiagnosticActionBar(diagnosingValue: .constant(.init(selectedSegment: .journalList, selectedPartItem: .ear)), viewModel: JournalListViewModel(container: .init()))
     }
 }

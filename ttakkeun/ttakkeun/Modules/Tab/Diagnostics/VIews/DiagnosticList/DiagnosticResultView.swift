@@ -1,15 +1,15 @@
 //
-//  DiagnosingResultDetailView.swift
+//  DiagnosticResultView.swift
 //  ttakkeun
 //
-//  Created by 정의찬 on 11/19/24.
+//  Created by Apple Coding machine on 7/16/25.
 //
 
 import SwiftUI
 import Charts
 
 /// 진단 결과 화면
-struct DiagnosingResultDetailView: View {
+struct DiagnosticResultView: View {
     
     // MARK: - Property
     @Binding var showFullScreenAI: Bool
@@ -234,5 +234,5 @@ struct DiagnosingResultDetailView: View {
 }
 
 #Preview {
-    DiagnosingResultDetailView(viewModel: .init(container: DIContainer()), showFullScreenAI: .constant(true), diagId: 0)
+    DiagnosticResultView(viewModel: .init(container: DIContainer()), showFullScreenAI: .constant(true), diagId: 0)
 }

@@ -11,3 +11,4 @@ struct JournalListCardData {
     let data: JournalListItem
     let part: PartItem
 }
+
