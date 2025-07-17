@@ -36,11 +36,7 @@ struct TtakeunTab: View {
                     .environmentObject(container)
                     .environmentObject(appFlowViewModel)
             })
-//            .overlay(content: {
-//                if alert.showAlert {
-//                    CustomAlert(
-//                }
-//            })
+           //TODO: - Alert
         })
     }
     

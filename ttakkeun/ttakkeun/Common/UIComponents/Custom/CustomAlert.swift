@@ -7,18 +7,14 @@
 
 import SwiftUI
 
-struct AlertAction {
-    @Binding var showAlert: Bool
-    let yes: () -> Void
-}
-
 /// 커스텀 Alert 뷰
 struct CustomAlert: View {
     
     // MARK: - Property
     let alertType: AlertType
-    let alertAction: AlertAction
-    var nickNameValue: Binding<String>
+    let yes: () -> Void
+    @Binding var showAlert: Bool
+    @Binding var nickNameValue: String
     
     // MARK: - Constants
     fileprivate enum CustomAlertConstants {
@@ -45,22 +41,26 @@ struct CustomAlert: View {
     /* 문의하기, 신고하기 타입 Alert 초기화 */
     init(
         alertType: AlertType,
-        alertAction: AlertAction
+        showAlert: Binding<Bool>,
+        yes: @escaping () -> Void
     ) {
         self.alertType = alertType
-        self.alertAction = alertAction
-        self.nickNameValue = .constant("")
+        self._showAlert = showAlert
+        self.yes = yes
+        self._nickNameValue = .constant("")
     }
     
     /* NickName Alert 초기화 */
     init(
         alertType: AlertType,
-        alertAction: AlertAction,
+        showAlert: Binding<Bool>,
+        yes: @escaping () -> Void,
         nickNameValue: Binding<String>
     ) {
         self.alertType = alertType
-        self.alertAction = alertAction
-        self.nickNameValue = nickNameValue
+        self._showAlert = showAlert
+        self.yes = yes
+        self._nickNameValue = nickNameValue
     }
     
     // MARK: - Body
@@ -70,7 +70,7 @@ struct CustomAlert: View {
                 .ignoresSafeArea(.all)
             customAlertWindow
         }
-        .animation(.easeInOut(duration: CustomAlertConstants.animationTime), value: alertAction.showAlert)
+        .animation(.easeInOut(duration: CustomAlertConstants.animationTime), value: self.showAlert)
     }
     
     /// Alert 창
@@ -116,8 +116,7 @@ struct CustomAlert: View {
                 Spacer()
                 subtitle
             }
-            
-            TextField("", text: nickNameValue, prompt: placeholder)
+            TextField("", text: $nickNameValue, prompt: placeholder)
                 .textFieldStyle(ttakkeunTextFieldStyle())
         })
     }
@@ -160,8 +159,8 @@ struct CustomAlert: View {
     private var yesAlert: some View {
         buttonContetns(contents: {
             makeButton(buttonType: .yes, action: {
-                alertAction.yes()
-                alertAction.showAlert.toggle()
+                self.yes()
+                self.showAlert = false
             })
         })
     }
@@ -169,14 +168,14 @@ struct CustomAlert: View {
     /// AI Count 없을 때 버튼
     private var noAiCount: some View {
         makeButton(buttonType: .yes, action: {
-            alertAction.showAlert.toggle()
+            self.showAlert = false
         })
     }
     
     /// 완료 버튼
     private var completeAlert: some View {
         makeButton(buttonType: .complete, action: {
-            alertAction.showAlert.toggle()
+            self.showAlert = false
         })
     }
     
@@ -191,7 +190,7 @@ struct CustomAlert: View {
     
     private var cancelButton: some View {
         makeButton(buttonType: .no, action: {
-            alertAction.showAlert.toggle()
+            self.showAlert = false
         })
     }
     
@@ -219,52 +218,4 @@ struct CustomAlert: View {
                 .foregroundStyle(Color.gray900)
         }
     }
-}
-
-#Preview("AI") {
-    CustomAlert(alertType: .aiAlert(count: 1, aiCount: 2), alertAction: .init(showAlert: .constant(true), yes: {
-        print("hello")
-    }))
-}
-
-#Preview("진단 카운트 없음") {
-    CustomAlert(alertType: .noAiCountAlert, alertAction: .init(showAlert: .constant(true), yes: {
-        print("hello")
-    }))
-}
-
-#Preview("닉네임 수정") {
-    CustomAlert(alertType: .editNicknameAlert(currentNickname: "제옹"), alertAction: .init(showAlert: .constant(true), yes: {
-        print("hello")
-    }))
-}
-
-#Preview("프로파일 삭제") {
-    CustomAlert(alertType: .deleteAccountAlert, alertAction: .init(showAlert: .constant(true), yes: {
-        print("hello")
-    }))
-}
-
-#Preview("프로파일 로그아웃") {
-    CustomAlert(alertType: .logoutProfileAlert, alertAction: .init(showAlert: .constant(true), yes: {
-        print("hello")
-    }))
-}
-
-#Preview("계정 삭제") {
-    CustomAlert(alertType: .deleteAccountAlert, alertAction: .init(showAlert: .constant(true), yes: {
-        print("hello")
-    }))
-}
-
-#Preview("문의하기") {
-    CustomAlert(alertType: .receivingInquiryAlert, alertAction: .init(showAlert: .constant(true), yes: {
-        print("hello")
-    }))
-}
-
-#Preview("신고하기") {
-    CustomAlert(alertType: .receivingReportAlert, alertAction: .init(showAlert: .constant(true), yes: {
-        print("hello")
-    }))
 }

@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+/// Alert 버튼 유형
 enum AlertButtonType {
     case yes
     case no

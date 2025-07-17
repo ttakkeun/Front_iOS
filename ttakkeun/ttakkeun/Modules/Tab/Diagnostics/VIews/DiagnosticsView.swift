@@ -9,7 +9,6 @@ import SwiftUI
 
 /// 진단 목록 및 진단결과
 struct DiagnosticsView: View {
-    
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
     @Environment(AlertStateModel.self) var alert
@@ -21,6 +20,9 @@ struct DiagnosticsView: View {
     fileprivate enum DiagnoticsConstants {
         static let mainVspacing: CGFloat = 12
         static let topVspacing: CGFloat = 18
+        static let calendarHeight: CGFloat = 430
+        static let cornerRadius: CGFloat = 30
+        static let datePickerText: String = "검색 날짜 선택"
     }
     
     // MARK: - Init
@@ -38,25 +40,13 @@ struct DiagnosticsView: View {
             middleContents
         })
         .background(Color.scheduleBg)
-        //        .sheet(isPresented: $journalListViewModel.isCalendarPresented, content: {
-        //                DatePicker(
-        //                    "검색 날짜 선택",
-        //                    selection: $journalListViewModel.selectedDate,
-        //                    displayedComponents: [.date]
-        //                )
-        //                .onChange(of: journalListViewModel.selectedDate, {
-        //                    journalListViewModel.isCalendarPresented = false
-        //                    journalListViewModel.searchGetJournal(category: diagnosingValue.selectedPartItem.rawValue, date: DataFormatter.shared.formatDateForAPI(journalListViewModel.selectedDate))
-        //                })
-        //                .datePickerStyle(GraphicalDatePickerStyle())
-        //                .presentationDragIndicator(.visible)
-        //                .presentationDetents([.fraction(0.5)])
-        //                .presentationCornerRadius(30)
-        //        })
-        //        .fullScreenCover(isPresented: $journalListViewModel.showFullScreenAI, content: {
-        //            DiagnosingFlowView(viewModel: journalListViewModel)
-        //                .environmentObject(container)
-        //        })
+        .customAlert(alert: alert)
+        .fullScreenCover(isPresented: $journalListViewModel.showFullScreenAI, content: {
+            diagnosisFlowView
+        })
+        .sheet(isPresented: $journalListViewModel.isCalendarPresented, content: {
+            datePicker
+        })
     }
     
     // MARK: - TopContents
@@ -76,13 +66,40 @@ struct DiagnosticsView: View {
         switch diagnosingValue.selectedSegment {
         case .journalList:
             JournalListView(viewModel: journalListViewModel, selectedPartItem: $diagnosingValue.selectedPartItem)
+                .environment(alert)
         case .diagnosticResults:
             DiagnosticTowerListView(viewModel: diagnosticViewModel, selectedPartItem: $diagnosingValue.selectedPartItem)
         }
     }
     
-    // MARK: - FullScreenCover
+    // MARK: - DiagnosisFlowView
+    /// 진단 전체 흐름 뷰
+    @ViewBuilder
+    private var diagnosisFlowView: some View {
+        if journalListViewModel.isShowMakeDiagLoading {
+            DiagnosticLoadingView()
+        } else {
+            DiagnosticResultView(viewModel: diagnosticViewModel, showFullScreenAI: $journalListViewModel.showFullScreenAI, diagId: journalListViewModel.diagResultResponse?.result_id ?? 0)
+        }
+    }
     
+    // MARK: - DatePicker
+    /// 달력 피커
+    private var datePicker: some View {
+        DatePicker(
+            DiagnoticsConstants.datePickerText,
+            selection: $journalListViewModel.selectedDate,
+            displayedComponents: [.date]
+        )
+        .onChange(of: journalListViewModel.selectedDate, {
+            journalListViewModel.isCalendarPresented = false
+            journalListViewModel.searchGetJournal(category: diagnosingValue.selectedPartItem.rawValue, date: journalListViewModel.selectedDate.formattedForAPI())
+        })
+        .datePickerStyle(GraphicalDatePickerStyle())
+        .presentationDragIndicator(.visible)
+        .presentationDetents([.height(DiagnoticsConstants.calendarHeight)])
+        .presentationCornerRadius(DiagnoticsConstants.cornerRadius)
+    }
 }
 
 #Preview {

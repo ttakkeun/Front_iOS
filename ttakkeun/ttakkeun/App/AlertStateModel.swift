@@ -5,18 +5,19 @@
 //  Created by Apple Coding machine on 7/14/25.
 //
 
-import Foundation
+import SwiftUI
 
 @Observable
 class AlertStateModel {
+    var alertType: AlertType = .aiAlert(count: 0, aiCount: 0)
     var showAlert: Bool = false
-    var alertType: AlertType = .deleteAccountAlert
-    var actionYes: () -> Void = {}
-    
-    func trigger(type: AlertType, action: @escaping () -> Void = {}) {
+    var yes: () -> Void = {}
+    var nicknameValue: Binding<String>? = nil
+
+    func trigger(type: AlertType, showAlert: Bool, action: @escaping () -> Void = {}, nicknameValue: Binding<String>? = nil) {
         self.alertType = type
-        self.alertType = type
-        self.actionYes = action
-        self.showAlert = true
+        self.showAlert = showAlert
+        self.yes = action
+        self.nicknameValue = nicknameValue
     }
 }

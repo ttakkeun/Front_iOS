@@ -13,52 +13,33 @@ import Moya
 @Observable
 class JournalListViewModel {
     
-    var isSelectionMode: Bool = false
+    // MARK: - StateProperty
+    var showFullScreenAI: Bool = false /* 진단 관련 전체 화면 상태 */
+    var showDiagnosedAlert: Bool = false /* 진단 받기 Alert */
+    var isShowMakeDiagLoading: Bool = true /* 진단 중 로딩 상태*/ /* 데이터 수집 이후 로딩 끝나도록 하기*/
+    var isShowDetailJournal: Bool = false /* 일지 상세 화면 보기 */
+    var isCalendarPresented: Bool = false /* 날짜 검색 시 캘린더 보기 */
+    var isSelectionMode: Bool = false /* 데이터 선택 모드 */
+    
+    // MARK: - LoadingProperty
+    var detailDataLoading: Bool = true
+    
+    // MARK: - Property
     var selectedCnt: Int = 0
-    
-    var journalResultData: JournalResultResponse?
-    var journalListData: JournalListResponse?
-    var recordList: [JournalListItem] = [
-        .init(recordID: 0, recordDate: "2024-12-03", recordTime: "11111"),
-        .init(recordID: 1, recordDate: "2024-12-03", recordTime: "11111"),
-        .init(recordID: 2, recordDate: "2024-12-03", recordTime: "11111"),
-        .init(recordID: 3, recordDate: "2024-12-03", recordTime: "11111"),
-        .init(recordID: 4, recordDate: "2024-12-03", recordTime: "11111"),
-        .init(recordID: 5, recordDate: "2024-12-03", recordTime: "11111"),
-        .init(recordID: 6, recordDate: "2024-12-03", recordTime: "11111"),
-        .init(recordID: 7, recordDate: "2024-12-03", recordTime: "11111"),
-        .init(recordID: 8, recordDate: "2024-12-03", recordTime: "11111"),
-        .init(recordID: 9, recordDate: "2024-12-03", recordTime: "11111"),
-        .init(recordID: 10, recordDate: "2024-12-03", recordTime: "11111"),
-        .init(recordID: 11, recordDate: "2024-12-03", recordTime: "11111"),
-        .init(recordID: 12, recordDate: "2024-12-03", recordTime: "11111"),
-        .init(recordID: 13, recordDate: "2024-12-03", recordTime: "11111"),
-        .init(recordID: 14, recordDate: "2024-12-03", recordTime: "11111"),
-        .init(recordID: 15, recordDate: "2024-12-03", recordTime: "11111")
-    ]
-    
-    var selectedItem: Set<Int> = []
-    var showDetailJournalList: Bool = false
-    
-    var showAiDiagnosing: Bool = false
-    var showFullScreenAI: Bool = false
     var aiPoint: Int = 0
     
-    // MARK: - Calendar
-    var isCalendarPresented: Bool = false
+    var diagResultResponse: DiagResultResponse?
+    var journalResultData: JournalResultResponse?
+    var journalListData: JournalListResponse?
+    var recordList: [JournalListItem] = []
+    var selectedItem: Set<Int> = []
     var selectedDate: Date = Date()
     
-    // MARK: - DetailJournalView
-    var detailDataLoading: Bool = true
-    var isShowDetailJournal: Bool = false
-    
-    // MARK: - MakeDiag
-    var isShowMakeDiagLoading: Bool = true
-    var diagResultResponse: DiagResultResponse?
-    
+    // MARK: - Dependency
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
     
+    // MARK: - Init
     init(container: DIContainer) {
         self.container = container
     }

@@ -129,7 +129,6 @@ struct JournalListView: View {
     private var bottomContentsBtn: some View {
         VStack {
             Spacer()
-            
             HStack {
                 Spacer()
                 Button(action: {
@@ -171,19 +170,24 @@ struct JournalListView: View {
             if viewModel.selectedCnt >= 1 {
                 viewModel.patchUserPoint()
                 viewModel.getUserPoint()
-//                showAletAction()
+                showAletAction()
             }
         }
     }
     
-    // TODO: - Alert 수정 필요
-//    private func showAletAction() {
-//        alert.alertType = .aiAlert
-//        alert.showAlert.toggle()
-//        alert.actionYes = {
-//            viewModel.showFullScreenAI = true
-//        }
-//    }
+    /// AlertAction분기
+    private func showAletAction() {
+        viewModel.showDiagnosedAlert = true
+        
+        if viewModel.aiPoint == .zero {
+            alert.trigger(type: .noAiCountAlert, showAlert: viewModel.showDiagnosedAlert)
+        } else {
+            alert.trigger(type: .aiAlert(count: viewModel.selectedCnt, aiCount: viewModel.aiPoint), showAlert: viewModel.showDiagnosedAlert, action: {
+                viewModel.showFullScreenAI = true
+                viewModel.makeDiag()
+            })
+        }
+    }
 }
 
 extension JournalListView {
@@ -227,10 +231,8 @@ extension JournalListView {
         if viewModel.isSelectionMode {
             if viewModel.selectedItem.contains(record.recordID) {
                 viewModel.selectedItem.remove(record.recordID)
-                print(viewModel.selectedItem)
             } else {
                 viewModel.selectedItem.insert(record.recordID)
-                print(viewModel.selectedItem)
             }
             viewModel.selectedCnt = viewModel.selectedItem.count
         } else {

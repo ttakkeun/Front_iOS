@@ -14,7 +14,6 @@ struct DiagnosticResultView: View {
     // MARK: - Property
     @Binding var showFullScreenAI: Bool
     @Bindable var viewModel: DiagnosticResultViewModel
-    @EnvironmentObject var container: DIContainer
     
     // MARK: - Constants
     fileprivate enum DiagnosingResultConstants {
