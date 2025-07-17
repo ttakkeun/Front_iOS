@@ -17,6 +17,7 @@ struct DiagnosticTowerListView: View {
     
     // MARK: - Constants
     fileprivate enum DiagnosListConstants {
+        static let horizonPadding: CGFloat = 56
         static let emptyDiagVspacing: CGFloat = 19
         static let topPadding: CGFloat = 75
         
@@ -63,6 +64,7 @@ struct DiagnosticTowerListView: View {
                         .presentationCornerRadius(DiagnosListConstants.sheetCornerRadius)
                 }
             })
+            .contentMargins(.horizontal, DiagnosListConstants.horizonPadding, for: .scrollContent)
         }
     }
     
@@ -132,6 +134,7 @@ struct DiagnosticTowerListView: View {
             
             Spacer()
         })
+        .frame(maxWidth: .infinity, alignment: .center)
     }
 }
 

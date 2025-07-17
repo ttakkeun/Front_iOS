@@ -37,20 +37,20 @@ struct MyPageView: View {
                         
                         Spacer()
                     })
-                    
-                    if isNickBtnClicked {
-                        CustomAlert(alertText: Text("닉네임 수정하기"), alertSubText: Text(UserState.shared.getUserName()), alertAction: .init(showAlert: $isNickBtnClicked, yes: {
-                            viewModel.editName(newUsername: viewModel.inputNickname)
-                        }), nickNameValue: $viewModel.inputNickname)
-                    }
-                    
-                    if isLogoutBtnClicked {
-                        CustomAlert(alertText: Text("로그아웃 하시겠습니까?"), alertSubText: Text("해당 계정으로 다시 로그인 하신다면 기존에 사용하시던 \n데이터 그대로 다시 이용하실 수 있습니다."), alertAction: .init(showAlert: $isLogoutBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
-                    }
-                    
-                    if isProfileDeleteBtnClicked {
-                        CustomAlert(alertText: Text("해당 프로필을 삭제하시겠습니까?"), alertSubText: Text("해당 프로필에 저장된 데이터는 모두 삭제됩니다. \n삭제된 데이터는 다시 복원할 수 없습니다."), alertAction: .init(showAlert: $isProfileDeleteBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
-                    }
+//                    
+//                    if isNickBtnClicked {
+//                        CustomAlert(alertText: Text("닉네임 수정하기"), alertSubText: Text(UserState.shared.getUserName()), alertAction: .init(showAlert: $isNickBtnClicked, yes: {
+//                            viewModel.editName(newUsername: viewModel.inputNickname)
+//                        }), nickNameValue: $viewModel.inputNickname)
+//                    }
+//                    
+//                    if isLogoutBtnClicked {
+//                        CustomAlert(alertText: Text("로그아웃 하시겠습니까?"), alertSubText: Text("해당 계정으로 다시 로그인 하신다면 기존에 사용하시던 \n데이터 그대로 다시 이용하실 수 있습니다."), alertAction: .init(showAlert: $isLogoutBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
+//                    }
+//                    
+//                    if isProfileDeleteBtnClicked {
+//                        CustomAlert(alertText: Text("해당 프로필을 삭제하시겠습니까?"), alertSubText: Text("해당 프로필에 저장된 데이터는 모두 삭제됩니다. \n삭제된 데이터는 다시 복원할 수 없습니다."), alertAction: .init(showAlert: $isProfileDeleteBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
+//                    }
                 })
             } else {
                 VStack {

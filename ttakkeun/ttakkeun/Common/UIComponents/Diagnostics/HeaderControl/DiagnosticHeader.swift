@@ -18,7 +18,7 @@ struct DiagnosticHeader: View {
     // MARK: - Constants
     fileprivate enum DiagnosticHeaderConstants {
         static let mainVspacing: CGFloat = 16
-        static let itemHspacing: CGFloat = 10
+        static let itemHspacing: CGFloat = 5
         static let animationTimeInterval: TimeInterval = 0.4
         static let textWidth: CGFloat = 30
         static let textHeight: CGFloat = 18
@@ -35,9 +35,9 @@ struct DiagnosticHeader: View {
     var body: some View {
         VStack(alignment: .leading, spacing: DiagnosticHeaderConstants.mainVspacing, content: {
             CustomSegment<DiagnosticSegment>(selectedSegment: $diagnosingValue.selectedSegment)
-            
             itemsButton
         })
+        .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
     
     /// 파트별 아이템 버튼

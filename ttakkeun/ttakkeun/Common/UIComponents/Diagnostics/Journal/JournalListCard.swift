@@ -20,8 +20,6 @@ struct JournalListCard: View {
         static let bottomAreaBottomPadding: CGFloat = 9
         static let bottomAreaToPadding: CGFloat = 16
         static let dateVspacing: CGFloat = 3
-        static let topVspacing: CGFloat = 24
-        static let bottomAreaHeght: CGFloat = 105
         
         static let datePrefix: Int = 4
         static let dropCount: Int = 5
@@ -33,6 +31,7 @@ struct JournalListCard: View {
         
         static let checkTopPadding: CGFloat = 75
         static let checkLeadingPadding: CGFloat = 65
+        static let listCardMinHeight: CGFloat = 101
         
         static let checkSize: CGFloat = 18
         static let checkIconText: String = "checkmark.circle"
@@ -54,13 +53,13 @@ struct JournalListCard: View {
                 bottomCheck
             }
         })
-        .frame(height: JournalListCardConstants.bottomAreaHeght, alignment: .bottom)
     }
     
     // MARK: - TopArea
     private var topArea: some View {
-        VStack(alignment: .leading, spacing: JournalListCardConstants.topVspacing, content: {
+        VStack(alignment: .leading, content: {
             topDateInfo
+            Spacer()
             createTimeInfo
         })
         .padding(.horizontal, JournalListCardConstants.bottomAreaHorizonPadding)
@@ -70,8 +69,8 @@ struct JournalListCard: View {
             Rectangle()
                 .fill(Color.white)
                 .shadow03()
-                .frame(maxWidth: .infinity)
         }
+        .frame(minHeight: JournalListCardConstants.listCardMinHeight)
     }
     
     /// 상단 날짜 데이터
@@ -131,5 +130,3 @@ struct JournalListCard_Preview: PreviewProvider {
             .previewLayout(.sizeThatFits)
     }
 }
-
-

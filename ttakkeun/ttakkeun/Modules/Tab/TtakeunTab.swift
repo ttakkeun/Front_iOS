@@ -13,6 +13,7 @@ struct TtakeunTab: View {
     @State var tabcase: TabCase = .home
     @EnvironmentObject var container: DIContainer
     @EnvironmentObject var appFlowViewModel: AppFlowViewModel
+    @State var alert: AlertStateModel = .init()
     
     fileprivate enum TtakeunTabConstants {
         static let labelVspacing: CGFloat = 4
@@ -35,6 +36,11 @@ struct TtakeunTab: View {
                     .environmentObject(container)
                     .environmentObject(appFlowViewModel)
             })
+//            .overlay(content: {
+//                if alert.showAlert {
+//                    CustomAlert(
+//                }
+//            })
         })
     }
     

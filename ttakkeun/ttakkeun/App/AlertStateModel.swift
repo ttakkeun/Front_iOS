@@ -10,10 +10,10 @@ import Foundation
 @Observable
 class AlertStateModel {
     var showAlert: Bool = false
-    var alertType: AlertType = .normalAlert
+    var alertType: AlertType = .deleteAccountAlert
     var actionYes: () -> Void = {}
     
-    func trigger(type: AlertType = .normalAlert, action: @escaping () -> Void = {}) {
+    func trigger(type: AlertType, action: @escaping () -> Void = {}) {
         self.alertType = type
         self.alertType = type
         self.actionYes = action

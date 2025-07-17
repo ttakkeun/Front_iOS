@@ -54,13 +54,13 @@ struct InquireView: View {
             .sheet(isPresented: $viewModel.isImagePickerPresented, content: {
                 ImagePicker(imageHandler: viewModel, selectedLimit: 3)
             })
-            
-            if viewModel.isInquireMainBtnClicked {
-                CustomAlert(alertText: Text("문의내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록 하겠습니다. \n영업시간 2~3일 이내에 이메일로 답변을 받아보실 수 있습니다."), alertAction: .init(showAlert: $viewModel.isInquireMainBtnClicked, yes: {
-                    container.navigationRouter.pop()
-                    
-                }))
-            }
+//            
+//            if viewModel.isInquireMainBtnClicked {
+//                CustomAlert(alertText: Text("문의내용이 접수되었습니다."), alertSubText: Text("회원님의 소중한 의견을 잘 반영하도록 하겠습니다. \n영업시간 2~3일 이내에 이메일로 답변을 받아보실 수 있습니다."), alertAction: .init(showAlert: $viewModel.isInquireMainBtnClicked, yes: {
+//                    container.navigationRouter.pop()
+//                    
+//                }))
+//            }
         })
         .onAppear {
             UIApplication.shared.hideKeyboard()

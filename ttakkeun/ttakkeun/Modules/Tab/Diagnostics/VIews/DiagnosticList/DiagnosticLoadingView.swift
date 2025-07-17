@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// 진단 중 화면
-struct DiagnosingView: View {
+struct DiagnosticLoadingView: View {
     
     // MARK: - Constants
     fileprivate enum DiagnosingConstants {
@@ -58,6 +58,6 @@ struct DiagnosingView: View {
 
 struct DiagnosingView_Preview: PreviewProvider {
     static var previews: some View {
-        DiagnosingView()
+        DiagnosticLoadingView()
     }
 }

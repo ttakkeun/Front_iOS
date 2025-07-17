@@ -44,10 +44,10 @@ struct DeleteAccountView: View {
                     EmptyView()
                 }
             })
-            
-            if isDeleteAccountMainBtnClicked {
-                CustomAlert(alertText: Text("정말로 따끈을 떠나시겠습니까?"), alertSubText: Text("회원님의 소중한 정보는 이용약관에 따라 처리됩니다. \n이대로 탈퇴를 누르신다면 탈퇴를 취소하실 수 없습니다."), alertAction: .init(showAlert: $isDeleteAccountMainBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
-            }
+//            
+//            if isDeleteAccountMainBtnClicked {
+//                CustomAlert(alertText: Text("정말로 따끈을 떠나시겠습니까?"), alertSubText: Text("회원님의 소중한 정보는 이용약관에 따라 처리됩니다. \n이대로 탈퇴를 누르신다면 탈퇴를 취소하실 수 없습니다."), alertAction: .init(showAlert: $isDeleteAccountMainBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
+//            }
         })
         .navigationBarBackButtonHidden(true)
     }

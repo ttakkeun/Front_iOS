@@ -25,7 +25,6 @@ struct JournalListView: View {
         static let columsHSpacing: CGFloat = 20
         static let columsVspacing: CGFloat = 28
         static let columsCount: Int = 3
-        
         static let bottomBtnHspacing: CGFloat = 5
         static let bottomBtnSize: CGFloat = 18
         static let bottomPadding: CGFloat = 10
@@ -172,10 +171,19 @@ struct JournalListView: View {
             if viewModel.selectedCnt >= 1 {
                 viewModel.patchUserPoint()
                 viewModel.getUserPoint()
-                alert.showAlert.toggle()
+//                showAletAction()
             }
         }
     }
+    
+    // TODO: - Alert 수정 필요
+//    private func showAletAction() {
+//        alert.alertType = .aiAlert
+//        alert.showAlert.toggle()
+//        alert.actionYes = {
+//            viewModel.showFullScreenAI = true
+//        }
+//    }
 }
 
 extension JournalListView {
