@@ -9,64 +9,79 @@ import SwiftUI
 import Kingfisher
 import UIKit
 
+/// 상품 클릭 시 sheet 뷰
 struct ProductSheetView: View {
     
-    @State private var loadedImage: Image = Image(systemName: "questionmark.square.fill")
-    @State private var isActivityViewPresented = false
-    
+    // MARK: - Property
     @Binding var data: ProductResponse
-    @Binding var isShowSheet: Bool
-    
     let action: () -> Void
     
-    init(data: Binding<ProductResponse>, isShowSheet: Binding<Bool>, action: @escaping () -> Void) {
+    // MARK: - Constant
+    fileprivate enum ProductSheetConstants {
+        static let imageVerticalPadding: CGFloat = 12
+        static let contentsVspacing: CGFloat = 28
+        static let middleContentsVspacing: CGFloat = 9
+        static let lineSpacing: CGFloat = 2
+        
+        static let imageHeight: CGFloat = 185
+        static let shareImageWidth: CGFloat = 20
+        static let shareImageHeight: CGFloat = 23
+        static let buttonHeight: CGFloat = 59
+        
+        
+        static let imageSize: CGFloat = 30
+        static let imageMaxCount: Int = 2
+        static let imageTime: TimeInterval = 2
+        
+        static let loadImage: String = "questionmark.square.fill"
+        static let shareImage: String = "square.and.arrow.up"
+        static let buttonText: String = "구매하러 가기"
+    }
+    
+    // MARK: - Init
+    init(data: Binding<ProductResponse>, action: @escaping () -> Void) {
         self._data = data
-        self._isShowSheet = isShowSheet
         self.action = action
     }
     
+    // MARK: - Body
     var body: some View {
-        VStack(alignment: .center, spacing: 28, content: {
+        VStack(alignment: .center, spacing: ProductSheetConstants.contentsVspacing, content: {
             Capsule()
                 .modifier(CapsuleModifier())
-            
             productImage
-                .padding(.top, 6)
-            
-            productInfoGroup
-                .padding(.top, 12)
-            
-            MainButton(btnText: "구매하러 가기", height: 59, action: {
+            middleContents
+            MainButton(btnText: ProductSheetConstants.buttonText, height: ProductSheetConstants.buttonHeight, action: {
                 openSite(data.purchaseLink)
             }, color: Color.mainPrimary)
         })
-        .frame(width: 342, height: 544, alignment: .top)
-        .safeAreaPadding(EdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0))
+        .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
     
+    // MARK: - TopContents
+    /// 상품 이미지
     @ViewBuilder
     private var productImage: some View {
         if let url = URL(string: data.image) {
             KFImage(url)
                 .placeholder {
-                    Image(systemName: "questionmark.square.fill")
+                    Image(systemName: ProductSheetConstants.loadImage)
                         .resizable()
-                        .frame(width: 30, height: 30)
-                }.retry(maxCount: 2, interval: .seconds(2))
+                        .frame(width: ProductSheetConstants.imageSize, height: ProductSheetConstants.imageSize)
+                }.retry(maxCount: ProductSheetConstants.imageMaxCount, interval: .seconds(ProductSheetConstants.imageTime))
                 .resizable()
-                .frame(width: 300, height: 185)
-                .aspectRatio(contentMode: .fill)
-                .padding(10)
-                .overlay(content: {
-                    Rectangle()
-                        .fill(Color.clear)
-                        .stroke(Color.gray200, lineWidth: 1)
-                })
+                .aspectRatio(contentMode: .fit)
+                .padding(.vertical, ProductSheetConstants.imageVerticalPadding)
+                .frame(maxWidth: .infinity)
+                .frame(height: ProductSheetConstants.imageHeight)
+                .border(Color.gray200)
         }
     }
     
-    private var productInfoGroup: some View {
-        VStack(alignment: .leading, spacing: 9, content: {
+    // MARK: - MiddleContents
+    /// 중간 상품 정보
+    private var middleContents: some View {
+        VStack(alignment: .leading, spacing: ProductSheetConstants.middleContentsVspacing, content: {
             category
             productTitleInfo
             productPriceInfo
@@ -75,6 +90,7 @@ struct ProductSheetView: View {
         .frame(height: 145, alignment: .top)
     }
     
+    /// 상단 카테고리 및 쉐어링크
     private var category: some View {
         HStack(content: {
             Text(buildCategoryList())
@@ -85,28 +101,28 @@ struct ProductSheetView: View {
             
             ShareLink(
                 items: [
-                    "[따끈] \n\(data.title.split(separator: "").joined(separator: "\u{200B}"))",
+                    "[따끈] \n\(data.title.customLineBreak())",
                     data.purchaseLink
                 ]
             ) {
-                Image(systemName: "square.and.arrow.up")
+                Image(systemName: ProductSheetConstants.shareImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 20, height: 23)
+                    .frame(width: ProductSheetConstants.shareImageWidth, height: ProductSheetConstants.shareImageHeight)
                     .foregroundStyle(Color.gray400)
             }
         })
     }
     
+    /// 상품 타이틀 정보
     private var productTitleInfo: some View {
-        VStack(alignment: .leading, spacing: 9, content: {
+        VStack(alignment: .leading, spacing: ProductSheetConstants.middleContentsVspacing, content: {
             Text(data.title)
-                .frame(width: 323, alignment: .leading)
                 .font(.Body2_bold)
                 .foregroundStyle(Color.gray900)
                 .lineLimit(nil)
                 .multilineTextAlignment(.leading)
-                .lineSpacing(2)
+                .lineSpacing(ProductSheetConstants.lineSpacing)
             
             Text(data.brand?.isEmpty == false ? "\(data.brand!) >" : "브랜드 정보 없음")
                 .font(.Body4_medium)
@@ -114,13 +130,14 @@ struct ProductSheetView: View {
         })
     }
     
+    /// 좋아요 및 가격 정보
     private var productPriceInfo: some View {
         HStack(content: {
             LikeButton(data: $data, action: action )
             
             Spacer()
             
-            Text("\(DataFormatter.shared.formattedPrice(from: data.price))원")
+            Text("\(data.price)원")
                 .font(.H3_bold)
                 .foregroundStyle(Color.gray900)
         })
@@ -128,7 +145,8 @@ struct ProductSheetView: View {
 }
 
 extension ProductSheetView {
-    
+    /// 카테고리 연결 함수
+    /// - Returns: 연결된 카테고리 값
     func buildCategoryList() -> String {
         [data.category2, data.category3, data.category4]
             .compactMap { $0 }
@@ -155,6 +173,6 @@ struct ProductSheet_Preview: PreviewProvider {
                                                          category3: "미용목욕",
                                                          category4: "샴푸, 린스",
                                                          totalLike: 304,
-                                                         likeStatus: true)), isShowSheet: .constant(true), action: { print("hello!!@!@!@!") })
+                                                         likeStatus: true)), action: { print("hello!!@!@!@!") })
     }
 }

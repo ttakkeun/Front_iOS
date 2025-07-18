@@ -7,25 +7,29 @@
 
 import SwiftUI
 
+/// AI 최근 추천 타이틀
 struct AIRecommendTitle: View {
     
-    let padding: CGFloat
+    // MARK: - Property
     let title: String
     
-    init(padding: CGFloat, title: String) {
-        self.padding = padding
+    fileprivate enum AIRecommendConstants {
+        static let hSpacing: CGFloat = 4
+    }
+    
+    // MARK: - Init
+    init(title: String) {
         self.title = title
     }
     
+    // MARK: - Body
     var body: some View {
-        HStack(spacing: 4, content: {
+        HStack(spacing: AIRecommendConstants.hSpacing, content: {
+            Image(.recommendDog)
             
-            Icon.recommendDog.image
-                .fixedSize()
             Text(title)
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
         })
-        .padding(.leading, padding)
     }
 }
