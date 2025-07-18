@@ -25,6 +25,7 @@ final class DataFormatter {
         }
     }
     
+    // FIXME: - 나중에 삭제할 부분
     public func formatDateForAPI(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -32,6 +33,7 @@ final class DataFormatter {
         return formatter.string(from: date)
     }
     
+    // FIXME: - 나중에 삭제할 부분
     public func formattedTime(from timeString: String) -> String {
         let inputFormatter = DateFormatter()
         inputFormatter.dateFormat = "HH:mm:ss.SSSSSS"

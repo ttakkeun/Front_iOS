@@ -18,22 +18,22 @@ struct SearchResultView: View {
             VStack(alignment: .center, spacing: 27, content: {
                 naverSearchResultGroup
                 
-                localSearchResultGroup
+//                localSearchResultGroup
             })
             .modifier(SearchViewModifier())
         })
         .frame(maxWidth: .infinity)
-        .sheet(isPresented: $viewModel.isShowSheetView, content: {
-            if let product = viewModel.selectedData {
-                ProductSheetView(data: Binding(get: { product },
-                                               set: { updateProduct in
-                    viewModel.updateProduct(updateProduct)
-                }), isShowSheet: $viewModel.isShowSheetView, action: { viewModel.likeProduct(productId: product.productId, productData: viewModel.makeLikePatchRequest(data: product)) })
-                .presentationDetents([.fraction(0.68)])
-                .presentationDragIndicator(Visibility.hidden)
-                .presentationCornerRadius(30)
-            }
-        })
+//        .sheet(isPresented: $viewModel.isShowSheetView, content: {
+//            if let product = viewModel.selectedData {
+//                ProductSheetView(data: Binding(get: { product },
+//                                               set: { updateProduct in
+//                    viewModel.updateProduct(updateProduct)
+//                }), isShowSheet: $viewModel.isShowSheetView, action: { viewModel.likeProduct(productId: product.productId, productData: viewModel.makeLikePatchRequest(data: product)) })
+//                .presentationDetents([.fraction(0.68)])
+//                .presentationDragIndicator(Visibility.hidden)
+//                .presentationCornerRadius(30)
+//            }
+//        })
         .overlay(alignment: .center, content: {
             if viewModel.isLoadingSheetView {
                 ProgressView()
@@ -50,40 +50,40 @@ struct SearchResultView: View {
                 .foregroundStyle(Color.gray900)
                 .padding(.leading, 5)
             
-            naverSearchResult
+//            naverSearchResult
         })
     }
-    
-    @ViewBuilder
-    private var naverSearchResult: some View {
-        if !viewModel.naverDataIsLoading {
-            if !viewModel.naverData.isEmpty {
-                ScrollView(.horizontal, content: {
-                    HStack(spacing: 10, content: {
-                        ForEach($viewModel.naverData, id: \.id) { $data in
-                            RecentRecommendation(data: $data, type: .naver, action: { viewModel.likeProduct(productId: data.productId, productData: viewModel.makeLikePatchRequest(data: data)) } )
-                                .handleTapGesture(with: viewModel, data: data, source: .searchNaverProduct)
-                        }
-                    })
-                    .padding(.horizontal, 5)
-                    .padding(.bottom, 12)
-                })
-                
-            } else {
-                warningText(type: .naver)
-            }
-        } else {
-            loadingDataView(text: "외부 상품 정보를 가져오는 중입니다.")
-        }
-    }
-    
-    private var localSearchResultGroup: some View {
-        VStack(alignment: .leading, spacing: 0, content: {
-            AIRecommendTitle(padding: 0, title: "앱 내 검색 결과")
-            
-            localSearchResult
-        })
-    }
+//    
+//    @ViewBuilder
+//    private var naverSearchResult: some View {
+//        if !viewModel.naverDataIsLoading {
+//            if !viewModel.naverData.isEmpty {
+//                ScrollView(.horizontal, content: {
+//                    HStack(spacing: 10, content: {
+//                        ForEach($viewModel.naverData, id: \.id) { $data in
+//                            RecentRecommendation(data: $data, type: .naver, action: { viewModel.likeProduct(productId: data.productId, productData: viewModel.makeLikePatchRequest(data: data)) } )
+//                                .handleTapGesture(with: viewModel, data: data, source: .searchNaverProduct)
+//                        }
+//                    })
+//                    .padding(.horizontal, 5)
+//                    .padding(.bottom, 12)
+//                })
+//                
+//            } else {
+//                warningText(type: .naver)
+//            }
+//        } else {
+//            loadingDataView(text: "외부 상품 정보를 가져오는 중입니다.")
+//        }
+//    }
+//    
+//    private var localSearchResultGroup: some View {
+//        VStack(alignment: .leading, spacing: 0, content: {
+//            AIRecommendTitle(padding: 0, title: "앱 내 검색 결과")
+//            
+//            localSearchResult
+//        })
+//    }
     
     @ViewBuilder
     private var localSearchResult: some View {

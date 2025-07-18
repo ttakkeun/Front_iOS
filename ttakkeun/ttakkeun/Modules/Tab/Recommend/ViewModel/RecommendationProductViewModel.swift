@@ -10,24 +10,34 @@ import SwiftUI
 import Combine
 import CombineMoya
 
-class RecommendationProductViewModel: ObservableObject, TapGestureProduct, ProductUpdate {
+@Observable
+class RecommendationProductViewModel: TapGestureProduct, ProductUpdate {
     
-    @Published var selectedCategory: ExtendPartItem = .all
-    @Published var aiProducts: [ProductResponse] = []
-    @Published var recommendProducts: [ProductResponse] = []
+    var selectedCategory: ExtendPartItem = .all
+    var aiProducts: [ProductResponse] = [
+        .init(productId: 0, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true),
+        .init(productId: 1, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true),
+        .init(productId: 2, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true)
+    ]
+    var recommendProducts: [ProductResponse] = [
+        .init(productId: 2, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true),
+        .init(productId: 3, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true),
+        .init(productId: 4, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true),
+        .init(productId: 5, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true),
+    ]
     
-    @Published var isLoadingAIProduct: Bool = false
+    var isLoadingAIProduct: Bool = false
     
-    @Published var isLoadingUserProduct: Bool = false
-    @Published var canLoadMoarUserProduct: Bool = true
-    @Published var userAllisIitialLoading: Bool = true
+    var isLoadingUserProduct: Bool = false
+    var canLoadMoarUserProduct: Bool = true
+    var userAllisIitialLoading: Bool = true
     
     // MARK: - RankTag
-    @Published var isLoadingRankTagProduct: Bool = false
-    @Published var canLoadMoreRankTagProduct: Bool = true
-    @Published var userRankTagisIitialLoading: Bool = true
+    var isLoadingRankTagProduct: Bool = false
+    var canLoadMoreRankTagProduct: Bool = true
+    var userRankTagisIitialLoading: Bool = true
     
-    @Published var userProductPage: Int = 0
+    var userProductPage: Int = 0
     
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
@@ -42,19 +52,15 @@ class RecommendationProductViewModel: ObservableObject, TapGestureProduct, Produ
     
     // MARK: - ProductSheet
     
-    @Published var selectedData: ProductResponse? = nil
-    @Published var isLoadingSheetView: Bool = false
-    @Published var isShowSheetView: Bool = false
-    @Published var selectedSource: RecommendProductType = .none
+    var selectedData: ProductResponse? = nil
+    var isLoadingSheetView: Bool = false
+    var isShowSheetView: Bool = false
+    var selectedSource: RecommendProductType = .none
     
     func handleTap(data: ProductResponse, source: RecommendProductType) {
         self.selectedData = data
         self.selectedSource = source
         self.isLoadingSheetView = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6, execute: {
-            self.isLoadingSheetView.toggle()
-            self.isShowSheetView.toggle()
-        })
     }
     
     func updateProduct(_ updateProduct: ProductResponse) {
