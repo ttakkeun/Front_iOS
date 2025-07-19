@@ -26,7 +26,12 @@ class SearchViewModel: TapGestureProduct, ProductUpdate {
             handleSearchTextChange()
         }
     }
-    var realTimeSearchResult: [ProductResponse]?
+    var realTimeSearchResult: [ProductResponse] = [
+        .init(productId: 0, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true),
+        .init(productId: 1, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true),
+        .init(productId: 2, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true),
+        .init(productId: 3, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true)
+    ]
     
     var naverDataIsLoading: Bool = true
     var naverData: [ProductResponse] = []
@@ -54,7 +59,7 @@ class SearchViewModel: TapGestureProduct, ProductUpdate {
                    isManualSearch = false
                } else {
                    if searchText.isEmpty {
-                       realTimeSearchResult = nil
+                       realTimeSearchResult = []
                    } else {
                        fetchRealTimeResults(for: searchText)
                    }
@@ -185,7 +190,7 @@ extension SearchViewModel {
                     
                 case .failure(let failure):
                     if isRealTime {
-                        self.realTimeSearchResult = nil
+                        self.realTimeSearchResult = []
                     } else {
                         self.naverData = []
                     }
@@ -204,7 +209,7 @@ extension SearchViewModel {
                     }
                 } else {
                     if isRealTime {
-                        self.realTimeSearchResult = nil
+                        self.realTimeSearchResult = []
                     } else {
                         self.naverData = []
                         naverDataIsLoading = false

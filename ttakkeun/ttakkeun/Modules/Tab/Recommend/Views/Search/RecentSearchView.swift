@@ -84,7 +84,7 @@ struct RecentSearchView: View {
                 .resizable()
                 .frame(width: RecentSearchConstants.searchImageSize, height: RecentSearchConstants.searchImageSize)
             
-            Text(text)
+            Text(text.cleanedAndLineBroken())
                 .font(.Body2_regular)
                 .foregroundStyle(Color.gray900)
                 .lineLimit(nil)
