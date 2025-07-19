@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchResultView: View {
     
-    @ObservedObject var viewModel: SearchViewModel
+    @Bindable var viewModel: SearchViewModel
     
     let padding: CGFloat = 20
     

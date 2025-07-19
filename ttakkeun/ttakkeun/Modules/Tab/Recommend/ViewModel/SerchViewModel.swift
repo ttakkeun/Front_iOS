@@ -8,32 +8,59 @@
 import Foundation
 import Combine
 
-class SearchViewModel: ObservableObject, TapGestureProduct, ProductUpdate {
+@Observable
+class SearchViewModel: TapGestureProduct, ProductUpdate {
     
-    @Published var isShowingSearchResult: Bool = false
-    @Published var isShowingRealTimeResults: Bool = false
-    @Published var isManualSearch: Bool = false
+    // MARK: - StateProperty
+    var isShowingSearchResult: Bool = false
+    var isShowingRealTimeResults: Bool = false
+    var isManualSearch: Bool = false
+    var isShowSheetView: Bool = false
+    var isLoadingSheetView: Bool = false
+    var isIitialLoading: Bool = true
     
-    @Published var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "RecentSearches") ?? []
+    var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "RecentSearches") ?? []
     
-    @Published var searchText: String = ""
-    @Published var realTimeSearchResult: [ProductResponse]?
+    var searchText: String = "" {
+        didSet {
+            handleSearchTextChange()
+        }
+    }
+    var realTimeSearchResult: [ProductResponse]?
     
-    @Published var naverDataIsLoading: Bool = true
-    @Published var naverData: [ProductResponse] = []
+    var naverDataIsLoading: Bool = true
+    var naverData: [ProductResponse] = []
     
-    @Published var isIitialLoading: Bool = true
-    @Published var localDBDataIsLoading: Bool = false
-    @Published var localDbData: [ProductResponse] = []
-    @Published var localPage: Int = 0
-    @Published var canLoadMore: Bool = true
     
-    // MARK: - ProductSheet
+    var localDBDataIsLoading: Bool = false
+    var localDbData: [ProductResponse] = []
+    var localPage: Int = 0
+    var canLoadMore: Bool = true
     
-    @Published var isShowSheetView: Bool = false
-    @Published var isLoadingSheetView: Bool = false
-    @Published var selectedData: ProductResponse? = nil
-    @Published var selectedSource: RecommendProductType = .none
+    // MARK: - ProductShee
+    var selectedData: ProductResponse? = nil
+    var selectedSource: RecommendProductType = .none
+    
+    private var debounceTask: Task<Void, Never>? = nil
+
+       private func handleSearchTextChange() {
+           debounceTask?.cancel() // 이전 debounce 취소
+
+           debounceTask = Task { @MainActor in
+               try? await Task.sleep(nanoseconds: 500_000_000) // 0.5초 딜레이
+
+               if isManualSearch {
+                   fetchSearchResults(for: searchText)
+                   isManualSearch = false
+               } else {
+                   if searchText.isEmpty {
+                       realTimeSearchResult = nil
+                   } else {
+                       fetchRealTimeResults(for: searchText)
+                   }
+               }
+           }
+       }
     
     func handleTap(data: ProductResponse, source: RecommendProductType) {
         self.selectedData = data
@@ -65,28 +92,7 @@ class SearchViewModel: ObservableObject, TapGestureProduct, ProductUpdate {
     private var cancellables = Set<AnyCancellable>()
     
     init(container: DIContainer) {
-        
         self.container = container
-        
-        $searchText
-            .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
-            .removeDuplicates()
-            .sink { [weak self] newValue in
-                guard let self = self else { return }
-                
-                if self.isManualSearch {
-                    self.fetchSearchResults(for: newValue)
-                    self.isManualSearch = false
-                    return
-                } else {
-                    if newValue.isEmpty {
-                        self.realTimeSearchResult = nil
-                    } else {
-                        self.fetchRealTimeResults(for: newValue)
-                    }
-                }
-            }
-            .store(in: &cancellables)
     }
     
     func makeLikePatchRequest(data: ProductResponse) -> LikePatchRequest {
@@ -118,7 +124,7 @@ extension SearchViewModel {
         startNewLocalDbSearch(query)
     }
     
-    func handleSearchTextChange(_ newValue: String, _ oldValue: String) {
+    func handleSearchTextChange(_ oldValue: String, _ newValue: String) {
         if newValue.isEmpty {
             self.isShowingSearchResult = false
             self.isShowingRealTimeResults = false

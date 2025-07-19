@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+// FIXME: - 삭제하기
 struct SearchViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content

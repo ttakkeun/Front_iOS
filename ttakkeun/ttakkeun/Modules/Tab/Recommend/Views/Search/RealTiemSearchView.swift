@@ -10,7 +10,7 @@ import Kingfisher
 
 struct RealTiemSearchView: View {
     
-    @ObservedObject var viewModel: SearchViewModel
+    @Bindable var viewModel: SearchViewModel
     var onItemClick: (String) -> Void
     
     var body: some View {

@@ -7,84 +7,105 @@
 
 import SwiftUI
 
+/// 최근 검색 단어 보는 뷰
 struct RecentSearchView: View {
     
-    @ObservedObject var viewModel: SearchViewModel
+    // MARK: - Property
+    @Bindable var viewModel: SearchViewModel
     var onItemClick: (String) -> Void
     
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12, content: {
-            recentSearches
-        })
-        .modifier(SearchViewModifier())
+    // MARK: - Constants
+    fileprivate enum RecentSearchConstants {
+        static let recentWordhVspacing: CGFloat = 14
+        static let recentSearchVspacing: CGFloat = 20
+        static let scrollHorizonPadding: CGFloat = 10
+        static let recentHspacing: CGFloat = 10
+        
+        static let searchImageSize: CGFloat = 24
+        static let deleteImageSize: CGFloat = 14
+        static let lineSpacing: CGFloat = 2
+        
+        static let noRecentSearch: String = "최근 검색어 내역이 없습니다."
+        static let recentSearch: String = "최근 검색"
+        static let deleteSearchImage: String = "xmark"
     }
     
-    @ViewBuilder
-    private var recentSearches: some View {
+    // MARK: - Body
+    var body: some View {
         if viewModel.recentSearches.isEmpty {
-            
-            Spacer()
             notRecentSearches
-            
-            Spacer()
         } else {
-            Text("최근 검색")
-                .font(.Body3_bold)
-                .foregroundStyle(Color.gray900)
+            recentSearch
+        }
+    }
+  
+    /// 최근 검색어 존재할 시
+    private var recentSearch: some View {
+        VStack(alignment: .leading, spacing: RecentSearchConstants.recentSearchVspacing, content: {
+            Text(RecentSearchConstants.recentSearch)
             
             ScrollView(.vertical, content: {
-                VStack(alignment: .leading, spacing: 12, content: {
+                LazyVStack(alignment: .leading, spacing: RecentSearchConstants.recentSearchVspacing, content: {
                     ForEach(viewModel.recentSearches, id: \.self) { data in
                         makeSearchText(data)
                     }
-                    .padding(.leading, 10)
                 })
             })
-        }
+            .contentMargins(.horizontal, RecentSearchConstants.scrollHorizonPadding)
+        })
     }
     
-    private var notRecentSearches: HStack<some View> {
+    /// 최근 검색어 없을 시 등장
+    private var notRecentSearches: some View {
         HStack {
-            
             Spacer()
-            
-            Text("최근 검색어 내역이 없습니다.")
+            Text(RecentSearchConstants.noRecentSearch)
                 .font(.Body2_medium)
                 .foregroundStyle(Color.gray900)
-            
             Spacer()
         }
+        .frame(maxWidth: .infinity, alignment: .center)
     }
-}
-
-extension RecentSearchView {
-    func makeSearchText(_ text: String) -> some View {
+    
+    private func makeSearchText(_ text: String) -> some View {
         Button(action: {
             self.onItemClick(text)
         }, label: {
-            HStack(spacing: 10, content: {
-                Icon.glass.image
-                    .resizable()
-                    .frame(width: 24, height: 24)
-                
-                Text(text)
-                    .font(.Body2_regular)
-                    .foregroundStyle(Color.gray900)
-                    .lineLimit(nil)
-                    .lineSpacing(2)
-                    .multilineTextAlignment(.leading)
-                
-                Spacer()
-                
-                
-                Button(action: {
-                    viewModel.deleteSearch(text)
-                }, label: {
-                    Image(systemName: "xmark")
-                        .foregroundStyle(Color.gray500)
-                        .frame(width: 14, height: 14)
-                })
+            recentSearchButton(text)
+        })
+    }
+    
+    /// 검색 버튼
+    /// - Parameter text: 최근 검색어 내용
+    /// - Returns: 검색어 버튼 반환
+    private func recentSearchButton(_ text: String) -> some View {
+        HStack(spacing: RecentSearchConstants.recentHspacing, content: {
+            Image(.glass)
+                .resizable()
+                .frame(width: RecentSearchConstants.searchImageSize, height: RecentSearchConstants.searchImageSize)
+            
+            Text(text)
+                .font(.Body2_regular)
+                .foregroundStyle(Color.gray900)
+                .lineLimit(nil)
+                .lineSpacing(RecentSearchConstants.lineSpacing)
+                .multilineTextAlignment(.leading)
+            
+            Spacer()
+            
+            Button(action: {
+                viewModel.deleteSearch(text)
+            }, label: {
+                Image(systemName: RecentSearchConstants.deleteSearchImage)
+                    .foregroundStyle(Color.gray500)
+                    .frame(width: RecentSearchConstants.deleteImageSize, height: RecentSearchConstants.deleteImageSize)
             })
         })
     }
+}
+
+#Preview {
+    RecentSearchView(viewModel: .init(container: DIContainer()), onItemClick: {
+        print($0)
+    })
 }
