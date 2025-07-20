@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct LoadingOverlay: ViewModifier {
+struct LoadingOverlayModifier: ViewModifier {
     
     let isLoading: Bool
     let loadingTextType: LoadingTextType
@@ -50,7 +50,7 @@ struct LoadingOverlay: ViewModifier {
 }
 
 extension View {
-    func loadingOverlay(isLoading: Bool, loadingTextType: LoadingOverlay.LoadingTextType) -> some View {
-        self.modifier(LoadingOverlay(isLoading: isLoading, loadingTextType: loadingTextType))
+    func loadingOverlay(isLoading: Bool, loadingTextType: LoadingOverlayModifier.LoadingTextType) -> some View {
+        self.modifier(LoadingOverlayModifier(isLoading: isLoading, loadingTextType: loadingTextType))
     }
 }

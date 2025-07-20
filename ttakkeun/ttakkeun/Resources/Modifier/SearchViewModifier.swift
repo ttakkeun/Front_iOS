@@ -8,10 +8,24 @@
 import Foundation
 import SwiftUI
 
-// FIXME: - 삭제하기
 struct SearchViewModifier: ViewModifier {
+    
+    let lineSpacing: CGFloat = 10
+    let cornerRadius: CGFloat = 10
+    
     func body(content: Content) -> some View {
         content
-            .safeAreaPadding(EdgeInsets(top: 0, leading: 21, bottom: 0, trailing: 21))
+            .font(.Body4_medium)
+            .foregroundStyle(Color.gray400)
+            .multilineTextAlignment(.center)
+            .lineSpacing(lineSpacing)
+            .frame(maxWidth: .infinity, alignment: .center)
+            .background {
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .fill(Color.clear)
+                    .stroke(Color.gray200, style: .init())
+            }
     }
 }
+
+
