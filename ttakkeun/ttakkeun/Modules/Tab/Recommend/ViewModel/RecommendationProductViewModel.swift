@@ -14,17 +14,8 @@ import CombineMoya
 class RecommendationProductViewModel: TapGestureProduct, ProductUpdate {
     
     var selectedCategory: ExtendPartItem = .all
-    var aiProducts: [ProductResponse] = [
-        .init(productId: 0, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true),
-        .init(productId: 1, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true),
-        .init(productId: 2, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true)
-    ]
-    var recommendProducts: [ProductResponse] = [
-        .init(productId: 2, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true),
-        .init(productId: 3, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true),
-        .init(productId: 4, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true),
-        .init(productId: 5, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true),
-    ]
+    var aiProducts: [ProductResponse] = []
+    var recommendProducts: [ProductResponse] = []
     
     var isLoadingAIProduct: Bool = false
     

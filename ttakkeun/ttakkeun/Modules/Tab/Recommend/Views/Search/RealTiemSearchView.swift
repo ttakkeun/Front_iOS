@@ -8,62 +8,87 @@
 import SwiftUI
 import Kingfisher
 
+/// 실시간 검색 화면
 struct RealTiemSearchView: View {
     
-    @ObservedObject var viewModel: SearchViewModel
+    // MARK: - Property
+    @Bindable var viewModel: SearchViewModel
     var onItemClick: (String) -> Void
     
-    var body: some View {
-        VStack(alignment: .leading, spacing: 15, content: {
-            if let data = viewModel.realTimeSearchResult {
-                if data != [] {
-                    ForEach(data, id: \.self) { data in
-                        makeSearchingResultButton(data: data)
-                    }
-                }
-            } else {
-                notRealtTimeSearchResult
-            }
-            
-            Spacer()
-        })
-        .frame(maxWidth: .infinity)
-        .modifier(SearchViewModifier())
+    // MARK: - Constants
+    fileprivate enum RealTiemSearchConstants {
+        static let searchProductHspacing: CGFloat = 14
+        static let searchNoProductHspacing: CGFloat = 10
+        static let productInfoVspacing: CGFloat = 4
+        static let productVspacing: CGFloat = 15
+        static let listRowSpacing: CGFloat = 15
+        
+        static let searchResultImageSize: CGFloat = 48
+        static let noResultImageSize: CGFloat = 35
+        
+        
+        static let imageMaxCount: Int = 2
+        static let imagTimeInterval: TimeInterval = 2
+        static let lineSpacing: CGFloat = 2
+        
+        static let noRealTimeSearchImge: String = "magnifyingglass.circle"
     }
     
-    @ViewBuilder
-    private var notRealtTimeSearchResult: some View {
-        if viewModel.searchText.count > 0 {
-            HStack(spacing: 10, content: {
-                Image(systemName: "magnifyingglass.circle")
-                    .resizable()
-                    .frame(width: 35, height: 35)
-                
-                Text(viewModel.searchText)
-                    .font(.Body3_bold)
-                    .foregroundStyle(Color.gray900)
-                
-                Spacer()
+    // MARK: - Body
+    var body: some View {
+        if !viewModel.realTimeSearchResult.isEmpty {
+            List(content: {
+                ForEach(viewModel.realTimeSearchResult, id: \.id) { data in
+                    makeSearchingResultButton(data: data)
+                }
+                .listRowSeparator(.hidden)
+                .listRowInsets(EdgeInsets())
             })
+            .listStyle(.plain)
+            .listRowSpacing(RealTiemSearchConstants.listRowSpacing)
+        } else {
+            notRealtTimeSearchResult
         }
     }
-}
-
-extension RealTiemSearchView {
+    
+    /// 검색 데이터 존재하지 않을 시
+    @ViewBuilder
+    private var notRealtTimeSearchResult: some View {
+        if viewModel.searchText.count > .zero {
+            VStack {
+                HStack(spacing: RealTiemSearchConstants.searchNoProductHspacing, content: {
+                    Image(systemName: RealTiemSearchConstants.noRealTimeSearchImge)
+                        .resizable()
+                        .frame(width: RealTiemSearchConstants.noResultImageSize, height: RealTiemSearchConstants.noResultImageSize)
+                    Text(viewModel.searchText)
+                        .font(.Body3_bold)
+                        .foregroundStyle(Color.gray900)
+                    Spacer()
+                })
+                
+                Spacer()
+            }
+        }
+    }
+    
+    /// 검색 결과 버튼
+    /// - Parameter data: 검색 데이터
+    /// - Returns: 검색 결과
     func makeSearchingResultButton(data: ProductResponse) -> some View {
         Button(action: {
             viewModel.saveSearchTerm(data.title)
             self.onItemClick(data.title)
         }, label: {
-            HStack(spacing: 14, content: {
+            HStack(spacing: RealTiemSearchConstants.searchProductHspacing, content: {
                 makeSearchingImage(image: data.image)
-                
                 makeProductInfo(infoText: (data.title, data.price))
             })
-            .frame(maxWidth: .infinity, alignment: .leading)
         })
     }
     
+    /// 검색 결과 이미지
+    /// - Parameter image: 이미지 url
+    /// - Returns: 이미지 반환
     @ViewBuilder
     func makeSearchingImage(image: String) -> some View {
         if let url = URL(string: image) {
@@ -71,25 +96,34 @@ extension RealTiemSearchView {
                 .placeholder {
                     ProgressView()
                         .controlSize(.regular)
-                }.retry(maxCount: 2, interval: .seconds(2))
+                }.retry(maxCount: RealTiemSearchConstants.imageMaxCount, interval: .seconds(RealTiemSearchConstants.imagTimeInterval))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 48, height: 48)
+                .frame(width: RealTiemSearchConstants.searchResultImageSize, height: RealTiemSearchConstants.searchResultImageSize)
         }
     }
     
+    /// 검색 결과 상품 정보
+    /// - Parameter infoText: 검색 결과 상품 이름 및 가격
+    /// - Returns: 상품 정보 반환
     func makeProductInfo(infoText: (String, Int)) -> some View {
-        VStack(alignment: .leading, spacing: 4, content: {
-            Text((infoText.0).split(separator: "").joined(separator: "\u{200B}"))
+        VStack(alignment: .leading, spacing: RealTiemSearchConstants.productInfoVspacing, content: {
+            Text((infoText.0).cleanedAndLineBroken())
                 .font(.Body3_regular)
                 .lineLimit(nil)
                 .multilineTextAlignment(.leading)
-                .lineSpacing(2)
+                .lineSpacing(RealTiemSearchConstants.lineSpacing)
                 .foregroundStyle(Color.gray900)
             
-            Text("\(DataFormatter.shared.formattedPrice(from: infoText.1))원")
+            Text("\(infoText.1)원")
                 .font(.Body5_medium)
                 .foregroundStyle(Color.gray500)
         })
     }
+}
+
+#Preview {
+    RealTiemSearchView(viewModel: .init(container: DIContainer()), onItemClick: {
+        print($0)
+    })
 }
