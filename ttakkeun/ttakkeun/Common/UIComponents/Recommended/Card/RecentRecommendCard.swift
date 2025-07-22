@@ -22,8 +22,6 @@ struct RecentRecommendCard: View {
         static let imagePadding: CGFloat = 5
         static let productInfoVspacing: CGFloat = 6
         static let titleHeight: CGFloat = 37
-        static let cardHeight: CGFloat = 108
-        static let cardWidth: CGFloat = 320
         
         static let cornerRadius: CGFloat = 10
         static let imageMaxCount: Int = 2
@@ -53,8 +51,6 @@ struct RecentRecommendCard: View {
                 .fill(type.backgroundColor)
                 .shadow05()
         }
-        .frame(maxWidth: RecentRecommendConstants.cardWidth)
-        .frame(maxHeight: RecentRecommendConstants.cardHeight)
     }
     
     /// 상품 정보
@@ -110,7 +106,7 @@ struct RecentRecommendCard: View {
 #Preview {
     RecentRecommendCard(data: .constant(
         .init(productId: 2, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true)
-    ), type: .localDB, action: {
+    ), type: .naver, action: {
         print("1")
     })
 }

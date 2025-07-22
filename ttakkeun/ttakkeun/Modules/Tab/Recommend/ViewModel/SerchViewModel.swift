@@ -10,14 +10,14 @@ import Combine
 
 @Observable
 class SearchViewModel: TapGestureProduct, ProductUpdate {
-    
     // MARK: - StateProperty
-    var isShowingSearchResult: Bool = false
+    var isShowingSearchResult: Bool = true
     var isShowingRealTimeResults: Bool = false
     var isManualSearch: Bool = false
-    var isShowSheetView: Bool = false
-    var isLoadingSheetView: Bool = false
     var isIitialLoading: Bool = true
+    
+    var naverDataIsLoading: Bool = false
+    var localDBDataIsLoading: Bool = false
     
     var recentSearches: [String] = UserDefaults.standard.stringArray(forKey: "RecentSearches") ?? []
     
@@ -26,19 +26,21 @@ class SearchViewModel: TapGestureProduct, ProductUpdate {
             handleSearchTextChange()
         }
     }
-    var realTimeSearchResult: [ProductResponse] = [
+    var realTimeSearchResult: [ProductResponse] = []
+    
+    
+    var naverData: [ProductResponse] = [
         .init(productId: 0, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true),
         .init(productId: 1, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true),
         .init(productId: 2, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true),
         .init(productId: 3, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true)
     ]
-    
-    var naverDataIsLoading: Bool = true
-    var naverData: [ProductResponse] = []
-    
-    
-    var localDBDataIsLoading: Bool = false
-    var localDbData: [ProductResponse] = []
+    var localDbData: [ProductResponse] = [
+        .init(productId: 0, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true),
+        .init(productId: 1, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true),
+        .init(productId: 2, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true),
+        .init(productId: 3, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true)
+    ]
     var localPage: Int = 0
     var canLoadMore: Bool = true
     
@@ -52,7 +54,7 @@ class SearchViewModel: TapGestureProduct, ProductUpdate {
            debounceTask?.cancel() // 이전 debounce 취소
 
            debounceTask = Task { @MainActor in
-               try? await Task.sleep(nanoseconds: 500_000_000) // 0.5초 딜레이
+               try? await Task.sleep(nanoseconds: 500_000_000)
 
                if isManualSearch {
                    fetchSearchResults(for: searchText)
@@ -70,11 +72,6 @@ class SearchViewModel: TapGestureProduct, ProductUpdate {
     func handleTap(data: ProductResponse, source: RecommendProductType) {
         self.selectedData = data
         self.selectedSource = source
-        self.isLoadingSheetView = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6, execute: {
-            self.isLoadingSheetView.toggle()
-            self.isShowSheetView.toggle()
-        })
     }
     
     func updateProduct(_ updateProduct: ProductResponse) {

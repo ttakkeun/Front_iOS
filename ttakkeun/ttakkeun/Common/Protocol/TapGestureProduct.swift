@@ -8,8 +8,6 @@
 import Foundation
 
 protocol TapGestureProduct: AnyObject {
-    var isShowSheetView: Bool { get set }
-    var isLoadingSheetView: Bool { get set }
     var selectedData: ProductResponse? { get set }
     var selectedSource: RecommendProductType { get set }
     
