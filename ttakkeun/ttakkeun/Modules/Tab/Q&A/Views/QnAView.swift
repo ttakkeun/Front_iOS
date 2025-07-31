@@ -23,20 +23,24 @@ struct QnAView: View {
     // MARK: - Body
     var body: some View {
         VStack(alignment: .leading, spacing: QnAConstants.contentsVspacing, content: {
-            TopStatusBar()
-                .environmentObject(container)
-                .environmentObject(appFlowViewModel)
-            
+            topStatus
             qnaScreen
         })
         .background(Color.scheduleBg)
-        .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+    }
+    
+    private var topStatus: some View {
+        TopStatusBar()
+            .environmentObject(container)
+            .environmentObject(appFlowViewModel)
+            .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
     
     /// 탭뷰 QnA 스크린
     private var qnaScreen: some View {
         VStack(alignment: .leading, spacing: QnAConstants.tabSpacing, content: {
             QnAHeader(selectedSegment: $qnaSegmentValue)
+                .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
             
             TabView(selection: $qnaSegmentValue, content: {
                 FAQView()

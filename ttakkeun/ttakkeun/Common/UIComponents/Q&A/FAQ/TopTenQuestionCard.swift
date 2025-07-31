@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// Top10 내용
 struct TopTenQuestionCard: View {
 
     // MARK: - Property
@@ -21,7 +22,7 @@ struct TopTenQuestionCard: View {
         static let contentsWidth: CGFloat = 136
         static let contentsHeight: CGFloat = 126
         static let contentsHorionPadding: CGFloat = 12
-        static let contentsVerticalPaddding: CGFloat = 15
+        static let contentsVerticalPadding: CGFloat = 15
         static let contentsVspacing: CGFloat = 21
         static let scrollContentsPadding: CGFloat = 6
         static let vertical: CGFloat = 3
@@ -44,8 +45,8 @@ struct TopTenQuestionCard: View {
             topTenContents
         })
         .frame(width: TopTenQuestionPadding.contentsWidth, height: TopTenQuestionPadding.contentsHeight)
-        .padding(.vertical, TopTenQuestionPadding.contentsVerticalPaddding)
         .padding(.horizontal, TopTenQuestionPadding.contentsHorionPadding)
+        .padding(.vertical, TopTenQuestionPadding.contentsVspacing)
         .background(
             RoundedRectangle(cornerRadius: TopTenQuestionPadding.contentsCornerRadius)
                 .fill(isFlipped ? Color.primarycolor100 : Color.white)

@@ -7,55 +7,73 @@
 
 import SwiftUI
 
+/// 질문 답변 리스트 아이템
 struct FAQItemView: View {
     
-    let question: String
-    let answer: String
+    // MARK: - Property
+    let data: FAQData
     let isExpanded: Bool
     let onToggle: () -> Void
     @Namespace private var animationNamespace
     
-    init(question: String, answer: String, isExpanded: Bool, onToggle: @escaping () -> Void) {
-        self.question = question
-        self.answer = answer
+    // MARK: - Constants
+    fileprivate enum FAQItemConstants {
+        static let questionTitle: String = "Q."
+        static let answerDetailData: String = "A."
+        static let beforeBtnIcon: String = "chevron.down"
+        static let afterBtnIcon: String = "chevron.up"
+        static let nameEffect: String = "chevron"
+        static let answerEffect: String = "answer"
+        static let contentsVspacing: CGFloat = 8
+        static let answerLeadingPadding: CGFloat = 20
+        static let questionHspacing: CGFloat = 5
+        static let lineSpacing: Double = 2
+        static let animationDamping: Double = 0.7
+        static let animatonBlend: TimeInterval = 0.7
+        static let animationResponse: Double = 0.3
+        static let animationDuration: TimeInterval = 0.2
+    }
+    
+    // MARK: - Init
+    init(data: FAQData, isExpanded: Bool, onToggle: @escaping () -> Void) {
+        self.data = data
         self.isExpanded = isExpanded
         self.onToggle = onToggle
     }
     
+    // MARK: - Body
     var body: some View {
         Button(action: {
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.7, blendDuration: 0.7)) {
+            withAnimation(.spring(
+                response: FAQItemConstants.animationResponse,
+                dampingFraction: FAQItemConstants.animationDamping,
+                blendDuration: FAQItemConstants.animatonBlend
+            )) {
                 onToggle()
             }
         }, label: {
-            VStack(alignment: .leading, spacing: 10, content: {
-                questionList
-                
-                if isExpanded {
-                    answerList
-                        .padding(.leading, 20)
-                        .matchedGeometryEffect(id: "answer", in: animationNamespace)
-                        .transition(.opacity .animation(.easeInOut(duration: 0.2)))
-                }
-            })
-            .padding(.vertical, 20)
-            .padding(.horizontal, 25)
-            .background(Color.clear)
-            .overlay(alignment: .bottom, content: {
-                makeRectangle()
-            })
-            .overlay(alignment: .top, content: {
-                makeRectangle()
-            })
+            mainContetns
         })
     }
     
-    private var questionList: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 5, content: {
+    private var mainContetns: some View {
+        VStack(alignment: .leading, spacing: FAQItemConstants.contentsVspacing, content: {
+            questTitle
+            
+            if isExpanded {
+                answerDetailData
+            }
+        })
+        .padding(.vertical, FAQItemConstants.answerLeadingPadding)
+    }
+    
+    // MARK: - TopContents
+    /// QnA 질문 타이틀
+    private var questTitle: some View {
+        HStack(alignment: .firstTextBaseline, spacing: FAQItemConstants.questionHspacing, content: {
             Group {
-                Text("Q.")
-                
-                Text(question)
+                Text(FAQItemConstants.questionTitle)
+                Text(data.question)
                     .multilineTextAlignment(.leading)
             }
             .font(.Body3_bold)
@@ -63,32 +81,30 @@ struct FAQItemView: View {
             
             Spacer()
             
-            Image(systemName: isExpanded ? "chevron.down" : "chevron.up")
-                .matchedGeometryEffect(id: "chevron", in: animationNamespace)
+            Image(systemName: isExpanded ? FAQItemConstants.beforeBtnIcon : FAQItemConstants.afterBtnIcon)
+                .matchedGeometryEffect(id: FAQItemConstants.nameEffect, in: animationNamespace)
                 .foregroundStyle(Color.gray500)
         })
     }
-
-    private var answerList: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 5, content: {
+    
+    // MARK: - BottomContents
+    /// QnA 질문 내용
+    private var answerDetailData: some View {
+        HStack(alignment: .firstTextBaseline, spacing: FAQItemConstants.questionHspacing, content: {
             Group {
-                Text("A.")
-                
-                Text(answer.split(separator: "").joined(separator: "\u{200B}"))
+                Text(FAQItemConstants.answerDetailData)
+                Text(data.answer.cleanedAndLineBroken())
                     .lineLimit(nil)
                     .multilineTextAlignment(.leading)
-                    .lineSpacing(2)
-                    .frame(maxWidth: 300, alignment: .leading)
+                    .lineSpacing(FAQItemConstants.lineSpacing)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
             .font(.Body3_semibold)
             .foregroundStyle(Color.primarycolor700)
         })
-    }
-    
-    func makeRectangle() -> some View {
-        Rectangle()
-            .fill(Color.listDivde)
-            .frame(height: 1)
+        .padding(.leading, FAQItemConstants.answerLeadingPadding)
+        .matchedGeometryEffect(id: FAQItemConstants.answerEffect, in: animationNamespace)
+        .transition(.opacity .animation(.easeInOut(duration: FAQItemConstants.animationDuration)))
     }
 }
 
