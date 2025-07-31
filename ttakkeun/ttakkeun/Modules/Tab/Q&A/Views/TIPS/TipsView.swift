@@ -9,29 +9,23 @@ import SwiftUI
 
 struct TipsView: View {
     
-    @StateObject var viewModel: TipsViewModel
+    // MARK: - Property
+    @State var viewModel: TipsViewModel
     @EnvironmentObject var container: DIContainer
-    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     
-    
+    // MARK: - Init
     init(container: DIContainer) {
         self._viewModel = .init(wrappedValue: .init(container: container))
     }
     
+    // MARK: - Body
     var body: some View {
         ZStack {
             VStack(alignment: .leading, spacing: 24, content: {
                 TipsSegment(viewModel: viewModel)
-                
                 tipContents
             })
         }
-        .safeAreaPadding(EdgeInsets(top: 0, leading: 19, bottom: 0, trailing: 19))
-//        .navigationDestination(for: NavigationDestination.self) { detination in
-//            NavigationRoutingView(destination: detination)
-//                .environmentObject(container)
-//                .environmentObject(appFlowViewModel)
-//        }
         
     }
     

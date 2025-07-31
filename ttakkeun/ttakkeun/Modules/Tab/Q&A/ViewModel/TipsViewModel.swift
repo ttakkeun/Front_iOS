@@ -8,18 +8,19 @@
 import Foundation
 import Combine
 
-class TipsViewModel: ObservableObject {
+@Observable
+class TipsViewModel {
     
-    @Published var isShowFloating: Bool = false
+    var isShowFloating: Bool = false
     
-    @Published var isSelectedCategory: ExtendPartItem = .all
-    @Published var tipsResponse: [TipsResponse] = []
+    var isSelectedCategory: ExtendPartItem = .all
+    var tipsResponse: [TipsResponse] = []
     
     // MARK: - Tips Page Property
-    @Published var fetchingTips: Bool = false
-    @Published var canLoadMoreTips: Bool = true
-    @Published var initialLoading: Bool = true
-    @Published var tipsPage: Int = 0
+    var fetchingTips: Bool = false
+    var canLoadMoreTips: Bool = true
+    var initialLoading: Bool = true
+    var tipsPage: Int = 0
     
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
