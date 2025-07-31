@@ -8,10 +8,11 @@
 import Foundation
 import Combine
 
-class FAQViewModel: ObservableObject {
-    @Published var selectedCategory: PartItem = .ear
-    @Published var topTenQuestions: [FAQData] = []
-    @Published var listItem: [FAQData] = []
+@Observable
+class FAQViewModel {
+    var selectedCategory: PartItem = .ear
+    var topTenQuestions: [FAQData] = []
+    var listItem: [FAQData] = []
     
     private var cancellables = Set<AnyCancellable>()
     

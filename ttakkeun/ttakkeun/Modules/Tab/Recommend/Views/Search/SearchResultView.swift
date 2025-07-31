@@ -38,7 +38,6 @@ struct SearchResultView: View {
                 localSearchResultSection
             })
         })
-        .contentMargins(.bottom, UIConstants.safeBottom, for: .scrollContent)
         .sheet(item: $viewModel.selectedData, onDismiss: {
             viewModel.selectedData = nil
         }, content: { data in
@@ -89,6 +88,7 @@ struct SearchResultView: View {
                 .listRowSeparator(.hidden)
                 .listRowInsets(EdgeInsets())
             })
+            .contentMargins(.bottom, 10, for: .scrollContent)
             .listRowSpacing(SearchResultConstants.listSpacing)
             .listStyle(.plain)
             .frame(height: SearchResultConstants.listHeight)

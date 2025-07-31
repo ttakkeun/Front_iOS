@@ -9,6 +9,7 @@ import SwiftUI
 
 struct QnAHeader: View {
     
+    // MARK: - Property
     @Binding var selectedSegment: QnASegment
     @Namespace var name
     

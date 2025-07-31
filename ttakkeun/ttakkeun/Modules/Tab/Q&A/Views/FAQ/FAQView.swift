@@ -9,9 +9,20 @@ import SwiftUI
 
 struct FAQView: View {
     
-    @StateObject var viewModel: FAQViewModel = .init()
+    // MARK: - Property
+    @State var viewModel: FAQViewModel = .init()
     @State private var expandedQuestionIds: Set<UUID> = []
     
+    // MARK: - Constants
+    fileprivate enum FAQConstants {
+        static let profileCatWidth: CGFloat = 67
+        static let profileCatHeight: CGFloat = 56
+        static let topRowHspacing: CGFloat = 16
+        static let rowCount: Int = 1
+        static let topText: String = "자주 묻는 질문 Top 10"
+    }
+    
+    // MARK: - Body
     var body: some View {
         ScrollView(.vertical, content: {
             VStack(spacing: 25, content: {
@@ -49,32 +60,31 @@ struct FAQView: View {
     
     // MARK: - TOP10 Question
     
+    /// 상단 Top10 질문 텍스트
     private var topTenQuestionTitle: some View {
         HStack(spacing: 9, content: {
-            Icon.profileCat.image
+            Image(.profileCat)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 67, height: 56)
+                .frame(width: FAQConstants.profileCatWidth, height: FAQConstants.profileCatHeight)
             
-            Text("자주 묻는 질문 Top 10")
+            Text(FAQConstants.topText)
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
         })
-        .padding(.leading, 40)
     }
     
+    /// Top10 질문 리스트
+    @ViewBuilder
     private var topTenQuestionList: some View {
+        let rows = Array(repeating: GridItem(.flexible()), count: FAQConstants.rowCount)
         ScrollView(.horizontal, content: {
-            LazyHGrid(rows: Array(repeating: GridItem(.flexible(minimum: 160, maximum: 180)), count: 1), spacing: 16, content: {
+            LazyHGrid(rows: rows, spacing: FAQConstants.topRowHspacing, content: {
                 ForEach(Array($viewModel.topTenQuestions.enumerated()), id: \.element.id) { index, question in
                     TopTenQuestionCard(data: question, index: index)
                 }
             })
-            .padding(.vertical, 15)
-            .padding(.horizontal, 35)
         })
-        .frame(height: 156)
-        .padding(.vertical, 4)
     }
     
     // MARK: - CategoryList

@@ -8,33 +8,52 @@
 import SwiftUI
 
 struct TopTenQuestionCard: View {
-    
+
+    // MARK: - Property
     @State private var isFlipped: Bool = false
-    
     @Binding var data: FAQData
     let index: Int
     
+    // MARK: - Constant
+    fileprivate enum TopTenQuestionPadding {
+        static let titleWidth: CGFloat = 21
+        static let titleHeight: CGFloat = 16
+        static let contentsWidth: CGFloat = 136
+        static let contentsHeight: CGFloat = 126
+        static let contentsHorionPadding: CGFloat = 12
+        static let contentsVerticalPaddding: CGFloat = 15
+        static let contentsVspacing: CGFloat = 21
+        static let scrollContentsPadding: CGFloat = 6
+        static let vertical: CGFloat = 3
+        static let horizon: CGFloat = 18
+        static let lineSpacing: Double = 1.5
+        static let cornerRadius: CGFloat = 30
+        static let contentsCornerRadius: CGFloat = 10
+    }
+    
+    // MARK: - Init
     init(data: Binding<FAQData>, index: Int) {
         self._data = data
         self.index = index
     }
     
+    // MARK: - Body
     var body: some View {
-        VStack(alignment: .leading, spacing: 21, content: {
+        VStack(alignment: .leading, spacing: TopTenQuestionPadding.contentsVspacing, content: {
             topTenTitle
-            
             topTenContents
         })
-        .frame(width: 136, height: 126)
-        .padding(.vertical, 15)
-        .padding(.horizontal, 12)
+        .frame(width: TopTenQuestionPadding.contentsWidth, height: TopTenQuestionPadding.contentsHeight)
+        .padding(.vertical, TopTenQuestionPadding.contentsVerticalPaddding)
+        .padding(.horizontal, TopTenQuestionPadding.contentsHorionPadding)
         .background(
-            RoundedRectangle(cornerRadius: 10)
+            RoundedRectangle(cornerRadius: TopTenQuestionPadding.contentsCornerRadius)
                 .fill(isFlipped ? Color.primarycolor100 : Color.white)
-                .stroke(Color.gray200, lineWidth: 1)
-                .rotation3DEffect(.degrees(isFlipped ? -180 : 0),
-                                  axis: (x: 0, y: 1, z: 0),
-                                  perspective: 0.1
+                .stroke(Color.gray200, style: .init())
+                .rotation3DEffect(
+                    .degrees(isFlipped ? -180 : 0),
+                    axis: (x: 0, y: 1, z: 0),
+                    perspective: 0.1
                                  )
         )
         .animation(.default, value: isFlipped)
@@ -43,6 +62,7 @@ struct TopTenQuestionCard: View {
         }
     }
     
+    /// 10위 타이틀
     private var topTenTitle: some View {
         HStack(content: {
             Text("\(titleFirstWord())\(index + 1).")
@@ -52,26 +72,27 @@ struct TopTenQuestionCard: View {
             Spacer()
             
             Text(data.category.toKorean())
-                .frame(width: 21, height: 16)
+                .frame(width: TopTenQuestionPadding.titleWidth, height: TopTenQuestionPadding.titleHeight)
                 .font(.Body4_medium)
-                .padding(.vertical, 3.5)
-                .padding(.horizontal, 18)
+                .padding(.vertical, TopTenQuestionPadding.vertical)
+                .padding(.horizontal, TopTenQuestionPadding.horizon)
                 .background(
-                    RoundedRectangle(cornerRadius: 30)
+                    RoundedRectangle(cornerRadius: TopTenQuestionPadding.cornerRadius)
                         .fill(data.category.toColor())
                 )
         })
     }
     
+    /// 10위 각 컨텐츠 내용
     private var topTenContents: some View {
         ScrollView(.vertical, content: {
-            Text(dataString().split(separator: "").joined(separator: "\u{200B}"))
+            Text(dataString().cleanedAndLineBroken())
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .multilineTextAlignment(.leading)
                 .font(.Body4_medium)
-                .lineSpacing(1.5)
+                .lineSpacing(TopTenQuestionPadding.lineSpacing)
         })
-        .padding(.horizontal, 5)
+        .contentMargins(.horizontal, TopTenQuestionPadding.scrollContentsPadding)
     }
 }
 
