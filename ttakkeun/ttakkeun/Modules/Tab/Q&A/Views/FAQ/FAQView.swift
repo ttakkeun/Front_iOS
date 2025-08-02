@@ -15,16 +15,16 @@ struct FAQView: View {
     
     // MARK: - Constants
     fileprivate enum FAQConstants {
-        static let profileCatWidth: CGFloat = 67
-        static let profileCatHeight: CGFloat = 56
-        static let categoryHeight: CGFloat = 43
-        
         static let contentsVspacing: CGFloat = 25
         static let middleVpspacing: CGFloat = 20
         static let middleAnswerSpacing: CGFloat = 10
         static let gridVspacing: CGFloat = 11
         static let topRowHspacing: CGFloat = 16
         static let topTenQuestionHspacing: CGFloat = 9
+        
+        static let profileCatSize: CGSize = .init(width: 67, height: 56)
+        static let categoryHeight: CGFloat = 43
+        
         static let cornerRadius: CGFloat = 10
         static let columsCount: Int = 3
         static let rowCount: Int = 1
@@ -66,7 +66,7 @@ struct FAQView: View {
             Image(.profileCat)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: FAQConstants.profileCatWidth, height: FAQConstants.profileCatHeight)
+                .frame(width: FAQConstants.profileCatSize.width, height: FAQConstants.profileCatSize.height)
             
             Text(FAQConstants.topText)
                 .font(.H4_bold)
