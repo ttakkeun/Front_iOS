@@ -29,7 +29,7 @@ struct FAQItemView: View {
         static let questionHspacing: CGFloat = 5
         static let lineSpacing: Double = 2
         static let animationDamping: Double = 0.7
-        static let animatonBlend: TimeInterval = 0.7
+        static let animationBlend: TimeInterval = 0.7
         static let animationResponse: Double = 0.3
         static let animationDuration: TimeInterval = 0.2
     }
@@ -47,7 +47,7 @@ struct FAQItemView: View {
             withAnimation(.spring(
                 response: FAQItemConstants.animationResponse,
                 dampingFraction: FAQItemConstants.animationDamping,
-                blendDuration: FAQItemConstants.animatonBlend
+                blendDuration: FAQItemConstants.animationBlend
             )) {
                 onToggle()
             }

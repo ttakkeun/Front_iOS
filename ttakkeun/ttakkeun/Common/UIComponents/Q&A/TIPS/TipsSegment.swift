@@ -16,12 +16,14 @@ struct TipsSegment: View {
     // MARK: - Constants
     fileprivate enum TipsSegment {
         static let segmentHspacing: CGFloat = 8
-        static let segmentVertical: CGFloat = 10
-        static let cornerRadius: CGFloat = 20
-        static let segmentAnimationDuration: TimeInterval = 0.2
         static let segmentTitleVertical: CGFloat = 6
         static let segmentTitleHorizon: CGFloat = 18
-        static let segmentMaxHeight: CGFloat = 32
+        static let scrollPadding: CGFloat = 12
+        
+        static let segmentSize: CGSize = .init(width: 76, height: 32)
+        
+        static let cornerRadius: CGFloat = 20
+        static let segmentAnimationDuration: TimeInterval = 0.2
     }
     
     // MARK: - Body
@@ -32,9 +34,10 @@ struct TipsSegment: View {
                     makeSegment(segment)
                 }
             })
-            .padding(.vertical, TipsSegment.segmentVertical)
         })
         .scrollIndicators(.hidden)
+        .contentMargins(.vertical, UIConstants.horizonScrollBottomPadding, for: .scrollContent)
+        .contentMargins(.horizontal, UIConstants.defaultSafeHorizon, for: .scrollContent)
     }
     
     /// 세그먼트 생성 함수
@@ -58,13 +61,12 @@ struct TipsSegment: View {
             RoundedRectangle(cornerRadius: TipsSegment.cornerRadius)
                 .fill(viewModel.isSelectedCategory == segment ? Color.primarycolor200 : Color.clear)
                 .stroke(Color.gray600, style: .init())
-                .frame(maxWidth: .infinity, maxHeight: TipsSegment.segmentMaxHeight)
+                .frame(width: TipsSegment.segmentSize.width, height: TipsSegment.segmentSize.height)
             
             Text(segment.toKorean())
                 .font(.Body2_medium)
                 .foregroundStyle(viewModel.isSelectedCategory == segment ? Color.gray900 : Color.gray600)
-                .padding(TipsSegment.segmentTitleVertical)
-                .padding(TipsSegment.segmentTitleHorizon)
+                .padding(.horizontal, TipsSegment.segmentTitleHorizon)
         }
     }
 }

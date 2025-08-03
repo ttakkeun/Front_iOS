@@ -14,7 +14,11 @@ class TipsViewModel {
     var isShowFloating: Bool = false
     
     var isSelectedCategory: ExtendPartItem = .all
-    var tipsResponse: [TipsResponse] = []
+    var tipsResponse: [TipsResponse] = [
+        .init(tipId: 0, category: .claw, title: "하하하하하하하하하하하하하하하히히히히히하하하하하하하하하하하하하하하히히히히히히핳하하하하하하하하하하하하하하하히히히히히히핳히핳", content: "흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애", createdAt: "111", imageUrls: [
+            "https://i.namu.wiki/i/eC1vniead0RwuZfQweto2OXCVWoZPMCuCDQbFLZuaG4Yc-yKxGqbzrUVTow598yEpEhbwpk1Nvw6D4v4BCkGfp8k7KMRElCHnqzUsMAqCvy5uRwjy0nlgYbtTXJCysbcGgsR4Zj0AD6SOyJdXgd6GA.webp"
+        ], authorName: "으짱이", isLike: true, isPopular: true, isScrap: true)
+    ]
     
     // MARK: - Tips Page Property
     var fetchingTips: Bool = false
