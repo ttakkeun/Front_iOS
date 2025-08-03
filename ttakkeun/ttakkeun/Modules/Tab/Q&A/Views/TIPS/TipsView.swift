@@ -15,7 +15,7 @@ struct TipsView: View {
     @EnvironmentObject var container: DIContainer
     
     fileprivate enum TipsConstants {
-        static let contentsVspacing: CGFloat = 24
+        static let contentsVspacing: CGFloat = 16
         static let tipsLaztVspacing: CGFloat = 16
     }
     

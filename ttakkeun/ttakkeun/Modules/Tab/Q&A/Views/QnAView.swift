@@ -13,20 +13,29 @@ struct QnAView: View {
     @EnvironmentObject var container: DIContainer
     @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     @State var qnaSegmentValue: QnASegment = .faq
+    @Binding var isFloatingShow: Bool
     
     // MARK: - Constants
     fileprivate enum QnAConstants {
-        static let contentsVspacing: CGFloat = 36
-        static let tabSpacing: CGFloat = 16
+        static let contentsVspacing: CGFloat = 28
+        static let tabSpacing: CGFloat = 8
     }
     
     // MARK: - Body
     var body: some View {
-        VStack(alignment: .leading, spacing: QnAConstants.contentsVspacing, content: {
-            topStatus
-            qnaScreen
+        ZStack(content: {
+            VStack(alignment: .leading, spacing: QnAConstants.contentsVspacing, content: {
+                topStatus
+                qnaScreen
+            })
+            .background(Color.scheduleBg)
+            
+            /* floating 버튼 */
+            if qnaSegmentValue == .tips {
+                FloatingCircle(isShowFloating: $isFloatingShow)
+                    .environmentObject(container)
+            }
         })
-        .background(Color.scheduleBg)
     }
     
     /// 상단 상태바
@@ -59,7 +68,9 @@ struct QnAView: View {
 }
 
 #Preview {
-    QnAView()
+    @Previewable @State var isShowFloating: Bool = false
+    
+    QnAView(isFloatingShow: $isShowFloating)
         .environmentObject(DIContainer())
         .environmentObject(AppFlowViewModel())
 }
