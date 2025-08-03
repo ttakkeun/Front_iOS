@@ -22,6 +22,7 @@ struct LoadingOverlayModifier: ViewModifier {
         /// 프로필 생성 시 사용
         case createProfile = "반려동물 프로필 생성 중입니다."
         case createJournal = "일지 생성 중입니다. \n잠시 기다려주세요"
+        case createTips = "작성한 Tips를 생성 중입니다."
     }
     
     init(isLoading: Bool, loadingTextType: LoadingTextType) {

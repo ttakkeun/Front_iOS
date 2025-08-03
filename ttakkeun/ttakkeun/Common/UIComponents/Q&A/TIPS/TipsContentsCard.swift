@@ -8,223 +8,331 @@
 import SwiftUI
 import Kingfisher
 
+/// 팁스 게시글 카드
 struct TipsContentsCard: View {
     
-    @EnvironmentObject var container: DIContainer
+    // MARK: - Property
+    @State var isExpand: TipsExpandType = .beforeExpand
     @Binding var data: TipsResponse
     let tipsType: TipsType
     
     let tipsButtonOption: TipsButtonOption?
     let deleteTipsAction: (() -> Void)?
+    let reportAction: () -> Void
     
-    let showReportBtn: Bool
+    // MARK: - Constants
+    fileprivate enum TipsContentsConstants {
+        static let contentsPadding: EdgeInsets = .init(top: 12, leading: 14, bottom: 12, trailing: 18)
+        static let middleContentsVspacing: CGFloat = 9
+        static let tagEdge: EdgeInsets = .init(top: 3, leading: 12, bottom: 3, trailing: 12)
+        static let contentsVspacing: CGFloat = 16
+        static let afterExpandVspacing: CGFloat = 15
+        static let imageHspacing: CGFloat = 10
+        static let scrapHspacing: CGFloat = 6
+        static let myWriteHspacing: CGFloat = 8
+        static let tagHspacing: CGFloat = 4
+        static let heartHspacing: CGFloat = 3
+        static let lineSpacing: CGFloat = 1.5
+        
+        static let contentsHeight: CGFloat = 164
+        static let dotsYSize: CGSize = .init(width: 4, height: 18)
+        static let dotsHorizonPadding: CGFloat = 6
+        static let heartImageSize: CGSize = .init(width: 12, height: 12)
+        static let imageSize: CGSize = .init(width: 76, height: 73)
+        static let tagSize: CGSize = .init(width: 26, height: 18)
+        static let beforeExpandCardHeight: CGFloat = 32
+        
+        static let cornerRadius: CGFloat = 10
+        static let imageMaxCount: Int =  2
+        static let imageTime: TimeInterval = 2
+        static let lineLimit: Int = 2
+        static let expandImageCount: Int = 3
+        static let expandAnimation: TimeInterval = 0.3
+        
+        static let heartImage: String = "heart"
+        static let lightBecomMax: String = "light.beacon.max"
+        static let popularText: String = "인기"
+        static let reportText: String = "신고하기"
+        static let deleteText: String = "삭제하기"
+    }
     
+    // MARK: - Init
     init(data: Binding<TipsResponse>,
          tipsType: TipsType,
          tipsButtonOption: TipsButtonOption? = nil,
          deleteTipsAction: (() -> Void)? = nil,
-         showReportBtn: Bool = true
+         reportActoin: @escaping () -> Void
     ) {
         self._data = data
         self.tipsType = tipsType
         self.tipsButtonOption = tipsButtonOption
         self.deleteTipsAction = deleteTipsAction
-        self.showReportBtn = showReportBtn
+        self.reportAction = reportActoin
     }
     
+    // MARK: - Body
     var body: some View {
-        VStack(alignment: .leading, spacing: 16, content: {
-            topTagInfo
-            
-            if data.isExpand {
-                afterExpandTopContents
-                    .transition(.opacity.combined(with: .blurReplace))
-            } else {
-                beforeExpandTopContents
-            }
-            bottomOption
+        VStack(alignment: .leading, spacing: TipsContentsConstants.contentsVspacing, content: {
+            topContents
+            middleContents
+            bottomContents
         })
-        .padding(.vertical, 12)
-        .padding(.leading, 14)
-        .padding(.trailing, 18)
+        .padding(TipsContentsConstants.contentsPadding)
         .background {
-            RoundedRectangle(cornerRadius: 10)
+            RoundedRectangle(cornerRadius: TipsContentsConstants.cornerRadius)
                 .fill(Color.clear)
                 .stroke(Color.grayBorder)
+                .frame(maxWidth: .infinity)
         }
-        .animation(.easeInOut(duration: 0.3), value: data.isExpand)
+        .animation(.easeInOut(duration: TipsContentsConstants.expandAnimation), value: isExpand)
     }
     
-    // MARK: - MainContents
-    
-    private var topTagInfo: some View {
-        HStack(spacing: 4, content: {
-            makeTag(text: data.category.toKorean(), color: data.category.toColor())
-            
-            bestTag
-            
-            if let tipsButtonOption = tipsButtonOption {
-                likeScrapButton(tipsButtonOption: tipsButtonOption)
-            }
-            
-            if let deleteTipsAction = deleteTipsAction {
-                deleteButton(deleteAction: deleteTipsAction)
-            }
-        })
-        .frame(width: 323)
-    }
-    
-    private var beforeExpandTopContents: some View {
-        HStack(content: {
-            
-            topTextContents
-            
+    // MARK: - TopContents
+    /// 상단 태그 및 버튼 옵션
+    private var topContents: some View {
+        HStack {
+            topLeftTag
             Spacer()
-            
-            contentsImage
-        })
-        .frame(width: 326, height: 73)
+            topRightOption
+        }
     }
     
-    private var afterExpandTopContents: some View {
-        VStack(alignment: .leading, spacing: 15, content: {
-            topTextContents
+    /// 상단 왼쪽 태그
+    private var topLeftTag: some View {
+        HStack(spacing: TipsContentsConstants.tagHspacing, content: {
+            makeTag(text: data.category.toKorean(), color: data.category.toColor())
+            makeTag(text: TipsContentsConstants.popularText, color: Color.yellow)
+        })
+    }
+    
+    /// 상단 오른쪽 옵션
+    @ViewBuilder
+    private var topRightOption: some View {
+        if let tipsButtonOption = tipsButtonOption {
+            likeScrapButton(tipsButtonOption: tipsButtonOption)
+        }
+        
+        if let deleteTipsAction = deleteTipsAction {
+            deleteButton(deleteAction: deleteTipsAction)
+        }
+    }
+    
+    // MARK: - Button
+    /// 팁스 오른쪽 버튼 재사용
+    /// - Parameter type: 타입 선택
+    /// - Returns: 버튼 생성
+    func tipsRightButton(type: TipsLikeScrapType) -> some View {
+        Button(action: {
+            withAnimation {
+                type.action()
+            }
+        }, label: {
+            Image(systemName: type.image)
+                .resizable()
+                .renderingMode(.template)
+                .frame(width: type.frame.width, height: type.frame.height)
+                .foregroundStyle(type.foregroundStyle)
+        })
+    }
+    
+    /// 좋아요 및 스크랩 버튼
+    /// - Parameter tipsButtonOption: 좋아요 및 스크랩 액션
+    /// - Returns: 버튼 반환
+    func likeScrapButton(tipsButtonOption: TipsButtonOption) -> some View {
+        HStack(spacing: 10, content: {
+            tipsRightButton(type: .like(isLike: data.isLike, action: {
+                tipsButtonOption.heartAction()
+            }))
             
+            tipsRightButton(type: .scrap(isScrap: data.isScrap, action: {
+                tipsButtonOption.scrapAction()
+            }))
+            
+            Menu(content: {
+                Button(action: {
+                    reportAction()
+                }, label: {
+                    Label(TipsContentsConstants.reportText, systemImage: TipsContentsConstants.lightBecomMax)
+                        .foregroundStyle(Color.gray900)
+                })
+            }, label: {
+              menuBtnList
+            })
+        })
+    }
+    
+    /// 신고 메뉴 리스트 버튼
+    private var menuBtnList: some View {
+        Image(.dotsY)
+            .resizable()
+            .frame(width: TipsContentsConstants.dotsYSize.width, height: TipsContentsConstants.dotsYSize.height)
+            .padding(.horizontal, TipsContentsConstants.dotsHorizonPadding)
+    }
+    
+    /// 삭제 버튼
+    /// - Parameter deleteAction: 게시글 삭제 버튼
+    /// - Returns: 삭제 버튼 반환
+    func deleteButton(deleteAction: @escaping () -> Void) -> some View {
+        Button(action: {
+            deleteAction()
+        }, label: {
+            Text(TipsContentsConstants.deleteText)
+                .font(.Body3_semibold)
+                .foregroundStyle(Color.gray600)
+                .underline(true)
+        })
+    }
+    
+    // MARK: - Middle
+    /// 중간 팁스 카드 확장 전/후 분기
+    @ViewBuilder
+    private var middleContents: some View {
+        switch isExpand {
+        case .beforeExpand:
+            beforeExpandTopContents
+        case .afterExpand:
+            afterExpandTopContents
+        }
+    }
+    
+    /// 확장 전 카드
+    private var beforeExpandTopContents: some View {
+        HStack(alignment: .top, content: {
+            middleTextContents
+            Spacer()
+            beforeExpandImage
+        })
+        .frame(maxWidth: .infinity)
+    }
+    
+    /// 확장 후 카드
+    private var afterExpandTopContents: some View {
+        VStack(alignment: .leading, spacing: TipsContentsConstants.afterExpandVspacing, content: {
+            middleTextContents
             expandContentsImage
         })
-        .frame(width: 323)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .transition(.opacity.combined(with: .blurReplace))
     }
     
-    private var bottomOption: some View {
-        HStack(content: {
-            bottomTipsInfo
-            
-            Spacer()
-            
-            moreInfoBtn
-        })
-        .frame(width: 326)
-    }
-    
-    
-    private var topTextContents: some View {
-        VStack(alignment: .leading, spacing: 9, content: {
+    /// 게시글 제목 + 컨텐츠 내용
+    private var middleTextContents: some View {
+        VStack(alignment: .leading, spacing: TipsContentsConstants.middleContentsVspacing, content: {
             title
             content
         })
     }
-    
-
-    // MARK: - TopTagButton
-    
-    @ViewBuilder
-    private var bestTag: some View {
-        if data.isPopular {
-            makeTag(text: "인기", color: Color.yellow)
-            
-            Spacer()
-        } else {
-            Spacer()
-        }
-    }
-    
-    // MARK: - Contents
-    
-    /// 제목
+    /// 게시글 내용 제목
     private var title: some View {
         Text(data.title)
             .font(.Body2_semibold)
             .foregroundStyle(Color.gray900)
+            .lineLimit(TipsContentsConstants.lineLimit)
     }
-
+    
+    /// 게시글 내용
     private var content: some View {
-        Text(data.content.split(separator: " ").joined(separator: "\u{200B}"))
-            .frame(maxWidth: data.isExpand ? 322 : 215, alignment: .leading)
+        Text(data.content.customLineBreak())
+            .frame(maxWidth: .infinity, alignment: .leading)
             .font(.Body4_medium)
             .foregroundStyle(Color.gray300)
-            .lineSpacing(1.5)
-            .lineLimit(data.isExpand ? nil : 2)
+            .lineSpacing(TipsContentsConstants.lineSpacing)
+            .lineLimit(isExpand.lineLimit)
             .multilineTextAlignment(.leading)
-            .truncationMode(.tail)
     }
     
+    /// 팁 게시글 확장 전 이미지 표시
     @ViewBuilder
-    private var expandContentsImage: some View {
-        if let imageUrls = data.imageUrls, !imageUrls.isEmpty {
-            if data.isExpand {
-                ScrollView(.horizontal, content: {
-                    HStack(spacing: 10, content: {
-                        ForEach(imageUrls.prefix(3), id: \.self) { url in
-                            makeImage(imageUrl: url)
-                        }
-                    })
-                })
-            }
-        }
-    }
-    
-    @ViewBuilder
-    private var contentsImage: some View {
+    private var beforeExpandImage: some View {
         if let imageUrls = data.imageUrls, !imageUrls.isEmpty {
             ZStack(alignment: .bottomTrailing, content: {
                 makeImage(imageUrl: imageUrls[0])
-                
                 makeCountTag(count: imageUrls.count)
             })
         }
     }
     
-    @ViewBuilder private var bottomTipsInfo: some View {
+    /// 확장 후 이미지 컨텐츠
+    @ViewBuilder
+    private var expandContentsImage: some View {
+        if let imageUrls = data.imageUrls, !imageUrls.isEmpty {
+            ScrollView(.horizontal, content: {
+                HStack(spacing: TipsContentsConstants.imageHspacing, content: {
+                    ForEach(imageUrls.prefix(TipsContentsConstants.expandImageCount), id: \.self) { url in
+                        makeImage(imageUrl: url)
+                    }
+                })
+            })
+        }
+    }
+    
+    // MARK: - BottomContents
+    /// 아래 게시글 작성 및 주인 표시
+    private var bottomContents: some View {
+        HStack(content: {
+            bottomTipsInfo
+            Spacer()
+            moreInfoBtn
+        })
+    }
+    
+    /// 스크랩 및 본인 작성 여부에 따른 상태표시
+    @ViewBuilder
+    private var bottomTipsInfo: some View {
         switch tipsType {
         case .writeMyTips:
             myWriteTipsInfo
         case .scrapTips:
-            userNameElapsedTime
+            scrapTipsInfo
         }
     }
     
-    private var userNameElapsedTime: some View {
-        HStack(spacing: 6, content: {
+    /// 본인 작성 시 상태 표시
+    private var myWriteTipsInfo: some View {
+        HStack(spacing: TipsContentsConstants.myWriteHspacing, content: {
+            Text(data.createdAt.convertedToKoreanTimeDateString())
+                .font(.Body4_medium)
+                .foregroundStyle(Color.gray400)
+            heartInfo
+        })
+    }
+    
+    /// 하트 정보 표시
+    private var heartInfo: some View {
+        HStack(spacing: TipsContentsConstants.heartHspacing, content: {
+            Image(systemName: TipsContentsConstants.heartImage)
+                .renderingMode(.template)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: TipsContentsConstants.heartImageSize.width, height: TipsContentsConstants.heartImageSize.height)
+                .foregroundStyle(Color.gray600)
+            
+            Text((data.recommendCount ?? .zero) <= 999 ? "\(data.recommendCount ?? .zero)" : "999+")
+                .font(.Body4_medium)
+                .foregroundStyle(Color.gray600)
+        })
+    }
+    
+    /// 스크랩 시 상태 표시
+    private var scrapTipsInfo: some View {
+        HStack(spacing: TipsContentsConstants.scrapHspacing, content: {
             Group {
                 Text(data.authorName)
-                
-                Text(DataFormatter.shared.changeDifferenceTime(from: data.createdAt))
+                Text(data.createdAt.timeAgoFromServerTime())
             }
             .font(.Body4_medium)
             .foregroundStyle(Color.gray400)
         })
     }
     
-    private var myWriteTipsInfo: some View {
-        HStack(spacing: 8, content: {
-            Group {
-                Text(DataFormatter.shared.convertToKoreanTime(from: data.createdAt))
-                    .font(.Body4_medium)
-                    .foregroundStyle(Color.gray400)
-                
-                HStack(spacing: 3, content: {
-                    Image(systemName: "heart")
-                        .renderingMode(.template)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 12, height: 12)
-                        .foregroundStyle(Color.gray600)
-                    
-                    Text((data.recommendCount ?? 0) <= 999 ? "\(data.recommendCount ?? 0)" : "999+")
-                        .font(.Body4_medium)
-                        .foregroundStyle(Color.gray600)
-                })
-            }
-        })
-    }
-    
+    /// 더보기 및 접기 버튼 클릭
     private var moreInfoBtn: some View {
         Button(action: {
             withAnimation {
-                data.isExpand.toggle()
+                isExpand.toggle()
             }
         }, label: {
-            Text(data.isExpand ? "접기" : "펼치기")
+            Text(isExpand.moreText)
                 .font(.Body4_medium)
                 .foregroundStyle(Color.gray400)
                 .underline()
@@ -233,19 +341,26 @@ struct TipsContentsCard: View {
 }
 
 extension TipsContentsCard {
+    /// 상단 태그 생성
+    /// - Parameters:
+    ///   - text: 태그 텍스트
+    ///   - color: 태그 색상
+    /// - Returns: 태그 컴포넌트 반환
     func makeTag(text: String, color: Color) -> some View {
         Text(text)
             .font(.Body3_medium)
             .foregroundStyle(Color.gray900)
-            .frame(width: 26, height: 18)
-            .padding(.vertical, 3)
-            .padding(.horizontal, 12)
+            .frame(width: TipsContentsConstants.tagSize.width, height: TipsContentsConstants.tagSize.height)
+            .padding(TipsContentsConstants.tagEdge)
             .background {
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: TipsContentsConstants.cornerRadius)
                     .fill(color)
             }
     }
     
+    /// 게시글 이미지 생성
+    /// - Parameter imageUrl: 이미지 url
+    /// - Returns: 이미지 뷰 반환
     @ViewBuilder
     func makeImage(imageUrl: String) -> some View {
         if let url = URL(string: imageUrl) {
@@ -254,102 +369,29 @@ extension TipsContentsCard {
                     ProgressView()
                         .controlSize(.regular)
                 }
-                .retry(maxCount: 2, interval: .seconds(2))
+                .retry(maxCount: TipsContentsConstants.imageMaxCount, interval: .seconds(TipsContentsConstants.imageTime))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 76, height: 73)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .frame(width: TipsContentsConstants.imageSize.width, height: TipsContentsConstants.imageSize.height)
+                .clipShape(RoundedRectangle(cornerRadius: TipsContentsConstants.cornerRadius))
                 .overlay(content: {
-                    RoundedRectangle(cornerRadius: 10)
+                    RoundedRectangle(cornerRadius: TipsContentsConstants.cornerRadius)
                         .fill(Color.clear)
-                        .stroke(Color.gray200, lineWidth: 1)
+                        .stroke(Color.gray200, style: .init())
                 })
         }
     }
     
+    /// 이미지 남은 갯수 표시
+    /// - Parameter count: 갯수
+    /// - Returns: 이미지 반환
     func makeCountTag(count: Int) -> some View {
         ZStack {
-            Icon.bottomRightTag.image
+            Image(.bottomRightTag)
                 .fixedSize()
             Text("\(count)")
                 .font(.Detail1_bold)
                 .foregroundStyle(Color.white)
         }
-    }
-    
-    func likeScrapButton(tipsButtonOption: TipsButtonOption) -> some View {
-        HStack(spacing: 10, content: {
-            Button(action: {
-                withAnimation {
-                    tipsButtonOption.heartAction()
-                    print("팁스 좋아요 누름")
-                }
-            }, label: {
-                Image(systemName: data.isLike ? "suit.heart.fill" : "suit.heart")
-                    .resizable()
-                    .renderingMode(.template)
-                    .frame(width: 19, height: 18)
-                    .foregroundStyle(data.isLike ? Color.removeBtn : Color.gray600)
-            })
-            
-            Button(action: {
-                withAnimation {
-                    tipsButtonOption.scrapAction()
-                    print("팁스 스크랩 누름")
-                }
-            }, label: {
-                Image(systemName: data.isScrap ? "bookmark.fill" : "bookmark")
-                    .resizable()
-                    .renderingMode(.template)
-                    .frame(width: 15, height: 18)
-                    .foregroundStyle(data.isScrap ? Color.card005 : Color.gray600)
-                    .padding(.leading, 5)
-            })
-            
-            Menu(content: {
-                Button(action: {
-                    container.navigationRouter.push(to: .reportBtn)
-                }, label: {
-                    Label("신고하기", systemImage: "light.beacon.max")
-                        .foregroundStyle(Color.gray900)
-                })
-            }, label: {
-                Icon.dotsY.image
-                    .resizable()
-                    .frame(width: 4, height: 18)
-                    .padding(.horizontal, 6)
-            })
-        })
-        .padding(.leading, 5)
-        .frame(width: 76)
-    }
-    
-    func deleteButton(deleteAction: @escaping () -> Void) -> some View {
-        Button(action: {
-            deleteAction()
-        },
-               label: {
-            Text("삭제하기")
-                .font(.Body3_semibold)
-                .foregroundStyle(Color.gray600)
-                .underline(true)
-        })
-    }
-}
-
-struct TipsButtonOption {
-    let heartAction: () -> Void
-    let scrapAction: () -> Void
-    
-    init(heartAction: @escaping () -> Void, scrapAction: @escaping () -> Void) {
-        self.heartAction = heartAction
-        self.scrapAction = scrapAction
-    }
-}
-
-struct TipsContentsCard_Preview: PreviewProvider {
-    static var previews: some View {
-        TipsContentsCard(data: .constant(TipsResponse(tipId: 0, category: .ear, title: "털 안꼬이게 빗는 법 꿀팁 공유 드림", content: "털은 빗어주지 않으면 쉽게 꼬일 수 있기 때문에 열심히 빗어주면 됩니다. 그래서 매일매일 빗질을 해주는 것이 매우 중요합니다. 털의 길이와 상태에 따라 길이와 상태에 따라 종류에 맞는 빗을 구매하셔서 부드럽게 털을 빗어 죽은 털을 제거해주세요 그러면 윤기나고 건강한 털을 유지할 수 있습니다. 하하하하하하하하", recommendCount: 1000, createdAt: "2024-12-12T02:20:00.08Z", imageUrls: ["https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg", "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg"], authorName: "정의찬", isLike: false, isPopular: true, isScrap: true)), tipsType: .scrapTips, tipsButtonOption: TipsButtonOption(heartAction: { print("hello") }, scrapAction: { print("hello") }))
-            .environmentObject(DIContainer())
     }
 }

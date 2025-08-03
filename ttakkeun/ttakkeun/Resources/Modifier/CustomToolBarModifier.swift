@@ -32,7 +32,7 @@ struct CustomToolBarModifier: ViewModifier {
                 if let title = title {
                     ToolbarItem(placement: .principal, content: {
                         Text(title)
-                            .font(.H3_bold)
+                            .font(.H4_bold)
                             .foregroundStyle(Color.black)
                     })
                 }

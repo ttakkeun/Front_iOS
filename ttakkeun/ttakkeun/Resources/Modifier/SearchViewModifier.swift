@@ -12,6 +12,7 @@ struct SearchViewModifier: ViewModifier {
     
     let lineSpacing: CGFloat = 10
     let cornerRadius: CGFloat = 10
+    let verticalPadding: CGFloat = 50
     
     func body(content: Content) -> some View {
         content
@@ -20,6 +21,7 @@ struct SearchViewModifier: ViewModifier {
             .multilineTextAlignment(.center)
             .lineSpacing(lineSpacing)
             .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.vertical, verticalPadding)
             .background {
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .fill(Color.clear)

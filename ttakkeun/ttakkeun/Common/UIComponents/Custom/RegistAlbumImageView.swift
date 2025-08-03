@@ -16,9 +16,7 @@ struct RegistAlbumImageView<ViewModel: PhotoPickerHandle>: View {
     let titleText: String
     let subTitleText: String
     
-    let maxImageCount: Int = 5
-    var maxWidth: CGFloat = 355
-    var maxHeight: CGFloat = 300
+    var maxImageCount: Int = 5
     let lineSpacing: CGFloat = 2
     let titleVSpacing: CGFloat = 5
     let contentsVspacing: CGFloat = 16
@@ -45,14 +43,12 @@ struct RegistAlbumImageView<ViewModel: PhotoPickerHandle>: View {
         viewModel: ViewModel,
         titleText: String,
         subTitleText: String,
-        maxWidth: CGFloat,
-        maxHeight: CGFloat
+        maxImageCount: Int
     ) {
         self.viewModel = viewModel
         self.titleText = titleText
         self.subTitleText = subTitleText
-        self.maxWidth = maxWidth
-        self.maxHeight = maxHeight
+        self.maxImageCount = maxImageCount
     }
     
     var body: some View {
@@ -99,6 +95,7 @@ struct RegistAlbumImageView<ViewModel: PhotoPickerHandle>: View {
                     imageAddAndRemove(for: index, image: viewModel.getImages()[index])
                 }
             })
+            .fixedSize()
         })
         .contentMargins(.bottom, UIConstants.horizonScrollBottomPadding, for: .scrollContent)
         .contentMargins([.horizontal, .top], horizonPadding, for: .scrollContent)

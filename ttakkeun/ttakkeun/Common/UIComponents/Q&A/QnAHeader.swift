@@ -7,8 +7,10 @@
 
 import SwiftUI
 
+/// QnA 탭 상단 FAQ, TIPS 헤더 세그먼트
 struct QnAHeader: View {
     
+    // MARK: - Property
     @Binding var selectedSegment: QnASegment
     @Namespace var name
     

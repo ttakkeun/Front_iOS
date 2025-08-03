@@ -125,3 +125,9 @@ extension JournalQuestionView {
         
     }
 }
+
+#Preview {
+    JournalQuestionView(viewModel: .init(container: DIContainer()), question: .init(questionID: 1, questionText: "sss", subtitle: "1", isDupe: false, answer: [
+        .init(answerText: "111")
+    ]), allowMultiSelection: false)
+}

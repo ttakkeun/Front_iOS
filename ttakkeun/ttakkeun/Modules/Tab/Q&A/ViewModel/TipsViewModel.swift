@@ -8,18 +8,23 @@
 import Foundation
 import Combine
 
-class TipsViewModel: ObservableObject {
+@Observable
+class TipsViewModel {
     
-    @Published var isShowFloating: Bool = false
+    var isShowFloating: Bool = false
     
-    @Published var isSelectedCategory: ExtendPartItem = .all
-    @Published var tipsResponse: [TipsResponse] = []
+    var isSelectedCategory: ExtendPartItem = .all
+    var tipsResponse: [TipsResponse] = [
+        .init(tipId: 0, category: .claw, title: "하하하하하하하하하하하하하하하히히히히히하하하하하하하하하하하하하하하히히히히히히핳하하하하하하하하하하하하하하하히히히히히히핳히핳", content: "흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애", createdAt: "111", imageUrls: [
+            "https://i.namu.wiki/i/eC1vniead0RwuZfQweto2OXCVWoZPMCuCDQbFLZuaG4Yc-yKxGqbzrUVTow598yEpEhbwpk1Nvw6D4v4BCkGfp8k7KMRElCHnqzUsMAqCvy5uRwjy0nlgYbtTXJCysbcGgsR4Zj0AD6SOyJdXgd6GA.webp"
+        ], authorName: "으짱이", isLike: true, isPopular: true, isScrap: true)
+    ]
     
     // MARK: - Tips Page Property
-    @Published var fetchingTips: Bool = false
-    @Published var canLoadMoreTips: Bool = true
-    @Published var initialLoading: Bool = true
-    @Published var tipsPage: Int = 0
+    var fetchingTips: Bool = false
+    var canLoadMoreTips: Bool = true
+    var initialLoading: Bool = true
+    var tipsPage: Int = 0
     
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()

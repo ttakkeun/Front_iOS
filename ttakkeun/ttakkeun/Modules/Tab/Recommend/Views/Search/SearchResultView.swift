@@ -19,7 +19,12 @@ struct SearchResultView: View {
         static let lineSpacing: CGFloat = 2
         static let itemHspacing: CGFloat = 42
         static let itemVspacing: CGFloat = 25
+        
+        static let listHeight: CGFloat = 400
+        
         static let itemColumCount: Int = 2
+        static let presentCornerRadius: CGFloat = 30
+        static let screenHeight: CGFloat = 540
         
         static let naverTitle: String = "외부 검색 상품"
         static let localTitle: String = "앱 내 검색 결과"
@@ -33,17 +38,16 @@ struct SearchResultView: View {
                 localSearchResultSection
             })
         })
-//        .sheet(isPresented: $viewModel.isShowSheetView, content: {
-//            if let product = viewModel.selectedData {
-//                ProductSheetView(data: Binding(get: { product },
-//                                               set: { updateProduct in
-//                    viewModel.updateProduct(updateProduct)
-//                }), isShowSheet: $viewModel.isShowSheetView, action: { viewModel.likeProduct(productId: product.productId, productData: viewModel.makeLikePatchRequest(data: product)) })
-//                .presentationDetents([.fraction(0.68)])
-//                .presentationDragIndicator(Visibility.hidden)
-//                .presentationCornerRadius(30)
-//            }
-//        })
+        .sheet(item: $viewModel.selectedData, onDismiss: {
+            viewModel.selectedData = nil
+        }, content: { data in
+            ProductSheetView(data: sheetBinding(data: data), action: {
+                viewModel.likeProduct(productId: data.productId, productData: viewModel.makeLikePatchRequest(data: data))
+            })
+            .presentationDetents([.height(SearchResultConstants.screenHeight)])
+            .presentationDragIndicator(.hidden)
+            .presentationCornerRadius(SearchResultConstants.presentCornerRadius)
+        })
     }
     
     // MARK: - Naver
@@ -79,26 +83,28 @@ struct SearchResultView: View {
                             productId: data.productId,
                             productData: viewModel.makeLikePatchRequest(data: data))
                         })
-                        .handleTapGesture(with: viewModel, data: data, source: .searchNaverProduct)
+                    .handleTapGesture(with: viewModel, data: data, source: .searchNaverProduct)
                 }
                 .listRowSeparator(.hidden)
                 .listRowInsets(EdgeInsets())
             })
+            .contentMargins(.bottom, 10, for: .scrollContent)
             .listRowSpacing(SearchResultConstants.listSpacing)
             .listStyle(.plain)
+            .frame(height: SearchResultConstants.listHeight)
+            .scrollIndicators(.hidden)
         } else {
             warningText(type: .naver)
         }
     }
-
+    
     
     // MARK: - Local
     /// 앱 내 검색 섹션
     private var localSearchResultSection: some View {
-        Section(content: {
-            localSearchResult
-        }, header: {
+        VStack(alignment: .leading, spacing: .zero, content: {
             AIRecommendTitle(title: SearchResultConstants.localTitle)
+            localSearchResult
         })
     }
     
@@ -120,15 +126,18 @@ struct SearchResultView: View {
         if !viewModel.localDbData.isEmpty {
             LazyVGrid(columns: columns, spacing: SearchResultConstants.itemHspacing, content: {
                 ForEach($viewModel.localDbData, id: \.id) { $data in
-                    InAppSearchResult(data: $data, action: { viewModel.likeProduct(productId: data.productId, productData: viewModel.makeLikePatchRequest(data: data)) })
-                        .handleTapGesture(with: viewModel, data: data, source: .searchLocalProduct)
-                        .onAppear {
-                            guard !viewModel.localDBDataIsLoading else { return }
-                            
-                            if data == viewModel.localDbData.last {
-                                viewModel.searchLocalDb(keyword: viewModel.searchText, page: viewModel.localPage)
-                            }
+                    InAppSearchResult(
+                        data: $data, action: {
+                            viewModel.likeProduct(productId: data.productId, productData: viewModel.makeLikePatchRequest(data: data))
+                        })
+                    .handleTapGesture(with: viewModel, data: data, source: .searchLocalProduct)
+                    .task {
+                        guard !viewModel.localDBDataIsLoading else { return }
+                        
+                        if data == viewModel.localDbData.last {
+                            viewModel.searchLocalDb(keyword: viewModel.searchText, page: viewModel.localPage)
                         }
+                    }
                 }
             })
         }
@@ -162,13 +171,22 @@ struct SearchResultView: View {
     private func loadingDataView(type: SearchType) -> some View {
         HStack {
             Spacer()
+            
             ProgressView(label: {
                 Text(type.loadingText)
             })
             .controlSize(.regular)
+            
             Spacer()
         }
         .modifier(SearchViewModifier())
+    }
+    
+    private func sheetBinding(data: ProductResponse) -> Binding<ProductResponse> {
+        return  Binding(get: { data },
+                        set: { updateProduct in
+            viewModel.updateProduct(updateProduct)
+        })
     }
 }
 

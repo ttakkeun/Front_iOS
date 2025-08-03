@@ -32,40 +32,38 @@ struct RecommendSearchView: View {
     
     // MARK: - Body
     var body: some View {
-        NavigationStack {
-            Group {
-                if viewModel.isShowingSearchResult {
-                    SearchResultView(viewModel: viewModel)
-                } else if viewModel.isShowingRealTimeResults {
-                    RealTiemSearchView(viewModel: viewModel, onItemClick: { selectedText in
-                        performSearch(with: selectedText)
-                    })
-                }  else {
-                    RecentSearchView(viewModel: viewModel, onItemClick: { selectedText in
-                        performManualSearch(with: selectedText)
-                    })
-                }
-            }
-            .safeAreaPadding(.top, UIConstants.defaultSafeTop)
-            .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
-            .navigationBarBackButtonHidden(true)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar(content: {
-                ToolbarItem(placement: .topBarLeading, content: {
-                    leftChevronButton
+        Group {
+            if viewModel.isShowingSearchResult {
+                SearchResultView(viewModel: viewModel)
+            } else if viewModel.isShowingRealTimeResults {
+                RealTiemSearchView(viewModel: viewModel, onItemClick: { selectedText in
+                    performSearch(with: selectedText)
                 })
-                
-                ToolbarItem(placement: .principal, content: {
-                    searchBar
+            }  else {
+                RecentSearchView(viewModel: viewModel, onItemClick: { selectedText in
+                    performManualSearch(with: selectedText)
                 })
-            })
-            .task {
-                self.isSearch.toggle()
             }
-            .onChange(of: viewModel.searchText, { old, new in
-                viewModel.handleSearchTextChange(old, new)
-            })
         }
+        .safeAreaPadding(.top, UIConstants.defaultSafeTop)
+        .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+        .navigationBarBackButtonHidden(true)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(content: {
+            ToolbarItem(placement: .topBarLeading, content: {
+                leftChevronButton
+            })
+            
+            ToolbarItem(placement: .principal, content: {
+                searchBar
+            })
+        })
+        .task {
+            self.isSearch.toggle()
+        }
+        .onChange(of: viewModel.searchText, { old, new in
+            viewModel.handleSearchTextChange(old, new)
+        })
     }
     
     // MARK: - TopContents
@@ -98,6 +96,7 @@ struct RecommendSearchView: View {
                     .frame(width: RecommendSearchConstants.deleteImageSize, height: RecommendSearchConstants.deleteImageSize)
             })
         }
+        .frame(maxWidth: .infinity)
         .padding(RecommendSearchConstants.textFieldPadding)
         .background {
             RoundedRectangle(cornerRadius: RecommendSearchConstants.cornerRadius)
