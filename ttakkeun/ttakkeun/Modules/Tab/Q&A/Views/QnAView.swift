@@ -29,6 +29,7 @@ struct QnAView: View {
         .background(Color.scheduleBg)
     }
     
+    /// 상단 상태바
     private var topStatus: some View {
         TopStatusBar()
             .environmentObject(container)

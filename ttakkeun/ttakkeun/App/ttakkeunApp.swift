@@ -21,7 +21,7 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            JournalRegistContents(viewModel: .init(container: DIContainer()))
+            WriteTipsView(category: .part(.claw), container: DIContainer())
 //            switch appFlowViewModel.appState {
 //            case .onBoarding:
 //                OnboardingView()

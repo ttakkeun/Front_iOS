@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+// FIXME: - 삭제 필요
 extension UIApplication {
     func hideKeyboard() {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {

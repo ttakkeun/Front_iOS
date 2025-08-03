@@ -9,16 +9,19 @@ import Foundation
 import SwiftUI
 import Combine
 import CombineMoya
+import PhotosUI
 
-class TipsWriteViewModel: ObservableObject, ImageHandling {
+@Observable
+class TipsWriteViewModel {
+    var title: String = ""
+    var textContents: String = ""
     
-    @Published var title: String = ""
-    @Published var textContents: String = ""
+    var isImagePickerPresented: Bool = false
+    var selectedImage: [UIImage] = []
+    var imageItems: [PhotosPickerItem] = []
     
-    @Published var isImagePickerPresented: Bool = false
-    @Published private var selectedImage: [UIImage] = []
     
-    @Published var registTipsLoading: Bool = false
+    var registTipsLoading: Bool = false
     
     var selectedImageCount: Int = 0
     
@@ -43,25 +46,46 @@ class TipsWriteViewModel: ObservableObject, ImageHandling {
         return WriteTipsRequest(title: title, content: textContents, category: category.toPartItemRawValue() ?? "EAR")
     }
     
-    // MARK: - ImageHandling
+    // MARK: - Image
+    public func convertPickerItemsToUIImages(items: [PhotosPickerItem]) {
+        var loadedImages: [UIImage] = []
+        let dispatchGroup = DispatchGroup()
+        
+        for item in items {
+            dispatchGroup.enter()
+            item.loadTransferable(type: Data.self) {result in
+                defer { dispatchGroup.leave() }
+                switch result {
+                case .success(let data):
+                    if let data = data, let image = UIImage(data: data) {
+                        loadedImages.append(image)
+                    }
+                case .failure(let error):
+                    print("이미지 변환 에러: \(error.localizedDescription)")
+                }
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main, execute: {
+            self.addImage(loadedImages)
+        })
+    }
 }
 
-extension TipsWriteViewModel {
-    
-    func addImage(_ images: UIImage) {
-        selectedImage.append(images)
+extension TipsWriteViewModel: PhotoPickerHandle {
+    func addImage(_ images: [UIImage]) {
+        self.selectedImage = images
     }
     
     func removeImage(at index: Int) {
-        selectedImage.remove(at: index)
-    }
-    
-    func showImagePicker() {
-        isImagePickerPresented.toggle()
+        self.selectedImage.remove(at: index)
+        if imageItems.indices.contains(index) {
+            imageItems.remove(at: index)
+        }
     }
     
     func getImages() -> [UIImage] {
-        selectedImage
+        return self.selectedImage
     }
 }
 

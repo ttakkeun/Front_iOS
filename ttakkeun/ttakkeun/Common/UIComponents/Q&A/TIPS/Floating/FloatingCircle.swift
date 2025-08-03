@@ -20,16 +20,19 @@ struct FloatingCircle: View {
     fileprivate enum FloatingCircleConstants {
         static let floatingBgSize: CGSize = .init(width: 50, height: 50)
         static let floatingImageSize: CGSize = .init(width: 18, height: 18)
+        
+        static let floatingPosition: CGSize = .init(width: 0.85, height: 0.8)
         static let rotationEffectDegree: Double = 45
         static let rotationAnimation: TimeInterval = 0.3
         static let floatingDelayTime: Double = 0.1
         static let floatingSpacing: CGFloat = 10
+        
         static let floatingImage: String = "plus"
     }
     
     var body: some View {
         floatingButton
-            .position(x: getScreenSize().width * 0.85, y: getScreenSize().height * 0.8)
+            .position(x: getScreenSize().width * FloatingCircleConstants.floatingPosition.width, y: getScreenSize().height * FloatingCircleConstants.floatingPosition.height)
     }
     
     /// 플로팅 라이브러리 사용 버튼
