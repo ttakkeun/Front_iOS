@@ -8,6 +8,7 @@
 import SwiftUI
 import Kingfisher
 
+/// 팁스 게시글 카드
 struct TipsContentsCard: View {
     
     // MARK: - Property
