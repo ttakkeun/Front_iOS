@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 날짜 피커 시트 뷰
 struct DatePickerSheetView: View {
     
     // MARK: - Binding
@@ -22,6 +23,17 @@ struct DatePickerSheetView: View {
     private let years: [Int]
     private let month = Array(1...12)
     
+    fileprivate enum DatePickerSheetConstants {
+        static let contentsVspacing: CGFloat = 10
+        static let buttonHeight: CGFloat = 39
+        static let cornerRadius: CGFloat = 10
+        static let checkText: String = "확인"
+        static let yearText: String = "Year"
+        static let monthText: String = "Month"
+        static let dayText: String = "Day"
+    }
+    
+    // MARK: - Init
     init(
         selectedDate: Binding<Date>,
         showDatePickerView: Binding<Bool>
@@ -46,76 +58,74 @@ struct DatePickerSheetView: View {
     }
     
     var body: some View {
-        VStack(spacing: 10, content: {
+        VStack(spacing: DatePickerSheetConstants.contentsVspacing, content: {
             Capsule()
                 .modifier(CapsuleModifier())
             
-            DatePicker
-            
-            completeButton
+            topContents
+            bottomContents
         })
-        .safeAreaPadding(EdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0))
-        .background(Color.white)
-        .frame(height: 250)
+        .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
     
-    private var DatePicker: some View {
+    // MARK: - TopContents
+    /// 상단 피커 뷰
+    private var topContents: some View {
         HStack {
-            Group {
-                Picker("Year", selection: $selectedYear, content: {
-                    ForEach(years, id: \.self) { year in
-                        Text(formattedYear(from: year))
-                            .font(.Body4_medium)
-                            .foregroundStyle(Color.gray900)
-                            .tag(year)
-                        
-                    }
-                })
-                
-                Picker("Month", selection: $selectedMonth, content: {
-                    ForEach(month, id: \.self) { month in
-                        Text("\(month)월")
-                            .font(.Body4_medium)
-                            .foregroundStyle(Color.gray900)
-                            .tag(month)
-                    }
-                })
-                
-                Picker("Day", selection: $selectedDay, content: {
-                    ForEach(generateDays(), id: \.self) { day in
-                        Text("\(day)일")
-                            .font(.Body4_medium)
-                            .foregroundStyle(Color.gray900)
-                            .tag(day)
-                    }
-                })
-            }
-            .pickerStyle(WheelPickerStyle())
-            .frame(maxWidth: .infinity)
+            DateComponentsPicker(
+                title: DatePickerSheetConstants.yearText,
+                selection: $selectedYear,
+                values: years,
+                display: { "\(formattedYear(from: $0))" }
+            )
+            
+            DateComponentsPicker(
+                title: DatePickerSheetConstants.monthText,
+                selection: $selectedMonth,
+                values: month,
+                display: { "\($0)월" }
+            )
+            
+            DateComponentsPicker(
+                title: DatePickerSheetConstants.dayText,
+                selection: $selectedDay,
+                values: generateDays(),
+                display: { "\($0)일" }
+            )
         }
-        .padding(.horizontal, 15)
         .labelsHidden()
     }
     
-    private var completeButton: some View {
+    // MARK: - BottomContents
+    /// 하단 날짜 선택 체크 버튼
+    private var bottomContents: some View {
         Button(action: {
-            let components = DateComponents(year: selectedYear, month: selectedMonth, day: selectedDay)
-            if let newDate = Calendar.current.date(from: components) {
-                selectedDate = newDate
-                print("새롭게 선택된 날짜 : \(newDate)")
-            }
+            changeSelectedDate()
             showDatePickerView.toggle()
         }, label: {
-            Text("확인")
+            checkButtonContents
+        })
+    }
+    
+    /// 버튼 액션
+    private func changeSelectedDate() {
+        let components = DateComponents(year: selectedYear, month: selectedMonth, day: selectedDay)
+        if let newDate = Calendar.current.date(from: components) {
+            selectedDate = newDate
+        }
+    }
+    
+    /// 체크 버튼 컨텐츠
+    private var checkButtonContents: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: DatePickerSheetConstants.cornerRadius)
+                .fill(Color.mainPrimary)
+                .frame(height: DatePickerSheetConstants.buttonHeight)
+            
+            Text(DatePickerSheetConstants.checkText)
                 .font(.Body3_medium)
                 .foregroundStyle(Color.gray900)
-                .padding()
-                .frame(width: 208, height: 39)
-                .background {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.mainPrimary)
-                }
-        })
+        }
     }
 }
 
@@ -139,9 +149,8 @@ extension DatePickerSheetView {
     }
 }
 
-struct DatePickerSheetView_Preview: PreviewProvider {
-    static var previews: some View {
-        DatePickerSheetView(selectedDate: .constant(Date()), showDatePickerView: .constant(true))
-            .previewLayout(.sizeThatFits)
-    }
+#Preview {
+    @Previewable @State var date: Date = .init()
+    
+    DatePickerSheetView(selectedDate: $date, showDatePickerView: .constant(true))
 }
