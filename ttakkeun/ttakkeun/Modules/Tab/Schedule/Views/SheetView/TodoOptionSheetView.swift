@@ -41,7 +41,7 @@ struct TodoOptionSheetView: View {
             middleContents
             bottomContents
         })
-        .safeAreaInset(edge: .top, content: {
+        .safeAreaInset(edge: .top, spacing: UIConstants.capsuleSpacing, content: {
             Capsule()
                 .modifier(CapsuleModifier())
         })

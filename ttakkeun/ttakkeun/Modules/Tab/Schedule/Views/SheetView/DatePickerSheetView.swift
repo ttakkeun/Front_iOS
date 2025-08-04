@@ -59,11 +59,12 @@ struct DatePickerSheetView: View {
     
     var body: some View {
         VStack(spacing: DatePickerSheetConstants.contentsVspacing, content: {
-            Capsule()
-                .modifier(CapsuleModifier())
-            
             topContents
             bottomContents
+        })
+        .safeAreaInset(edge: .top, spacing: UIConstants.capsuleSpacing, content: {
+            Capsule()
+                .modifier(CapsuleModifier())
         })
         .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
