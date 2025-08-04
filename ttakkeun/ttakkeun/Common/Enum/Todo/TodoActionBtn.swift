@@ -17,11 +17,11 @@ enum TodoActionBtn: String, CaseIterable {
     func caseIcon() -> Image {
         switch self {
         case .againTomorrow, .tomorrowDay:
-            Icon.againIcon.image
+            Image(.againIcon)
         case .anotherDay:
-            Icon.anotherIcon.image
+            Image(.anotherIcon)
         case .replaceTheDate:
-            Icon.replaceIcon.image
+            Image(.replaceIcon)
         }
     }
     
