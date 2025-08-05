@@ -27,7 +27,6 @@ struct RecommendView: View {
         static let textFieldVerticalPadding: CGFloat = 8
         static let lineSpacing: CGFloat = 2.5
         
-        static let sheetCornerRadiust: CGFloat = 30
         static let sheetHeight: CGFloat = 540
         
         static let buttonWidth: CGFloat = 28
@@ -72,7 +71,7 @@ struct RecommendView: View {
                 })
             .presentationDetents([.height(RecommendConstants.sheetHeight)])
             .presentationDragIndicator(Visibility.hidden)
-            .presentationCornerRadius(RecommendConstants.sheetCornerRadiust)
+            .presentationCornerRadius(UIConstants.sheetCornerRadius)
         })
         //TODO: - API 연결 시 해제
 //        .task {

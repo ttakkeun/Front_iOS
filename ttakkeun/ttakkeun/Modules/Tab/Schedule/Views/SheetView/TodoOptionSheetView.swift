@@ -31,7 +31,6 @@ struct TodoOptionSheetView: View {
         static let popOverHeight: CGFloat = 450
         static let btnHeight: CGFloat = 46
         static let cornerRadius: CGFloat = 10
-        static let presentCornerRadius: CGFloat = 30
     }
     
     // MARK: - Body
@@ -45,6 +44,7 @@ struct TodoOptionSheetView: View {
             Capsule()
                 .modifier(CapsuleModifier())
         })
+        .safeAreaPadding(.top, UIConstants.safeTop)
         .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
         .popover(isPresented: $showCalendar, content: {
             CalendarPickerView(selectedDate: $selectedDate) { date in
@@ -52,7 +52,7 @@ struct TodoOptionSheetView: View {
             }
             .presentationDragIndicator(.visible)
             .presentationDetents([.height(TodoOptionSheetConstants.popOverHeight)])
-            .presentationCornerRadius(TodoOptionSheetConstants.presentCornerRadius)
+            .presentationCornerRadius(UIConstants.sheetCornerRadius)
         })
     }
     // MARK: - PopOver

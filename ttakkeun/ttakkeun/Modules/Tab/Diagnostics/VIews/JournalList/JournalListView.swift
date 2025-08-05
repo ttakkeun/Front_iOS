@@ -30,7 +30,6 @@ struct JournalListView: View {
         static let bottomPadding: CGFloat = 10
         static let bottomCornerRadius: CGFloat = 20
         static let bottomTrailingPadding: CGFloat = 10
-        static let sheetCornerRadius: CGFloat = 30
         
         static let createJournalText: String = "따끈 일지 생성하기"
         static let aiDiagnoseText: String = "따끈 AI 진단하기"
@@ -48,7 +47,7 @@ struct JournalListView: View {
         }
         .sheet(item: $viewModel.journalResultData, content: { journalResultData in
             JournalResultCheckView(journalResultResponse: journalResultData)
-                .presentationCornerRadius(JournalListConstants.sheetCornerRadius)
+                .presentationCornerRadius(UIConstants.sheetCornerRadius)
         })
     }
     

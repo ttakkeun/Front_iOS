@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CalendarCell: View {
     
-    @ObservedObject var viewModel: CalendarViewModel
+    @Bindable var viewModel: CalendarViewModel
     var date: Date
     var isSelected: Bool
     

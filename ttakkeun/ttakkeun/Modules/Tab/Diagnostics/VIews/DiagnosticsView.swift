@@ -21,7 +21,6 @@ struct DiagnosticsView: View {
         static let mainVspacing: CGFloat = 12
         static let topVspacing: CGFloat = 18
         static let calendarHeight: CGFloat = 430
-        static let cornerRadius: CGFloat = 30
         static let datePickerText: String = "검색 날짜 선택"
     }
     
@@ -98,7 +97,7 @@ struct DiagnosticsView: View {
         .datePickerStyle(GraphicalDatePickerStyle())
         .presentationDragIndicator(.visible)
         .presentationDetents([.height(DiagnoticsConstants.calendarHeight)])
-        .presentationCornerRadius(DiagnoticsConstants.cornerRadius)
+        .presentationCornerRadius(UIConstants.sheetCornerRadius)
     }
 }
 

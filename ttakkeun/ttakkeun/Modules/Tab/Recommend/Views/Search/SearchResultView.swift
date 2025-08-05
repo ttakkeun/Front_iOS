@@ -23,7 +23,6 @@ struct SearchResultView: View {
         static let listHeight: CGFloat = 400
         
         static let itemColumCount: Int = 2
-        static let presentCornerRadius: CGFloat = 30
         static let screenHeight: CGFloat = 540
         
         static let naverTitle: String = "외부 검색 상품"
@@ -46,7 +45,7 @@ struct SearchResultView: View {
             })
             .presentationDetents([.height(SearchResultConstants.screenHeight)])
             .presentationDragIndicator(.hidden)
-            .presentationCornerRadius(SearchResultConstants.presentCornerRadius)
+            .presentationCornerRadius(UIConstants.sheetCornerRadius)
         })
     }
     

@@ -10,13 +10,13 @@ import SwiftUI
 struct ScheduleView: View {
     
     @StateObject var completionViewModel: TodoCompletionViewModel
-    @StateObject var calendarViewModel: CalendarViewModel
+    @State var calendarViewModel: CalendarViewModel
     @EnvironmentObject var container: DIContainer
     @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     
     init(container: DIContainer) {
         self._completionViewModel = .init(wrappedValue: .init(container: container))
-        self._calendarViewModel = StateObject(wrappedValue: .init(month: Date(), calendar: Calendar.current, container: container))
+        self.calendarViewModel = .init(month: .now, calendar: .current, container: container)
     }
     
     
@@ -61,7 +61,7 @@ struct ScheduleView: View {
             
             ForEach(PartItem.allCases, id: \.self) { part in
                 TodoCard(partItem: part, container: container)
-                    .environmentObject(calendarViewModel)
+                    .environment(calendarViewModel)
             }
         })
     }

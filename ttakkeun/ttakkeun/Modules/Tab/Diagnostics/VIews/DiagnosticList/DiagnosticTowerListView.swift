@@ -25,7 +25,6 @@ struct DiagnosticTowerListView: View {
         static let topCatHeigt: CGFloat = 102
             
         static let catTowerOffset: CGFloat = 10
-        static let sheetCornerRadius: CGFloat = 30
         static let zIndex: Double = 1
         
         static let emptyDiagListTitle: String = "아직 생성된 진단 기록이 없어요!! \n 일지 작성 후, 진단을 해보세요!"
@@ -61,7 +60,7 @@ struct DiagnosticTowerListView: View {
             .fullScreenCover(isPresented: $viewModel.isShowDetailDiag, content: {
                 if let id = viewModel.selectedDiagId {
                     DiagnosticResultView(viewModel: viewModel, showFullScreenAI: $viewModel.isShowDetailDiag, diagId: id)
-                        .presentationCornerRadius(DiagnosListConstants.sheetCornerRadius)
+                        .presentationCornerRadius(UIConstants.sheetCornerRadius)
                 }
             })
             .contentMargins(.horizontal, DiagnosListConstants.horizonPadding, for: .scrollContent)

@@ -54,7 +54,7 @@ final class DataFormatter {
         return formatter
     }
     
-    
+    // FIXME: - 삭제 필요
     public func monthFormatter() -> DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"

@@ -11,7 +11,7 @@ import SwiftUI
 struct TodoCard: View {
     
     @State var viewModel: TodoCheckViewModel
-    @EnvironmentObject var calendarViewModel: CalendarViewModel
+    @Environment(CalendarViewModel.self) var calendarViewModel
     
     init(partItem: PartItem, container: DIContainer) {
         self.viewModel = .init(partItem: partItem, container: container)
@@ -41,9 +41,9 @@ struct TodoCard: View {
                 .fill(Color.white)
                 .stroke(Color.gray200, lineWidth: 1)
         }
-        .onReceive(calendarViewModel.$selectedDate) { newDate in
-            viewModel.getTodoData(date: newDate)
-        }
+        .onChange(of: calendarViewModel.selectedDate, { old, new in
+            viewModel.getTodoData(date: new)
+        })
     }
     
     private var todoCheckList: some View {

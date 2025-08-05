@@ -67,6 +67,7 @@ struct DatePickerSheetView: View {
                 .modifier(CapsuleModifier())
         })
         .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+        .safeAreaPadding(.top, UIConstants.safeTop)
     }
     
     // MARK: - TopContents
