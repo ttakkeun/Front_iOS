@@ -32,13 +32,13 @@ struct DiagnosticsView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: DiagnoticsConstants.mainVspacing, content: {
-            TopStatusBar()
-                .environmentObject(container)
-                .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
             topContents
             middleContents
         })
         .background(Color.scheduleBg)
+        .safeAreaInset(edge: .top, content: {
+            topStatus
+        })
         .customAlert(alert: alert)
         .fullScreenCover(isPresented: $journalListViewModel.showFullScreenAI, content: {
             diagnosisFlowView
@@ -49,6 +49,11 @@ struct DiagnosticsView: View {
     }
     
     // MARK: - TopContents
+    private var topStatus: some View {
+        TopStatusBar()
+            .environmentObject(container)
+            .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+    }
     /// 상단 액션 컨트롤러 버튼
     private var topContents: some View {
         VStack(alignment: .leading, spacing: DiagnoticsConstants.topVspacing, content: {

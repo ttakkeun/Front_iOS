@@ -13,10 +13,6 @@ struct HomeView: View {
     @EnvironmentObject var container: DIContainer
     @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     @State var homeProfileViewModel: HomeProfileCardViewModel
-    // MARK: - Constants
-    fileprivate enum HomeConstants {
-        static let topVspacing: CGFloat = 14
-    }
     
     // MARK: - Init
     init(container: DIContainer) {
@@ -29,17 +25,20 @@ struct HomeView: View {
             topContents
             HomeDragView(container: container, petType: .cat)
         })
+        .safeAreaInset(edge: .top, content: {
+            topStatus
+        })
     }
     
     // MARK: - TopContents
+    private var topStatus: some View {
+        TopStatusBar()
+            .environmentObject(container)
+            .environmentObject(appFlowViewModel)
+    }
     private var topContents: some View {
-        VStack(alignment: .center, spacing: HomeConstants.topVspacing, content: {
-            TopStatusBar()
-                .environmentObject(container)
-                .environmentObject(appFlowViewModel)
-            
+        VStack(alignment: .center, spacing: .zero, content: {
             HomeProfileCard(viewModel: homeProfileViewModel)
-            
             Spacer()
         })
         .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)

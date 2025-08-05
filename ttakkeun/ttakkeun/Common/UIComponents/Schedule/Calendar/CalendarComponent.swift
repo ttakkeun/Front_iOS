@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// 상단 캘린더 뷰
-struct CalendarView: View {
+struct CalendarComponent: View {
     
     // MARK: - Property
     @Bindable var viewModel: CalendarViewModel
@@ -142,5 +142,5 @@ struct CalendarView: View {
 }
 
 #Preview(traits: .sizeThatFitsLayout) {
-    CalendarView(viewModel: .init(month: .now, calendar: .current, container: DIContainer()))
+    CalendarComponent(viewModel: .init(month: .now, calendar: .current, container: DIContainer()))
 }

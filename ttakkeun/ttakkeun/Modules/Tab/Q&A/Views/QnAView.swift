@@ -24,17 +24,16 @@ struct QnAView: View {
     // MARK: - Body
     var body: some View {
         ZStack(content: {
-            VStack(alignment: .leading, spacing: QnAConstants.contentsVspacing, content: {
-                topStatus
-                qnaScreen
-            })
-            .background(Color.scheduleBg)
-            
+            qnaScreen
             /* floating 버튼 */
             if qnaSegmentValue == .tips {
                 FloatingCircle(isShowFloating: $isFloatingShow)
                     .environmentObject(container)
             }
+        })
+        .background(Color.scheduleBg)
+        .safeAreaInset(edge: .top, content: {
+            topStatus
         })
     }
     

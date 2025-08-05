@@ -52,15 +52,20 @@ struct RecommendView: View {
     
     // MARK: - Body
     var body: some View {
-        VStack(alignment: .center, spacing: RecommendConstants.contentsVspacing, content: {
-            TopStatusBar()
-                .environmentObject(container)
-                .environmentObject(appFlowViewModel)
-                .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
-            
-            contents
+        ScrollView(.vertical, content: {
+            VStack(alignment: .leading, spacing: RecommendConstants.contentsVspacing, content: {
+                topContents
+                if viewModel.selectedCategory == .all {
+                    aiRecommendGroup
+                }
+                rankRecommendGroup
+            })
         })
         .background(Color.white)
+        .contentMargins(.bottom, UIConstants.safeBottom, for: .scrollContent)
+        .safeAreaInset(edge: .top, content: {
+            topStatus
+        })
         .sheet(item: $viewModel.selectedData, onDismiss: {
             viewModel.selectedData = nil
         }, content: { item in
@@ -85,21 +90,14 @@ struct RecommendView: View {
 //        }
     }
     
-    // MARK: - Contents
-    private var contents: some View {
-        ScrollView(.vertical, content: {
-            VStack(alignment: .leading, spacing: RecommendConstants.contentsVspacing, content: {
-                topContents
-                if viewModel.selectedCategory == .all {
-                    aiRecommendGroup
-                }
-                rankRecommendGroup
-            })
-        })
-        .contentMargins(.bottom, UIConstants.safeBottom, for: .scrollContent)
+    // MARK: - TopContents
+    private var topStatus: some View {
+        TopStatusBar()
+            .environmentObject(container)
+            .environmentObject(appFlowViewModel)
+            .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
     
-    // MARK: - TopContents
     /// 상단 검색 및 세그먼트 버튼
     private var topContents: some View {
         VStack(alignment: .leading, spacing: RecommendConstants.topContentsVspacing, content: {

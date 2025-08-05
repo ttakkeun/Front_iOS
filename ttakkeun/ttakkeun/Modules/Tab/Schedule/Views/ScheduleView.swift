@@ -9,19 +9,26 @@ import SwiftUI
 
 struct ScheduleView: View {
     
-    @StateObject var completionViewModel: TodoCompletionViewModel
+    // MARK: - Property
+    @State var viewModel: ScheduleViewModel
     @State var calendarViewModel: CalendarViewModel
     @EnvironmentObject var container: DIContainer
     @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     
+    // MARK: - Constants
+//    fileprivate enum ScheduleConstants {
+//        static let
+//    }
+    
+    // MARK: - Init
     init(container: DIContainer) {
-        self._completionViewModel = .init(wrappedValue: .init(container: container))
+        self.viewModel = .init(container: container)
         self.calendarViewModel = .init(month: .now, calendar: .current, container: container)
     }
     
-    
+    // MARK: - Body
     var body: some View {
-        VStack(alignment: .center, spacing: 0, content: {
+        VStack(alignment: .center, spacing: .zero, content: {
             TopStatusBar()
                 .environmentObject(container)
                 .environmentObject(appFlowViewModel)
@@ -29,7 +36,7 @@ struct ScheduleView: View {
             ScrollView(.vertical, content: {
                 VStack(alignment: .center, spacing: 24, content: {
                     
-                    CalendarView(viewModel: calendarViewModel)
+                    CalendarComponent(viewModel: calendarViewModel)
                     
                     Spacer().frame(height: 3)
                     
@@ -46,12 +53,10 @@ struct ScheduleView: View {
         })
         .background(Color.scheduleBg)
         .task {
-            completionViewModel.getCompletionData()
-        }
-        .onAppear {
-            UIApplication.shared.hideKeyboard()
+            viewModel.getCompletionData()
         }
     }
+    
     
     private var todoList: some View {
         VStack(alignment: .leading, spacing: 9, content: {
@@ -80,8 +85,8 @@ struct ScheduleView: View {
             .foregroundStyle(Color.gray900)
             
             HStack(alignment: .center, spacing: 4, content: {
-                if !completionViewModel.isLoading {
-                    if let data = completionViewModel.completionData {
+                if !viewModel.isLoading {
+                    if let data = viewModel.completionData {
                         ForEach(PartItem.allCases, id: \.self) { part in
                             TodoCompletionRate(data: data, partItem: part)
                         }

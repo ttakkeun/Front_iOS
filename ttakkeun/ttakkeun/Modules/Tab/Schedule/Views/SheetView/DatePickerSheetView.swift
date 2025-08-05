@@ -26,6 +26,7 @@ struct DatePickerSheetView: View {
     fileprivate enum DatePickerSheetConstants {
         static let buttonHeight: CGFloat = 39
         static let cornerRadius: CGFloat = 10
+        static let contentsVspacing: CGFloat = 10
         static let checkText: String = "확인"
         static let yearText: String = "Year"
         static let monthText: String = "Month"
@@ -57,7 +58,7 @@ struct DatePickerSheetView: View {
     }
     
     var body: some View {
-        VStack(spacing: 10, content: {
+        VStack(spacing: DatePickerSheetConstants.contentsVspacing, content: {
             topContents
             bottomContents
         })

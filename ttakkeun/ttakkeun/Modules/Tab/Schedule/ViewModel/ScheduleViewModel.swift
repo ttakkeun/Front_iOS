@@ -9,9 +9,10 @@ import Foundation
 import Combine
 import CombineMoya
 
-class TodoCompletionViewModel: ObservableObject {
-    @Published var completionData: TodoCompleteResponse?
-    @Published var isLoading: Bool = false
+@Observable
+class ScheduleViewModel {
+    var completionData: TodoCompleteResponse?
+    var isLoading: Bool = false
     
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
