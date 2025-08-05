@@ -10,66 +10,62 @@ import SwiftUI
 /// 스케줄 탭 내부의 투두 항목
 struct TodoCard: View {
     
+    // MARK: - Property
     @State var viewModel: TodoCheckViewModel
-    @Environment(CalendarViewModel.self) var calendarViewModel
+    @Bindable var calendarViewModel: CalendarViewModel
+    @AppStorage(AppStorageKey.petId) var petId: Int = 0
+    @FocusState var isFoucused: Bool
     
-    init(partItem: PartItem, container: DIContainer) {
-        self.viewModel = .init(partItem: partItem, container: container)
+    // MARK: - Constants
+    fileprivate enum TodoCardConstants {
+        static let todoListHspacing: CGFloat = 22
+        static let todoListVspacing: CGFloat = 5
+        static let todoOptionHspacing: CGFloat = 8
+        
+        static let plusImageSize: CGSize = .init(width: 20, height: 20)
+        static let todoOptionImageSize: CGSize = .init(width: 18, height: 18)
+        static let contentsPadding: EdgeInsets = EdgeInsets(top: 13, leading: 14, bottom: 13, trailing: 14)
+        
+        static let buttonAnimationTime: TimeInterval = 0.3
+        static let cornerRadius: CGFloat = 10
+        
+        static let notExistTodoListText: String = "Todo List를 만들어볼까요?"
+        static let newTodoPlaceholder: String = "내용을 입력해주세요!!"
     }
     
+    // MARK: - Init
+    init(partItem: PartItem, container: DIContainer, calendarViewModel: CalendarViewModel) {
+        self.viewModel = .init(partItem: partItem, container: container)
+        self.calendarViewModel = calendarViewModel
+    }
+    
+    // MARK: - Body
     var body: some View {
-        HStack(content: {
-                todoCircle
-                
-                Spacer().frame(width: 20)
-                
-                if !viewModel.todos.isEmpty {
-                    todoCheckList
-                } else {
-                    notTodoChecList
-                }
-                
-                Spacer()
+        HStack(spacing: TodoCardConstants.todoListHspacing, content: {
+            leftTodoCircleBtn
+            middleTodoContents
         })
-        .frame(width: 318)
-        .padding(.leading, 14)
-        .padding(.trailing, 18)
-        .padding(.top, 14)
-        .padding(.bottom, 18)
-        .background {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.white)
-                .stroke(Color.gray200, lineWidth: 1)
-        }
+        .padding(TodoCardConstants.contentsPadding)
+        .overlay(content: {
+            mainBackground
+        })
         .onChange(of: calendarViewModel.selectedDate, { old, new in
             viewModel.getTodoData(date: new)
         })
-    }
-    
-    private var todoCheckList: some View {
-        VStack(alignment: .leading, spacing: 5, content: {
-            ForEach($viewModel.todos, id: \.id) { todo in
-                TodoCheckList(data: todo, viewModel: viewModel, partItem: viewModel.partItem, checkAble: true)
-            }
-            
-            if viewModel.isAddingNewTodo {
-                newTodoInputField
-            }
-        })
-    }
-    
-    @ViewBuilder
-    private var notTodoChecList: some View {
-        if viewModel.isAddingNewTodo {
-            newTodoInputField
-        } else {
-            Text("Todo List를 만들어볼까요?")
-                .font(.Body3_medium)
-                .foregroundStyle(Color.gray400)
+        .keyboardToolbar {
+            isFoucused = false
         }
     }
     
-    private var todoCircle: some View {
+    private var mainBackground: some View {
+        RoundedRectangle(cornerRadius: TodoCardConstants.cornerRadius)
+            .fill(Color.clear)
+            .stroke(Color.gray200, style: .init())
+    }
+    
+    // MARK: - Left
+    /// 왼쪽 투두 버튼
+    private var leftTodoCircleBtn: some View {
         ZStack(alignment: .topTrailing, content: {
             TodoCircle(partItem: viewModel.partItem, isBefore: true)
             
@@ -78,71 +74,146 @@ struct TodoCard: View {
                     viewModel.isAddingNewTodoToggle()
                 }
             }, label: {
-                Icon.todoPlus.image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 20, height: 20)
+                leftTodoCircle
             })
             .disabled(viewModel.isAddingNewTodo == true ? true : false)
         })
     }
     
-    private var newTodoInputField: some View {
-        HStack {
-            Icon.unCheckBox.image
-                .fixedSize()
-            
-            VStack(spacing: 0, content: {
-                TextField("내용을 입력해주세요!!" ,text: $viewModel.newTodoText)
-                    .onSubmit {
-                        addNewTodo()
-                    }
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .font(.Body4_medium)
-                    .foregroundStyle(Color.gray900)
-                    .tint(Color.black)
-                
-                Divider()
-                    .frame(height: 2)
-                    .background(Color.mainPrimary)
-            })
-            
-            Spacer()
-            
-            HStack(spacing: 8, content: {
-                makeButton(action: addNewTodo, image: Icon.plus.image)
-                
-                makeButton(action: minustTodo, image: Icon.minus.image)
-            })
-        }
-        .frame(width: 240)
+    /// 왼쪽 투두 버튼 내부 컨텐츠
+    private var leftTodoCircle: some View {
+        Image(.todoPlus)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: TodoCardConstants.plusImageSize.width, height: TodoCardConstants.plusImageSize.height)
     }
-}
-
-extension TodoCard {
     
-    func minustTodo() {
-        viewModel.isAddingNewTodoToggle()
+    // MARK: - MiddleContents
+    /// 중간 체크 리스트 컨텐츠
+    @ViewBuilder
+    private var middleTodoContents: some View {
+        if viewModel.todos.isEmpty {
+            notTodoChecList
+        } else {
+            todoCheckList
+        }
+    }
+    
+    // MARK: - Middle_NotTodo
+    @ViewBuilder
+    private var notTodoChecList: some View {
+        if viewModel.isAddingNewTodo {
+            newTodoInputField
+        } else {
+            notTodoText
+        }
+    }
+    
+    /// 투두 존재하지 않을 시 보일 텍스트
+    private var notTodoText: some View {
+        Text(TodoCardConstants.notExistTodoListText)
+            .font(.Body3_medium)
+            .foregroundStyle(Color.gray400)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
+    // MARK: - Middle_NewTodo
+    /// 투두 가운데 체크 리스트
+    private var todoCheckList: some View {
+        VStack(alignment: .leading, spacing: TodoCardConstants.todoListVspacing, content: {
+            todoForEach
+            newTodoInputField
+        })
+    }
+    
+    /// 투두 리스트 반복 생성
+    private var todoForEach: some View {
+        ForEach($viewModel.todos, id: \.id) { todo in
+            TodoCheckList(data: todo, viewModel: viewModel, partItem: viewModel.partItem, checkAble: true)
+        }
+    }
+    
+    /// 투두 텍스트 필드 생성 시
+    @ViewBuilder
+    private var newTodoInputField: some View {
+        if viewModel.isAddingNewTodo {
+            HStack {
+                Image(.unCheckBox)
+                    .fixedSize()
+                todoTextField
+                Spacer()
+                todoOptionButton
+            }
+        }
+    }
+    
+    /// 투두 입력 텍스트 필드
+    private var todoTextField: some View {
+        VStack(spacing: .zero, content: {
+            TextField("" ,text: $viewModel.newTodoText, prompt: placeholder())
+                .font(.Body4_medium)
+                .foregroundStyle(Color.gray900)
+                .submitLabel(.done)
+                .onSubmit {
+                    addNewTodo()
+                }
+                .focused($isFoucused)
+            
+            Divider()
+                .background(Color.mainPrimary)
+        })
+    }
+    
+    /// 투두 생성 취소 옵션 버튼
+    private var todoOptionButton: some View {
+        HStack(spacing: TodoCardConstants.todoOptionHspacing, content: {
+            makeButton(action: addNewTodo, image: .plus)
+            makeButton(action: minusTodo, image: .minus)
+        })
+    }
+    
+    /// 마이너스 버튼 액션
+    func minusTodo() {
+        viewModel.isAddingNewTodo = false
         viewModel.newTodoText = ""
     }
     
+    /// 추가 버튼 액션
     func addNewTodo() {
         guard !viewModel.newTodoText.isEmpty else { return }
         
-        viewModel.makeTodoContetns(makeTodoData: MakeTodoRequest(petId: UserState.shared.getPetId(), todoCategory: viewModel.partItem.rawValue, todoName: viewModel.newTodoText))
-        viewModel.makeTodoContetns(makeTodoData: MakeTodoRequest(petId: UserState.shared.getPetId(), todoCategory: viewModel.partItem.rawValue, todoName: viewModel.newTodoText))
+        viewModel.makeTodoContetns(makeTodoData: .init(
+            petId: petId,
+            todoCategory: viewModel.partItem.rawValue,
+            todoName: viewModel.newTodoText)
+        )
     }
     
-    func makeButton(action: @escaping () -> Void, image: Image) -> some View {
+    /// 투두 옵션 생성 버튼
+    /// - Parameters:
+    ///   - action: 버튼 액션
+    ///   - image: 버튼 이미지
+    /// - Returns: 버튼 반환
+    func makeButton(action: @escaping () -> Void, image: ImageResource) -> some View {
         Button(action: {
-            withAnimation(.smooth(duration: 0.3)) {
+            withAnimation(.smooth(duration: TodoCardConstants.buttonAnimationTime)) {
                 action()
             }
         }, label: {
-            image
+            Image(image)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 18, height: 18)
+                .frame(width: TodoCardConstants.todoOptionImageSize.width, height: TodoCardConstants.todoOptionImageSize.height)
         })
     }
+    
+    private func placeholder() -> Text {
+        Text(TodoCardConstants.newTodoPlaceholder)
+            .font(.Body4_medium)
+            .foregroundStyle(Color.gray500)
+    }
+}
+
+#Preview {
+    TodoCard(partItem: .ear, container: DIContainer(), calendarViewModel: .init(month: .now, calendar: .current, container: DIContainer()))
 }

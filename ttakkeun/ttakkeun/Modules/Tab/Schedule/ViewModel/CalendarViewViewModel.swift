@@ -12,7 +12,6 @@ import SwiftUI
 class CalendarViewModel {
     
     // MARK: - Published Properties
-    
     var showDatePickerView: Bool = false
     
     var month: Date {

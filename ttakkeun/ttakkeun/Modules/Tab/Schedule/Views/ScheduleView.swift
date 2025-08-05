@@ -13,12 +13,13 @@ struct ScheduleView: View {
     @State var viewModel: ScheduleViewModel
     @State var calendarViewModel: CalendarViewModel
     @EnvironmentObject var container: DIContainer
-    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     
     // MARK: - Constants
-//    fileprivate enum ScheduleConstants {
-//        static let
-//    }
+        fileprivate enum ScheduleConstants {
+            static let contentsVspacing: CGFloat = 32
+            static let middleVspacing: CGFloat = 9
+            static let todoListText: String = "Todo List"
+        }
     
     // MARK: - Init
     init(container: DIContainer) {
@@ -28,45 +29,40 @@ struct ScheduleView: View {
     
     // MARK: - Body
     var body: some View {
-        VStack(alignment: .center, spacing: .zero, content: {
-            TopStatusBar()
-                .environmentObject(container)
-                .environmentObject(appFlowViewModel)
-            
-            ScrollView(.vertical, content: {
-                VStack(alignment: .center, spacing: 24, content: {
-                    
-                    CalendarComponent(viewModel: calendarViewModel)
-                    
-                    Spacer().frame(height: 3)
-                    
-                    todoList
-                    
-                    todoCompletionRate
-                })
-                .padding(.top, 5)
-                .padding(.bottom, 110)
-                .padding(.horizontal, 20)
+        ScrollView(.vertical, content: {
+            VStack(alignment: .center, spacing: ScheduleConstants.contentsVspacing, content: {
+                CalendarComponent(viewModel: calendarViewModel)
+                middleContents
+                todoCompletionRate
             })
-            .frame(maxWidth: .infinity)
-            .ignoresSafeArea(.all)
         })
         .background(Color.scheduleBg)
+        .contentMargins(.bottom, UIConstants.safeBottom, for: .scrollContent)
+        .safeAreaInset(edge: .top, content: {
+            topStatus
+        })
         .task {
             viewModel.getCompletionData()
         }
     }
     
+    // MARK: - TopContents
+    /// 상단 로고 및 옵션 바
+    private var topStatus: some View {
+        TopStatusBar()
+            .environmentObject(container)
+    }
     
-    private var todoList: some View {
-        VStack(alignment: .leading, spacing: 9, content: {
-            Text("Todo List")
+    /// 중간 투두 리스트
+    @ViewBuilder
+    private var middleContents: some View {
+        VStack(alignment: .leading, spacing: ScheduleConstants.middleVspacing, content: {
+            Text(ScheduleConstants.todoListText)
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
             
             ForEach(PartItem.allCases, id: \.self) { part in
-                TodoCard(partItem: part, container: container)
-                    .environment(calendarViewModel)
+                TodoCard(partItem: part, container: container, calendarViewModel: calendarViewModel)
             }
         })
     }

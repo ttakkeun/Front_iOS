@@ -11,7 +11,6 @@ struct HomeView: View {
     
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
-    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     @State var homeProfileViewModel: HomeProfileCardViewModel
     
     // MARK: - Init
@@ -34,7 +33,6 @@ struct HomeView: View {
     private var topStatus: some View {
         TopStatusBar()
             .environmentObject(container)
-            .environmentObject(appFlowViewModel)
     }
     private var topContents: some View {
         VStack(alignment: .center, spacing: .zero, content: {
@@ -48,5 +46,4 @@ struct HomeView: View {
 #Preview {
     HomeView(container: DIContainer())
         .environmentObject(DIContainer())
-        .environmentObject(AppFlowViewModel())
 }

@@ -13,7 +13,6 @@ struct RecommendView: View {
     // MARK: - Property
     @State var viewModel: RecommendationProductViewModel
     @EnvironmentObject var container: DIContainer
-    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     @Namespace private var animationNamespace
     
     // MARK: - Constants
@@ -94,7 +93,6 @@ struct RecommendView: View {
     private var topStatus: some View {
         TopStatusBar()
             .environmentObject(container)
-            .environmentObject(appFlowViewModel)
             .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
     
@@ -309,7 +307,6 @@ struct RecommendView_Preview: PreviewProvider {
     static var previews: some View {
         RecommendView(container: DIContainer())
             .environmentObject(DIContainer())
-            .environmentObject(AppFlowViewModel())
     }
 }
 

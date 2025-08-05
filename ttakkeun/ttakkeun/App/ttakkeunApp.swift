@@ -21,7 +21,7 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            WriteTipsView(category: .part(.claw), container: DIContainer())
+            TodoCard(partItem: .ear, container: DIContainer(), calendarViewModel: .init(month: .now, calendar: .current, container: DIContainer()))
 //            switch appFlowViewModel.appState {
 //            case .onBoarding:
 //                OnboardingView()
