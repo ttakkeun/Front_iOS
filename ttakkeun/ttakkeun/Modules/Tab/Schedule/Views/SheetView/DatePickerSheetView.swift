@@ -24,7 +24,6 @@ struct DatePickerSheetView: View {
     private let month = Array(1...12)
     
     fileprivate enum DatePickerSheetConstants {
-        static let contentsVspacing: CGFloat = 10
         static let buttonHeight: CGFloat = 39
         static let cornerRadius: CGFloat = 10
         static let checkText: String = "확인"
@@ -58,7 +57,7 @@ struct DatePickerSheetView: View {
     }
     
     var body: some View {
-        VStack(spacing: DatePickerSheetConstants.contentsVspacing, content: {
+        VStack(spacing: 10, content: {
             topContents
             bottomContents
         })
@@ -67,7 +66,7 @@ struct DatePickerSheetView: View {
                 .modifier(CapsuleModifier())
         })
         .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
-        .safeAreaPadding(.top, UIConstants.safeTop)
+        .safeAreaPadding(.top, UIConstants.capusuleTopPadding)
     }
     
     // MARK: - TopContents

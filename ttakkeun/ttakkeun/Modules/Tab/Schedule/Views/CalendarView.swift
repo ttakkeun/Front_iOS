@@ -23,7 +23,7 @@ struct CalendarView: View {
         
         static let calendarFrameSize: CGSize = .init(width: 306, height: 280)
         static let calendarClearSize: CGSize = .init(width: 36, height: 36)
-        static let calendarArrowSize: CGSize = .init(width: 19, height: 19)
+        static let calendarArrowSize: CGSize = .init(width: 12, height: 12)
         static let topContentsSize: CGSize = .init(width: 306, height: 34)
         static let changeMonthSize: CGSize = .init(width: 7, height: 12)
         static let lazyVgridSize: CGSize = .init(width: 306, height: 280)
@@ -32,6 +32,7 @@ struct CalendarView: View {
         static let chevronRight: String = "chevron.right"
         
         static let sheetFraction: CGFloat = 0.5
+        static let sheetHeight: CGFloat = 300
         static let cornerRadius: CGFloat = 20
         static let columnsCount = 7
         static let lazyVgridSpacing: CGFloat = 7
@@ -50,7 +51,7 @@ struct CalendarView: View {
         }
         .sheet(isPresented: $viewModel.showDatePickerView, content: {
             DatePickerSheetView(selectedDate: $viewModel.selectedDate, showDatePickerView: $viewModel.showDatePickerView)
-                .presentationDetents([.fraction(CalendarConstants.sheetFraction)])
+                .presentationDetents([.height(CalendarConstants.sheetHeight)])
                 .presentationCornerRadius(UIConstants.sheetCornerRadius)
         })
     }
@@ -77,8 +78,7 @@ struct CalendarView: View {
                     .foregroundStyle(Color.gray900)
                 
                 Image(.downArrow)
-                    .resizable()
-                    .frame(width: CalendarConstants.calendarArrowSize.width, height: CalendarConstants.calendarArrowSize.height)
+                    .fixedSize()
             })
             .frame(maxWidth: .infinity, alignment: .leading)
         })
