@@ -21,7 +21,8 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            TodoCard(partItem: .ear, container: DIContainer(), calendarViewModel: .init(month: .now, calendar: .current, container: DIContainer()))
+            ScheduleView(container: DIContainer())
+                .environmentObject(DIContainer())
 //            switch appFlowViewModel.appState {
 //            case .onBoarding:
 //                OnboardingView()

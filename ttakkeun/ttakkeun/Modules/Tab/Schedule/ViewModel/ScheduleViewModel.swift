@@ -11,7 +11,7 @@ import CombineMoya
 
 @Observable
 class ScheduleViewModel {
-    var completionData: TodoCompleteResponse?
+    var completionData: TodoCompleteResponse? = .init(earTotal: 20, earCompleted: 10, hairTotal: 20, hairCompleted: 10, clawTotal: 20, clawCompleted: 10, eyeTotal: 20, eyeCompleted: 10, teethTotal: 20, teethCompleted: 10)
     var isLoading: Bool = false
     
     let container: DIContainer

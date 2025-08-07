@@ -14,7 +14,6 @@ struct TodoCard: View {
     @State var viewModel: TodoCheckViewModel
     @Bindable var calendarViewModel: CalendarViewModel
     @AppStorage(AppStorageKey.petId) var petId: Int = 0
-    @FocusState var isFoucused: Bool
     
     // MARK: - Constants
     fileprivate enum TodoCardConstants {
@@ -52,9 +51,6 @@ struct TodoCard: View {
         .onChange(of: calendarViewModel.selectedDate, { old, new in
             viewModel.getTodoData(date: new)
         })
-        .keyboardToolbar {
-            isFoucused = false
-        }
     }
     
     private var mainBackground: some View {
@@ -157,7 +153,6 @@ struct TodoCard: View {
                 .onSubmit {
                     addNewTodo()
                 }
-                .focused($isFoucused)
             
             Divider()
                 .background(Color.mainPrimary)
