@@ -18,6 +18,11 @@ struct TodoCheckList<ViewModel: TodoCheckProtocol>: View {
     let partItem: PartItem
     let checkAble: Bool
     
+    private var contentsHspacing: CGFloat = 6
+    private var contentdHeight: CGFloat = 16
+    private var presentFraction: CGFloat = 0.4
+    private var buttonAnimation: CGFloat = 0.2
+    private var imageSize: CGSize = .init(width: 18, height: 18)
     
     // MARK: - Init
     init(
@@ -34,21 +39,21 @@ struct TodoCheckList<ViewModel: TodoCheckProtocol>: View {
     
     // MARK: - Body
     var body: some View {
-        HStack(alignment: .center, spacing: 6, content: {
+        HStack(alignment: .center, spacing: contentsHspacing, content: {
             leftButton
             rightButton
         })
-        .frame(maxWidth: 203, maxHeight: 16, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: contentdHeight, alignment: .leading)
         .sheet(isPresented: $isShowSheet, content: {
             TodoOptionSheetView(viewModel: viewModel as! TodoCheckViewModel, selectedTodo: $data, isShowSheet: $isShowSheet)
-                .presentationCornerRadius(30)
-                .presentationDetents([.fraction(0.4)])
+                .presentationCornerRadius(UIConstants.sheetCornerRadius)
+                .presentationDetents([.fraction(presentFraction)])
         })
     }
     
     private var leftButton: some View {
         Button(action: {
-            withAnimation(.easeInOut(duration: 0.2)) {
+            withAnimation(.easeInOut(duration: buttonAnimation)) {
                 viewModel.toggleTodoStatus(for: partItem, todoID: data.id)
                 viewModel.sendTodoStatus(todoId: data.todoID)
             }
@@ -82,8 +87,8 @@ struct TodoCheckList<ViewModel: TodoCheckProtocol>: View {
         Image(.unCheckBox)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(width: 18, height: 18)
-            .opacity(data.todoStatus ? 0 : 1)
+            .frame(width: imageSize.width, height: imageSize.height)
+            .opacity(data.todoStatus ? .zero : 1)
     }
     
     private var checkStatus: some View {
@@ -91,16 +96,10 @@ struct TodoCheckList<ViewModel: TodoCheckProtocol>: View {
             Image(.checkBox)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 18, height: 18)
+                .frame(width: imageSize.width, height: imageSize.height)
             
             Image(.checkV)
                 .fixedSize()
         }
-    }
-}
-
-struct TodoCheckList_Preview: PreviewProvider {
-    static var previews: some View {
-        TodoCard(partItem: .ear, container: DIContainer())
     }
 }

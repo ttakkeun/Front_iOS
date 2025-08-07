@@ -13,7 +13,6 @@ struct RecommendView: View {
     // MARK: - Property
     @State var viewModel: RecommendationProductViewModel
     @EnvironmentObject var container: DIContainer
-    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     @Namespace private var animationNamespace
     
     // MARK: - Constants
@@ -27,7 +26,6 @@ struct RecommendView: View {
         static let textFieldVerticalPadding: CGFloat = 8
         static let lineSpacing: CGFloat = 2.5
         
-        static let sheetCornerRadiust: CGFloat = 30
         static let sheetHeight: CGFloat = 540
         
         static let buttonWidth: CGFloat = 28
@@ -53,15 +51,20 @@ struct RecommendView: View {
     
     // MARK: - Body
     var body: some View {
-        VStack(alignment: .center, spacing: RecommendConstants.contentsVspacing, content: {
-            TopStatusBar()
-                .environmentObject(container)
-                .environmentObject(appFlowViewModel)
-                .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
-            
-            contents
+        ScrollView(.vertical, content: {
+            VStack(alignment: .leading, spacing: RecommendConstants.contentsVspacing, content: {
+                topContents
+                if viewModel.selectedCategory == .all {
+                    aiRecommendGroup
+                }
+                rankRecommendGroup
+            })
         })
         .background(Color.white)
+        .contentMargins(.bottom, UIConstants.safeBottom, for: .scrollContent)
+        .safeAreaInset(edge: .top, content: {
+            topStatus
+        })
         .sheet(item: $viewModel.selectedData, onDismiss: {
             viewModel.selectedData = nil
         }, content: { item in
@@ -72,7 +75,7 @@ struct RecommendView: View {
                 })
             .presentationDetents([.height(RecommendConstants.sheetHeight)])
             .presentationDragIndicator(Visibility.hidden)
-            .presentationCornerRadius(RecommendConstants.sheetCornerRadiust)
+            .presentationCornerRadius(UIConstants.sheetCornerRadius)
         })
         //TODO: - API 연결 시 해제
 //        .task {
@@ -86,21 +89,13 @@ struct RecommendView: View {
 //        }
     }
     
-    // MARK: - Contents
-    private var contents: some View {
-        ScrollView(.vertical, content: {
-            VStack(alignment: .leading, spacing: RecommendConstants.contentsVspacing, content: {
-                topContents
-                if viewModel.selectedCategory == .all {
-                    aiRecommendGroup
-                }
-                rankRecommendGroup
-            })
-        })
-        .contentMargins(.bottom, UIConstants.safeBottom, for: .scrollContent)
+    // MARK: - TopContents
+    private var topStatus: some View {
+        TopStatusBar()
+            .environmentObject(container)
+            .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
     
-    // MARK: - TopContents
     /// 상단 검색 및 세그먼트 버튼
     private var topContents: some View {
         VStack(alignment: .leading, spacing: RecommendConstants.topContentsVspacing, content: {
@@ -312,7 +307,6 @@ struct RecommendView_Preview: PreviewProvider {
     static var previews: some View {
         RecommendView(container: DIContainer())
             .environmentObject(DIContainer())
-            .environmentObject(AppFlowViewModel())
     }
 }
 

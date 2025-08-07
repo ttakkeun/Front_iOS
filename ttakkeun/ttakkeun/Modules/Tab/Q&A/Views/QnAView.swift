@@ -11,7 +11,6 @@ struct QnAView: View {
     
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
-    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
     @State var qnaSegmentValue: QnASegment = .faq
     @Binding var isFloatingShow: Bool
     
@@ -24,17 +23,16 @@ struct QnAView: View {
     // MARK: - Body
     var body: some View {
         ZStack(content: {
-            VStack(alignment: .leading, spacing: QnAConstants.contentsVspacing, content: {
-                topStatus
-                qnaScreen
-            })
-            .background(Color.scheduleBg)
-            
+            qnaScreen
             /* floating 버튼 */
             if qnaSegmentValue == .tips {
                 FloatingCircle(isShowFloating: $isFloatingShow)
                     .environmentObject(container)
             }
+        })
+        .background(Color.scheduleBg)
+        .safeAreaInset(edge: .top, content: {
+            topStatus
         })
     }
     
@@ -42,7 +40,6 @@ struct QnAView: View {
     private var topStatus: some View {
         TopStatusBar()
             .environmentObject(container)
-            .environmentObject(appFlowViewModel)
             .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
     
@@ -59,7 +56,6 @@ struct QnAView: View {
                 TipsView(container: container)
                     .tag(QnASegment.tips)
                     .environmentObject(container)
-                    .environmentObject(appFlowViewModel)
             })
             .tabViewStyle(.page(indexDisplayMode: .never))
         })
@@ -72,5 +68,4 @@ struct QnAView: View {
     
     QnAView(isFloatingShow: $isShowFloating)
         .environmentObject(DIContainer())
-        .environmentObject(AppFlowViewModel())
 }

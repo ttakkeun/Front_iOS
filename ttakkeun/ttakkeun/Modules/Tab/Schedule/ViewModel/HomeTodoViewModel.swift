@@ -37,7 +37,10 @@ class HomeTodoViewModel: TodoCheckProtocol {
         teethTodos.isEmpty
     }
     
-    var earTodos: [TodoList] = []
+    var earTodos: [TodoList] = [
+        .init(todoID: 1, todoName: "으아아아ㅏ아아아아아아", todoStatus: false),
+        .init(todoID: 2, todoName: "으아아으이이이이이이이잉아ㅏ아아아아아아", todoStatus: false),
+    ]
     var hairTodos: [TodoList] = []
     var clawTodos: [TodoList] = []
     var eyeTodos: [TodoList] = []

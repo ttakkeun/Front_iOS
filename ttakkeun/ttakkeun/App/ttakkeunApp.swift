@@ -21,7 +21,8 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            WriteTipsView(category: .part(.claw), container: DIContainer())
+            ScheduleView(container: DIContainer())
+                .environmentObject(DIContainer())
 //            switch appFlowViewModel.appState {
 //            case .onBoarding:
 //                OnboardingView()

@@ -21,7 +21,6 @@ struct DiagnosticsView: View {
         static let mainVspacing: CGFloat = 12
         static let topVspacing: CGFloat = 18
         static let calendarHeight: CGFloat = 430
-        static let cornerRadius: CGFloat = 30
         static let datePickerText: String = "검색 날짜 선택"
     }
     
@@ -33,13 +32,13 @@ struct DiagnosticsView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: DiagnoticsConstants.mainVspacing, content: {
-            TopStatusBar()
-                .environmentObject(container)
-                .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
             topContents
             middleContents
         })
         .background(Color.scheduleBg)
+        .safeAreaInset(edge: .top, content: {
+            topStatus
+        })
         .customAlert(alert: alert)
         .fullScreenCover(isPresented: $journalListViewModel.showFullScreenAI, content: {
             diagnosisFlowView
@@ -50,6 +49,11 @@ struct DiagnosticsView: View {
     }
     
     // MARK: - TopContents
+    private var topStatus: some View {
+        TopStatusBar()
+            .environmentObject(container)
+            .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+    }
     /// 상단 액션 컨트롤러 버튼
     private var topContents: some View {
         VStack(alignment: .leading, spacing: DiagnoticsConstants.topVspacing, content: {
@@ -98,7 +102,7 @@ struct DiagnosticsView: View {
         .datePickerStyle(GraphicalDatePickerStyle())
         .presentationDragIndicator(.visible)
         .presentationDetents([.height(DiagnoticsConstants.calendarHeight)])
-        .presentationCornerRadius(DiagnoticsConstants.cornerRadius)
+        .presentationCornerRadius(UIConstants.sheetCornerRadius)
     }
 }
 

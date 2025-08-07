@@ -8,25 +8,25 @@
 import Foundation
 import SwiftUI
 
-class CalendarViewModel: ObservableObject {
+@Observable
+class CalendarViewModel {
     
     // MARK: - Published Properties
+    var showDatePickerView: Bool = false
     
-    @Published var showDatePickerView: Bool = false
-    
-    @Published var month: Date {
+    var month: Date {
         didSet {
             updateSelectedYearAndMonth(from: month)
         }
     }
-    @Published var selectedDate: Date {
+    var selectedDate: Date {
         didSet {
             syncMonthWithSelectedDate()
         }
     }
-    @Published var selectedYear: Int = 0
-    @Published var selectedMonth: Int = 0
-    @Published var showCurrentWeekBar: Bool = true
+    var selectedYear: Int = 0
+    var selectedMonth: Int = 0
+    var showCurrentWeekBar: Bool = true
     
     // MARK: - Private Properties
     public var calendar: Calendar

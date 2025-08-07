@@ -17,4 +17,8 @@ enum UIConstants {
     static let defaultSafeHorizon: CGFloat = 20
     static let horizonScrollBottomPadding: CGFloat = 10
     static let topScrollPadding: CGFloat = 10
+    
+    static let capsuleSpacing: CGFloat = 28
+    static let capusuleTopPadding: CGFloat = 16
+    static let sheetCornerRadius: CGFloat = 30
 }
