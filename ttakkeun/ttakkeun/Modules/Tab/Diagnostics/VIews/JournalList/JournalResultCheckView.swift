@@ -29,21 +29,16 @@ struct JournalResultCheckView: View {
     
     // MARK: - Body
     var body: some View {
-        VStack(alignment: .center, content: {
-            Capsule()
-                .modifier(CapsuleModifier())
-            middleContents
-        })
-        .safeAreaPadding(.top, JournalResultConstants.topSafePadding)
-    }
-    
-    /// 중간 컨텐츠
-    private var middleContents: some View {
         VStack(spacing: JournalResultConstants.middleVspacing, content: {
             topTitle(data: (journalResultResponse.date, journalResultResponse.time))
             
             journalResultContents(data: journalResultResponse)
         })
+        .safeAreaInset(edge: .top, spacing: UIConstants.capsuleSpacing, content: {
+            Capsule()
+                .modifier(CapsuleModifier())
+        })
+        .safeAreaPadding(.top, JournalResultConstants.topSafePadding)
     }
 }
 

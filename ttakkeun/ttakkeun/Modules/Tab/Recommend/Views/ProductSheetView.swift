@@ -22,12 +22,13 @@ struct ProductSheetView: View {
         static let contentsVspacing: CGFloat = 28
         static let middleContentsVspacing: CGFloat = 9
         static let lineSpacing: CGFloat = 2
+        static let productTopPadding: CGFloat = 9
         
         static let imageHeight: CGFloat = 185
         static let shareImageWidth: CGFloat = 20
         static let shareImageHeight: CGFloat = 23
         static let buttonHeight: CGFloat = 59
-        
+        static let middleHeight: CGFloat = 145
         
         static let imageSize: CGFloat = 30
         static let imageMaxCount: Int = 2
@@ -47,13 +48,15 @@ struct ProductSheetView: View {
     // MARK: - Body
     var body: some View {
         VStack(alignment: .center, spacing: ProductSheetConstants.contentsVspacing, content: {
-            Capsule()
-                .modifier(CapsuleModifier())
             productImage
             middleContents
             MainButton(btnText: ProductSheetConstants.buttonText, height: ProductSheetConstants.buttonHeight, action: {
                 openSite(data.purchaseLink)
             }, color: Color.mainPrimary)
+        })
+        .safeAreaInset(edge: .top, spacing: UIConstants.capsuleSpacing, content: {
+            Capsule()
+                .modifier(CapsuleModifier())
         })
         .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
@@ -85,9 +88,8 @@ struct ProductSheetView: View {
             category
             productTitleInfo
             productPriceInfo
-                .padding(.top, 9)
         })
-        .frame(height: 145, alignment: .top)
+        .frame(height: ProductSheetConstants.middleHeight, alignment: .top)
     }
     
     /// 상단 카테고리 및 쉐어링크
@@ -141,6 +143,7 @@ struct ProductSheetView: View {
                 .font(.H3_bold)
                 .foregroundStyle(Color.gray900)
         })
+        .padding(.top, ProductSheetConstants.productTopPadding)
     }
 }
 

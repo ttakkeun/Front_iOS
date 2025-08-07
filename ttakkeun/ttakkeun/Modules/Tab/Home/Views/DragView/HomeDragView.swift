@@ -21,7 +21,6 @@ struct HomeDragView: View {
     
     // MARK: - Constants
     fileprivate enum HomeDragConstants {
-        static let dragVspacing: CGFloat = 22
         
         static let indicatorWidth: CGFloat = 40
         static let indicatorHeight: CGFloat = 5
@@ -52,9 +51,16 @@ struct HomeDragView: View {
         let maxOffset: CGFloat = screenHeight * HomeDragConstants.maxScreenHeight
         let midPoint = (minOffset + maxOffset) / 2
         
-        VStack(spacing: HomeDragConstants.dragVspacing, content: {
+        ScrollView(.vertical, content: {
+            VStack(alignment: .leading, spacing: HomeDragConstants.compactComponentVspacing, content: {
+                HomeTodo(viewModel: homeTodoViewModel)
+                HomeAIProduct(viewModel: homeRecommendViewModel)
+                HomeTop(viewModel: homeRecommendViewModel, petType: petType)
+            })
+        })
+        .contentMargins(.bottom, UIConstants.safeBottom, for: .scrollContent)
+        .safeAreaInset(edge: .top, spacing: UIConstants.capsuleSpacing, content: {
             dragIndicator
-            compactComponents
         })
         .safeAreaPadding(.top, HomeDragConstants.safeTopPadding)
         .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
@@ -85,17 +91,6 @@ struct HomeDragView: View {
     }
     
     // MARK: - BottomContents
-    /// 드래그 뷰 내부 컨텐츠
-    private var compactComponents: some View {
-        ScrollView(.vertical, content: {
-            VStack(alignment: .leading, spacing: HomeDragConstants.compactComponentVspacing, content: {
-                HomeTodo(viewModel: homeTodoViewModel)
-                HomeAIProduct(viewModel: homeRecommendViewModel)
-                HomeTop(viewModel: homeRecommendViewModel, petType: petType)
-            })
-        })
-        .contentMargins(.bottom, UIConstants.safeBottom, for: .scrollContent)
-    }
     
     private func dragGesture(minOffset: CGFloat, maxOffset: CGFloat, midPoint: CGFloat) -> some Gesture {
         DragGesture()
