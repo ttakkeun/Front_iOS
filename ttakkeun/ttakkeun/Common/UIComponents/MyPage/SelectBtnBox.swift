@@ -9,11 +9,18 @@ import SwiftUI
 
 struct SelectBtnBox: View {
    
+    // MARK: - Property
     var btnInfo: BtnInfo
     @Binding var isSelected: Bool
     
-    //MARK: - Init
+    // MARK: - Constants
+    fileprivate enum SelectedBtnBoxConstants {
+        static let btnHeight: CGFloat = 56
+        static let btnHorizonPadding: CGFloat = 17
+        static let cornerRadius: CGFloat = 10
+    }
     
+    //MARK: - Init
     /// Description
     /// - Parameters:
     ///   - btnInfo : 해당 버튼에 대한 정보 담은 구조체
@@ -22,43 +29,60 @@ struct SelectBtnBox: View {
         self._isSelected = isSelected
     }
     
+    // MARK: - Body
     var body: some View {
         Button(action: {
             isSelected.toggle()
             btnInfo.action()
         }, label: {
-            HStack(alignment: .center, content: {
-                Text(btnInfo.name)
-                    .font(.Body2_medium)
-                    .foregroundStyle(Color.gray900)
-                    .lineLimit(1) // 한 줄만 표시
-                        .truncationMode(.tail) // 길어지면 ...으로 축약
-                
-                Spacer()
-                
-                if let date = btnInfo.date {
-                    Text(date)
-                        .font(.Body4_medium)
-                        .foregroundStyle(Color.gray400)
-                }
-            })
-            .frame(width:314, height: 20)
-            .padding(18)
+            buttonLabel
         })
-        .background {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(isSelected ? Color.mainPrimary : Color.clear)
-                .stroke(Color.gray200, lineWidth: 1)
+    }
+    
+    /// 버튼 내부 라벨
+    private var buttonLabel: some View {
+        ZStack(alignment: .leading, content: {
+            RoundedRectangle(cornerRadius: SelectedBtnBoxConstants.cornerRadius)
+                .fill(Color.clear)
+                .stroke(Color.gray200, style: .init())
+                .frame(height: SelectedBtnBoxConstants.btnHeight)
+            
+            btnContent
+                .padding(.horizontal, SelectedBtnBoxConstants.btnHorizonPadding)
+        })
+    }
+    
+    @ViewBuilder
+    private var btnContent: some View {
+        if let date = btnInfo.date {
+            dateBtnContent(date)
+        } else {
+            btnText
         }
-
+    }
+    
+    /// 글자만 있는 경우 버튼 내부 텍스트
+    private var btnText: some View {
+        Text(btnInfo.name)
+            .font(.Body2_medium)
+            .foregroundStyle(Color.gray900)
+    }
+    
+    /// 날짜와 버튼 같이 존재하는 경우 버튼
+    /// - Parameter date: 날짜 데이터
+    /// - Returns: 버튼 뷰 반환
+    private func dateBtnContent(_ date: String) -> some View {
+        HStack {
+            btnText
+            Spacer()
+            Text(date)
+                .font(.Body4_medium)
+                .foregroundStyle(Color.gray400)
+        }
     }
 }
 
 //MARK: - Preview
-struct SelectBtnBox_Preview: PreviewProvider {
-    static var previews: some View {
-    
-        SelectBtnBox(btnInfo: BtnInfo(name: "서비스 이용약관", date: "24.01.01", action: {print("서비스 이용약관 버튼 눌림")}))
-            .previewLayout(.sizeThatFits)
-    }
+#Preview {
+    SelectBtnBox(btnInfo: BtnInfo(name: "서비스 이용약관", date: nil, action: {print("서비스 이용약관 버튼 눌림")}))
 }

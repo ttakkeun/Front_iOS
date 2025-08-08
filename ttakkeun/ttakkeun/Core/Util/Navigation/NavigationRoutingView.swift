@@ -39,7 +39,7 @@ struct NavigationRoutingView: View {
                 .environmentObject(container)
             
         case .appInfo:
-            AppInfoBtnView()
+            PrivacyAndPoliciesView()
                 .environmentObject(container)
             
         case .myTips:

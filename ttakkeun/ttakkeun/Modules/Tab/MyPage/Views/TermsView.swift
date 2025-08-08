@@ -7,11 +7,14 @@
 
 import SwiftUI
 
+/// 이용 약관 및 정책 뷰
 struct TermsView: View {
     
+    // MARK: - Property
     @EnvironmentObject var container: DIContainer
     var selectedAgreement: AgreementData
     
+    // MARK: - Init
     init(selectedAgreement: AgreementData) {
         self.selectedAgreement = selectedAgreement
     }

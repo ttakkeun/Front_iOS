@@ -8,28 +8,32 @@
 import SwiftUI
 
 /// 앱 이용정보 분야 선택뷰
-struct AppInfoBtnView: View {
+struct PrivacyAndPoliciesView: View {
     
+    // MARK: - Property
     @EnvironmentObject var container: DIContainer
     
-    var body: some View {
-        VStack(alignment: .center, spacing: 40, content: {
-            CustomNavigation(action: { container.navigationRouter.pop() },
-                             title: "이용약관 및 정책",
-                             currentPage: nil)
-            infoBtns
-            
-            Spacer()
-        })
-        .navigationBarBackButtonHidden(true)
-//        .navigationDestination(for: NavigationDestination.self) { destination in
-//            NavigationRoutingView(destination: destination)
-//                .environmentObject(container)
-//        }
+    // MARK: - Constant
+    fileprivate enum PrivacyAndPoliciesConstants {
+        static let contentsVspacing: CGFloat = 17
+        static let navigationTitle: String = "이용약관 및 정책"
+        static let navigationIcon: String = "xmark"
+        
     }
     
-    //MARK: - Components
-    /// Detail Info 볼 수 있는 버튼들
+    // MARK: - Body
+    var body: some View {
+        VStack(spacing: PrivacyAndPoliciesConstants.contentsVspacing, content: {
+        })
+        .navigationBarBackButtonHidden(true)
+        .customNavigation(title: PrivacyAndPoliciesConstants.navigationTitle, leadingAction: {
+            container.navigationRouter.pop()
+        }, naviIcon: Image(systemName: PrivacyAndPoliciesConstants.navigationIcon))
+    }
+    
+    // MARK: - TopContents
+    
+    
     private var infoBtns: some View {
         VStack(alignment: .center, spacing: 17, content: {
             ForEach(btnInfoArray(), id: \.id) { btnInfo in
@@ -44,21 +48,5 @@ struct AppInfoBtnView: View {
             BtnInfo(name: "개인정보 수집 및 이용 동의서", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[1]))}),
             BtnInfo(name: "마케팅 정보 수신 동의서", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[2]))})
         ]
-    }
-    
-}
-
-//MARK: - Preview
-struct AppInfoBtnView_Preview: PreviewProvider {
-    
-    static let devices = ["iPhone 11", "iPhone 16 Pro"]
-    
-    static var previews: some View {
-        ForEach(devices, id: \.self) { device in
-            AppInfoBtnView()
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewDisplayName(device)
-                .environmentObject(DIContainer())
-        }
     }
 }
