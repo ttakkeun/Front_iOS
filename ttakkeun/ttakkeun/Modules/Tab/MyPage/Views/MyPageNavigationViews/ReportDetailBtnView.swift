@@ -13,7 +13,7 @@ struct ReportDetailBtnView: View {
     let selectedCategory: String
     
     @EnvironmentObject var container: DIContainer
-    @StateObject var viewModel: MyPageViewModel
+    @State var viewModel: MyPageViewModel
     
     @State private var selectedIndex: Int? = nil // 선택된 버튼의 인덱스
     

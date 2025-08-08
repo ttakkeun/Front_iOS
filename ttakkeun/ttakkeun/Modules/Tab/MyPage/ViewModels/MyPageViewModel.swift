@@ -10,7 +10,8 @@ import SwiftUI
 import Combine
 import CombineMoya
 
-class MyPageViewModel: ObservableObject {
+@Observable
+class MyPageViewModel {
     
     let container: DIContainer
     
@@ -20,10 +21,10 @@ class MyPageViewModel: ObservableObject {
         self.getUserInfo()
     }
     
-    @Published var userInfo: UserInfoResponse?
-    @Published var isLoading: Bool = false
+    var userInfo: UserInfoResponse?
+    var isLoading: Bool = false
     
-    @Published var inputNickname: String = ""
+    var inputNickname: String = ""
     
     var cancellalbes = Set<AnyCancellable>()
 }

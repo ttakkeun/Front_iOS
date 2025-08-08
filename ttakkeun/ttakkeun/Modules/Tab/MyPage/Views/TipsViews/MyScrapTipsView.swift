@@ -10,7 +10,7 @@ import SwiftUI
 struct MyScrapTipsView: View {
     
     @EnvironmentObject var container: DIContainer
-    @StateObject var viewModel: MyPageViewModel
+    @State var viewModel: MyPageViewModel
     
     init(container: DIContainer) {
         self._viewModel = .init(wrappedValue: .init(container: container))

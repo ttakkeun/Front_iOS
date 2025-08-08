@@ -10,7 +10,7 @@ import SwiftUI
 struct DeleteAccountView: View {
     
     @EnvironmentObject var container: DIContainer
-    @StateObject var viewModel: MyPageViewModel
+    @State var viewModel: MyPageViewModel
     
     @State private var isDeleteAccountMainBtnClicked: Bool = false
     
@@ -22,7 +22,7 @@ struct DeleteAccountView: View {
     @State private var myAccountIsChecked: Bool = false
     
     init(container: DIContainer) {
-        self._viewModel = .init(wrappedValue: .init(container: container))
+        self.viewModel = .init(container: container)
     }
     
     

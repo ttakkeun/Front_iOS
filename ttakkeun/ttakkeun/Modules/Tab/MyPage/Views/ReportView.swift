@@ -10,7 +10,7 @@ import SwiftUI
 struct ReportView: View {
     
     @EnvironmentObject var container: DIContainer
-    @StateObject var viewModel: MyPageViewModel
+    @State var viewModel: MyPageViewModel
     
     @State private var isReportMainBtnClicked: Bool = false
     
