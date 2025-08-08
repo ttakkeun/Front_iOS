@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 버튼 선택 박스, 각종 마이페이지 네비게이션 뷰에서 사용
 struct SelectBtnBox: View {
    
     // MARK: - Property

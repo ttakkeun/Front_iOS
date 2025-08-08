@@ -79,7 +79,7 @@ struct NavigationRoutingView: View {
                 .environmentObject(container)
             
         case .agreementData(let selectedAgreementData):
-            TermsView(selectedAgreement: selectedAgreementData)
+            PrivacyDetailView(selectedAgreement: selectedAgreementData)
                 .environmentObject(container)
             
         case .myInquiryConfirm(let selectedInquiryData):
