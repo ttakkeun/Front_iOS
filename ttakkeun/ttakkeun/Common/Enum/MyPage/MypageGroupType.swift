@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum MypageGroupType {
+enum MypageGroupType: CaseIterable {
     case appInfo
     case usageInfo
     case account

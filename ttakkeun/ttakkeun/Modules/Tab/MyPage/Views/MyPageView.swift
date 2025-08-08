@@ -21,11 +21,13 @@ struct MyPageView: View {
     
     // MARK: - Constants
     fileprivate enum MyPageConstants {
+        static let contentsVspacing: CGFloat = 37
         static let topContentsVspacing: CGFloat = 17
         static let myProfileVspacing: CGFloat = 6
         static let myProfileHspacing: CGFloat = 12
         static let topBtnHspacing: CGFloat = 13
         static let topBtnVspacing: CGFloat = 15
+        static let middleGroupVspacing: CGFloat = 21
         
         static let profileImageSize: CGSize = .init(width: 60, height: 60)
         static let editNicknameBtnSize: CGSize = .init(width: 78, height: 31)
@@ -37,6 +39,8 @@ struct MyPageView: View {
         static let profileImage: String = "person.circle.fill"
         static let userNameText: String = "사용자 닉네임을 가져오지 못했습니다."
         static let emailText: String = "사용자 이메일을 가져오지 못했습니다."
+        static let naviTitle: String = "마이페이지"
+        static let leftChevron: String = "chevron.backward"
     }
     
     // MARK: - Init
@@ -47,47 +51,34 @@ struct MyPageView: View {
     
     // MARK: - Body
     var body: some View {
-        topContents
-//        Group {
-//            if !viewModel.isLoading {
-//                ZStack(content: {
-//                    VStack(alignment: .center, spacing: 37, content: {
-//                        topContents
-//                        
-//                        bottomMyPageBoxGroup
-//                        
-//                        Spacer()
-//                    })
-////                    
-////                    if isNickBtnClicked {
-////                        CustomAlert(alertText: Text("닉네임 수정하기"), alertSubText: Text(UserState.shared.getUserName()), alertAction: .init(showAlert: $isNickBtnClicked, yes: {
-////                            viewModel.editName(newUsername: viewModel.inputNickname)
-////                        }), nickNameValue: $viewModel.inputNickname)
-////                    }
-////                    
-////                    if isLogoutBtnClicked {
-////                        CustomAlert(alertText: Text("로그아웃 하시겠습니까?"), alertSubText: Text("해당 계정으로 다시 로그인 하신다면 기존에 사용하시던 \n데이터 그대로 다시 이용하실 수 있습니다."), alertAction: .init(showAlert: $isLogoutBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
-////                    }
-////                    
-////                    if isProfileDeleteBtnClicked {
-////                        CustomAlert(alertText: Text("해당 프로필을 삭제하시겠습니까?"), alertSubText: Text("해당 프로필에 저장된 데이터는 모두 삭제됩니다. \n삭제된 데이터는 다시 복원할 수 없습니다."), alertAction: .init(showAlert: $isProfileDeleteBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
-////                    }
-//                })
-//            } else {
-//                VStack {
-//                    
-//                    Spacer()
-//                    
-//                    ProgressView(label: {
-//                        LoadingDotsText(text: "잠시만 기다려주세요")
-//                    })
-//                    
-//                    Spacer()
-//                }
-//            }
-//        }
-        .navigationBarBackButtonHidden(true)
-        .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+        NavigationStack {
+            VStack(spacing: MyPageConstants.contentsVspacing, content: {
+                topContents
+                middleContents
+                Spacer()
+            })
+            .navigationBarBackButtonHidden(true)
+            .navigationBarTitleDisplayMode(.inline)
+            .safeAreaPadding(.top, UIConstants.defaultSafeTop)
+            .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+            .customNavigation(title: MyPageConstants.naviTitle, leadingAction: {
+                container.navigationRouter.pop()
+            }, naviIcon: Image(systemName: MyPageConstants.leftChevron))
+        }
+        // TODO: - 팝업 창 관련 기능
+        
+      ////                    if isNickBtnClicked {
+      ////                        CustomAlert(alertText: Text("닉네임 수정하기"), alertSubText: Text(UserState.shared.getUserName()), alertAction: .init(showAlert: $isNickBtnClicked, yes: {
+      ////                            viewModel.editName(newUsername: viewModel.inputNickname)
+      ////                        }), nickNameValue: $viewModel.inputNickname)
+      ////                    }
+      ////
+      ////                    if isLogoutBtnClicked {
+      ////                        CustomAlert(alertText: Text("로그아웃 하시겠습니까?"), alertSubText: Text("해당 계정으로 다시 로그인 하신다면 기존에 사용하시던 \n데이터 그대로 다시 이용하실 수 있습니다."), alertAction: .init(showAlert: $isLogoutBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
+      ////                    }
+      ////
+      ////                    if isProfileDeleteBtnClicked {
+      ////                        CustomAlert(alertText: Text("해당 프로필을 삭제하시겠습니까?"), alertSubText: Text("해당 프로필에 저장된 데이터는 모두 삭제됩니다. \n삭제된 데이터는 다시 복원할 수 없습니다."), alertAction: .init(showAlert: $isProfileDeleteBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
     }
     
     // MARK: - TopContents
@@ -160,62 +151,6 @@ struct MyPageView: View {
         })
     }
     
-    // MARK: - MiddleContents
-    
-    /// 아래 myPage 기능들
-    private var bottomMyPageBoxGroup: some View {
-        VStack(alignment: .center, spacing: 21,content: {
-            ///앱 정보 박스
-//            MyPageInfoBox(myPageInfo: MyPageInfo(
-//                title: "앱 정보",
-//                boxBtn: [
-//                    BtnInfo(name: "이용약관 및 정책", date: nil, action: { container.navigationRouter.push(to: .appInfo) })
-//                ]
-//            ), versionInfo: "v1.0.0")
-//            
-//            ///이용정보 박스
-//            MyPageInfoBox(myPageInfo: MyPageInfo(
-//                title: "이용 정보",
-//                boxBtn: [
-//                    BtnInfo(name: "문의하기", date: nil, action: { container.navigationRouter.push(to: .inquireBtn) })
-//                ]
-//            ))
-            
-            ///계정 박스
-//            MyPageInfoBox(myPageInfo: MyPageInfo(
-//                title: "계정",
-//                boxBtn: [
-//                    BtnInfo(name: "로그아웃하기",
-//                            date: nil,
-//                            action: {
-//                                viewModel.logout { result in
-//                                    switch result {
-//                                    case .success(_):
-//                                        container.navigationRouter.pop()
-//                                        appFlowViewModel.logout()
-//                                    case .failure(_):
-//                                        print("로그아웃 실패")
-//                                    }
-//                                }
-//                              
-//                            }),
-//                    BtnInfo(name: "프로필 삭제하기",
-//                            date: nil,
-//                            action: {
-//                                viewModel.deleteProfile()
-//                                container.navigationRouter.pop()
-//                                appFlowViewModel.deleteProfile()
-//                            }),
-//                    BtnInfo(name: "탈퇴하기", date: nil, action: { print("탈퇴 버튼 눌림") })
-//                ]
-//            ))
-        })
-    }
-}
-
-//MARK: - Function
-extension MyPageView {
-    /// 내가 쓴 tips, 스크랩한 tips 버튼 커스텀
     private func generateTopButton(_ type: TipsBtnType, action: @escaping () -> Void) -> some View {
         Button(action: {
             action()
@@ -244,6 +179,25 @@ extension MyPageView {
             Text(type.text)
                 .font(.Body3_semibold)
                 .foregroundStyle(Color.black)
+        })
+    }
+    
+    // MARK: - MiddleContents
+    /// 앱 정보 관련 그룹 박스 모음
+    private var middleContents: some View {
+        VStack(alignment: .center, spacing: MyPageConstants.middleGroupVspacing, content: {
+            MyPageInfoBox(groupType: .appInfo, showVersionInfo: true, actions: [
+                .terms: { print("이용약관 및 정책") }
+            ])
+            MyPageInfoBox(groupType: .usageInfo, actions: [
+                .inquiry: { print("문의하기") },
+                .report: { print("신고하기") }
+            ])
+            MyPageInfoBox(groupType: .account, actions: [
+                .logout: { print("로그아웃하기") },
+                .deleteProfile: { print("프로필 삭제하기") },
+                .leave: { print("탈퇴하기") }
+            ])
         })
     }
 }

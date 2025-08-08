@@ -21,7 +21,7 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ScheduleView(container: DIContainer())
+            MyPageView(container: DIContainer())
                 .environmentObject(DIContainer())
 //            switch appFlowViewModel.appState {
 //            case .onBoarding:
