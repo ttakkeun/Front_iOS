@@ -34,6 +34,7 @@ struct InquireView: View {
     var body: some View {
         VStack(alignment: .center, spacing: InquireViewConstants.contentsVspacing, content: {
             topContents
+            Divider()
             middleContents
             Spacer()
         })

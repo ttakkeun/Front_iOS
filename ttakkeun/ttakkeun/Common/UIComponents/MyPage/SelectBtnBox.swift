@@ -19,6 +19,7 @@ struct SelectBtnBox: View {
         static let btnHeight: CGFloat = 56
         static let btnHorizonPadding: CGFloat = 17
         static let cornerRadius: CGFloat = 10
+        static let lineLimit: Int = 1
     }
     
     //MARK: - Init
@@ -67,6 +68,7 @@ struct SelectBtnBox: View {
         Text(btnInfo.name)
             .font(.Body2_medium)
             .foregroundStyle(Color.gray900)
+            .lineLimit(SelectedBtnBoxConstants.lineLimit)
     }
     
     /// 날짜와 버튼 같이 존재하는 경우 버튼
