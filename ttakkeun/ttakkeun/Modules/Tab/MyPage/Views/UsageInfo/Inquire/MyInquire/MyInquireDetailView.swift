@@ -8,7 +8,7 @@
 import SwiftUI
 import Kingfisher
 
-struct MyInquireConfirmView: View {
+struct MyInquireDetailView: View {
     
     @EnvironmentObject var container: DIContainer
     var inquiryResponse: MyInquiryResponse
@@ -105,40 +105,10 @@ struct MyInquireConfirmView: View {
 }
 
 //MARK: - function
-extension MyInquireConfirmView {
+extension MyInquireDetailView {
     private func makeTitle(title: String) -> some View {
         Text(title)
             .font(.H4_bold)
             .foregroundStyle(Color.gray900)
     }
 }
-
-//MARK: - Preview
-struct MyInquireConfirmView_Preview: PreviewProvider {
-    
-    static let devices = ["iPhone 11", "iPhone 16 Pro"]
-    
-    private static let inquiryData = MyInquiryResponse(
-        contents: "이러저러해서 이런저런점이 불만이에요",
-        email: "alkfe@naver.com",
-        inquiryType: "서비스 이용문의",
-        imageUrl: [
-            "https://cdn.news.unn.net/news/photo/202110/516864_318701_956.jpg",
-            "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzExMDFfMTQg%2FMDAxNjk4ODA3NjI2MzA3.6qhR_i6-hxPfRDzIR7bWHOwJHaHT2TuWCAtPdr2hs5wg.QlJ16FQF5KoWbuzUeDqteoLYW2UgPm-YTLF700V-4fQg.JPEG.iansnap%2F%25BF%25F8%25BA%25BB_%2528276%2529.jpg&type=sc960_832",
-            "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzExMDFfMTQg%2FMDAxNjk4ODA3NjI2MzA3.6qhR_i6-hxPfRDzIR7bWHOwJHaHT2TuWCAtPdr2hs5wg.QlJ16FQF5KoWbuzUeDqteoLYW2UgPm-YTLF700V-4fQg.JPEG.iansnap%2F%25BF%25F8%25BA%25BB_%2528276%2529.jpg&type=sc960_832"
-        ],
-        created_at: "24.07.15"
-    )
-    
-    static var previews: some View {
-        ForEach(devices, id: \.self) { device in
-            MyInquireConfirmView(inquiryResponse: inquiryData)
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewDisplayName(device)
-                .environmentObject(DIContainer())
-        }
-    }
-}
-
-
-

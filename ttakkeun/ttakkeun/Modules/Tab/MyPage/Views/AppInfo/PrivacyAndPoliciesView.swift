@@ -37,11 +37,11 @@ struct PrivacyAndPoliciesView: View {
     // MARK: - TopContents
     /// 앱 이용정보 관련 처리 버튼 모음
     private var btnInfoArray: [BtnInfo] {
-        [
-            .init(name: "서비스 이용 약관", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[0]))}),
-            .init(name: "개인정보 수집 및 이용 동의서", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[1]))}),
-            .init(name: "마케팅 정보 수신 동의서", date: nil, action: {container.navigationRouter.push(to: .agreementData(selectedAgreementData: AgreementDetailData.loadAgreements()[2]))})
-        ]
+        AppInfoType.allCases.map { category in
+            BtnInfo(name: category.title, date: nil, action: {
+                container.navigationRouter.push(to: .agreementData(selectedAgreementData: category.param))
+            })
+        }
     }
 }
 

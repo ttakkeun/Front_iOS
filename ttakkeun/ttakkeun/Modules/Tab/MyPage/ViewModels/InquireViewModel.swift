@@ -10,23 +10,24 @@ import SwiftUI
 import Combine
 import CombineMoya
 
-class InquireViewModel: ObservableObject {
+@Observable
+class InquireViewModel {
     
-    @Published var myInquiryData: [MyInquiryResponse] = []
-    @Published var isLoading: Bool = false
+    var myInquiryData: [MyInquiryResponse] = []
+    var isLoading: Bool = false
     
     
-    @Published var reportContents: String = ""
-    @Published var email: String = ""
-    @Published var isAgreementCheck: Bool = false
-    @Published var isInquireMainBtnClicked: Bool = false
+    var reportContents: String = ""
+    var email: String = ""
+    var isAgreementCheck: Bool = false
+    var isInquireMainBtnClicked: Bool = false
     
     // MARK: - Image
     
     
     var inqureImages: [UIImage] = []
     
-    @Published var isImagePickerPresented: Bool = false
+    var isImagePickerPresented: Bool = false
     
     var selectedImageCount: Int {
         return inqureImages.count
@@ -42,7 +43,7 @@ class InquireViewModel: ObservableObject {
         self.container = container
     }
     
-    public func makeInquireRequestDto(type: InquiryType) -> InquiryRequestDTO {
+    public func makeInquireRequestDto(type: InquireType) -> InquiryRequestDTO {
         return InquiryRequestDTO(contents: self.reportContents, email: self.email, inquiryType: type)
     }
     

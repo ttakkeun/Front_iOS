@@ -55,7 +55,7 @@ struct NavigationRoutingView: View {
                 .environmentObject(container)
             
         case .inquireBtn:
-            InquireBtnView(container: container)
+            InquireView(container: container)
                 .environmentObject(container)
             
         case .reportBtn:
@@ -63,11 +63,11 @@ struct NavigationRoutingView: View {
                 .environmentObject(container)
             
         case .writeInquire(let selectedInquiryCategory):
-            InquireView(container: container, selectedCategory: selectedInquiryCategory)
+            InquireWriteView(container: container, selectedCategory: selectedInquiryCategory)
                 .environmentObject(container)
             
         case .myInquire:
-            MyInquireBtnView(container: container)
+            InquireView(container: container)
                 .environmentObject(container)
             
         case .reportDetailBtn(let selectedReportCategory):
@@ -83,7 +83,7 @@ struct NavigationRoutingView: View {
                 .environmentObject(container)
             
         case .myInquiryConfirm(let selectedInquiryData):
-            MyInquireConfirmView(inquiryResponse: selectedInquiryData)
+            MyInquireDetailView(inquiryResponse: selectedInquiryData)
                 .environmentObject(container)
         }
     }

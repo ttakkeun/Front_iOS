@@ -4,17 +4,16 @@
 //
 //  Created by 황유빈 on 12/16/24.
 //
-
 import SwiftUI
 
 /// 내가 문의한 내용 보기
-struct MyInquireBtnView: View {
+struct MyInquireView: View {
     
     @EnvironmentObject var container: DIContainer
-    @StateObject var viewModel: InquireViewModel
+    @State var viewModel: InquireViewModel
     
     init(container: DIContainer) {
-        self._viewModel = .init(wrappedValue: .init(container: container))
+        self.viewModel = .init(container: container)
     }
     
     var body: some View {
@@ -53,5 +52,9 @@ struct MyInquireBtnView: View {
             }
         })
     }
-    
+}
+
+#Preview {
+    MyInquireView(container: DIContainer())
+        .environmentObject(DIContainer())
 }

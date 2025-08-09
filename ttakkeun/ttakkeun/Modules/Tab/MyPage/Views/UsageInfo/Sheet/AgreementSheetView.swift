@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 문의하기 및 신고하기 작성 시 이용 약관 체크 뷰
 struct AgreementSheetView: View {
     
     var agreement: AgreementData
@@ -61,19 +62,3 @@ struct AgreementSheetView: View {
         })
     }
 }
-
-//MARK: - Preview
-struct AgreementSheetView_Preview: PreviewProvider {
-    
-    static let devices = ["iPhone 11", "iPhone 16 Pro"]
-    
-    static var previews: some View {
-        ForEach(devices, id: \.self) { device in
-            InquireView(container: DIContainer(), selectedCategory: .SERVICE)
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewDisplayName(device)
-                .environmentObject(DIContainer())
-        }
-    }
-}
-

@@ -21,7 +21,7 @@ enum NavigationDestination: Hashable {
     case deleteAccount
     case inquireBtn
     case reportBtn
-    case writeInquire(selectedInquiryCategory: InquiryType)
+    case writeInquire(selectedInquiryCategory: InquireType)
     case myInquire
     case reportDetailBtn(selectedReportCategory: String)
     case writeReport
