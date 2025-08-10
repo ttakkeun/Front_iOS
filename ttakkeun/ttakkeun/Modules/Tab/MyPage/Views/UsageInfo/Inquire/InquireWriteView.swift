@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// 문의하기 카테고리 선택 후 작성 뷰
+/// 문의하기 및 신고하기 내용 작성 뷰모델
 struct InquireWriteView: View {
     
     // MARK: - Property

@@ -58,3 +58,9 @@ struct CameraButton: View {
         .padding(.top, CameraButtonConstants.topPadding)
     }
 }
+
+#Preview {
+    CameraButton(cameraText: Text("이미지 선택하기"), action: {
+        print("hello")
+    })
+}

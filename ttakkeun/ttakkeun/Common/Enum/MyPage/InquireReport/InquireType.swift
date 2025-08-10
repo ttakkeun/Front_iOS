@@ -19,7 +19,7 @@ enum InquireType: String, Codable, CaseIterable {
         case .AD:
             return "광고 문의"
         case .PARTNERSHIP:
-            return "제후 문의"
+            return "제휴 문의"
         }
     }
     
