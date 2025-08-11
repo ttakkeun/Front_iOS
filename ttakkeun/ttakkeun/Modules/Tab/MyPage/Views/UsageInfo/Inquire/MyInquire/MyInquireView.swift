@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-/// 내가 문의한 내용 보기 뷰
+/// 내가 문의한 내용 목록 보기 뷰
 struct MyInquireView: View {
     
     // MARK: - Property
@@ -29,7 +29,8 @@ struct MyInquireView: View {
     
     // MARK: - Body
     var body: some View {
-        VStack(alignment: .center, spacing: MyInquireCostants.contentsVspacing, content: {
+        VStack(alignment: .leading, spacing: MyInquireCostants.contentsVspacing, content: {
+            topTitle
             inquireBtns
             Spacer()
         })
@@ -45,13 +46,16 @@ struct MyInquireView: View {
     }
     
     //MARK: - Components
+    /// 상단 버튼 타이틀
+    private var topTitle: some View {
+        Text(MyInquireCostants.topTitle)
+            .font(.H4_bold)
+            .foregroundStyle(Color.gray900)
+
+    }
     /// 내가 문의한 내용들 볼 수 있는 버튼들
     private var inquireBtns: some View {
         VStack(alignment: .leading, spacing: MyInquireCostants.btnVspacing, content: {
-            Text(MyInquireCostants.topTitle)
-                .font(.H4_bold)
-                .foregroundStyle(Color.gray900)
-
             ForEach(viewModel.myInquiryData, id: \.id) { btnInfo in
                 SelectBtnBox(btnInfo: .init(name: btnInfo.contents, date: btnInfo.created_at.convertedToKoreanTimeDateString(), action: {
                     container.navigationRouter.push(to: .myInquiryConfirm(selectedInquiryData: btnInfo))

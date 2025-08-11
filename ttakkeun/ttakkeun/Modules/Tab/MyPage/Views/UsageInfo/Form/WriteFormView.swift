@@ -13,7 +13,8 @@ struct WriteFormView: View {
     
     // MARK: - Property
     @Binding var textEidtor: String
-    @Binding var emailText: String
+    @Binding var emailText: String?
+    @Binding var images: [UIImage]
     let type: WriteFormType
     let onSubmit: (@Sendable () async throws -> Void)?
     
@@ -21,7 +22,7 @@ struct WriteFormView: View {
     @State var photoPickerItems: [PhotosPickerItem] = .init()
     @State var showAgreement: Bool = false
     @State var checkAgreement: Bool = false
-    @Binding var images: [UIImage]
+    @FocusState var isFocused: Bool
     @Environment(\.dismiss) var dismiss
     
     // MARK: - Constants
@@ -65,6 +66,7 @@ struct WriteFormView: View {
                     Spacer().id(WriteFormConstants.scrollId)
                 })
             })
+            .ignoresSafeArea(.keyboard)
             .navigationBarBackButtonHidden(true)
             .navigationBarTitleDisplayMode(.inline)
             .customNavigation(title: type.config.naviTitle, leadingAction: {
@@ -93,6 +95,9 @@ struct WriteFormView: View {
             .sheet(isPresented: $showAgreement, content: {
                 AgreementSheetView()
             })
+            .keyboardToolbar {
+                isFocused = false
+            }
         }
     }
     
@@ -136,6 +141,7 @@ struct WriteFormView: View {
                 .customInquireStyleEditor(text: $textEidtor, placeholder: type.config.placeholder ?? "")
                 .frame(height: WriteFormConstants.textEditorHeight)
                 .disabled(type.config.isReadOnly)
+                .focused($isFocused)
         })
     }
     
@@ -246,7 +252,12 @@ struct WriteFormView: View {
         if type.config.isReadOnly {
             Text(type.config.emailValue ?? WriteFormConstants.notEmailText)
         } else {
-            TextField("", text: $emailText, prompt: placeholder)
+            TextField("", text: Binding(
+                get: { emailText ?? "" },
+                set: { emailText = $0} ), prompt: placeholder
+            )
+                .keyboardType(.emailAddress)
+                .focused($isFocused)
         }
     }
     
@@ -315,11 +326,13 @@ struct WriteFormView: View {
     private var bottomMainButton: some View {
         if let btnType = type.config.buttonType {
             MainButton(btnText: btnType.text, height: btnType.height, action: {
-                Task {
-                    do {
-                        try await onSubmit?()
-                    } catch {
-                        print("문의 및 신고하기 제출 실패: \(error)")
+                if checkAgreement {
+                    Task {
+                        do {
+                            try await onSubmit?()
+                        } catch {
+                            print("문의 및 신고하기 제출 실패: \(error)")
+                        }
                     }
                 }
             }, color: btnType.color)
@@ -327,32 +340,3 @@ struct WriteFormView: View {
         }
     }
 }
-
-#Preview("나의 문의") {
-    @Previewable @State var textValue: String = ""
-    @Previewable @State var emailText: String = ""
-    @Previewable @State var images: [UIImage] = .init()
-    
-    WriteFormView(textEidtor: $textValue, emailText: $emailText, type: .myInquireDetail(inquireText: "으아아아", email: "Euijj@com", imageUrl: [
-        "https://i.namu.wiki/i/cusLffdONLphUHKfYy-UclkoCER49OYM6SW96csASHewLpoQtigXVU8__1d_Nm97MuVoNHZ382GPm8gqim_gVI0e8aqzgNECEFNhTHNowe9ItibQynXg7q6NU78kDZGFD1Y0V5k9Oeql15OQo45Qjw.webp",
-        
-    ]), onSubmit: nil, images: $images)
-}
-
-#Preview("나의 문의 작성하기") {
-    @Previewable @State var textValue: String = ""
-    @Previewable @State var emailText: String = ""
-    @Previewable @State var images: [UIImage] = .init()
-    
-    WriteFormView(textEidtor: $textValue, emailText: $emailText, type: .writeInquire(path: .AD), onSubmit: nil, images: $images)
-}
-
-
-#Preview("신고하기") {
-    @Previewable @State var textValue: String = ""
-    @Previewable @State var emailText: String = ""
-    @Previewable @State var images: [UIImage] = .init()
-    
-    WriteFormView(textEidtor: $textValue, emailText: $emailText, type: .writeReport, onSubmit: nil, images: $images)
-}
-

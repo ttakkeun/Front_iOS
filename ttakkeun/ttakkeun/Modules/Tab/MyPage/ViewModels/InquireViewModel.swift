@@ -17,20 +17,18 @@ class InquireViewModel {
     var isLoading: Bool = false
     
     
-    var reportContents: String = ""
-    var email: String = ""
+    var inquireText: String = ""
+    var emailText: String = ""
     var isAgreementCheck: Bool = false
     var isInquireMainBtnClicked: Bool = false
     
     // MARK: - Image
-    
-    
-    var inqureImages: [UIImage] = []
+    var inquirfeImages: [UIImage] = .init()
     
     var isImagePickerPresented: Bool = false
     
     var selectedImageCount: Int {
-        return inqureImages.count
+        return inquirfeImages.count
     }
     
     // MARK: Func & Property
@@ -44,7 +42,7 @@ class InquireViewModel {
     }
     
     public func makeInquireRequestDto(type: InquireType) -> InquiryRequestDTO {
-        return InquiryRequestDTO(contents: self.reportContents, email: self.email, inquiryType: type)
+        return InquiryRequestDTO(contents: self.inquireText, email: self.emailText, inquiryType: type)
     }
     
     public func getMyInquire() {
@@ -91,16 +89,16 @@ class InquireViewModel {
 extension InquireViewModel: ImageHandling {
     
     func addImage(_ images: UIImage) {
-        if inqureImages.count < 3 {
+        if inquirfeImages.count < 3 {
             let downSampleImage = images
             DispatchQueue.main.async {
-                self.inqureImages.append(downSampleImage)
+                self.inquirfeImages.append(downSampleImage)
             }
         }
     }
     
     func removeImage(at index: Int) {
-        inqureImages.remove(at: index)
+        inquirfeImages.remove(at: index)
     }
     
     func showImagePicker() {
@@ -108,6 +106,6 @@ extension InquireViewModel: ImageHandling {
     }
     
     func getImages() -> [UIImage] {
-        return inqureImages
+        return inquirfeImages
     }
 }

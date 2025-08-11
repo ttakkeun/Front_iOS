@@ -63,7 +63,7 @@ struct NavigationRoutingView: View {
                 .environmentObject(container)
             
         case .writeInquire(let selectedInquiryCategory):
-            InquireWriteView(container: container, selectedCategory: selectedInquiryCategory)
+            InquireWriteView(container: container, type: selectedInquiryCategory)
                 .environmentObject(container)
             
         case .myInquire:
@@ -75,7 +75,7 @@ struct NavigationRoutingView: View {
                 .environmentObject(container)
             
         case .writeReport:
-            ReportView(container: container)
+            ReportyWriteView(container: container)
                 .environmentObject(container)
             
         case .agreementData(let selectedAgreementData):

@@ -21,8 +21,9 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MyPageView(container: DIContainer())
-                .environmentObject(DIContainer())
+            MyInquireDetailView(inquiryResponse: .init(contents: "이 사람 이상해요", email: "eui@com", inquiryType: "11", imageUrl: [
+                "https://i.namu.wiki/i/cusLffdONLphUHKfYy-UclkoCER49OYM6SW96csASHewLpoQtigXVU8__1d_Nm97MuVoNHZ382GPm8gqim_gVI0e8aqzgNECEFNhTHNowe9ItibQynXg7q6NU78kDZGFD1Y0V5k9Oeql15OQo45Qjw.webp"
+            ], created_at: "111"))
 //            switch appFlowViewModel.appState {
 //            case .onBoarding:
 //                OnboardingView()
