@@ -13,23 +13,30 @@ struct WriteFormView: View {
     
     // MARK: - Property
     @Binding var textEidtor: String
+    @Binding var emailText: String
     let type: WriteFormType
     let onSubmit: (@Sendable () async throws -> Void)?
     
-    
     @State var showPhotoPicker: Bool = false
     @State var photoPickerItems: [PhotosPickerItem] = .init()
+    @State var showAgreement: Bool = false
+    @State var checkAgreement: Bool = false
     @Binding var images: [UIImage]
+    @Environment(\.dismiss) var dismiss
     
     // MARK: - Constants
     fileprivate enum WriteFormConstants {
         static let middleContentsVspacing: CGFloat = 17
         static let imageHspacing: CGFloat = 13
         static let imageSelectPadding: EdgeInsets = .init(top: 5, leading: 17, bottom: 5, trailing: 17)
+        static let emailTextPadding: EdgeInsets = .init(top: 18, leading: 17, bottom: 18, trailing: 17)
+        static let showAgreementPadding: EdgeInsets = .init(top: 6, leading: 21, bottom: 6, trailing: 21)
         
         static let textEditorHeight: CGFloat = 200
         static let readOnlyImageSize: CGSize = .init(width: 80, height: 80)
+        static let showAgreementSize: CGSize = .init(width: 63, height: 28)
         
+        static let spacerMinHeight: CGFloat = 20
         static let maxCount: Int = 300
         static let maxImageCount: Int = 2
         static let maxImageTime: TimeInterval = 2
@@ -38,60 +45,68 @@ struct WriteFormView: View {
         
         static let imageTitle: String = "이미지 첨부"
         static let imageSelect: String = "이미지 선택하기"
+        static let contactEmail: String = "연락 받을 이메일"
+        static let notEmailText: String = "이메일 정보 없음"
+        static let placeholder: String = "입력해주세요"
+        static let showAgreementText: String = "보기"
+        static let agreementTitle: String = "개인정보 수집 및 이용 약관 동의"
+        static let agreementCheck: String = "개인정보 수집 및 이용 약관에 동의합니다."
+        static let naviCloseImage: String = "xmark"
+        static let scrollId: String = "bottom"
     }
     
     // MARK: - Body
     var body: some View {
-        imageContents
-            .photosPicker(isPresented: $showPhotoPicker, selection: $photoPickerItems, maxSelectionCount: type.config.maxImageCount ,matching: .images)
-            .onChange(of: photoPickerItems, { old, new in
-                Task {
-                    for item in new {
-                        if let data = try? await item.loadTransferable(type: Data.self),
-                           let image = UIImage(data: data) {
-                            images.append(image)
+        NavigationStack {
+            ScrollViewReader { proxy in
+                ScrollView(.vertical, content: {
+                    VStack(alignment: .leading, spacing: WriteFormConstants.middleContentsVspacing, content: {
+                        topContents
+                        middleContents
+                        Spacer().id(WriteFormConstants.scrollId)
+                    })
+                })
+                .navigationBarBackButtonHidden(true)
+                .navigationBarTitleDisplayMode(.inline)
+                .customNavigation(title: type.config.naviTitle, leadingAction: {
+                    dismiss()
+                }, naviIcon: Image(systemName: WriteFormConstants.naviCloseImage))
+                .contentMargins(.top, UIConstants.topScrollPadding, for: .scrollContent)
+                .contentMargins(.horizontal, UIConstants.defaultSafeHorizon, for: .scrollContent)
+                .photosPicker(isPresented: $showPhotoPicker, selection: $photoPickerItems, maxSelectionCount: type.config.maxImageCount ,matching: .images)
+                .onChange(of: photoPickerItems, { old, new in
+                    Task {
+                        for item in new {
+                            if let data = try? await item.loadTransferable(type: Data.self),
+                               let image = UIImage(data: data) {
+                                images.append(image)
+                            }
                         }
+                        photoPickerItems.removeAll()
                     }
-                    photoPickerItems.removeAll()
-                }
-            })
+                })
+                .onChange(of: images, { _, _ in
+                    proxy.scrollTo(WriteFormConstants.scrollId, anchor: .bottom)
+                })
+                .sheet(isPresented: $showAgreement, content: {
+                    AgreementSheetView(agreement: AgreementDetailData.loadEmailAgreements())
+                })
+                .safeAreaInset(edge: .bottom, content: {
+                    bottomMainButton
+                })
+            }
+        }
     }
     
     //MARK: - TopContents
     /// 상단 카테고리 패스
     private var topContents: some View {
-        Text(type.config.naviTitle)
+        Text(type.config.stepPath)
             .font(.Body4_medium)
             .foregroundStyle(Color.gray400)
     }
     
-    // MARK: - MiddleContents
-    private var middleContents: some View {
-        VStack(alignment: .leading, spacing: WriteFormConstants.middleContentsVspacing, content: {
-            
-        })
-    }
-    
-    /// 텍스트 내용 작성 구간
-    private var writeTextEditor: some View {
-        VStack(alignment: .leading, spacing: WriteFormConstants.middleContentsVspacing, content: {
-            firstBodyTitle
-            TextEditor(text: $textEidtor)
-                .customInquireStyleEditor(text: $textEidtor, placeholder: type.config.placeholder ?? "")
-                .frame(height: WriteFormConstants.textEditorHeight)
-                .disabled(type.config.isReadOnly)
-        })
-    }
-    
     // MARK: - Title
-    /// 텍스트 입력 바디 타이틀
-    @ViewBuilder
-    private var firstBodyTitle: some View {
-        if let body = type.config.bodyTitle {
-            bodyTitle(body)
-        }
-    }
-    
     /// 중복되는 섹션 타이틀 생성
     /// - Parameter body: 타이틀 표시
     /// - Returns: 뷰 반환
@@ -101,13 +116,37 @@ struct WriteFormView: View {
             .foregroundStyle(Color.gray900)
     }
     
+    // MARK: - MiddleContents
+    /// 중간 문의 내용 + 이미지 첨부 + 연락 받을 이메일
+    private var middleContents: some View {
+        VStack(alignment: .leading, spacing: WriteFormConstants.middleContentsVspacing, content: {
+            writeTextEditor
+            imageContents
+            emailContents
+            Spacer(minLength: WriteFormConstants.spacerMinHeight)
+            agreementContents
+        })
+    }
+    
+    /// 문의 내용 작성 부분
+    private var writeTextEditor: some View {
+        VStack(alignment: .leading, spacing: WriteFormConstants.middleContentsVspacing, content: {
+            if let body = type.config.bodyTitle {
+                bodyTitle(body)
+            }
+            TextEditor(text: $textEidtor)
+                .customInquireStyleEditor(text: $textEidtor, placeholder: type.config.placeholder ?? "")
+                .frame(height: WriteFormConstants.textEditorHeight)
+                .disabled(type.config.isReadOnly)
+        })
+    }
+    
     // MARK: - Image
     /// 중간 이미지 컨텐츠
     @ViewBuilder
     private var imageContents: some View {
         VStack(alignment: .leading, spacing: WriteFormConstants.middleContentsVspacing, content: {
             bodyTitle(WriteFormConstants.imageTitle)
-            
             if type.config.isReadOnly {
                 readOnlyImage
             } else {
@@ -173,24 +212,144 @@ struct WriteFormView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: WriteFormConstants.readOnlyImageSize.width, height: WriteFormConstants.readOnlyImageSize.height)
+                .clipShape(RoundedRectangle(cornerRadius: WriteFormConstants.cornerRadius))
+        }
+    }
+    
+    // MARK: - Email
+    /// 문의하기 및 내 문의하기 작성 시 사용하는 이메일 주소 입력
+    @ViewBuilder
+    private var emailContents: some View {
+        if type.config.showEmailField {
+            VStack(alignment: .leading, spacing: WriteFormConstants.middleContentsVspacing, content: {
+                bodyTitle(WriteFormConstants.contactEmail)
+                emailTextView
+                    .font(.Body2_medium)
+                    .foregroundStyle(Color.gray900)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(WriteFormConstants.emailTextPadding)
+                    .background {
+                        RoundedRectangle(cornerRadius: WriteFormConstants.cornerRadius)
+                            .fill(Color.clear)
+                            .stroke(Color.gray200, style: .init())
+                    }
+            })
+        }
+    }
+    
+    /// 텍스트 입력 부분인지, 값을 보는 부분인지 구분
+    @ViewBuilder
+    private var emailTextView: some View {
+        if type.config.isReadOnly {
+            Text(type.config.emailValue ?? WriteFormConstants.notEmailText)
+        } else {
+            TextField("", text: $emailText, prompt: placeholder)
+        }
+    }
+    
+    /// 연락 받을 이메일 placeholder
+    private var placeholder: Text {
+        Text(WriteFormConstants.placeholder)
+            .font(.Body2_medium)
+            .foregroundStyle(Color.gray400)
+    }
+    
+    // MARK: - Agreement
+    /// 개인정보 수집 및 이용 약관 동의
+    @ViewBuilder
+    private var agreementContents: some View {
+        if type.config.showConsent {
+            VStack(alignment: .leading, spacing: WriteFormConstants.middleContentsVspacing, content: {
+                agreementTitle
+                checkAgreementContent
+            })
+        }
+    }
+    /// 개인정보 수집 동의 타이틀 및 보기
+    private var agreementTitle: some View {
+        HStack {
+            bodyTitle(WriteFormConstants.agreementTitle)
+            Spacer()
+            showAgreementBtn
+        }
+    }
+    /// 이용 약관 동의 보기 버튼
+    private var showAgreementBtn: some View {
+        Button(action: {
+            showAgreement.toggle()
+        }, label: {
+            Text(WriteFormConstants.showAgreementText)
+                .font(.Body4_medium)
+                .foregroundStyle(Color.gray900)
+                .padding(WriteFormConstants.showAgreementPadding)
                 .background {
                     RoundedRectangle(cornerRadius: WriteFormConstants.cornerRadius)
-                        .fill(Color.clear)
-                        .stroke(Color.gray500, style: .init())
+                        .fill(Color.checkBg)
+                        .frame(width: WriteFormConstants.showAgreementSize.width, height: WriteFormConstants.showAgreementSize.height)
                 }
+        })
+    }
+    
+    /// 하단 개인정보 수집 및 허용 체크 사항
+    private var checkAgreementContent: some View {
+        HStack {
+            Button(action: {
+                checkAgreement.toggle()
+            }, label: {
+                checkAgreement ? Image(.check) : Image(.uncheck)
+            })
+            
+            Text(WriteFormConstants.agreementCheck)
+                .font(.Body2_medium)
+                .foregroundStyle(Color.gray400)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+    
+    // MARK: - Bottom
+    /// 하단 제출 관련 버튼
+    @ViewBuilder
+    private var bottomMainButton: some View {
+        if let btnType = type.config.buttonType {
+            MainButton(btnText: btnType.text, height: btnType.height, action: {
+                Task {
+                    do {
+                        try await onSubmit?()
+                    } catch {
+                        print("문의 및 신고하기 제출 실패: \(error)")
+                    }
+                }
+            }, color: btnType.color)
+            .padding(.horizontal, UIConstants.defaultSafeHorizon)
         }
     }
 }
 
-#Preview {
-    @Previewable @State var text: String = "hello"
+#Preview("나의 문의") {
+    @Previewable @State var textValue: String = ""
+    @Previewable @State var emailText: String = ""
     @Previewable @State var images: [UIImage] = .init()
-    WriteFormView(
-                    textEidtor: $text,
-                    type: .writeReport,
-                    onSubmit: {
-                        print("submit inquiry: \(text)")
-                    },
-                    images: $images
-                )
+    
+    WriteFormView(textEidtor: $textValue, emailText: $emailText, type: .myInquireDetail(inquireText: "으아아아", email: "Euijj@com", imageUrl: [
+        "https://i.namu.wiki/i/cusLffdONLphUHKfYy-UclkoCER49OYM6SW96csASHewLpoQtigXVU8__1d_Nm97MuVoNHZ382GPm8gqim_gVI0e8aqzgNECEFNhTHNowe9ItibQynXg7q6NU78kDZGFD1Y0V5k9Oeql15OQo45Qjw.webp",
+        
+    ]), onSubmit: nil, images: $images)
 }
+
+#Preview("나의 문의 작성하기") {
+    @Previewable @State var textValue: String = ""
+    @Previewable @State var emailText: String = ""
+    @Previewable @State var images: [UIImage] = .init()
+    
+    WriteFormView(textEidtor: $textValue, emailText: $emailText, type: .writeInquire(path: .AD), onSubmit: nil, images: $images)
+}
+
+
+#Preview("신고하기") {
+    @Previewable @State var textValue: String = ""
+    @Previewable @State var emailText: String = ""
+    @Previewable @State var images: [UIImage] = .init()
+    
+    WriteFormView(textEidtor: $textValue, emailText: $emailText, type: .writeReport, onSubmit: nil, images: $images)
+}
+

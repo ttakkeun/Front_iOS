@@ -25,7 +25,6 @@ struct MainButton: View {
     }
     
     // MARK: - Init
-    
     /// Description
     /// - Parameters:
     ///   - btnText: 버튼 텍스트

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum InquireReportBtnType {
     case inquire
@@ -18,5 +19,13 @@ enum InquireReportBtnType {
         case .report:
             return "신고하기"
         }
+    }
+    
+    var height: CGFloat {
+        return 63
+    }
+    
+    var color: Color {
+        return Color.mainPrimary
     }
 }
