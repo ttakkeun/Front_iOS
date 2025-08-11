@@ -43,7 +43,7 @@ struct WriteFormView: View {
         static let cornerRadius: CGFloat = 10
         static let imageSelectedCornerRadius: CGFloat = 40
         
-        static let imageTitle: String = "이미지 첨부"
+        static let imageTitle: String = "이미지 첨부(최대 3장)"
         static let imageSelect: String = "이미지 선택하기"
         static let contactEmail: String = "연락 받을 이메일"
         static let notEmailText: String = "이메일 정보 없음"
@@ -57,44 +57,42 @@ struct WriteFormView: View {
     
     // MARK: - Body
     var body: some View {
-        NavigationStack {
-            ScrollViewReader { proxy in
-                ScrollView(.vertical, content: {
-                    VStack(alignment: .leading, spacing: WriteFormConstants.middleContentsVspacing, content: {
-                        topContents
-                        middleContents
-                        Spacer().id(WriteFormConstants.scrollId)
-                    })
+        ScrollViewReader { proxy in
+            ScrollView(.vertical, content: {
+                VStack(alignment: .leading, spacing: WriteFormConstants.middleContentsVspacing, content: {
+                    topContents
+                    middleContents
+                    Spacer().id(WriteFormConstants.scrollId)
                 })
-                .navigationBarBackButtonHidden(true)
-                .navigationBarTitleDisplayMode(.inline)
-                .customNavigation(title: type.config.naviTitle, leadingAction: {
-                    dismiss()
-                }, naviIcon: Image(systemName: WriteFormConstants.naviCloseImage))
-                .contentMargins(.top, UIConstants.topScrollPadding, for: .scrollContent)
-                .contentMargins(.horizontal, UIConstants.defaultSafeHorizon, for: .scrollContent)
-                .photosPicker(isPresented: $showPhotoPicker, selection: $photoPickerItems, maxSelectionCount: type.config.maxImageCount ,matching: .images)
-                .onChange(of: photoPickerItems, { old, new in
-                    Task {
-                        for item in new {
-                            if let data = try? await item.loadTransferable(type: Data.self),
-                               let image = UIImage(data: data) {
-                                images.append(image)
-                            }
+            })
+            .navigationBarBackButtonHidden(true)
+            .navigationBarTitleDisplayMode(.inline)
+            .customNavigation(title: type.config.naviTitle, leadingAction: {
+                dismiss()
+            }, naviIcon: Image(systemName: WriteFormConstants.naviCloseImage))
+            .safeAreaInset(edge: .bottom, content: {
+                bottomMainButton
+            })
+            .contentMargins(.top, UIConstants.topScrollPadding, for: .scrollContent)
+            .contentMargins(.horizontal, UIConstants.defaultSafeHorizon, for: .scrollContent)
+            .photosPicker(isPresented: $showPhotoPicker, selection: $photoPickerItems, maxSelectionCount: type.config.maxImageCount ,matching: .images)
+            .onChange(of: photoPickerItems, { old, new in
+                Task {
+                    for item in new {
+                        if let data = try? await item.loadTransferable(type: Data.self),
+                           let image = UIImage(data: data) {
+                            images.append(image)
                         }
-                        photoPickerItems.removeAll()
                     }
-                })
-                .onChange(of: images, { _, _ in
-                    proxy.scrollTo(WriteFormConstants.scrollId, anchor: .bottom)
-                })
-                .sheet(isPresented: $showAgreement, content: {
-                    AgreementSheetView(agreement: AgreementDetailData.loadEmailAgreements())
-                })
-                .safeAreaInset(edge: .bottom, content: {
-                    bottomMainButton
-                })
-            }
+                    photoPickerItems.removeAll()
+                }
+            })
+            .onChange(of: images, { _, _ in
+                proxy.scrollTo(WriteFormConstants.scrollId, anchor: .bottom)
+            })
+            .sheet(isPresented: $showAgreement, content: {
+                AgreementSheetView()
+            })
         }
     }
     
@@ -172,6 +170,7 @@ struct WriteFormView: View {
                         .stroke(Color.gray400, style: .init())
                 }
         })
+        .disabled(!imageCondition)
     }
     
     /// 선택한 이미지 스택으로 생성하기
@@ -185,6 +184,10 @@ struct WriteFormView: View {
                     .clipShape(RoundedRectangle(cornerRadius: WriteFormConstants.cornerRadius))
             }
         })
+    }
+    
+    private var imageCondition: Bool {
+        return images.count < 3
     }
     
     /// 내 문의 보기 시, 이미지 불러오기
