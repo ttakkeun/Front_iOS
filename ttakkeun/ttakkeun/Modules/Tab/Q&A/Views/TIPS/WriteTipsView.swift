@@ -62,6 +62,7 @@ struct WriteTipsView: View {
                 writeTipstype = nil
             })
             .ignoresSafeArea(.keyboard)
+            .safeAreaPadding(.top, UIConstants.topScrollPadding)
             .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
             .loadingOverlay(isLoading: viewModel.registTipsLoading, loadingTextType: .createTips)
             .photosPicker(

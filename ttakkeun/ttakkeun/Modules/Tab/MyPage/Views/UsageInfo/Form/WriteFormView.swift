@@ -70,6 +70,7 @@ struct WriteFormView: View {
             .ignoresSafeArea(.keyboard)
             .navigationBarBackButtonHidden(true)
             .navigationBarTitleDisplayMode(.inline)
+            .safeAreaPadding(.top, UIConstants.topScrollPadding)
             .customNavigation(title: type.config.naviTitle, leadingAction: {
                 dismiss()
             }, naviIcon: Image(systemName: WriteFormConstants.naviCloseImage))

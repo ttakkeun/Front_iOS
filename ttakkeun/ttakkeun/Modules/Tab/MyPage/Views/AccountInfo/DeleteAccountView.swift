@@ -7,264 +7,331 @@
 
 import SwiftUI
 
+/// 회원 탈퇴하기 뷰
 struct DeleteAccountView: View {
     
+    // MARK: - Property
     @EnvironmentObject var container: DIContainer
-    @State var viewModel: MyPageViewModel
+    @State var viewModel: DeleteAccountViewModel
+    @AppStorage(AppStorageKey.userEmail) var userEmail: String = "유저 이메일을 불러오지 못했습니다."
+    @Environment(\.alert) var alert
+    @FocusState var isFoucsed: Bool
     
-    @State private var isDeleteAccountMainBtnClicked: Bool = false
+    // MARK: - Constants
+    fileprivate enum DeleteAccountConstants {
+        static let firstContentsVspacing: CGFloat = 16
+        static let firstMiddleVspacing: CGFloat = 24
+        static let firstImportantNotice: EdgeInsets = .init(top: 16, leading: 16, bottom: 4, trailing: 17)
+        static let secondEmailVspacing: CGFloat = 10
+        static let secondTopVspacing: CGFloat = 13
+        static let secondMiddleVspacing: CGFloat = 23
+        static let secondContentsVspacing: CGFloat = 52
+        static let secondDeleteReasonHspacing: CGFloat = 14
+        static let spacerMin: CGFloat = 190
+        
+        static let checkIconSize: CGSize = .init(width: 25, height: 25)
+        static let checkBtnSize: CGSize = .init(width: 20, height: 20)
+        static let textEditorSize: CGSize = .init(width: 0, height: 200)
+        
+        static let mainBtnHeight: CGFloat = 63
+        static let cornerRadius: CGFloat = 10
+        static let maxCount: Int = 200
+        
+        static let firstBtnText: String = "다음"
+        static let firstTitle: String = "회원 탈퇴 전, 유의 사항을 확인해주세요"
+        static let firstConfirmText: String = "탈퇴 시, 위 유의사항을 확인하였음에 동의합니다."
+        static let secondEmailText: String = "보안을 위해, 회원님의 계정 이메일을 확인합니다."
+        static let secondOwnerCheckText: String = "본인 계정이 맞습니까?"
+        static let secondTitle: String = "탈퇴사유를 알려주시면 저희한테 큰 도움이 됩니다. \n"
+        static let secondSubTitle: String = "(중복 선택 가능)"
+        static let secondBtnBeforText: String = "이전"
+        static let secondBtnCompleteText: String = "탈퇴하기"
+        static let naviTite: String = "회원 탈퇴"
+        static let naviCloseButton: String = "xmark"
+        static let checkImage: (String, String) = ("checkmark.circle.fill", "circle")
+        static let placeholder: String = "입력해주세요."
+    }
     
-    ///뷰모델 없어서 임시로 필요한 변수들 state 처리해둠
-    @State private var currentPage: Int = 1
-    @State private var selectedReasons: Set<String> = []
-    @State private var etcReason: String = ""
-    @State private var agreementIsChecked: Bool = false
-    @State private var myAccountIsChecked: Bool = false
-    
+    // MARK: - Init
     init(container: DIContainer) {
         self.viewModel = .init(container: container)
     }
     
-    
-    let reasonList = ["기능 불만족", "앱 내 콘텐츠 부족", "기술적 문제(버그, 오류)", "기기 호환성 문제", "사용자 경험 불편","기타 사유"]
-    
+    // MARK: - Body
     var body: some View {
-        ZStack(content: {
-            VStack(alignment: .center, spacing: 40, content: {
-                CustomNavigation(action: { container.navigationRouter.pop() },
-                                 title: "회원 탈퇴",
-                                 currentPage: nil)
-                
-                switch currentPage {
-                case 1:
-                    checkConfirmTerms
-                case 2:
-                    inputReason
-                default:
-                    EmptyView()
+        NavigationStack {
+            Group {
+                switch viewModel.currentPage {
+                case .firstPage:
+                    firstPageContents
+                case .secondPage:
+                    secondPageContents
                 }
-            })
-//            
-//            if isDeleteAccountMainBtnClicked {
-//                CustomAlert(alertText: Text("정말로 따끈을 떠나시겠습니까?"), alertSubText: Text("회원님의 소중한 정보는 이용약관에 따라 처리됩니다. \n이대로 탈퇴를 누르신다면 탈퇴를 취소하실 수 없습니다."), alertAction: .init(showAlert: $isDeleteAccountMainBtnClicked, yes: { print("ok") }), alertType: .deleteAccountAlert)
-//            }
-        })
-        .navigationBarBackButtonHidden(true)
+            }
+            .navigationBarBackButtonHidden(true)
+            .navigationBarTitleDisplayMode(.inline)
+            .safeAreaPadding(.top, UIConstants.topScrollPadding)
+            .customNavigation(title: DeleteAccountConstants.naviTite, leadingAction: {
+                container.navigationRouter.pop()
+            }, naviIcon: Image(systemName: DeleteAccountConstants.naviCloseButton))
+            .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+            .customAlert(alert: alert)
+            .keyboardToolbar {
+                isFoucsed = false
+            }
+        }
     }
     
-    //MARK: - 1 Page: 유의 사항 확인
-    private var checkConfirmTerms: some View {
-        VStack(alignment: .center, spacing: 24, content: {
-            readConfirmTerms
-            
-            agreeConfirmTerms
-            
+    // MARK: - FirstPage
+    
+    /// 회원 탈퇴 유의 사항 첫 페인지
+    private var firstPageContents: some View {
+        VStack(alignment: .leading, spacing: DeleteAccountConstants.firstContentsVspacing, content: {
+            firstTopTitle
+            firstMiddleContents
             Spacer()
-            
-            MainButton(btnText: "다음", height: 63, action: {
-                withAnimation {
-                    currentPage = 2
-                }
-            }, color: agreementIsChecked ? Color.mainPrimary : Color.checkBg)
-            .disabled(!agreementIsChecked)
+            generateButton(DeleteAccountConstants.firstBtnText, btnCondition: viewModel.isAgreementCheck, action: {
+                viewModel.currentPage = .secondPage
+            })
+            .disabled(!viewModel.isAgreementCheck)
         })
     }
     
-    /// 유의사항
-    private var readConfirmTerms: some View {
-        VStack(alignment: .leading, spacing: 16, content: {
-            Text("회원 탈퇴 전, 유의사항을 확인해주세요.")
-                .font(.H4_bold)
-                .foregroundStyle(Color.gray900)
-            
-            ScrollView(content: {
-                Text("""
-                [회원 탈퇴 시 유의 사항]
-                
-                1. 데이터 삭제
-                    * 회원 탈퇴를 신청하면 사용자의 모든 개인 정보 및 반려동물 프로필 정보, 서비스 이용 내역이 영구적으로 삭제됩니다.
-                    * 단, 사용자가 작성한 게시글은 작성자 이름이 가려진 상태로 남아있을 수 있으며, 게시글 내용은 삭제되지 않습니다.
-                    * 삭제된 데이터는 복구할 수 없으니 신중히 결정해 주시기 바랍니다.
-                2. 서비스 이용 제한 및 재가입
-                    * 탈퇴 완료 시 서비스 이용이 중단되며, 관련 정보도 삭제됩니다.
-                    * 회원 탈퇴 후 동일한 이메일 주소로 재가입이 가능하지만, 이전에 사용했던 데이터는 복구되지 않으며, 새로운 계정으로 서비스 이용을 시작하게 됩니다.
-                3. 재가입
-                    * 회원 탈퇴 후에는 동일한 이메일 주소로 재가입이 가능합니다. 다만, 이전 가입 시의 데이터는 유지되지 않으며, 새로운 계정으로 서비스 이용을 시작하게 됩니다.
-                """)
-                .font(.Body4_medium)
-                .foregroundStyle(Color.gray700)
-            })
-            .frame(width: 315, height: 272, alignment: .leading)
-            .padding(.horizontal, 17)
-            .padding(.vertical, 16)
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.clear)
-                    .stroke(Color.gray200, lineWidth: 1)
-            )
+    /// 첫 페이지 상단 유의사항 타이틀
+    private var firstTopTitle: some View {
+        Text(DeleteAccountConstants.firstTitle)
+            .font(.H4_bold)
+            .foregroundStyle(Color.gray900)
+    }
+    
+    /// 첫 페이지 유의 사항 내용
+    private var firstMiddleContents: some View {
+        VStack(alignment: .leading, spacing: DeleteAccountConstants.firstMiddleVspacing, content: {
+            agreementMessage
+            agreeConfirmTerms
         })
+    }
+    
+    /// 유의 사항 관련 글 내용
+    private var agreementMessage: some View {
+        Text(DeletePageType.firstPageContents)
+            .font(.Body4_medium)
+            .foregroundStyle(Color.gray700)
+            .padding(DeleteAccountConstants.firstImportantNotice)
+            .background {
+                RoundedRectangle(cornerRadius: DeleteAccountConstants.cornerRadius)
+                    .fill(Color.clear)
+                    .stroke(Color.gray300, style: .init())
+            }
     }
     
     /// 유의사항 동의 체크 필드
     private var agreeConfirmTerms: some View {
-        HStack(alignment: .center, spacing: 57, content: {
-            Text("탈퇴 시, 위 유의 사항을 확인하였음에 동의합니다.")
+        HStack {
+            Text(DeleteAccountConstants.firstConfirmText)
                 .font(.Body3_regular)
                 .foregroundStyle(Color.gray900)
             
-            Button(action: {
-                agreementIsChecked.toggle()
-            }, label: {
-                checkmarkImage(for: agreementIsChecked)
-                    .resizable()
-                    .frame(width: 25, height: 25)
-            })
+            Spacer()
             
+            Button(action: {
+                viewModel.isAgreementCheck.toggle()
+            }, label: {
+                checkMarkImage(for: viewModel.isAgreementCheck)
+                    .resizable()
+                    .frame(width: DeleteAccountConstants.checkIconSize.width, height: DeleteAccountConstants.checkIconSize.height)
+            })
+        }
+    }
+    
+    // MARK: - SecondPage
+    private var secondPageContents: some View {
+        ScrollView(.vertical, content: {
+            VStack(alignment: .leading, spacing: DeleteAccountConstants.secondContentsVspacing, content: {
+                secondTopcontents
+                secondMiddleContents
+                Spacer(minLength: DeleteAccountConstants.spacerMin)
+            })
+        })
+        .safeAreaInset(edge: .bottom, content: {
+            secondMainButton
         })
     }
     
-    //MARK: - 2 Page: 탈퇴 사유 입력
-    private var inputReason: some View {
-        VStack(alignment: .center, spacing: 52, content: {
-            emailConfirm
+    /// 상단 계정 이메일 확인
+    private var secondTopcontents: some View {
+        VStack(alignment: .leading, spacing: DeleteAccountConstants.secondTopVspacing, content: {
+            emailConformatoin
+            isAccountOwnerConfirmed
+        })
+    }
+    
+    /// 상단 이메일 값 확인
+    private var emailConformatoin: some View {
+        VStack(alignment: .leading, spacing: DeleteAccountConstants.secondEmailVspacing, content: {
+            Text(DeleteAccountConstants.secondEmailText)
+                .font(.Body3_medium)
+                .foregroundStyle(Color.gray900)
             
-            checkReasons
+            TextField("", text: .constant(userEmail))
+                .textFieldStyle(.roundedBorder)
+                .font(.Body3_medium)
+                .foregroundStyle(Color.gray400)
+                .disabled(true)
+        })
+        .padding()
+        .background {
+            RoundedRectangle(cornerRadius: DeleteAccountConstants.cornerRadius)
+                .fill(Color.postBg)
+        }
+    }
+    
+    /// 본인 계정 맞는지 체크하는 텍스트
+    private var isAccountOwnerConfirmed: some View {
+        HStack {
+            Text(DeleteAccountConstants.secondOwnerCheckText)
+                .font(.Body3_regular)
+                .foregroundStyle(Color.gray900)
             
             Spacer()
             
-            HStack(alignment: .center, spacing: 10, content: {
-                MainButton(btnText: "이전", height: 63, action: {
-                    withAnimation {
-                        currentPage = 1
-                    }
-                }, color: Color.answerBg)
-                
-                MainButton(btnText: "탈퇴하기", height: 63, action: {isDeleteAccountMainBtnClicked.toggle()}, color: myAccountIsChecked ? Color.mainPrimary : Color.checkBg)
-                    .disabled(!myAccountIsChecked)
+            Button(action: {
+                viewModel.isMyAccountCheck.toggle()
+            }, label: {
+                checkMarkImage(for: viewModel.isMyAccountCheck)
+                    .resizable()
+                    .frame(width: DeleteAccountConstants.checkIconSize.width, height: DeleteAccountConstants.checkIconSize.height)
             })
-            .frame(width: 351)
-        })
-    }
-    
-    ///이메일 확인 필드
-    private var emailConfirm: some View {
-        VStack(alignment: .leading, spacing: 15, content: {
-            VStack(alignment: .leading, spacing: 10, content: {
-                Text("보안을 위해, 회원님의 계정 이메일을 확인합니다.")
-                    .font(.Body3_medium)
-                    .foregroundStyle(Color.gray900)
-                
-                //TODO: - 주석 제거 필요
-                Text(verbatim: "rwd4533@naver.com")
-//                Text("\(UserState.shared.getUserEmail())")
-                    .font(.Body3_medium)
-                    .foregroundStyle(Color.gray400)
-                    .padding(.leading, 21)
-                    .frame(width: 317, height: 45, alignment: .leading)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.white)
-                            .stroke(Color.gray200, lineWidth: 1)
-                    )
-                    
-    
-            })
-            .padding(.leading, 14)
-            .frame(width: 349, height: 97, alignment: .leading)
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.answerBg)
-            )
-            
-            HStack(alignment: .center, spacing: 196, content: {
-                Text("본인 계정이 맞습니까?")
-                    .font(.Body3_regular)
-                    .foregroundStyle(Color.gray900)
-                
-                Button(action: {
-                    myAccountIsChecked.toggle()
-                }, label: {
-                    checkmarkImage(for: myAccountIsChecked)
-                        .resizable()
-                        .frame(width: 25, height: 25)
-                })
-                
-            })
-        })
+        }
     }
     
     /// 탈퇴 사유 체크 필드
-    private var checkReasons: some View {
-        VStack(alignment: .center, spacing: 18, content: {
-            HStack(alignment: .center, spacing: 0) {
-                Text("탈퇴사유를 알려주시면 저희한테 큰 도움이 됩니다.")
-                    .font(.Body3_medium)
-                    .foregroundStyle(Color.gray900)
-                Text("(중복선택가능)")
-                    .font(.Body4_medium)
-                    .foregroundStyle(Color.gray400)
-            }
-            
-            reasons
+    private var secondMiddleContents: some View {
+        VStack(alignment: .leading, spacing: DeleteAccountConstants.secondMiddleVspacing, content: {
+            secondMiddleTitle
+            secondMiddleSelectReason
         })
     }
     
-    private var reasons: some View {
-        
-        VStack(alignment: .leading, spacing: 13, content: {
-            ForEach(reasonList.indices, id: \.self) { index in
-                checkField(id: index, text: reasonList[index])
+    /// 중간 컨텐츠 탈퇴사유 타이틀
+    private var secondMiddleTitle: some View {
+        (
+            Text(DeleteAccountConstants.secondTitle)
+                .font(.Body3_medium)
+                .foregroundStyle(Color.gray900)
+            
+            +
+            
+            Text(DeleteAccountConstants.secondSubTitle)
+                .font(.Body4_medium)
+                .foregroundStyle(Color.gray400)
+        )
+    }
+    
+    /// 기타 사유 입려
+    private var secondMiddleSelectReason: some View {
+        VStack(alignment: .leading, spacing: DeleteAccountConstants.secondTopVspacing, content: {
+            ForEach(DeleteReasonType.allCases, id: \.self) { reason in
+                deleteReasonBtn(member: reason)
             }
             
-            TextEditor(text: $etcReason)
-                .customStyleTipsEditor(text: $etcReason, placeholder: "입력해주세요.", maxTextCount: 200, backColor: Color.postBg)
-                .frame(width: 349, height: 75)
+            if viewModel.selectedReasons.contains(.other) {
+                TextEditor(text: $viewModel.etcReason)
+                    .customStyleTipsEditor(text: $viewModel.etcReason, placeholder: DeleteAccountConstants.placeholder, maxTextCount: DeleteAccountConstants.maxCount, backColor: Color.postBg)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: DeleteAccountConstants.textEditorSize.height)
+                    .focused($isFoucsed)
+            }
         })
-        
     }
+    
+    ///탈퇴 사유 체크 필드 재사용
+    private func deleteReasonBtn(member: DeleteReasonType) -> some View {
+        HStack(spacing: DeleteAccountConstants.secondDeleteReasonHspacing, content: {
+            Button(action: {
+                withAnimation {
+                    selectedBtnAction(member)
+                }
+            }, label: {
+               checkReasonImage(member)
+            })
+            
+            Text(member.text)
+                .font(.Body3_regular)
+                .foregroundStyle(Color.gray900)
+        })
+    }
+    
+    /// 버튼 선택 시 이미지
+    /// - Parameter member: 선택한 버튼의 타입 확인
+    /// - Returns: 버튼 반환
+    private func checkReasonImage(_ member: DeleteReasonType) -> some View {
+        Image(systemName: selectedCondition(member) ? DeleteAccountConstants.checkImage.0 : DeleteAccountConstants.checkImage.1)
+            .resizable()
+            .frame(width: DeleteAccountConstants.checkBtnSize.width, height: DeleteAccountConstants.checkBtnSize.height)
+            .foregroundStyle(selectedCondition(member) ? Color.mainPrimary : Color.gray400)
+    }
+    
+    /// 선택한 버튼이 포함되어 있는지 확인
+    /// - Parameter member: 버튼 타입
+    /// - Returns: Bool 반환
+    private func selectedCondition(_ member: DeleteReasonType) -> Bool {
+        return viewModel.selectedReasons.contains(member)
+    }
+    
+    /// 버튼 선택 시 액션
+    /// - Parameter member: 선택한 버튼 타입
+    /// - Returns: 액션 반환
+    private func selectedBtnAction(_ member: DeleteReasonType) -> Void {
+        if selectedCondition(member) {
+            viewModel.selectedReasons.remove(member)
+        } else {
+            viewModel.selectedReasons.insert(member)
+        }
+    }
+    
+    /// 두 번째 페이지 메인 버튼 이전/탈퇴
+    private var secondMainButton: some View {
+        HStack {
+            generateButton(DeleteAccountConstants.secondBtnBeforText, btnCondition: false, action: {
+                viewModel.currentPage = .firstPage
+            })
+            Spacer()
+            generateButton(DeleteAccountConstants.secondBtnCompleteText, btnCondition: true, action: {
+                alert.trigger(type: .deleteAccountAlert, showAlert: true, action: {
+                    alert.showAlert = false
+                    // TODO: - 탈퇴 API 함수 작성
+                })
+            })
+            .disabled(!viewModel.isMyAccountCheck)
+        }
+    }
+    
 }
 
 extension DeleteAccountView {
     ///체크 상태에 따른 이미지를 반환하는 함수
-    private func checkmarkImage(for isChecked: Bool) -> Image {
-        return isChecked ? Icon.check.image : Icon.uncheck.image
+    private func checkMarkImage(for isChecked: Bool) -> Image {
+        return isChecked ? Image(.check) : Image(.uncheck)
     }
     
-    ///탈퇴 사유 체크 필드 재사용
-    private func checkField(id: Int, text: String) -> some View {
-        HStack(alignment: .center, spacing: 14) {
-            Button(action: {
-                if selectedReasons.contains(text) {
-                    selectedReasons.remove(text)
-                } else {
-                    selectedReasons.insert(text)
-                }
-            }, label: {
-                Image(systemName: selectedReasons.contains(text) ? "checkmark.circle.fill" : "circle")
-                    .resizable()
-                    .frame(width: 20, height: 20)
-                    .foregroundColor(selectedReasons.contains(text) ? Color.mainPrimary : Color.gray400)
-            })
-            
-            Text(text)
-                .font(.Body3_regular)
-                .foregroundStyle(Color.gray900)
-        }
+    /// 탈퇴 페이지 버튼 생성
+    /// - Parameters:
+    ///   - text: 버튼 내부 텍스트
+    ///   - btnCondition: 버튼 클릭 조건
+    ///   - action: 버튼 액션
+    /// - Returns: 버튼 뷰 생성
+    private func generateButton(_ text: String, btnCondition: Bool, action: @escaping () -> Void) -> some View {
+        MainButton(btnText: text, height: DeleteAccountConstants.mainBtnHeight, action: {
+            withAnimation {
+                action()
+            }
+        }, color: btnCondition ? Color.mainPrimary : Color.checkBg)
     }
 }
 
-//MARK: - Preview
-struct DeleteAccountView_Preview: PreviewProvider {
-    
-    static let devices = ["iPhone 11", "iPhone 16 Pro"]
-    
-    static var previews: some View {
-        ForEach(devices, id: \.self) { device in
-            DeleteAccountView(container: DIContainer())
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewDisplayName(device)
-                .environmentObject(DIContainer())
-        }
-    }
+#Preview {
+    DeleteAccountView(container: DIContainer())
+        .environmentObject(DIContainer())
+        .environment(AlertStateModel())
 }
-

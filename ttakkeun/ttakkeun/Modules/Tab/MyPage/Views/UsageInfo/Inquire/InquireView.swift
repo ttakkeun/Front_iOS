@@ -40,6 +40,7 @@ struct InquireView: View {
         })
         .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)
+        .safeAreaPadding(.top, UIConstants.topScrollPadding)
         .customNavigation(title: InquireViewConstants.naviTitle, leadingAction: {
             container.navigationRouter.pop()
         }, naviIcon: Image(systemName: InquireViewConstants.naviCloseBtn))

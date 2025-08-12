@@ -35,6 +35,7 @@ struct ReportView: View {
         })
         .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)
+        .safeAreaPadding(.top, UIConstants.topScrollPadding)
         .customNavigation(title: ReportConstants.naviTitle, leadingAction: {
             container.navigationRouter.pop()
         }, naviIcon: Image(systemName: ReportConstants.naviCloseImage))
@@ -45,7 +46,11 @@ struct ReportView: View {
     private var btnInfoArray: [BtnInfo] {
         ReportType.allCases.map { category in
             BtnInfo(name: category.text, date: nil, action: {
-                container.navigationRouter.push(to: .reportDetailBtn(selectedReportCategory: category.param))
+                if category == .etcReport {
+                    container.navigationRouter.push(to: .writeReport)
+                } else {
+                    container.navigationRouter.push(to: .reportDetailBtn(selectedReportCategory: category.param))
+                }
             })
         }
     }

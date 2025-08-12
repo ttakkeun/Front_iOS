@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// 신고하기 작성 뷰
-struct ReportyWriteView: View {
+struct ReportWriteView: View {
     
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
@@ -33,6 +33,6 @@ struct ReportyWriteView: View {
 }
 
 #Preview {
-    ReportyWriteView(container: DIContainer())
+    ReportWriteView(container: DIContainer())
         .environmentObject(DIContainer())
 }

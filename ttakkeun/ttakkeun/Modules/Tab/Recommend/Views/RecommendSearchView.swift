@@ -45,7 +45,7 @@ struct RecommendSearchView: View {
                 })
             }
         }
-        .safeAreaPadding(.top, UIConstants.defaultSafeTop)
+        .safeAreaPadding(.top, UIConstants.topScrollPadding)
         .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
         .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)

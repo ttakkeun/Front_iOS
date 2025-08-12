@@ -55,7 +55,7 @@ struct MainButton: View {
                     .frame(height: height)
                 
                 Text(btnText)
-                    .font(.Body3_semibold)
+                    .font(.Body2_semibold)
                     .foregroundStyle(Color.gray900)
             }
         })

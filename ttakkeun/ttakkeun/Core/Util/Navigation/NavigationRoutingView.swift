@@ -75,7 +75,7 @@ struct NavigationRoutingView: View {
                 .environmentObject(container)
             
         case .writeReport:
-            ReportyWriteView(container: container)
+            ReportWriteView(container: container)
                 .environmentObject(container)
             
         case .agreementData(let selectedAgreementData):

@@ -29,20 +29,18 @@ struct PrivacyDetailView: View {
     
     // MARK: - Body
     var body: some View {
-        NavigationStack {
-            Section(content: {
-                contents
-                    .navigationBarBackButtonHidden(true)
-                    .navigationBarTitleDisplayMode(.inline)
-                    .customNavigation(title: PrivacyDetailConstants.naviTitle, leadingAction: {
-                        container.navigationRouter.pop()
-                    }, naviIcon: Image(systemName: PrivacyDetailConstants.closeBtn))
-            }, header: {
-                title
-            })
-            .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
-        }
-     
+        Section(content: {
+            contents
+                .navigationBarBackButtonHidden(true)
+                .navigationBarTitleDisplayMode(.inline)
+                .safeAreaPadding(.top, UIConstants.topScrollPadding)
+                .customNavigation(title: PrivacyDetailConstants.naviTitle, leadingAction: {
+                    container.navigationRouter.pop()
+                }, naviIcon: Image(systemName: PrivacyDetailConstants.closeBtn))
+        }, header: {
+            title
+        })
+        .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
     
     // MARK: - TopContents

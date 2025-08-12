@@ -48,6 +48,7 @@ struct ReportDetailView: View {
         })
         .navigationBarBackButtonHidden(true)
         .navigationBarTitleDisplayMode(.inline)
+        .safeAreaPadding(.top, UIConstants.topScrollPadding)
         .customNavigation(title: ReportDetailConstants.naviTitle, leadingAction: {
             container.navigationRouter.pop()
         }, naviIcon: Image(systemName: ReportDetailConstants.naviCloseImage))
