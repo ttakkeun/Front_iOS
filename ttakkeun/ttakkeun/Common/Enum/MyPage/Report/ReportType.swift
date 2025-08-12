@@ -63,4 +63,27 @@ enum ReportType: CaseIterable {
             return .etcReport
         }
     }
+    
+    var subItems: [Any]? {
+        switch self {
+        case .spam:
+            return SpamItems.allCases
+        case .inappropriate:
+            return InappropriateItems.allCases
+        case .falseInformation:
+            return FalseInformationItems.allCases
+        case .animalAbuse:
+            return AnimalAbuseItems.allCases
+        case .copyRight:
+            return CopyRightItems.allCases
+        case .exposureInformation:
+            return ExposureInformationItems.allCases
+        case .defamation:
+            return DefamationItems.allCases
+        case .cheating:
+            return CheatingItems.allCases
+        case .etcReport:
+            return nil
+        }
+    }
 }

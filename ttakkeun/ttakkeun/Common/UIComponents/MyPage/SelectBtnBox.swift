@@ -46,7 +46,7 @@ struct SelectBtnBox: View {
         ZStack(alignment: .leading, content: {
             RoundedRectangle(cornerRadius: SelectedBtnBoxConstants.cornerRadius)
                 .fill(Color.clear)
-                .stroke(Color.gray200, style: .init())
+                .stroke(isSelected ? Color.green : Color.gray200, style: .init())
                 .frame(height: SelectedBtnBoxConstants.btnHeight)
             
             btnContent
