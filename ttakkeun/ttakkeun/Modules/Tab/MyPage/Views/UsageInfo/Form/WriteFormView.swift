@@ -9,6 +9,7 @@ import SwiftUI
 import Kingfisher
 import PhotosUI
 
+/// 문의 하기 및 신고하기 폼 뷰
 struct WriteFormView: View {
     
     // MARK: - Property

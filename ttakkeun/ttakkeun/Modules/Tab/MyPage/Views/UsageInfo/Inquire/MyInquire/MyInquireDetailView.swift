@@ -8,6 +8,7 @@
 import SwiftUI
 import Kingfisher
 
+/// 나의 문의하기 읽기 뷰
 struct MyInquireDetailView: View {
     
     @EnvironmentObject var container: DIContainer

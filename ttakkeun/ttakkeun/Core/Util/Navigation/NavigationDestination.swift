@@ -23,7 +23,7 @@ enum NavigationDestination: Hashable {
     case reportBtn
     case writeInquire(selectedInquiryCategory: InquireType)
     case myInquire
-    case reportDetailBtn(selectedReportCategory: String)
+    case reportDetailBtn(selectedReportCategory: ReportType)
     case writeReport
     case agreementData(selectedAgreementData: AgreementData)
     case myInquiryConfirm(selectedInquiryData: MyInquiryResponse)
