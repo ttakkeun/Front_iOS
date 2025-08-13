@@ -12,6 +12,7 @@ struct ReportWriteView: View {
     
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
+    @Environment(\.alert) var alert
     @State var viewModel: ReportViewModel
     
     // MARK: - Init
@@ -26,9 +27,13 @@ struct ReportWriteView: View {
             images: $viewModel.selectedImage,
             type: .writeReport
         ) {
-            print("클릭")
-            await container.navigationRouter.pop()
+            await alert.trigger(type: .receivingReportAlert, showAlert: true, action: {
+                Task {
+                    await container.navigationRouter.pop()
+                }
+            })
         }
+        .customAlert(alert: alert)
     }
 }
 

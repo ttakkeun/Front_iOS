@@ -12,7 +12,9 @@ struct InquireWriteView: View {
     
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
+    @Environment(\.alert) var alert
     @State var viewModel: InquireViewModel
+    @State var showAlert: Bool = false
     let type: InquireType
     
     // MARK: - Init
@@ -33,9 +35,13 @@ struct InquireWriteView: View {
             type: .writeInquire(path: type)
         ) {
             // TODO: - API 연결 시 수정 부분
-            print("hello")
-            await container.navigationRouter.pop()
+            await alert.trigger(type: .receivingInquiryAlert, showAlert: true, action: {
+                Task {
+                    await container.navigationRouter.pop()
+                }
+            })
         }
+        .customAlert(alert: alert)
     }
 }
 

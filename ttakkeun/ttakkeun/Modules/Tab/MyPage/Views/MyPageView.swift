@@ -16,7 +16,6 @@ struct MyPageView: View {
     @AppStorage(AppStorageKey.userEmail) var userEmail: String?
     
     @State var viewModel: MyPageViewModel
-    @State private var isNickBtnClicked: Bool = false
     @State private var isProfileDeleteBtnClicked: Bool = false
     @State private var isLogoutBtnClicked: Bool = false
     
@@ -112,7 +111,10 @@ struct MyPageView: View {
     /// 닉네임 수정 버튼
     private var editNicknameBtn: some View {
         Button(action: {
-            isNickBtnClicked.toggle()
+            alert.trigger(type: .editNicknameAlert(currentNickname: userNickname ?? MyPageConstants.userNameText), showAlert: true, action: {
+                // TODO: - 닉네임 수정 API
+                print(viewModel.editNicknameValue)
+            }, nicknameValue: $viewModel.editNicknameValue)
         }, label: {
             Text(MyPageConstants.editBtnText)
                 .font(.Body4_medium)
@@ -173,15 +175,19 @@ struct MyPageView: View {
     private var middleContents: some View {
         VStack(alignment: .center, spacing: MyPageConstants.middleGroupVspacing, content: {
             MyPageInfoBox(groupType: .appInfo, showVersionInfo: true, actions: [
-                .terms: { print("이용약관 및 정책") }
+                .terms: { container.navigationRouter.push(to: .appInfo(.privacyPolicy)) }
             ])
             MyPageInfoBox(groupType: .usageInfo, actions: [
-                .inquiry: { print("문의하기") },
+                .inquiry: { container.navigationRouter.push(to: .inquire(.inquireSelect)) },
             ])
             MyPageInfoBox(groupType: .account, actions: [
-                .logout: { print("로그아웃하기") },
-                .deleteProfile: { print("프로필 삭제하기") },
-                .leave: { print("탈퇴하기") }
+                .logout: { alert.trigger(type: .logoutProfileAlert, showAlert: true, action: {
+                    print("로그아웃 버튼 클릭")
+                }) },
+                .deleteProfile: { alert.trigger(type: .deleteProfileAlert, showAlert: true, action: {
+                    print("프로필 삭제하기")
+                }) },
+                .leave: { container.navigationRouter.push(to: .auth(.deleteAccount))}
             ])
         })
     }

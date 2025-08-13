@@ -24,7 +24,7 @@ class MyPageViewModel {
     var userInfo: UserInfoResponse?
     var isLoading: Bool = false
     
-    var inputNickname: String = ""
+    var editNicknameValue: String = ""
     
     var cancellalbes = Set<AnyCancellable>()
 }

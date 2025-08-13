@@ -37,6 +37,7 @@ struct WriteFormView: View {
         static let textEditorHeight: CGFloat = 200
         static let readOnlyImageSize: CGSize = .init(width: 80, height: 80)
         static let showAgreementSize: CGSize = .init(width: 63, height: 28)
+        static let checkImageSize: CGSize = .init(width: 25, height: 25)
         
         static let spacerMinHeight: CGFloat = 20
         static let maxCount: Int = 300
@@ -258,8 +259,8 @@ struct WriteFormView: View {
                 get: { emailText ?? "" },
                 set: { emailText = $0} ), prompt: placeholder
             )
-                .keyboardType(.emailAddress)
-                .focused($isFocused)
+            .keyboardType(.emailAddress)
+            .focused($isFocused)
         }
     }
     
@@ -307,12 +308,16 @@ struct WriteFormView: View {
     }
     
     /// 하단 개인정보 수집 및 허용 체크 사항
+    @ViewBuilder
     private var checkAgreementContent: some View {
+        let image = checkAgreement ? Image(.check) : Image(.uncheck)
         HStack {
             Button(action: {
                 checkAgreement.toggle()
             }, label: {
-                checkAgreement ? Image(.check) : Image(.uncheck)
+                image
+                    .resizable()
+                    .frame(width: WriteFormConstants.checkImageSize.width, height: WriteFormConstants.checkImageSize.height)
             })
             
             Text(WriteFormConstants.agreementCheck)
@@ -327,8 +332,13 @@ struct WriteFormView: View {
     @ViewBuilder
     private var bottomMainButton: some View {
         if let btnType = type.config.buttonType {
+            
+            let isButtonEnabled: Bool = {
+                if type.config.showConsent { return checkAgreement }
+                return true
+            }()
+            
             MainButton(btnText: btnType.text, height: btnType.height, action: {
-                if checkAgreement {
                     Task {
                         do {
                             try await onSubmit?()
@@ -336,9 +346,9 @@ struct WriteFormView: View {
                             print("문의 및 신고하기 제출 실패: \(error)")
                         }
                     }
-                }
             }, color: btnType.color)
             .padding(.horizontal, UIConstants.defaultSafeHorizon)
+            .disabled(!isButtonEnabled)
         }
     }
 }

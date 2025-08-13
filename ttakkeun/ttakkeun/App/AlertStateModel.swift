@@ -22,7 +22,9 @@ class AlertStateModel {
     ///   - nicknameValue: 닉네임 변경 시 닉네임 값 지정
     func trigger(type: AlertType, showAlert: Bool, action: @escaping () -> Void = {}, nicknameValue: Binding<String>? = nil) {
         self.alertType = type
-        self.showAlert = showAlert
+        withAnimation {
+            self.showAlert = showAlert
+        }
         self.yes = action
         self.nicknameValue = nicknameValue
     }

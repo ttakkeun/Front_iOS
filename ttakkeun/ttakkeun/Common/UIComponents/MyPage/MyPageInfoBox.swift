@@ -95,7 +95,9 @@ struct MyPageInfoBox: View {
     /// - Returns: 버튼 반환
     private func contentText(item: MyPageItemType) -> some View {
         Button(action: {
-            action(item)
+            withAnimation {
+                action(item)
+            }
         }, label: {
             Text(item.title)
                 .font(item.font)
