@@ -17,9 +17,9 @@ struct JournalRegistContents: View {
     fileprivate enum JournalRegistConstants {
         static let titleVspacing: CGFloat = 10
         static let mainBtnHspacing: CGFloat = 9
-        static let firstPageVspacing: CGFloat = 38
+        static let firstPageVspacing: CGFloat = 28
         static let firstGridHSpacing: CGFloat = 14
-        static let firstGridVspacing: CGFloat = 6
+        static let firstGridVspacing: CGFloat = 12
         static let spacerHeight: CGFloat = 110
         
         static let titleHeight: CGFloat = 110
@@ -58,8 +58,9 @@ struct JournalRegistContents: View {
     // MARK: - 1 Page(부위 선택)
     //
     private var firstPageContents: some View {
-        VStack(spacing: JournalRegistConstants.firstPageVspacing, content: {
+        VStack(content: {
             titleText(title: JournalRegistConstants.firstTitle, subTitle: JournalRegistConstants.firstSubTitle)
+            Spacer().frame(maxHeight: JournalRegistConstants.firstPageVspacing)
             selectCategory
             Spacer()
         })

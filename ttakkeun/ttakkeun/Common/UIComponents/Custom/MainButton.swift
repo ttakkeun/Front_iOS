@@ -46,9 +46,7 @@ struct MainButton: View {
     // MARK: - Init
     var body: some View {
         Button(action: {
-            withAnimation {
-                action()
-            }
+            action()
         }, label: {
             ZStack {
                 RoundedRectangle(cornerRadius: MainButtonConstants.cornerRadius)

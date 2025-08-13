@@ -12,7 +12,7 @@ struct QnAView: View {
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
     @State var qnaSegmentValue: QnASegment = .faq
-    @Binding var isFloatingShow: Bool
+    @State var isFloatingShow: Bool = false
     
     // MARK: - Constants
     fileprivate enum QnAConstants {
@@ -61,8 +61,6 @@ struct QnAView: View {
 }
 
 #Preview {
-    @Previewable @State var isShowFloating: Bool = false
-    
-    QnAView(isFloatingShow: $isShowFloating)
+    QnAView()
         .environmentObject(DIContainer())
 }

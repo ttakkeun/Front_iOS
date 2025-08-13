@@ -17,9 +17,12 @@ struct MyInquireView: View {
     fileprivate enum MyInquireCostants {
         static let contentsVspacing: CGFloat = 19
         static let btnVspacing: CGFloat = 17
+        static let cornerRadius: CGFloat = 10
+        static let rectangleHeight: CGFloat = 100
         static let naviTitle: String = "내 문의 내용"
-        static let naviClose: String = "xmark"
+        static let naviClose: String = "chevron.left"
         static let topTitle: String = "내가 문의한 내용 확인하기"
+        static let noInquireText: String = "문의한 내용이 없습니다."
     }
     
     // MARK: - Init
@@ -31,7 +34,7 @@ struct MyInquireView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: MyInquireCostants.contentsVspacing, content: {
             topTitle
-            inquireBtns
+            inquireBranch
             Spacer()
         })
         .navigationBarBackButtonHidden(true)
@@ -52,7 +55,16 @@ struct MyInquireView: View {
         Text(MyInquireCostants.topTitle)
             .font(.H4_bold)
             .foregroundStyle(Color.gray900)
-
+    }
+    
+    /// 문의 사항 버튼 분기처리
+    @ViewBuilder
+    private var inquireBranch: some View {
+        if !viewModel.myInquiryData.isEmpty {
+            inquireBtns
+        } else {
+            noInquireBtns
+        }
     }
     /// 내가 문의한 내용들 볼 수 있는 버튼들
     private var inquireBtns: some View {
@@ -63,6 +75,20 @@ struct MyInquireView: View {
                 }))
             }
         })
+    }
+    
+    /// 문의한 내용 없을 시, 가이드 문구
+    private var noInquireBtns: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: MyInquireCostants.cornerRadius)
+                .fill(Color.clear)
+                .stroke(Color.gray500, style: .init())
+                .frame(height: MyInquireCostants.rectangleHeight)
+            
+            Text(MyInquireCostants.noInquireText)
+                .font(.Body4_medium)
+                .foregroundStyle(Color.gray900)
+        }
     }
 }
 

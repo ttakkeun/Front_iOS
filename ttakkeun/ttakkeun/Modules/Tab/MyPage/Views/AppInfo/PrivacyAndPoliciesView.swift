@@ -17,7 +17,7 @@ struct PrivacyAndPoliciesView: View {
     fileprivate enum PrivacyAndPoliciesConstants {
         static let contentsVspacing: CGFloat = 17
         static let navigationTitle: String = "이용약관 및 정책"
-        static let navigationIcon: String = "xmark"
+        static let navigationIcon: String = "chevron.left"
         
     }
     
@@ -27,11 +27,15 @@ struct PrivacyAndPoliciesView: View {
             ForEach(btnInfoArray, id: \.id) { btnInfo in
                 SelectBtnBox(btnInfo: btnInfo)
             }
+            Spacer()
         })
         .navigationBarBackButtonHidden(true)
+        .navigationBarTitleDisplayMode(.inline)
         .customNavigation(title: PrivacyAndPoliciesConstants.navigationTitle, leadingAction: {
             container.navigationRouter.pop()
         }, naviIcon: Image(systemName: PrivacyAndPoliciesConstants.navigationIcon))
+        .safeAreaPadding(.top, UIConstants.defaultSafeTop)
+        .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
     
     // MARK: - TopContents

@@ -21,9 +21,8 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            DeleteAccountView(container: DIContainer())
+            TtakeunTab()
                 .environmentObject(DIContainer())
-                .environment(AlertStateModel())
 //            switch appFlowViewModel.appState {
 //            case .onBoarding:
 //                OnboardingView()

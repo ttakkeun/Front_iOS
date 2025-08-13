@@ -36,7 +36,7 @@ struct SignUpView: View {
         static let checkBoxSize: CGFloat = 30
         
         static let customNavigationText: String = "본인확인"
-        static let topNaviIconText: String = "xmark"
+        static let topNaviIconText: String = "chevron.left"
         static let emailFieldText: String = "이메일"
         static let nicknameFieldText: String = "닉네임"
         static let nicknamePlaceholder: String = "닉네임을 지어주세요(최대 8자)"
@@ -214,4 +214,10 @@ extension SignUpView {
             .font(.Body3_medium)
             .foregroundStyle(.gray400)
     }
+}
+
+#Preview {
+    SignUpView(socialType: .apple, singUpRequest: .init(identityToken: "s", email: "s", name: "S"), container: DIContainer(), appFlowViewModel: AppFlowViewModel())
+        .environment(AppFlowViewModel())
+        .environmentObject(DIContainer())
 }

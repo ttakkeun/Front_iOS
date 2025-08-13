@@ -33,7 +33,7 @@ struct WriteTipsView: View {
         static let downKeyboardImage: String = "chevron.down"
         static let titleText: String = "사진 등록(선택 사항)"
         static let subTitleText: String = "최대 3장"
-        static let closeBtn: String = "xmark"
+        static let closeBtn: String = "chevron.left"
         static let naviTitle: String = "TIP 작성"
         static let mainBtnText: String = "공유하기"
         static let textFieldTitle: String = "제목을 입력해주세요"

@@ -51,7 +51,7 @@ struct ProfileFormView: View {
         static let neutralYesText: String = "예"
         static let neutralNoText: String = "아니오"
         static let registerBtnText: String = "등록하기"
-        static let closeButtonString: String = "xmark"
+        static let closeButtonString: String = "chevron.left"
         
         static let profileMakeTitle: String = "프로필 등록"
         static let profileEditTitle: String = "프로필 편집"

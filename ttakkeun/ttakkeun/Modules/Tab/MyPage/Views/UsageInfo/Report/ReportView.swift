@@ -18,7 +18,7 @@ struct ReportView: View {
     fileprivate enum ReportConstants {
         static let btnVspacing: CGFloat = 17
         static let naviTitle: String = "신고하기"
-        static let naviCloseImage: String = "xmark"
+        static let naviCloseImage: String = "chevron.left"
     }
     
     // MARK: - Init

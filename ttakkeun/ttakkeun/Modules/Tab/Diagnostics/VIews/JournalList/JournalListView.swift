@@ -14,7 +14,7 @@ struct JournalListView: View {
     @Bindable var viewModel: JournalListViewModel
     @Binding var selectedPartItem: PartItem
     @EnvironmentObject var container: DIContainer
-    @Environment(AlertStateModel.self) var alert
+    @Environment(\.alert) var alert
     @AppStorage(AppStorageKey.aiCount) var aiCount: Int?
     
     // MARK: - Constants
@@ -137,7 +137,7 @@ struct JournalListView: View {
                 })
             }
             .padding(.trailing, JournalListConstants.bottomTrailingPadding)
-            .padding(.bottom, UIConstants.safeBottom)
+            .padding(.bottom, UIConstants.defaultSafeBottom)
         }
     }
     

@@ -15,6 +15,7 @@ enum UIConstants {
     
     static let defaultSafeTop: CGFloat = 20
     static let defaultSafeHorizon: CGFloat = 20
+    static let defaultSafeBottom: CGFloat = 30
     static let horizonScrollBottomPadding: CGFloat = 10
     static let topScrollPadding: CGFloat = 10
     

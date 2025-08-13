@@ -21,13 +21,13 @@ struct HomeDragView: View {
     
     // MARK: - Constants
     fileprivate enum HomeDragConstants {
-        
         static let indicatorWidth: CGFloat = 40
         static let indicatorHeight: CGFloat = 5
         
-        static let minScreenHeight: CGFloat = 0.345
-        static let maxScreenHeight: CGFloat = 0.058
+        static let minScreenHeight: CGFloat = 0.3
+        static let maxScreenHeight: CGFloat = 0.04
         
+        static let capsuleVspacing: CGFloat = 30
         static let compactComponentVspacing: CGFloat = 24
         static let cornerRadius: CGFloat = 30
         static let threshold: CGFloat = 5
@@ -51,20 +51,20 @@ struct HomeDragView: View {
         let maxOffset: CGFloat = screenHeight * HomeDragConstants.maxScreenHeight
         let midPoint = (minOffset + maxOffset) / 2
         
-        ScrollView(.vertical, content: {
-            VStack(alignment: .leading, spacing: HomeDragConstants.compactComponentVspacing, content: {
-                HomeTodo(viewModel: homeTodoViewModel)
-                HomeAIProduct(viewModel: homeRecommendViewModel)
-                HomeTop(viewModel: homeRecommendViewModel, petType: petType)
+        VStack(spacing: HomeDragConstants.capsuleVspacing, content: {
+            dragIndicator(minOffset: minOffset, maxOffset: maxOffset, midPoint: midPoint)
+            ScrollView(.vertical, content: {
+                VStack(alignment: .leading, spacing: HomeDragConstants.compactComponentVspacing, content: {
+                    HomeTodo(viewModel: homeTodoViewModel)
+                    HomeAIProduct(viewModel: homeRecommendViewModel)
+                    HomeTop(viewModel: homeRecommendViewModel, petType: petType)
+                })
             })
+            .contentMargins(.bottom, UIConstants.safeBottom, for: .scrollContent)
         })
-        .contentMargins(.bottom, UIConstants.safeBottom, for: .scrollContent)
-        .safeAreaInset(edge: .top, spacing: UIConstants.capsuleSpacing, content: {
-            dragIndicator
-        })
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .safeAreaPadding(.top, HomeDragConstants.safeTopPadding)
         .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
             UnevenRoundedRectangle(topLeadingRadius: HomeDragConstants.cornerRadius, topTrailingRadius: HomeDragConstants.cornerRadius)
                 .fill(Color.white)
@@ -73,25 +73,27 @@ struct HomeDragView: View {
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
         // TODO: : task 작성 필요 데이터 조회 데이터
         .offset(y: offset + dragOffset)
-        .gesture(dragGesture(minOffset: minOffset, maxOffset: maxOffset, midPoint: midPoint))
         .task {
             await initializeOffset(screenHeight: screenHeight, minOffset: minOffset)
         }
     }
     
-    
     // MARK: TopContents
     /// 상단 인디케이터
-    /// - Parameter minOffset: 높이 조절에 따른 인디케이터 조절
+    /// - Parameters:
+    ///   - minOffset: 높이 조절에 따른 인디케이터 조절
+    ///   - maxOffset: 최대 오프셋
+    ///   - midPoint: 중간 지점
     /// - Returns: 뷰 반환
-    private var dragIndicator: some View {
+    private func dragIndicator(minOffset: CGFloat, maxOffset: CGFloat, midPoint: CGFloat) -> some View {
         Capsule()
             .fill(Color.gray)
             .frame(width: HomeDragConstants.indicatorWidth, height: HomeDragConstants.indicatorHeight)
+            .contentShape(Rectangle())
+            .gesture(dragGesture(minOffset: minOffset, maxOffset: maxOffset, midPoint: midPoint))
     }
     
     // MARK: - BottomContents
-    
     private func dragGesture(minOffset: CGFloat, maxOffset: CGFloat, midPoint: CGFloat) -> some Gesture {
         DragGesture()
             .updating($dragOffset, body: { value, state, _ in

@@ -11,7 +11,7 @@ import SwiftUI
 struct DiagnosticsView: View {
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
-    @Environment(AlertStateModel.self) var alert
+    @Environment(\.alert) var alert
     @State var journalListViewModel: JournalListViewModel
     @State var diagnosticViewModel: DiagnosticResultViewModel
     @State var diagnosingValue: DiagnosingValue = .init(selectedSegment: .journalList, selectedPartItem: .ear)
@@ -39,7 +39,6 @@ struct DiagnosticsView: View {
         .safeAreaInset(edge: .top, content: {
             topStatus
         })
-        .customAlert(alert: alert)
         .fullScreenCover(isPresented: $journalListViewModel.showFullScreenAI, content: {
             diagnosisFlowView
         })
