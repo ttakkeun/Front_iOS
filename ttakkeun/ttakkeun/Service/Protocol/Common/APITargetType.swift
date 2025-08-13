@@ -17,4 +17,6 @@ extension APITargetType {
         }
         return url
     }
+    
+    var validationType: ValidationType { .successCodes }
 }
