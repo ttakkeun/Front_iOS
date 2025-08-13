@@ -32,7 +32,7 @@ class HomeProfileCardViewModel {
     
     // MARK: - Method
     public func goToEditPetProfile() {
-        container.navigationRouter.push(to: .editPetProfile(image: profileData?.image ?? "", petInfo: returnEditProfile()))
+        container.navigationRouter.push(to: .profile(.editPetProfile(image: profileData?.image ?? "", petInfo: returnEditProfile())))
     }
     
     private func returnEditProfile() -> PetInfo {

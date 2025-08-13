@@ -9,7 +9,7 @@ import SwiftUI
 import PhotosUI
 import Kingfisher
 
-/// 동물 프로필 생서 뷰
+/// 동물 프로필 생성 뷰
 struct ProfileFormView: View {
     
     // MARK: - Property

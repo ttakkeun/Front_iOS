@@ -1,0 +1,200 @@
+//
+//  MyPageView.swift
+//  ttakkeun
+//
+//  Created by 황유빈 on 11/12/24.
+//
+
+import SwiftUI
+
+struct MyPageView: View {
+    // MARK: - Property
+    @EnvironmentObject var container: DIContainer
+    @Environment(\.appFlow) var appFlowViewModel
+    @Environment(\.alert) var alert
+    @AppStorage(AppStorageKey.userNickname) var userNickname: String?
+    @AppStorage(AppStorageKey.userEmail) var userEmail: String?
+    
+    @State var viewModel: MyPageViewModel
+    @State private var isProfileDeleteBtnClicked: Bool = false
+    @State private var isLogoutBtnClicked: Bool = false
+    
+    // MARK: - Constants
+    fileprivate enum MyPageConstants {
+        static let contentsVspacing: CGFloat = 37
+        static let topContentsVspacing: CGFloat = 17
+        static let myProfileVspacing: CGFloat = 6
+        static let myProfileHspacing: CGFloat = 12
+        static let topBtnHspacing: CGFloat = 13
+        static let topBtnVspacing: CGFloat = 15
+        static let middleGroupVspacing: CGFloat = 21
+        
+        static let profileImageSize: CGSize = .init(width: 60, height: 60)
+        static let editNicknameBtnSize: CGSize = .init(width: 78, height: 31)
+        static let topScrapBtnSize: CGFloat = 96
+        
+        static let cornerRadius: CGFloat = 40
+        
+        static let editBtnText: String = "닉네임 수정"
+        static let profileImage: String = "person.circle.fill"
+        static let userNameText: String = "사용자 닉네임을 가져오지 못했습니다."
+        static let emailText: String = "사용자 이메일을 가져오지 못했습니다."
+        static let naviTitle: String = "마이페이지"
+        static let leftChevron: String = "chevron.backward"
+    }
+    
+    // MARK: - Init
+    init(container: DIContainer) {
+        self._viewModel = .init(wrappedValue: .init(container: container))
+        self.viewModel.getUserInfo()
+    }
+    
+    // MARK: - Body
+    var body: some View {
+        VStack(spacing: MyPageConstants.contentsVspacing, content: {
+            topContents
+            middleContents
+            Spacer()
+        })
+        .navigationBarBackButtonHidden(true)
+        .navigationBarTitleDisplayMode(.inline)
+        .safeAreaPadding(.top, UIConstants.defaultSafeTop)
+        .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+        .customNavigation(title: MyPageConstants.naviTitle, leadingAction: {
+            container.navigationRouter.pop()
+        }, naviIcon: Image(systemName: MyPageConstants.leftChevron))
+        .customAlert(alert: alert)
+    }
+    
+    // MARK: - TopContents
+    /// 상단 본인 프로필 + tips 그룹 버튼
+    private var topContents: some View {
+        VStack(alignment: .center, spacing: MyPageConstants.topContentsVspacing, content: {
+            profile
+            tipsBtns
+        })
+    }
+    
+    // MARK: - MyProfile
+    /// 프로필 필드(사진, 닉네임, 이메일, 닉네임 수정버튼)
+    private var profile: some View {
+        HStack(alignment: .center, spacing: MyPageConstants.myProfileHspacing, content: {
+            myProfileImage
+            myProfileInfo
+            Spacer()
+            editNicknameBtn
+        })
+    }
+    
+    /// 프로필 이미지
+    private var myProfileImage: some View {
+        Image(systemName: MyPageConstants.profileImage)
+            .resizable()
+            .frame(width: MyPageConstants.profileImageSize.width, height: MyPageConstants.profileImageSize.height)
+            .aspectRatio(contentMode: .fill)
+            .tint(Color.gray300)
+    }
+    
+    /// 마이 프로필 정보
+    private var myProfileInfo: some View {
+        VStack(alignment: .leading, spacing: MyPageConstants.myProfileVspacing, content: {
+            Text(userNickname ?? MyPageConstants.userNameText)
+                .font(.H4_bold)
+                .foregroundStyle(Color.gray900)
+            
+            Text(verbatim: "\(userEmail ?? MyPageConstants.emailText)")
+                .font(.Body4_semibold)
+                .foregroundStyle(Color.gray900)
+        })
+    }
+    
+    /// 닉네임 수정 버튼
+    private var editNicknameBtn: some View {
+        Button(action: {
+            alert.trigger(type: .editNicknameAlert(currentNickname: userNickname ?? MyPageConstants.userNameText), showAlert: true, action: {
+                // TODO: - 닉네임 수정 API
+                print(viewModel.editNicknameValue)
+            }, nicknameValue: $viewModel.editNicknameValue)
+        }, label: {
+            Text(MyPageConstants.editBtnText)
+                .font(.Body4_medium)
+                .foregroundStyle(Color.gray900)
+                .frame(width: MyPageConstants.editNicknameBtnSize.width, height: MyPageConstants.editNicknameBtnSize.height)
+                .background(content: {
+                    RoundedRectangle(cornerRadius: MyPageConstants.cornerRadius)
+                        .fill(Color.primarycolor300)
+                })
+        })
+    }
+    
+    /// tips 버튼들(내가 쓴 tips, 내가 스크랩한 tips)
+    private var tipsBtns: some View {
+        HStack(alignment: .center, spacing: MyPageConstants.topBtnHspacing, content: {
+            generateTopButton(.myWriteTips, action: {
+                container.navigationRouter.push(to: .myPage(.myTips))
+            })
+            generateTopButton(.myScrapTips, action: {
+                container.navigationRouter.push(to: .myPage(.myScrapTips))
+            })
+        })
+    }
+    
+    private func generateTopButton(_ type: TipsBtnType, action: @escaping () -> Void) -> some View {
+        Button(action: {
+            action()
+        }, label: {
+            ZStack {
+                RoundedRectangle(cornerRadius: type.cornerRadius)
+                    .fill(Color.white)
+                    .stroke(Color.gray200, style: .init())
+                    .frame(height: MyPageConstants.topScrapBtnSize)
+                
+                generateTopBtnContents(type)
+            }
+        })
+    }
+    
+    /// 버튼 내부 컨텐츠
+    /// - Parameter type: 버튼 타입
+    /// - Returns: 버튼 컨텐츠 생성
+    private func generateTopBtnContents(_ type: TipsBtnType) -> some View {
+        VStack(spacing: MyPageConstants.topBtnVspacing, content: {
+            Image(type.image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: type.imageSize.width, height: type.imageSize.height)
+            
+            Text(type.text)
+                .font(.Body3_semibold)
+                .foregroundStyle(Color.black)
+        })
+    }
+    
+    // MARK: - MiddleContents
+    /// 앱 정보 관련 그룹 박스 모음
+    private var middleContents: some View {
+        VStack(alignment: .center, spacing: MyPageConstants.middleGroupVspacing, content: {
+            MyPageInfoBox(groupType: .appInfo, showVersionInfo: true, actions: [
+                .terms: { container.navigationRouter.push(to: .appInfo(.privacyPolicy)) }
+            ])
+            MyPageInfoBox(groupType: .usageInfo, actions: [
+                .inquiry: { container.navigationRouter.push(to: .inquire(.inquireSelect)) },
+            ])
+            MyPageInfoBox(groupType: .account, actions: [
+                .logout: { alert.trigger(type: .logoutProfileAlert, showAlert: true, action: {
+                    print("로그아웃 버튼 클릭")
+                }) },
+                .deleteProfile: { alert.trigger(type: .deleteProfileAlert, showAlert: true, action: {
+                    print("프로필 삭제하기")
+                }) },
+                .leave: { container.navigationRouter.push(to: .auth(.deleteAccount))}
+            ])
+        })
+    }
+}
+
+//MARK: - Preview
+#Preview {
+    MyPageView(container: DIContainer())
+        .environmentObject(DIContainer())
+}

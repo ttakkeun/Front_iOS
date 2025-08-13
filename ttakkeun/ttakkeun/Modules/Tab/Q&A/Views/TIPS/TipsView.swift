@@ -87,7 +87,7 @@ struct TipsView: View {
                     viewModel.toggleBookMark(for: data.tipId)
                 }),
                 reportActoin: {
-                container.navigationRouter.push(to: .reportBtn)
+                    container.navigationRouter.push(to: .tips(.tipsReport))
             })
         }
     }

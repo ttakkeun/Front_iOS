@@ -164,7 +164,7 @@ struct JournalListView: View {
     
     private func bottomBtnAction() -> Void {
         if !viewModel.isSelectionMode {
-            container.navigationRouter.push(to: .makeJournalist)
+            container.navigationRouter.push(to: .diagnostic(.makeJournalist))
         } else {
             if viewModel.selectedCnt >= 1 {
                 viewModel.patchUserPoint()

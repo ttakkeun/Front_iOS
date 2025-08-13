@@ -50,7 +50,7 @@ struct TopStatusBar: View {
     /// 오른쪽 옵션 버튼
     private var rightBtn: some View {
         Button(action: {
-            container.navigationRouter.push(to: .myPage)
+            container.navigationRouter.push(to: .myPage(.myPage))
         }, label: {
             Image(.setting)
                 .fixedSize()

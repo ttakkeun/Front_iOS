@@ -12,7 +12,7 @@ import KakaoSDKCommon
 struct ttakkeunApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @StateObject var appFlowViewModel: AppFlowViewModel = .init()
+    @State var appFlowViewModel: AppFlowViewModel = .init()
     @StateObject var container: DIContainer = .init()
     
     init() {
@@ -21,8 +21,9 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ScheduleView(container: DIContainer())
+            DeleteAccountView(container: DIContainer())
                 .environmentObject(DIContainer())
+                .environment(AlertStateModel())
 //            switch appFlowViewModel.appState {
 //            case .onBoarding:
 //                OnboardingView()

@@ -38,7 +38,7 @@ class RecommendationProductViewModel: TapGestureProduct, ProductUpdate {
     }
     
     public func goToSearchView() {
-        container.navigationRouter.push(to: .productSearch)
+        container.navigationRouter.push(to: .recommend(.productSearch))
     }
     
     // MARK: - ProductSheet

@@ -24,7 +24,7 @@ struct CustomAlert: View {
         static let titleSubTitleVspacing: CGFloat = 17
         
         static let buttonWidth: CGFloat = 108
-        static let buttonHeight: CGFloat = 39
+        static let buttonHeight: CGFloat = 45
         
         static let animationTime: TimeInterval = 0.5
         static let buttonAnimationTime: TimeInterval = 0.3

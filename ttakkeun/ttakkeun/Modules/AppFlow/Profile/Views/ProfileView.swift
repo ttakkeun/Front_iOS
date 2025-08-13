@@ -12,7 +12,7 @@ struct ProfileView: View {
     
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
-    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
+    @Environment(\.appFlow) var appFlowViewModel
     @State var viewModel: ProfileViewModel
     
     // MARK: - Constants
@@ -154,7 +154,6 @@ extension ProfileView {
     private func profileReadView(geometry: GeometryProxy, data: PetProfileDetail) -> some View {
         GeometryReader { item in
             ProfileCard(data: data)
-                .environmentObject(appFlowViewModel)
                 .scaleEffect(self.scaleValue(geometry: geometry, itemGeometry: item))
                 .animation(.bouncy, value: scaleValue(geometry: geometry, itemGeometry: item))
                 .onChange(of: self.isCentered(geometry: geometry, itemGeometry: item)) {
@@ -199,5 +198,5 @@ extension ProfileView {
 #Preview {
     ProfileView(container: DIContainer())
         .environmentObject(DIContainer())
-        .environmentObject(AppFlowViewModel())
+        .environment(AppFlowViewModel())
 }

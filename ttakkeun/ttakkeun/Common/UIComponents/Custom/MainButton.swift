@@ -25,7 +25,6 @@ struct MainButton: View {
     }
     
     // MARK: - Init
-    
     /// Description
     /// - Parameters:
     ///   - btnText: 버튼 텍스트
@@ -47,7 +46,9 @@ struct MainButton: View {
     // MARK: - Init
     var body: some View {
         Button(action: {
-            action()
+            withAnimation {
+                action()
+            }
         }, label: {
             ZStack {
                 RoundedRectangle(cornerRadius: MainButtonConstants.cornerRadius)
@@ -56,7 +57,7 @@ struct MainButton: View {
                     .frame(height: height)
                 
                 Text(btnText)
-                    .font(.Body3_semibold)
+                    .font(.Body2_semibold)
                     .foregroundStyle(Color.gray900)
             }
         })

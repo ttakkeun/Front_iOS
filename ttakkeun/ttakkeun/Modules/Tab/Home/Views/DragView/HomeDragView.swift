@@ -151,5 +151,4 @@ extension Comparable {
 #Preview("Home") {
     HomeView(container: DIContainer())
         .environmentObject(DIContainer())
-        .environmentObject(AppFlowViewModel())
 }

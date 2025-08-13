@@ -12,7 +12,7 @@ import Lottie
 struct OnboardingView: View {
     
     // MARK: - Property
-    @EnvironmentObject var viewModel: AppFlowViewModel
+    @Environment(\.appFlow) var appFlowViewModel
     
     // MARK: - Body
     var body: some View {
@@ -23,7 +23,7 @@ struct OnboardingView: View {
                 .playbackMode(.playing(.toProgress(1, loopMode: .playOnce)))
                 .animationDidFinish { completed in
                     if completed {
-                        viewModel.stateAppFlow { success, error in
+                        appFlowViewModel.stateAppFlow { success, error in
                             if let error = error {
                                 print("최초 사용자 혹은 등록된 유저 아님: \(error)")
                             }
@@ -37,6 +37,6 @@ struct OnboardingView: View {
 struct OnboardingView_PreView: PreviewProvider {
     static var previews: some View {
         OnboardingView()
-            .environmentObject(AppFlowViewModel())
+            .environment(AppFlowViewModel())
     }
 }

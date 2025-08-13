@@ -51,7 +51,6 @@ struct DiagnosticsView: View {
     // MARK: - TopContents
     private var topStatus: some View {
         TopStatusBar()
-            .environmentObject(container)
             .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
     /// 상단 액션 컨트롤러 버튼

@@ -26,7 +26,7 @@ enum AlertType {
         case .noAiCountAlert:
             return "현재 AI 진단 횟수가 없습니다."
         case .editNicknameAlert:
-            return "닉네임을 수정하시겠습니까?"
+            return "닉네임 수정하기"
         case .deleteProfileAlert:
             return "해당 프로필을 삭제하시겠습니까?"
         case .logoutProfileAlert:

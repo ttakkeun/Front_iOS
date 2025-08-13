@@ -8,6 +8,7 @@
 import SwiftUI
 import PhotosUI
 
+/// 팁 작성 뷰
 struct WriteTipsView: View {
     
     // MARK: - Property
@@ -46,36 +47,36 @@ struct WriteTipsView: View {
     
     // MARK: - Body
     var body: some View {
-        NavigationStack {
-            VStack(alignment: .leading, spacing: WriteTipsConstants.mainContentsVspacing, content: {
-                topContents
-                middleContents
-                Spacer()
-                bottomContents
-            })
-            .navigationBarBackButtonHidden(true)
-            .navigationBarTitleDisplayMode(.inline)
-            .customNavigation(title: WriteTipsConstants.naviTitle, leadingAction: {
-                viewModel.container.navigationRouter.pop()
-            }, naviIcon: Image(systemName: WriteTipsConstants.closeBtn))
-            .keyboardToolbar(downAction: {
-                writeTipstype = nil
-            })
-            .ignoresSafeArea(.keyboard)
-            .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
-            .loadingOverlay(isLoading: viewModel.registTipsLoading, loadingTextType: .createTips)
-            .photosPicker(
-                isPresented: $viewModel.isImagePickerPresented,
-                selection: $viewModel.imageItems,
-                maxSelectionCount: WriteTipsConstants.maxImageCount,
-                matching: .images
-            )
-            .onChange(of: viewModel.imageItems, { old, new in
-                viewModel.convertPickerItemsToUIImages(items: new)
-            })
-            .task {
-                UIApplication.shared.hideKeyboard()
-            }
+        VStack(alignment: .leading, spacing: WriteTipsConstants.mainContentsVspacing, content: {
+            topContents
+            middleContents
+            Spacer()
+            bottomContents
+        })
+        .navigationBarBackButtonHidden(true)
+        .navigationBarTitleDisplayMode(.inline)
+        .customNavigation(title: WriteTipsConstants.naviTitle, leadingAction: {
+            viewModel.container.navigationRouter.pop()
+        }, naviIcon: Image(systemName: WriteTipsConstants.closeBtn))
+        .keyboardToolbar(downAction: {
+            writeTipstype = nil
+        })
+        .ignoresSafeArea(.keyboard)
+        .safeAreaPadding(.top, UIConstants.topScrollPadding)
+        .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+        .loadingOverlay(isLoading: viewModel.registTipsLoading, loadingTextType: .createTips)
+        .photosPicker(
+            isPresented: $viewModel.isImagePickerPresented,
+            selection: $viewModel.imageItems,
+            maxSelectionCount: WriteTipsConstants.maxImageCount,
+            matching: .images
+        )
+        .onChange(of: viewModel.imageItems, { old, new in
+            viewModel.convertPickerItemsToUIImages(items: new)
+        })
+        // FIXME: - 키보드 내리기 버튼 수정
+        .task {
+            UIApplication.shared.hideKeyboard()
         }
     }
     

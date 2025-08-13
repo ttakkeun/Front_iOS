@@ -12,7 +12,7 @@ struct TtakeunTab: View {
     // MARK: - Property
     @State var tabcase: TabCase = .home
     @EnvironmentObject var container: DIContainer
-    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
+    @Environment(\.appFlow) var appFlowViewModel
     @State var alert: AlertStateModel = .init()
     
     fileprivate enum TtakeunTabConstants {
@@ -33,8 +33,6 @@ struct TtakeunTab: View {
             .tint(Color.gray900)
             .navigationDestination(for: NavigationDestination.self, destination: { destination in
                 NavigationRoutingView(destination: destination)
-                    .environmentObject(container)
-                    .environmentObject(appFlowViewModel)
             })
            //TODO: - Alert
         })
@@ -67,13 +65,10 @@ struct TtakeunTab: View {
                 Text("1")
             }
         }
-        .environmentObject(container)
-        .environmentObject(appFlowViewModel)
     }
 }
 
 #Preview {
     TtakeunTab()
         .environmentObject(DIContainer())
-        .environmentObject(AppFlowViewModel())
 }

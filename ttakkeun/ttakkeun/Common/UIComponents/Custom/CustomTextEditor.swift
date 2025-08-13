@@ -39,16 +39,28 @@ struct CustomTextEditor: ViewModifier {
         self.backgroundColor = Color.answerBg
     }
     
-    init(text: Binding<String>,
-         placeholder: String,
-         maxTextCount: Int,
-         backgroundColor: Color
+    init(
+        text: Binding<String>,
+        placeholder: String,
+        maxTextCount: Int,
+        backgroundColor: Color
     ) {
         self._text = text
         self.placeholder = placeholder
         self.maxTextCount = maxTextCount
         self.strokeColor = Color.gray200
         self.backgroundColor = backgroundColor
+    }
+    
+    init(
+        text: Binding<String>,
+        placeholder: String
+    ) {
+        self._text = text
+        self.placeholder = placeholder
+        self.maxTextCount = 0
+        self.strokeColor = Color.gray400
+        self.backgroundColor = Color.white
     }
     
     func body(content: Content) -> some View {
@@ -73,16 +85,18 @@ struct CustomTextEditor: ViewModifier {
             .lineSpacing(2.0)
             .scrollContentBackground(.hidden)
             .overlay(alignment: .bottomTrailing, content: {
-                Text("\(text.count) / \(maxTextCount)")
-                    .font(.Body4_medium)
-                    .foregroundStyle(Color.gray400)
-                    .padding(.trailing, 15)
-                    .padding(.bottom, 15)
-                    .onChange(of: text) { newValue, oldValue in
-                        if newValue.count > maxTextCount {
-                            text = String(newValue.prefix(maxTextCount))
+                if maxTextCount > 0 {
+                    Text("\(text.count) / \(maxTextCount)")
+                        .font(.Body4_medium)
+                        .foregroundStyle(Color.gray400)
+                        .padding(.trailing, 15)
+                        .padding(.bottom, 15)
+                        .onChange(of: text) { newValue, oldValue in
+                            if newValue.count > maxTextCount {
+                                text = String(newValue.prefix(maxTextCount))
+                            }
                         }
-                    }
+                }
             })
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
@@ -103,6 +117,10 @@ extension TextEditor {
     
     func customStyleTipsEditor(text: Binding<String>, placeholder: String, maxTextCount: Int, backColor: Color) -> some View {
         self.modifier(CustomTextEditor(text: text, placeholder: placeholder, maxTextCount: maxTextCount, backgroundColor: backColor))
+    }
+    
+    func customInquireStyleEditor(text: Binding<String>, placeholder: String) -> some View {
+        self.modifier(CustomTextEditor(text: text, placeholder: placeholder))
     }
 }
 

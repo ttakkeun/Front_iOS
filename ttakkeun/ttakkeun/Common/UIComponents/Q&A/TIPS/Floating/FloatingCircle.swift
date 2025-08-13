@@ -74,8 +74,8 @@ extension FloatingCircle {
                     selectedFloatingMenu = segment
                     isShowFloating.toggle()
                     
-                    if let selectedFloatingMenu = selectedFloatingMenu {
-                        container.navigationRouter.push(to: .writeTipsView(category: selectedFloatingMenu))
+                    if let category = selectedFloatingMenu {
+                        container.navigationRouter.push(to: .tips(.writeTips(category: category)))
                     }
                 }
         }

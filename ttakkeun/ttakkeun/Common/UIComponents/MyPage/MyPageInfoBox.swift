@@ -9,79 +9,111 @@ import SwiftUI
 
 /// 마이페이지 메인화면 인포버튼 들어간 박스들(재사용하기 위해서)
 struct MyPageInfoBox: View {
-    let myPageInfo: MyPageInfo
-    let versionInfo: String?
-
-    //MARK: - Init
     
-    /// Description
-    /// - Parameters:
-    ///   - myPageInfo: 해당 박스에 들어가는 정보듦
-    ///   - versionInfo: 앱 버전(선택 사항)
-    init(myPageInfo: MyPageInfo, versionInfo: String? = nil) {
-        self.myPageInfo = myPageInfo
-        self.versionInfo = versionInfo
+    // MARK: - Property
+    let groupType: MypageGroupType
+    let showVersionInfo: Bool
+    let actions: [MyPageItemType: () -> Void]
+    
+    // MARK: - Constants
+    fileprivate enum MyPageInfoConstants {
+        static let contentsVspacing: CGFloat = 14
     }
-
+    
+    var appVersion: String {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
+    }
+    
+    // MARK: - Init
+    init(
+        groupType: MypageGroupType,
+        showVersionInfo: Bool = false,
+        actions: [MyPageItemType : () -> Void]
+    ) {
+        self.groupType = groupType
+        self.showVersionInfo = showVersionInfo
+        self.actions = actions
+    }
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            HStack {
-                Text(myPageInfo.title)
-                    .font(.Body2_extrabold)
-                    .foregroundStyle(Color.gray900)
-                
-                if let text = versionInfo {
+        GroupBox(content: {
+            contents
+        }, label: {
+            labelBranch
+        })
+    }
+    
+    // MARK: - Label
+    @ViewBuilder
+    private var labelBranch: some View {
+        if showVersionInfo {
+            appVersionLabel
+        } else {
+            label
+        }
+    }
+    
+    /// 기본 라벨
+    private var label: some View {
+        Text(groupType.title)
+            .font(groupType.font)
+            .foregroundStyle(groupType.foregroundStyle)
+    }
+    
+    /// 앱 버전 존재할 경우 상단 라벨
+    private var appVersionLabel: some View {
+        HStack {
+            label
+            Spacer()
+            versionText
+        }
+    }
+    
+    /// 앱 버전 텍스트
+    private var versionText: some View {
+        Text("V\(appVersion)")
+            .font(.Body4_medium)
+            .foregroundStyle(Color.gray300)
+    }
+    
+    // MARK: - Contents
+    /// 그룹 박스 내부 컨텐츠
+    private var contents: some View {
+        VStack(alignment: .leading, spacing: MyPageInfoConstants.contentsVspacing, content: {
+            ForEach(groupType.items, id: \.self) { item in
+                HStack {
+                    contentText(item: item)
                     Spacer()
-                    
-                    Text(text)
-                        .font(.Body4_medium)
-                        .foregroundStyle(Color.gray300)
                 }
             }
-            
-            /// 버튼 리스트
-            buttonList()
-        }
-        .frame(width: 320, alignment: .leading)
-        .padding(.vertical, 15)
-        .padding(.horizontal, 14)
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.answerBg)
-        )
+        })
+        .padding(.vertical, MyPageInfoConstants.contentsVspacing)
     }
     
-    @ViewBuilder
-    private func buttonList() -> some View {
-        ForEach(myPageInfo.boxBtn) { button in
-            Button(action: {
-                button.action()
-            }) {
-                Text(button.name)
-                    .font(.Body3_medium)
-                    .foregroundStyle(changeColor(text: button.name) ? Color.red : Color.gray900)
+    /// 아이템에 해당하는 버튼
+    /// - Parameter item: 아이템 타입
+    /// - Returns: 버튼 반환
+    private func contentText(item: MyPageItemType) -> some View {
+        Button(action: {
+            withAnimation {
+                action(item)
             }
-        }
+        }, label: {
+            Text(item.title)
+                .font(item.font)
+                .foregroundStyle(item.foregroundStyle)
+        })
     }
     
-    func changeColor(text: String) -> Bool {
-        return text == "탈퇴하기"
+    /// 아이템별 액션 가지기
+    /// - Parameter item: 아이템 타입
+    private func action(_ item: MyPageItemType) {
+        actions[item]?()
     }
 }
 
-//MARK: - Preview
-struct MypageInfoBox_Preview: PreviewProvider {
-    static var previews: some View {
-        let myPageInfo = MyPageInfo(
-            title: "앱 정보",
-            boxBtn: [
-                BtnInfo(name: "알림 설정", date: nil, action: { print("알림 설정 버튼 눌림") }),
-                BtnInfo(name: "앱 버전 정보", date: nil, action: { print("앱 버전 정보 버튼 눌림") }),
-                BtnInfo(name: "이용약관 및 정책", date: nil, action: { print("이용약관 및 정책 버튼 눌림") })
-            ]
-        )
-        
-        MyPageInfoBox(myPageInfo: myPageInfo)
-            .previewLayout(.sizeThatFits)
-    }
+#Preview {
+    MyPageInfoBox(groupType: .account, showVersionInfo: false, actions: [
+        .logout: { print("로그아웃 ")}
+    ])
 }
