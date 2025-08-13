@@ -36,19 +36,19 @@ class AuthService: AuthServiceProtocol, BaseAPIService {
     }
     
     func kakaoLogin(kakaoLoginRequest: KakaoLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
-        request(.kakakoLogin(kakaoLoginRequest: .init(accessToken: kakaoLoginRequest.accessToken, email: kakaoLoginRequest.email, name: kakaoLoginRequest.name)))
+        request(.kakakoLogin(kakaoLoginRequest: kakaoLoginRequest))
     }
     
     func signUpkakaoLogin(kakaoLoginRequest: KakaoLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
-        request(.signUpKakaoLogin(kakaoLoginRequest: .init(accessToken: kakaoLoginRequest.accessToken, email: kakaoLoginRequest.email, name: kakaoLoginRequest.name)))
+        request(.signUpKakaoLogin(kakaoLoginRequest: kakaoLoginRequest))
     }
     
     func appleLogin(appleLoginRequest: AppleLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
-        request(.appleLogin(appleLoginRequest: .init(identityToken: appleLoginRequest.identityToken, email: appleLoginRequest.email, name: appleLoginRequest.name)))
+        request(.appleLogin(appleLoginRequest: appleLoginRequest))
     }
     
     func signUpAppleLogin(appleLoginRequest: AppleLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
-        request(.signUpAppleLogin(appleLoginRequest: .init(identityToken: appleLoginRequest.identityToken, email: appleLoginRequest.email, name: appleLoginRequest.name)))
+        request(.signUpAppleLogin(appleLoginRequest: appleLoginRequest))
     }
     
     func deleteKakaoAccount() -> AnyPublisher<ResponseData<String>, Moya.MoyaError> {

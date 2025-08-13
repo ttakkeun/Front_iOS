@@ -12,15 +12,10 @@ import Moya
 import SwiftUI
 
 protocol PetProfileServiceProtocol {
-    func makePetProfileData(petInfo: PetInfo) -> AnyPublisher<ResponseData<MakePetProfileResponse>, MoyaError>
-    
-    func patchPetProfileImageData(petId: Int, image: UIImage) -> AnyPublisher<ResponseData<PatchPetImageResponse>, MoyaError>
-    
-    func getPetProfileData() -> AnyPublisher<ResponseData<PetProfileResponse>, MoyaError>
-    
-    func getSpecificPetProfileData(petId: Int) -> AnyPublisher<ResponseData<HomeProfileResponseData>, MoyaError>
-    
-    func patchPetProfile(petId: Int, petInfo: PetInfo) -> AnyPublisher<ResponseData<EditProfileResponse>, MoyaError>
-    
+    func postGenerateProfileData(petInfo: PetInfo) -> AnyPublisher<ResponseData<PetAddResponse>, MoyaError>
+    func patchPetProfileImageData(petId: Int, image: UIImage) -> AnyPublisher<ResponseData<PetProfileImageResponse>, MoyaError>
+    func patchPetProfile(petId: Int, petInfo: PetInfo) -> AnyPublisher<ResponseData<PetProfileInfoResponse>, MoyaError>
+    func getSpecificPetProfileData(petId: Int) -> AnyPublisher<ResponseData<PetSpacialProfileResponse>, MoyaError>
     func deletePetprofileData(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
+    func getPetProfileData() -> AnyPublisher<ResponseData<PetAllResponse>, MoyaError>
 }

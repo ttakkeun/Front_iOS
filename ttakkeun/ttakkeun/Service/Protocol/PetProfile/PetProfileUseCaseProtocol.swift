@@ -12,15 +12,10 @@ import Moya
 import SwiftUI
 
 protocol PetProfileUseCaseProtocol {
-    func executeMakePetProfile(petInfo: PetInfo) -> AnyPublisher<ResponseData<MakePetProfileResponse>, MoyaError>
-    
-    func executePatchPetProfileImage(petId: Int, image: UIImage) -> AnyPublisher<ResponseData<PatchPetImageResponse>, MoyaError>
-    
-    func executegetPetProfile() -> AnyPublisher<ResponseData<PetProfileResponse>, MoyaError>
-    
-    func executeSpecificPetProfile(petId: Int) -> AnyPublisher<ResponseData<HomeProfileResponseData>, MoyaError>
-    
-    func executePatchPetProfile(petId: Int, PetInfo: PetInfo) -> AnyPublisher<ResponseData<EditProfileResponse>, MoyaError>
-    
+    func executePostGenerateProfile(petInfo: PetInfo) -> AnyPublisher<ResponseData<PetAddResponse>, MoyaError>
+    func executePatchPetProfileImage(petId: Int, image: UIImage) -> AnyPublisher<ResponseData<PetProfileImageResponse>, MoyaError>
+    func executePatchPetProfile(petId: Int, PetInfo: PetInfo) -> AnyPublisher<ResponseData<PetProfileInfoResponse>, MoyaError>
+    func executeSpecificPetProfile(petId: Int) -> AnyPublisher<ResponseData<PetSpacialProfileResponse>, MoyaError>
     func executeDeletePetprofile(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
+    func executeGetPetProfile() -> AnyPublisher<ResponseData<PetAllResponse>, MoyaError>
 }

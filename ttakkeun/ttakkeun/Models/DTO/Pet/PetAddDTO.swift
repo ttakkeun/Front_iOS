@@ -14,3 +14,7 @@ struct PetInfo: Codable, Equatable, Hashable {
     var birth: String
     var neutralization: Bool?
 }
+
+struct PetAddResponse: Codable {
+    let petId: Int
+}

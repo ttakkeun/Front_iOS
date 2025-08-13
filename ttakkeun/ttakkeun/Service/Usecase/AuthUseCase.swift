@@ -23,20 +23,20 @@ class AuthUseCase: AuthUseCaseProtocol {
     }
     /// 카카오 로그인
     func executeKakaoLogin(kakaoLoginRequest: KakaoLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, Moya.MoyaError> {
-        return service.kakaoLogin(kakaoLoginRequest: .init(accessToken: kakaoLoginRequest.accessToken, email: kakaoLoginRequest.email, name: kakaoLoginRequest.name))
+        return service.kakaoLogin(kakaoLoginRequest: kakaoLoginRequest)
     }
     /// 카카오 회원가입
     func executeSignUpkakaoLogin(kakaoLoginRequest: KakaoLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, Moya.MoyaError> {
-        return service.signUpkakaoLogin(kakaoLoginRequest: .init(accessToken: kakaoLoginRequest.accessToken, email: kakaoLoginRequest.email, name: kakaoLoginRequest.name))
+        return service.signUpkakaoLogin(kakaoLoginRequest: kakaoLoginRequest)
     }
     /// 애플 로그인
     func executeAppleLogin(appleLoginRequest: AppleLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, Moya.MoyaError> {
-        return service.appleLogin(appleLoginRequest: .init(identityToken: appleLoginRequest.identityToken, email: appleLoginRequest.email, name: appleLoginRequest.name))
+        return service.appleLogin(appleLoginRequest: appleLoginRequest)
     }
     
     /// 애플 회원가입
     func executeSignUpApple(appleLoginRequest: AppleLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, Moya.MoyaError> {
-        return service.signUpAppleLogin(appleLoginRequest: .init(identityToken: appleLoginRequest.identityToken, email: appleLoginRequest.email, name: appleLoginRequest.name))
+        return service.signUpAppleLogin(appleLoginRequest: appleLoginRequest)
     }
     
     /// 카카오 계정 삭제

@@ -1,13 +1,13 @@
 //
-//  PetProfileResponse.swift
+//  PetAllDTO.swift
 //  ttakkeun
 //
-//  Created by 정의찬 on 10/24/24.
+//  Created by Apple Coding machine on 8/14/25.
 //
 
 import Foundation
 
-struct PetProfileResponse: Codable, Hashable {
+struct PetAllResponse: Codable, Hashable {
     var result: [PetProfileDetail]
 }
 

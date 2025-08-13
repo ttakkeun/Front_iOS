@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct HomeProfileResponseData: Codable {
+struct PetSpacialProfileResponse: Codable {
     let name: String
     let image: String
     let type: ProfileType
