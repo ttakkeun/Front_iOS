@@ -37,7 +37,7 @@ struct MyPageView: View {
         
         static let editBtnText: String = "닉네임 수정"
         static let profileImage: String = "person.circle.fill"
-        static let userNameText: String = "사용자 닉네임을 가져오지 못했습니다."
+        static let userNameText: String = "닉네임 정보가 없습니다."
         static let emailText: String = "사용자 이메일을 가져오지 못했습니다."
         static let naviTitle: String = "마이페이지"
         static let leftChevron: String = "chevron.backward"

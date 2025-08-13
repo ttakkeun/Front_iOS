@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// TODO: - 크기 동적인지 확인 필요
 struct CustomPicker: View {
     
     @Binding var selectedValue: Int?
@@ -25,7 +24,7 @@ struct CustomPicker: View {
                 Text(title).tag(nil as Int?)
                 ForEach(range, id: \.self) { value in
                     if let value = value {
-                        let formattedValue = title == "연도" ? (DataFormatter.shared.yearFormatter().string(from: NSNumber(value: value)) ?? "\(value)") : "\(value)"
+                        let formattedValue = title == "연도" ? formattedYear(from: value) : "\(value)"
                         Text("\(formattedValue)\(title == "연도" ? "년" : title == "월" ? "월" : "일")").tag(value)
                     } else {
                         Text(title).tag(nil as Int?)
@@ -39,10 +38,18 @@ struct CustomPicker: View {
         .frame(width: 110, height: 44)
         .tint(.clear)
         .overlay(content: {
-            Text(selectedValue == nil ? title : "\(title == "연도" ? (DataFormatter.shared.yearFormatter().string(from: NSNumber(value: selectedValue!)) ?? "\(selectedValue!)") : "\(selectedValue!)")\(title == "연도" ? "년" : title == "월" ? "월" : "일")")
+            Text(selectedValue == nil ? title : "\(title == "연도" ? formattedYear(from: selectedValue!) : "\(selectedValue!)")\(title == "연도" ? "년" : title == "월" ? "월" : "일")")
                 .foregroundStyle(selectedValue == nil ? Color.gray400 : Color.black)
                 .font(.Body3_medium)
                 .frame(width: 110, height: 44)
         })
     }
+    
+    private func formattedYear(from year: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter.string(from: NSNumber(value: year)) ?? "\(year)"
+    }
+
 }
+

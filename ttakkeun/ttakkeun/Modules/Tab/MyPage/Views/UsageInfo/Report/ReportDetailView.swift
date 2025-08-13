@@ -21,7 +21,7 @@ struct ReportDetailView: View {
         static let btnHeight: CGFloat = 63
         static let btnVspacing: CGFloat = 17
         static let naviTitle: String = "신고하기"
-        static let naviCloseImage: String = "xmark"
+        static let naviCloseImage: String = "chevron.left"
     }
     
     // MARK: - Init

@@ -48,7 +48,7 @@ struct ScheduleView: View {
         })
         .background(Color.scheduleBg)
         .contentMargins(.horizontal, UIConstants.defaultSafeHorizon, for: .scrollContent)
-        .contentMargins(.bottom, UIConstants.safeBottom, for: .scrollContent)
+        .contentMargins(.bottom, UIConstants.defaultSafeBottom, for: .scrollContent)
         .safeAreaInset(edge: .top, content: {
             topStatus
         })

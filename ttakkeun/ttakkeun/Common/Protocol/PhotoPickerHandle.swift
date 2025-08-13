@@ -8,17 +8,6 @@
 import Foundation
 import SwiftUI
 
-// FIXME: - 삭제 필요
-protocol ImageHandling: AnyObject {
-    func addImage(_ images: UIImage)
-    func removeImage(at index: Int)
-    func showImagePicker()
-    func getImages() -> [UIImage]
-    
-    var isImagePickerPresented: Bool { get set }
-    var selectedImageCount: Int { get }
- }
-
 protocol PhotoPickerHandle: AnyObject {
     func addImage(_ images: [UIImage])
     func removeImage(at index: Int)

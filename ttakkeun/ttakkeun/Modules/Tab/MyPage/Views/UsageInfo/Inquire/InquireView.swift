@@ -22,7 +22,7 @@ struct InquireView: View {
         static let categoryText: String = "카테고리"
         static let myInquireBtnText: String = "내가 문의한 내용 확인하기"
         static let naviTitle: String = "문의하기"
-        static let naviCloseBtn: String = "xmark"
+        static let naviCloseBtn: String = "chevron.left"
     }
     
     // MARK: - Body

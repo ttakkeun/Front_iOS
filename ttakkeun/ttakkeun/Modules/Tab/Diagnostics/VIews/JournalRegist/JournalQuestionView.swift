@@ -112,7 +112,7 @@ extension JournalQuestionView {
                 Text(title)
                     .font(.H2_bold)
                     .foregroundStyle(Color.gray900)
-                    .truncationMode(.head)
+                    .truncationMode(.middle)
                 
                 Text(sub)
                     .font(.Body3_medium)

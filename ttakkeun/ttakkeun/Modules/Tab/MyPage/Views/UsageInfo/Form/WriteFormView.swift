@@ -54,7 +54,7 @@ struct WriteFormView: View {
         static let showAgreementText: String = "보기"
         static let agreementTitle: String = "개인정보 수집 및 이용 약관 동의"
         static let agreementCheck: String = "개인정보 수집 및 이용 약관에 동의합니다."
-        static let naviCloseImage: String = "xmark"
+        static let naviCloseImage: String = "chevron.left"
         static let scrollId: String = "bottom"
     }
     

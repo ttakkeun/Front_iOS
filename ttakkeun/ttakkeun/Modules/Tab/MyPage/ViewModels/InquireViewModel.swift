@@ -86,15 +86,9 @@ class InquireViewModel {
     }
 }
 
-extension InquireViewModel: ImageHandling {
-    
-    func addImage(_ images: UIImage) {
-        if inquirfeImages.count < 3 {
-            let downSampleImage = images
-            DispatchQueue.main.async {
-                self.inquirfeImages.append(downSampleImage)
-            }
-        }
+extension InquireViewModel: PhotoPickerHandle {
+    func addImage(_ images: [UIImage]) {
+        print("이미지")
     }
     
     func removeImage(at index: Int) {

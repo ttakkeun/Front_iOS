@@ -16,7 +16,7 @@ struct JournalRegistView: View {
     
     // MARK: - Constants
     fileprivate enum JournalRegistConstants {
-        static let closeButton: String = "xmark"
+        static let closeButton: String = "chevron.left"
         static let navigationTitle: String = "일지 생성"
     }
     
@@ -27,19 +27,20 @@ struct JournalRegistView: View {
     
     // MARK: - Body
     var body: some View {
-            JournalRegistContents(viewModel: viewModel)
-                .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
-                .navigationBarBackButtonHidden(true)
-                .customNavigation(
-                    title: JournalRegistConstants.navigationTitle,
-                    leadingAction: {
-                        container.navigationRouter.pop()
-                    },
-                    naviIcon: Image(systemName: JournalRegistConstants.closeButton),
-                    currentPage: viewModel.currentPage
-                )
-                .toolbarTitleDisplayMode(.inline)
-                .loadingOverlay(isLoading: viewModel.makeJournalsLoading, loadingTextType: .createJournal)
+        JournalRegistContents(viewModel: viewModel)
+            .navigationBarBackButtonHidden(true)
+            .toolbarTitleDisplayMode(.inline)
+            .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+            .safeAreaPadding(.top, UIConstants.topScrollPadding)
+            .customNavigation(
+                title: JournalRegistConstants.navigationTitle,
+                leadingAction: {
+                    container.navigationRouter.pop()
+                },
+                naviIcon: Image(systemName: JournalRegistConstants.closeButton),
+                currentPage: viewModel.currentPage
+            )
+            .loadingOverlay(isLoading: viewModel.makeJournalsLoading, loadingTextType: .createJournal)
     }
 }
 

@@ -48,7 +48,7 @@ struct DeleteAccountView: View {
         static let secondBtnBeforText: String = "이전"
         static let secondBtnCompleteText: String = "탈퇴하기"
         static let naviTite: String = "회원 탈퇴"
-        static let naviCloseButton: String = "xmark"
+        static let naviCloseButton: String = "chevron.left"
         static let checkImage: (String, String) = ("checkmark.circle.fill", "circle")
         static let placeholder: String = "입력해주세요."
     }

@@ -19,7 +19,7 @@ struct PrivacyDetailView: View {
         static let contentsVspacing: CGFloat = 15
         static let sectionDataVspacing: CGFloat = 10
         static let naviTitle: String = "이용 약관"
-        static let closeBtn: String = "xmark"
+        static let closeBtn: String = "chevron.left"
     }
     
     // MARK: - Init

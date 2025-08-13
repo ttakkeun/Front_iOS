@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// FIXME: - Height 삭제 필요
 struct MainButton: View {
     
     // MARK: - Property
@@ -46,9 +45,7 @@ struct MainButton: View {
     // MARK: - Init
     var body: some View {
         Button(action: {
-            withAnimation {
-                action()
-            }
+            action()
         }, label: {
             ZStack {
                 RoundedRectangle(cornerRadius: MainButtonConstants.cornerRadius)

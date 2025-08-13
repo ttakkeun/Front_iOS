@@ -11,9 +11,9 @@ struct TtakeunTab: View {
     
     // MARK: - Property
     @State var tabcase: TabCase = .home
+    @State var alert: AlertStateModel = .init()
     @EnvironmentObject var container: DIContainer
     @Environment(\.appFlow) var appFlowViewModel
-    @State var alert: AlertStateModel = .init()
     
     fileprivate enum TtakeunTabConstants {
         static let labelVspacing: CGFloat = 4
@@ -34,7 +34,8 @@ struct TtakeunTab: View {
             .navigationDestination(for: NavigationDestination.self, destination: { destination in
                 NavigationRoutingView(destination: destination)
             })
-           //TODO: - Alert
+            .customAlert(alert: alert)
+            .environment(alert)
         })
     }
     
@@ -56,13 +57,13 @@ struct TtakeunTab: View {
             case .home:
                 HomeView(container: container)
             case .diagnosis:
-                Text("1")
+                DiagnosticsView(container: container)
             case .schedule:
-                Text("1")
+                ScheduleView(container: container)
             case .suggestion:
-                Text("1")
+                RecommendView(container: container)
             case .qna:
-                Text("1")
+                QnAView()
             }
         }
     }
