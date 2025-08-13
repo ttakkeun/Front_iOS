@@ -43,11 +43,8 @@ private extension NavigationRoutingView {
         switch route {
         case .signUp(let socialType, let signUpRequest):
             SignUpView(socialType: socialType, singUpRequest: signUpRequest, container: container, appFlowViewModel: appFlowViewModel)
-                .environmentObject(container)
         case .deleteAccount:
             DeleteAccountView(container: container)
-                .environmentObject(container)
-                .environment(appFlowViewModel)
         }
     }
     
@@ -56,7 +53,6 @@ private extension NavigationRoutingView {
         switch route {
         case .editPetProfile(let image, let petInfo):
             ProfileFormView(mode: .edit(image: image, petInfo: petInfo), container: container)
-                .environmentObject(container)
         }
     }
     
@@ -65,7 +61,6 @@ private extension NavigationRoutingView {
         switch route {
         case .makeJournalist:
             JournalRegistView(container: container)
-                .environmentObject(container)
         }
     }
     
@@ -74,7 +69,6 @@ private extension NavigationRoutingView {
         switch route {
         case .productSearch:
             RecommendSearchView(container: container)
-                .environmentObject(container)
         }
     }
     
@@ -85,13 +79,10 @@ private extension NavigationRoutingView {
             WriteTipsView(category: category, container: container)
         case .tipsReport:
             ReportView(container: container)
-                .environmentObject(container)
         case .tipsReportDetail(let selectedReportCategory):
             ReportDetailView(container: container, selectedCategory: selectedReportCategory)
-                .environmentObject(container)
         case .tipsWriteReport:
             ReportWriteView(container: container)
-                .environmentObject(container)
         }
     }
     
@@ -100,13 +91,10 @@ private extension NavigationRoutingView {
         switch route {
         case .myPage:
             MyPageView(container: container)
-                .environmentObject(container)
         case .myTips:
             MyTipsView(container: container)
-                .environmentObject(container)
         case .myScrapTips:
             MyScrapTipsView(container: container)
-                .environmentObject(container)
         }
     }
     
@@ -115,10 +103,8 @@ private extension NavigationRoutingView {
         switch route {
         case .privacyPolicy:
             PrivacyAndPoliciesView()
-                .environmentObject(container)
         case .privacyDetail(let selectedAgreementData):
             PrivacyDetailView(selectedAgreement: selectedAgreementData)
-                .environmentObject(container)
         }
     }
     
@@ -127,16 +113,12 @@ private extension NavigationRoutingView {
         switch route {
         case .inquireSelect:
             InquireView(container: container)
-                .environmentObject(container)
         case .writeInquire(let selectedInquiryCategory):
             InquireWriteView(container: container, type: selectedInquiryCategory)
-                .environmentObject(container)
         case .myInquire:
             MyInquireView(container: container)
-                .environmentObject(container)
         case .myInquiryConfirm(let selectedInquiryData):
             MyInquireDetailView(inquiryResponse: selectedInquiryData)
-                .environmentObject(container)
         }
     }
 }

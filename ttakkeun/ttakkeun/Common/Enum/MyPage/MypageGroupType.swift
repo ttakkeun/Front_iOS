@@ -29,7 +29,7 @@ enum MypageGroupType: CaseIterable {
         case .appInfo:
             return [.terms]
         case .usageInfo:
-            return [.inquiry, .report]
+            return [.inquiry]
         case .account:
             return [.logout, .deleteProfile, .leave]
         }

@@ -92,7 +92,6 @@ struct RecommendView: View {
     // MARK: - TopContents
     private var topStatus: some View {
         TopStatusBar()
-            .environmentObject(container)
             .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
     

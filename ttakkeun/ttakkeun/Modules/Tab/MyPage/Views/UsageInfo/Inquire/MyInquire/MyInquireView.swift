@@ -59,7 +59,7 @@ struct MyInquireView: View {
         VStack(alignment: .leading, spacing: MyInquireCostants.btnVspacing, content: {
             ForEach(viewModel.myInquiryData, id: \.id) { btnInfo in
                 SelectBtnBox(btnInfo: .init(name: btnInfo.contents, date: btnInfo.created_at.convertedToKoreanTimeDateString(), action: {
-                    container.navigationRouter.push(to: .myInquiryConfirm(selectedInquiryData: btnInfo))
+                    container.navigationRouter.push(to: .inquire(.myInquiryConfirm(selectedInquiryData: btnInfo)))
                 }))
             }
         })

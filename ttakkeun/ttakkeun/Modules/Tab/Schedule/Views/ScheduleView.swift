@@ -64,7 +64,6 @@ struct ScheduleView: View {
     /// 상단 로고 및 옵션 바
     private var topStatus: some View {
         TopStatusBar()
-            .environmentObject(container)
             .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
     

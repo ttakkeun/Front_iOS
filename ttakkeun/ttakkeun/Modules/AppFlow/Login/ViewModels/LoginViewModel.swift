@@ -50,7 +50,7 @@ class LoginViewModel {
     
     /// 회원 가입 페이지로 이동 -> 회원 정보 없을 시 작동한다.
     private func goToSignupPage(socialType: SocialLoginType, singUpRequest: SignUpRequest) {
-        self.container.navigationRouter.push(to: .signUp(socialType: socialType, singUpRequest: singUpRequest))
+        self.container.navigationRouter.push(to: .auth(.signUp(socialType: socialType, signUpRequest: singUpRequest)))
     }
     
     public func appleLogin() {

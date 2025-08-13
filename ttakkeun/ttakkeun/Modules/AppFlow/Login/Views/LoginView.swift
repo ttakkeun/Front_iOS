@@ -11,8 +11,6 @@ struct LoginView: View {
     
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
-    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
-    
     @State var viewModel: LoginViewModel
     
     // MARK: - Constants
@@ -47,8 +45,6 @@ struct LoginView: View {
             .safeAreaPadding(.bottom, UIConstants.safeBottom)
             .navigationDestination(for: NavigationDestination.self) { destination in
                 NavigationRoutingView(destination: destination)
-                    .environmentObject(container)
-                    .environmentObject(appFlowViewModel)
             }
         }
     }
@@ -106,10 +102,4 @@ struct LoginView: View {
                 .fixedSize()
         })
     }
-}
-
-#Preview {
-    LoginView(container: DIContainer(), appFlowViewModel: AppFlowViewModel())
-        .environmentObject(DIContainer())
-        .environmentObject(AppFlowViewModel())
 }

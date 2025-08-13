@@ -27,7 +27,6 @@ struct QnAView: View {
             /* floating 버튼 */
             if qnaSegmentValue == .tips {
                 FloatingCircle(isShowFloating: $isFloatingShow)
-                    .environmentObject(container)
             }
         })
         .background(Color.scheduleBg)
@@ -39,7 +38,6 @@ struct QnAView: View {
     /// 상단 상태바
     private var topStatus: some View {
         TopStatusBar()
-            .environmentObject(container)
             .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
     
@@ -55,7 +53,6 @@ struct QnAView: View {
                 
                 TipsView(container: container)
                     .tag(QnASegment.tips)
-                    .environmentObject(container)
             })
             .tabViewStyle(.page(indexDisplayMode: .never))
         })

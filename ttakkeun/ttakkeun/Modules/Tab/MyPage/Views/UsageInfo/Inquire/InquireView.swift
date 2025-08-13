@@ -50,7 +50,9 @@ struct InquireView: View {
     // MARK: - TopContents
     ///내가 문의한 내용 확인 버튼
     private var topContents: some View {
-        SelectBtnBox(btnInfo: BtnInfo(name: InquireViewConstants.myInquireBtnText, date: nil, action: {container.navigationRouter.push(to: .myInquire)}))
+        SelectBtnBox(btnInfo: BtnInfo(name: InquireViewConstants.myInquireBtnText, date: nil, action: {
+            container.navigationRouter.push(to: .inquire(.myInquire))
+        }))
     }
     
     // MARK: - MiddleContents
@@ -71,7 +73,7 @@ struct InquireView: View {
     private var categoryButtons: [BtnInfo] {
         InquireType.allCases.map { category in
             BtnInfo(name: category.text, date: nil, action: {
-                container.navigationRouter.push(to: .writeInquire(selectedInquiryCategory: category.param))
+                container.navigationRouter.push(to: .inquire(.writeInquire(selectedInquiryCategory: category.param)))
             })
         }
     }

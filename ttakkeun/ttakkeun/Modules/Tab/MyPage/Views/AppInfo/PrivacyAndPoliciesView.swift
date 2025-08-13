@@ -39,7 +39,7 @@ struct PrivacyAndPoliciesView: View {
     private var btnInfoArray: [BtnInfo] {
         AppInfoType.allCases.map { category in
             BtnInfo(name: category.title, date: nil, action: {
-                container.navigationRouter.push(to: .agreementData(selectedAgreementData: category.param))
+                container.navigationRouter.push(to: .appInfo(.privacyDetail(selectedAgreementData: category.param)))
             })
         }
     }

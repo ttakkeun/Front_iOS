@@ -11,10 +11,10 @@ struct MyScrapTipsView: View {
     
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
-    
+    @State var viewModel: MyScrapTipsViewModel
     
     init(container: DIContainer) {
-        self._viewModel = .init(wrappedValue: .init(container: container))
+        self.viewModel = .init(container: container)
     }
     
     var body: some View {

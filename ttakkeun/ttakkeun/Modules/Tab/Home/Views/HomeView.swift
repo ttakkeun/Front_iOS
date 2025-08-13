@@ -32,7 +32,6 @@ struct HomeView: View {
     // MARK: - TopContents
     private var topStatus: some View {
         TopStatusBar()
-            .environmentObject(container)
     }
     private var topContents: some View {
         VStack(alignment: .center, spacing: .zero, content: {

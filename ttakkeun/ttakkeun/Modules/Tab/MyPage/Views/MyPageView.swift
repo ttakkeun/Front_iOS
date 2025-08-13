@@ -10,7 +10,8 @@ import SwiftUI
 struct MyPageView: View {
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
-    @EnvironmentObject var appFlowViewModel: AppFlowViewModel
+    @Environment(\.appFlow) var appFlowViewModel
+    @Environment(\.alert) var alert
     @AppStorage(AppStorageKey.userNickname) var userNickname: String?
     @AppStorage(AppStorageKey.userEmail) var userEmail: String?
     
@@ -63,7 +64,7 @@ struct MyPageView: View {
         .customNavigation(title: MyPageConstants.naviTitle, leadingAction: {
             container.navigationRouter.pop()
         }, naviIcon: Image(systemName: MyPageConstants.leftChevron))
-        // TODO: - Alert
+        .customAlert(alert: alert)
     }
     
     // MARK: - TopContents
@@ -128,10 +129,10 @@ struct MyPageView: View {
     private var tipsBtns: some View {
         HStack(alignment: .center, spacing: MyPageConstants.topBtnHspacing, content: {
             generateTopButton(.myWriteTips, action: {
-                container.navigationRouter.push(to: .myTips)
+                container.navigationRouter.push(to: .myPage(.myTips))
             })
             generateTopButton(.myScrapTips, action: {
-                container.navigationRouter.push(to: .myScrapTips)
+                container.navigationRouter.push(to: .myPage(.myScrapTips))
             })
         })
     }
@@ -176,7 +177,6 @@ struct MyPageView: View {
             ])
             MyPageInfoBox(groupType: .usageInfo, actions: [
                 .inquiry: { print("문의하기") },
-                .report: { print("신고하기") }
             ])
             MyPageInfoBox(groupType: .account, actions: [
                 .logout: { print("로그아웃하기") },

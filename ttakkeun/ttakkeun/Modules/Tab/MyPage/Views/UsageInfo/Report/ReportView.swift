@@ -6,6 +6,7 @@
 //
 import SwiftUI
 
+// FIXME: - 게시글 선택에서 신고하기 화면으로 넘어가기
 /// 신고하기 선택 시 기본 화면
 struct ReportView: View {
     
@@ -47,9 +48,9 @@ struct ReportView: View {
         ReportType.allCases.map { category in
             BtnInfo(name: category.text, date: nil, action: {
                 if category == .etcReport {
-                    container.navigationRouter.push(to: .writeReport)
+                    container.navigationRouter.push(to: .tips(.tipsWriteReport))
                 } else {
-                    container.navigationRouter.push(to: .reportDetailBtn(selectedReportCategory: category.param))
+                    container.navigationRouter.push(to: .tips(.tipsReportDetail(selectedReportCategory: category.param)))
                 }
             })
         }
