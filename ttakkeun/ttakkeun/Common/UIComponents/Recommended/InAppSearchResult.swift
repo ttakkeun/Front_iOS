@@ -25,6 +25,7 @@ struct InAppSearchResult: View {
         static let imageMaxCount: Int = 2
         static let imageTime: TimeInterval = 2
         static let imageSize: CGFloat = 160
+        static let vstackSize: CGFloat = 180
         static let imagePlaceholder: String = "questionmark.square.fill"
     }
     
@@ -36,7 +37,7 @@ struct InAppSearchResult: View {
     
     // MARK: - Body
     var body: some View {
-        VStack(alignment: .leading, spacing: InAppSearchResultConstant.mainVspacing, content: {
+        VStack(alignment: .center, spacing: InAppSearchResultConstant.mainVspacing, content: {
             productImage
             productInfo
         })
@@ -53,7 +54,8 @@ struct InAppSearchResult: View {
                         .frame(width: InAppSearchResultConstant.imageSize, height: InAppSearchResultConstant.imageSize)
                 }.retry(maxCount: InAppSearchResultConstant.imageMaxCount, interval: .seconds(InAppSearchResultConstant.imageTime))
                 .resizable()
-                .frame(width: InAppSearchResultConstant.imageSize, height: InAppSearchResultConstant.imageSize)
+                .frame(height: InAppSearchResultConstant.imageSize)
+                .aspectRatio(contentMode: .fit)
                 .clipShape(RoundedRectangle(cornerRadius: InAppSearchResultConstant.cornerRadius))
                 .padding(InAppSearchResultConstant.padding)
                 .overlay(content: {

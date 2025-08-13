@@ -15,6 +15,7 @@ class SearchViewModel: TapGestureProduct, ProductUpdate {
     var isShowingRealTimeResults: Bool = false
     var isManualSearch: Bool = false
     var isIitialLoading: Bool = true
+    var isFirstAppear: Bool = false
     
     var naverDataIsLoading: Bool = false
     var localDBDataIsLoading: Bool = false
@@ -28,19 +29,8 @@ class SearchViewModel: TapGestureProduct, ProductUpdate {
     }
     var realTimeSearchResult: [ProductResponse] = []
     
-    
-    var naverData: [ProductResponse] = [
-        .init(productId: 0, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true),
-        .init(productId: 1, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true),
-        .init(productId: 2, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true),
-        .init(productId: 3, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true)
-    ]
-    var localDbData: [ProductResponse] = [
-        .init(productId: 0, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true),
-        .init(productId: 1, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true),
-        .init(productId: 2, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true),
-        .init(productId: 3, title: "퍼피랑키티랑 샤이닝펫 실키<b>헤어</b> 디탱글러 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5582823/55828234621.20250717101520.jpg", price: 1000, brand: "쿠팡", purchaseLink: "쿠팡", category1: "11", category2: "@2", category3: "33", category4: "44", likeStatus: true)
-    ]
+    var naverData: [ProductResponse] = []
+    var localDbData: [ProductResponse] = []
     var localPage: Int = 0
     var canLoadMore: Bool = true
     

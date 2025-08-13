@@ -18,6 +18,7 @@ struct CalendarComponent: View {
         static let diaryControllerHspacing: CGFloat = 5
         static let changeMonthArrowHspacing: CGFloat = 24
         static let calendarTextPadding: CGFloat = 5
+        static let calendarHeaderLeading: CGFloat = 10
         static let calendarPadding: EdgeInsets = .init(top: 15, leading: 22, bottom: 10, trailing: 21)
         static let changeMonthPadding: EdgeInsets = .init(top: 11, leading: 13, bottom: 11, trailing: 13)
         
@@ -64,7 +65,7 @@ struct CalendarComponent: View {
             Spacer()
             changeMonthArrow
         })
-        .frame(width: CalendarConstants.topContentsSize.width, height: CalendarConstants.topContentsSize.height)
+        .frame(height: CalendarConstants.topContentsSize.height)
     }
     
     /// 캘린더 날짜 조정 버튼
@@ -76,6 +77,7 @@ struct CalendarComponent: View {
                 Text(viewModel.month, formatter: DateFormatter.monthFormatter)
                     .font(.H4_semibold)
                     .foregroundStyle(Color.gray900)
+                    .padding(.leading, CalendarConstants.calendarHeaderLeading)
                 
                 Image(.downArrow)
                     .fixedSize()
@@ -137,7 +139,7 @@ struct CalendarComponent: View {
                 }
             }
         })
-        .frame(width: CalendarConstants.lazyVgridSize.width, height: CalendarConstants.lazyVgridSize.height, alignment: .top)
+        .frame(height: CalendarConstants.lazyVgridSize.height, alignment: .top)
     }
 }
 

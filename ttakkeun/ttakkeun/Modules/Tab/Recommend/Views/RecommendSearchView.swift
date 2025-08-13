@@ -14,7 +14,6 @@ struct RecommendSearchView: View {
     @EnvironmentObject var container: DIContainer
     @State var viewModel: SearchViewModel
     @FocusState var isSearch: Bool
-    
     // MARK: - Constant
     fileprivate enum RecommendSearchConstants {
         static let cornerRadius: CGFloat = 20
@@ -23,6 +22,7 @@ struct RecommendSearchView: View {
         static let dividerPadding: CGFloat = 20
         static let checvronImage: String = "chevron.backward"
         static let plceholder: String = "검색어를 입력하세요"
+        static let naviTitle: String = "상품 검색"
     }
     
     // MARK: - Init
@@ -45,19 +45,14 @@ struct RecommendSearchView: View {
                 })
             }
         }
+        .navigationBarBackButtonHidden(true)
+        .searchable(text: $viewModel.searchText, placement: .sidebar)
+        .searchFocused($isSearch)
         .safeAreaPadding(.top, UIConstants.topScrollPadding)
         .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
-        .navigationBarBackButtonHidden(true)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar(content: {
-            ToolbarItem(placement: .topBarLeading, content: {
-                leftChevronButton
-            })
-            
-            ToolbarItem(placement: .principal, content: {
-                searchBar
-            })
-        })
+        .customNavigation(title: RecommendSearchConstants.naviTitle, leadingAction: {
+            container.navigationRouter.pop()
+        }, naviIcon: Image(systemName: RecommendSearchConstants.checvronImage))
         .task {
             self.isSearch.toggle()
         }
@@ -76,34 +71,6 @@ struct RecommendSearchView: View {
             Image(systemName: RecommendSearchConstants.checvronImage)
                 .foregroundStyle(Color.black)
         })
-    }
-    
-    /// 검색바
-    private var searchBar: some View {
-        HStack {
-            TextField("", text: $viewModel.searchText)
-                .focused($isSearch)
-                .submitLabel(.search)
-                .onSubmit {
-                    performSearch(with: viewModel.searchText)
-                }
-            
-            Button(role: .destructive, action: {
-                viewModel.searchText.removeAll()
-            }, label: {
-                Image(.deleteText)
-                    .resizable()
-                    .frame(width: RecommendSearchConstants.deleteImageSize, height: RecommendSearchConstants.deleteImageSize)
-            })
-        }
-        .frame(maxWidth: .infinity)
-        .padding(RecommendSearchConstants.textFieldPadding)
-        .background {
-            RoundedRectangle(cornerRadius: RecommendSearchConstants.cornerRadius)
-                .fill(Color.white)
-                .stroke(Color.gray200, style: .init())
-        }
-        .submitScope()
     }
     
     private func performSearch(with text: String) {

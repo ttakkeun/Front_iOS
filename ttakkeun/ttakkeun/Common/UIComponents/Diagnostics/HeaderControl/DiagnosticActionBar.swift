@@ -21,7 +21,6 @@ struct DiagnosticActionBar: View {
         static let trashPadding: CGFloat = 2
         static let buttonVerticalPadding: CGFloat = 8
         static let buttonHorizonPadding: CGFloat = 21
-        static let horizonPadding: CGFloat = 33
         
         static let cornerRadius: CGFloat = 20
         
@@ -41,7 +40,7 @@ struct DiagnosticActionBar: View {
             Spacer()
             rightButton
         })
-        .safeAreaPadding(.horizontal, DiagnosticActionConstants.horizonPadding)
+        .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
     }
     
     // MARK: - Right

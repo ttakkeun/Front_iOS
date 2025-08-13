@@ -51,7 +51,7 @@ struct ProfileFormView: View {
         static let neutralYesText: String = "예"
         static let neutralNoText: String = "아니오"
         static let registerBtnText: String = "등록하기"
-        static let closeButtonString: String = "chevron.left"
+        static let closeButtonString: String = "xmark"
         
         static let profileMakeTitle: String = "프로필 등록"
         static let profileEditTitle: String = "프로필 편집"
@@ -74,10 +74,13 @@ struct ProfileFormView: View {
             Spacer()
             registerBtn
         })
+        .navigationBarBackButtonHidden(true)
         .safeAreaPadding(.horizontal, ProfileFormConstants.safeHorizonPadding)
         .safeAreaPadding(.top, ProfileFormConstants.safeTopPadding)
         .sheet(isPresented: $viewModel.showingVarietySearch) {
             VarietySearchView(viewModel: viewModel)
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(UIConstants.sheetCornerRadius)
         }
         .photosPicker(isPresented: $viewModel.showImagePickerPresented,
                       selection: $viewModel.selectedItem,
@@ -89,7 +92,6 @@ struct ProfileFormView: View {
                 await viewModel.loadImage(new)
             }
         })
-        .navigationBarBackButtonHidden(true)
         .task {
             viewModel.checkInEditMode()
         }
@@ -135,7 +137,7 @@ struct ProfileFormView: View {
         ZStack {
             mainTitle
                 .frame(maxWidth: .infinity, alignment: .center)
-                .font(.H3_bold)
+                .font(.H4_bold)
                 .foregroundStyle(Color.black)
             
             topClose

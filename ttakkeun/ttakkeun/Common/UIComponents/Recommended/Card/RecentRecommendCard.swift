@@ -22,6 +22,7 @@ struct RecentRecommendCard: View {
         static let imagePadding: CGFloat = 5
         static let productInfoVspacing: CGFloat = 6
         static let titleHeight: CGFloat = 37
+        static let contentsHeight: CGFloat = 100
         
         static let cornerRadius: CGFloat = 10
         static let imageMaxCount: Int = 2
@@ -42,6 +43,7 @@ struct RecentRecommendCard: View {
             productImage
             productInfo
         })
+        .frame(height: RecentRecommendConstants.contentsHeight)
         .padding(.top, type.backgroundPadding.0)
         .padding(.bottom, type.backgroundPadding.1)
         .padding(.leading, type.backgroundPadding.2)

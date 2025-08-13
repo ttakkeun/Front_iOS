@@ -47,7 +47,8 @@ struct CustomPicker: View {
     
     private func formattedYear(from year: Int) -> String {
         let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
+        formatter.numberStyle = .none
+        formatter.usesGroupingSeparator = false
         return formatter.string(from: NSNumber(value: year)) ?? "\(year)"
     }
 

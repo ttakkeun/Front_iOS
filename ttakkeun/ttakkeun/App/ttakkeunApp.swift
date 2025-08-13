@@ -12,8 +12,8 @@ import KakaoSDKCommon
 struct ttakkeunApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @State var appFlowViewModel: AppFlowViewModel = .init()
     @StateObject var container: DIContainer = .init()
+    @State var appFlowViewModel: AppFlowViewModel = .init()
     
     init() {
         KakaoSDK.initSDK(appKey: Config.kakaoAppKey)
@@ -21,25 +21,23 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            TtakeunTab()
-                .environmentObject(DIContainer())
-//            switch appFlowViewModel.appState {
-//            case .onBoarding:
-//                OnboardingView()
-//                    .environmentObject(appFlowViewModel)
-//            case .login:
-//                LoginView(viewModel: LoginViewModel(container: container, appFlowViewModel: appFlowViewModel))
-//                    .environmentObject(container)
-//                    .environmentObject(appFlowViewModel)
-//            case .profile:
-//                ProfileView(container: container)
-//                    .environmentObject(container)
-//                    .environmentObject(appFlowViewModel)
-//            case .tabView:
-//                TtakeunTab()
-//                    .environmentObject(container)
-//                    .environmentObject(appFlowViewModel)
-//            }
+            switch appFlowViewModel.appState {
+            case .onBoarding:
+                OnboardingView()
+                    .environment(appFlowViewModel)
+            case .login:
+                LoginView(container: container, appFlowViewModel: appFlowViewModel)
+                    .environmentObject(container)
+                    .environment(appFlowViewModel)
+            case .profile:
+                ProfileView(container: container)
+                    .environmentObject(container)
+                    .environment(appFlowViewModel)
+            case .tabView:
+                TtakeunTab()
+                    .environmentObject(container)
+                    .environment(appFlowViewModel)
+            }
         }
     }
 }
