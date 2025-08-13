@@ -12,6 +12,7 @@ struct DeleteAccountView: View {
     
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
+    @Environment(\.appFlow) var appFlowViewModel
     @State var viewModel: DeleteAccountViewModel
     @AppStorage(AppStorageKey.userEmail) var userEmail: String = "유저 이메일을 불러오지 못했습니다."
     @Environment(\.alert) var alert
@@ -59,26 +60,24 @@ struct DeleteAccountView: View {
     
     // MARK: - Body
     var body: some View {
-        NavigationStack {
-            Group {
-                switch viewModel.currentPage {
-                case .firstPage:
-                    firstPageContents
-                case .secondPage:
-                    secondPageContents
-                }
+        Group {
+            switch viewModel.currentPage {
+            case .firstPage:
+                firstPageContents
+            case .secondPage:
+                secondPageContents
             }
-            .navigationBarBackButtonHidden(true)
-            .navigationBarTitleDisplayMode(.inline)
-            .safeAreaPadding(.top, UIConstants.topScrollPadding)
-            .customNavigation(title: DeleteAccountConstants.naviTite, leadingAction: {
-                container.navigationRouter.pop()
-            }, naviIcon: Image(systemName: DeleteAccountConstants.naviCloseButton))
-            .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
-            .customAlert(alert: alert)
-            .keyboardToolbar {
-                isFoucsed = false
-            }
+        }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarTitleDisplayMode(.inline)
+        .safeAreaPadding(.top, UIConstants.topScrollPadding)
+        .customNavigation(title: DeleteAccountConstants.naviTite, leadingAction: {
+            container.navigationRouter.pop()
+        }, naviIcon: Image(systemName: DeleteAccountConstants.naviCloseButton))
+        .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+        .customAlert(alert: alert)
+        .keyboardToolbar {
+            isFoucsed = false
         }
     }
     
@@ -253,7 +252,7 @@ struct DeleteAccountView: View {
                     selectedBtnAction(member)
                 }
             }, label: {
-               checkReasonImage(member)
+                checkReasonImage(member)
             })
             
             Text(member.text)
@@ -333,5 +332,6 @@ extension DeleteAccountView {
 #Preview {
     DeleteAccountView(container: DIContainer())
         .environmentObject(DIContainer())
+        .environment(AppFlowViewModel())
         .environment(AlertStateModel())
 }

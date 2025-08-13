@@ -7,26 +7,38 @@
 
 import SwiftUI
 
+// TODO: - API 작성 시 완성하기
 struct MyTipsView: View {
     
+    // MARK: - Property
     @EnvironmentObject var container: DIContainer
-    @StateObject var viewModel: MyTipsViewModel
+    @State var viewModel: MyTipsViewModel
     
+    // MARK: - Constants
+    fileprivate enum MyTipsContents {
+        static let contentsVspacing: CGFloat = 20
+        static let naviTitle: String = "내가 쓴 tips"
+        static let naviBackImage: String = "chevron.left"
+    }
+    
+    // MARK: - Init
     init(container: DIContainer) {
-        self._viewModel = .init(wrappedValue: .init(container: container))
+        self.viewModel = .init(container: container)
     }
     
     var body: some View {
-        VStack(alignment: .center, spacing: 30, content: {
-            CustomNavigation(action: { container.navigationRouter.pop() },
-                             title: "내가 쓴 tips",
-                             currentPage: nil)
-            
-            ScrollView(.vertical, content: {
-//                contents
+        ScrollView(.vertical, content: {
+            LazyVStack(spacing: MyTipsContents.contentsVspacing, content: {
+                
             })
         })
         .navigationBarBackButtonHidden(true)
+        .navigationBarTitleDisplayMode(.inline)
+        .safeAreaPadding(.top, UIConstants.topScrollPadding)
+        .customNavigation(title: MyTipsContents.naviTitle, leadingAction: {
+            container.navigationRouter.pop()
+        }, naviIcon: Image(systemName: MyTipsContents.naviBackImage))
+        .contentMargins(.horizontal, UIConstants.defaultSafeHorizon, for: .scrollContent)
     }
     
     /// 내가 쓴 tips 콘텐츠들
@@ -45,19 +57,4 @@ struct MyTipsView: View {
 //            }
 //        }
 //    }
-}
-
-//MARK: - Preview
-struct MyTipsView_Preview: PreviewProvider {
-    
-    static let devices = ["iPhone 11", "iPhone 16 Pro"]
-    
-    static var previews: some View {
-        ForEach(devices, id: \.self) { device in
-            MyTipsView(container: DIContainer())
-                .previewDevice(PreviewDevice(rawValue: device))
-                .previewDisplayName(device)
-                .environmentObject(DIContainer())
-        }
-    }
 }

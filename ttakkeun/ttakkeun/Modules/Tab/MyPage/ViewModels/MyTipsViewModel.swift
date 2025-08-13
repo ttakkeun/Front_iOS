@@ -7,7 +7,8 @@
 
 import Foundation
 
-class MyTipsViewModel: ObservableObject {
+@Observable
+class MyTipsViewModel {
     let container: DIContainer
     
     init(container: DIContainer) {
