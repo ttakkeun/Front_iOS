@@ -83,9 +83,9 @@ struct ProfileCard: View {
     private var topContentsImage: some View {
         switch data.type {
         case .cat:
-            makeProfileIcon(Icon.profileCat.image)
+            makeProfileIcon(Image(.profileCat))
         case .dog:
-            makeProfileIcon(Icon.profileDog.image)
+            makeProfileIcon(Image(.profileDog))
         }
     }
     

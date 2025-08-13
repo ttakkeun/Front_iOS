@@ -74,10 +74,6 @@ struct WriteTipsView: View {
         .onChange(of: viewModel.imageItems, { old, new in
             viewModel.convertPickerItemsToUIImages(items: new)
         })
-        // FIXME: - 키보드 내리기 버튼 수정
-        .task {
-            UIApplication.shared.hideKeyboard()
-        }
     }
     
     // MARK: - TopContents

@@ -52,7 +52,7 @@ struct CreateProfileCard: View {
     
     /// 상단 추가 버튼 전용 이미지
     private var profileImage: some View {
-        Icon.togetherPet.image
+        Image(.togetherPet)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: CreateProfileCardConstants.profileImageWidth, height: CreateProfileCardConstants.profileImageHeight)

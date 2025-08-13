@@ -19,9 +19,9 @@ struct MyScrapTipsView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 30, content: {
-            CustomNavigation(action: { container.navigationRouter.pop() },
-                             title: "내가 스크랩한 tips",
-                             currentPage: nil)
+//            CustomNavigation(action: { container.navigationRouter.pop() },
+//                             title: "내가 스크랩한 tips",
+//                             currentPage: nil)
             
             ScrollView(.vertical, content: {
 //                contents

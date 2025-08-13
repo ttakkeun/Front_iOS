@@ -6,7 +6,6 @@
 //
 import SwiftUI
 
-// FIXME: - 게시글 선택에서 신고하기 화면으로 넘어가기
 /// 신고하기 선택 시 기본 화면
 struct ReportView: View {
     

@@ -134,9 +134,10 @@ struct DatePickerSheetView: View {
 extension DatePickerSheetView {
     
     private func formattedYear(from year: Int) -> String {
-        let formatter = DataFormatter.shared.yearFormatter()
-        if let formatter = formatter.string(from: NSNumber(value: year)) {
-            return "\(formatter)년"
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        if let formatted = formatter.string(from: NSNumber(value: year)) {
+            return "\(formatted)년"
         } else {
             return "\(year)년"
         }
@@ -156,3 +157,4 @@ extension DatePickerSheetView {
     
     DatePickerSheetView(selectedDate: $date, showDatePickerView: .constant(true))
 }
+

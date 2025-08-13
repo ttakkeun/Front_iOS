@@ -41,7 +41,6 @@ struct CalendarCell: View {
         .frame(width: 36, height: 36)
         .onTapGesture {
             viewModel.changeSelectedDate(date)
-            print(DataFormatter.shared.formatDateForAPI(date))
         }
     }
     

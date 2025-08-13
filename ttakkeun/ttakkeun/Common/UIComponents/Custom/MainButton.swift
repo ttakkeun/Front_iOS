@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// FIXME: - Height 삭제 필요
 struct MainButton: View {
     
     // MARK: - Property
