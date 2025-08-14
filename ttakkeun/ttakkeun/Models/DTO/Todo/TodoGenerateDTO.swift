@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MakeTodoRequest: Codable {
+struct TodoGenerateRequest: Codable {
     let petId: Int
     let todoCategory: PartItem.RawValue
     let todoName: String

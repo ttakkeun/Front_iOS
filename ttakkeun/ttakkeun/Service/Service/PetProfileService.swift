@@ -12,14 +12,14 @@ import CombineMoya
 import SwiftUI
 
 class PetProfileService: PetProfileServiceProtocol, BaseAPIService {
-    typealias Target = PetAPITarget
+    typealias Target = PetRouter
     
-    let provider: MoyaProvider<PetAPITarget>
+    let provider: MoyaProvider<PetRouter>
     let decoder: JSONDecoder
     let callbackQueue: DispatchQueue
     
     init(
-        provider: MoyaProvider<PetAPITarget> = APIManager.shared.createProvider(for: PetAPITarget.self),
+        provider: MoyaProvider<PetRouter> = APIManager.shared.createProvider(for: PetRouter.self),
         decoder: JSONDecoder = {
             let d = JSONDecoder()
             d.keyDecodingStrategy = .convertFromSnakeCase

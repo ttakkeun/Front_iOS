@@ -9,7 +9,6 @@ import Foundation
 import Foundation
 import Combine
 import Moya
-import SwiftUI
 
 protocol SearchServiceProtocol {
     func searchNaverData(keyword: String) -> AnyPublisher<ResponseData<[ProductResponse]>, MoyaError>

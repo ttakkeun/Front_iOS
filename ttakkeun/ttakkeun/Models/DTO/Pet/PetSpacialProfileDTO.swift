@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct PetSpacialProfileResponse: Codable {
     let name: String
     let image: String

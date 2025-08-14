@@ -9,7 +9,6 @@ import Foundation
 import Foundation
 import Combine
 import Moya
-import SwiftUI
 
 protocol ProductRecommendServiceProtocol {
     func getAIRecommendData(petId: Int) -> AnyPublisher<ResponseData<[ProductResponse]>, MoyaError>

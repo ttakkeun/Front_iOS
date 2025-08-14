@@ -8,7 +8,7 @@
 import Foundation
 import Moya
 
-enum AuthAPITarget {
+enum AuthRouter {
     case sendRefreshToken(refreshToken: String) // Refresh 재발급
     case logout // 로그아웃
     case kakakoLogin(kakaoLoginRequest: KakaoLoginRequest) // 카카오 로그인 시도
@@ -19,7 +19,7 @@ enum AuthAPITarget {
     case deleteAppleAccount(authorizationCode: String) // 애플 회원가입 제거
 }
 
-extension AuthAPITarget: APITargetType {
+extension AuthRouter: APITargetType {
     
     var path: String {
         switch self {

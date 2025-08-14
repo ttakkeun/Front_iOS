@@ -1,13 +1,13 @@
 //
-//  TodoCompleteResponse.swift
+//  TodoCompletion.swift
 //  ttakkeun
 //
-//  Created by 정의찬 on 11/21/24.
+//  Created by Apple Coding machine on 8/14/25.
 //
 
 import Foundation
 
-struct TodoCompleteResponse: Codable {
+struct TodoCompletionResponse: Codable {
     var partItem: PartItem? = nil
     
     let earTotal: Int

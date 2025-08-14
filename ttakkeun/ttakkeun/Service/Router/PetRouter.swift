@@ -9,7 +9,7 @@ import Foundation
 import Moya
 import SwiftUI
 
-enum PetAPITarget {
+enum PetRouter {
     case postGenerateProfile(petInfo: PetInfo) // 반려동물 프로필 추가
     case patchPetProfileImage(petId: Int, image: UIImage) // 반려동물 프로필 이미지 수정
     case patchPetProfile(petId: Int, petInfo: PetInfo) // 반려동물 프로필 수정
@@ -18,7 +18,7 @@ enum PetAPITarget {
     case getPetProfile // 프로필 뷰 전체 조회
 }
 
-extension PetAPITarget: APITargetType {
+extension PetRouter: APITargetType {
     var path: String {
         switch self {
         case .postGenerateProfile:

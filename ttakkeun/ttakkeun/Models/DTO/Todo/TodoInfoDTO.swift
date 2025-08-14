@@ -1,13 +1,13 @@
 //
-//  TodoCheckResponse.swift
+//  TodoInfoDTO.swift
 //  ttakkeun
 //
-//  Created by 정의찬 on 12/16/24.
+//  Created by Apple Coding machine on 8/14/25.
 //
 
 import Foundation
 
-struct TodoCheckResponse: Codable {
+struct TodoInfoResponse: Codable {
     var todoId: Int
     var todoDate: String
     var todoStatus: Bool

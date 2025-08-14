@@ -11,14 +11,14 @@ import Combine
 import CombineMoya
 
 class AuthService: AuthServiceProtocol, BaseAPIService {
-    typealias Target = AuthAPITarget
+    typealias Target = AuthRouter
     
-    let provider: MoyaProvider<AuthAPITarget>
+    let provider: MoyaProvider<AuthRouter>
     let decoder: JSONDecoder
     let callbackQueue: DispatchQueue
     
     init(
-        provider: MoyaProvider<AuthAPITarget> = APIManager.shared.createProvider(for: AuthAPITarget.self),
+        provider: MoyaProvider<AuthRouter> = APIManager.shared.createProvider(for: AuthRouter.self),
         decoder: JSONDecoder = {
             let d = JSONDecoder()
             d.keyDecodingStrategy = .convertFromSnakeCase
