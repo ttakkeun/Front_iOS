@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ReportType: CaseIterable {
+enum ReportType: CaseIterable, Codable {
     case spam
     case inappropriate
     case falseInformation

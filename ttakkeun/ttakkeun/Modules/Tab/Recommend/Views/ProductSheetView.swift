@@ -50,6 +50,7 @@ struct ProductSheetView: View {
         VStack(alignment: .center, spacing: ProductSheetConstants.contentsVspacing, content: {
             productImage
             middleContents
+            Spacer()
             MainButton(btnText: ProductSheetConstants.buttonText, height: ProductSheetConstants.buttonHeight, action: {
                 openSite(data.purchaseLink)
             }, color: Color.mainPrimary)
@@ -59,6 +60,7 @@ struct ProductSheetView: View {
                 .modifier(CapsuleModifier())
         })
         .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+        .safeAreaPadding(.top, UIConstants.capusuleTopPadding)
     }
     
     // MARK: - TopContents

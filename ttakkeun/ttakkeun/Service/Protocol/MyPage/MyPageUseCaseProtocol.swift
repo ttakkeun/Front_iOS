@@ -12,13 +12,8 @@ import Moya
 import SwiftUI
 
 protocol MyPageUseCaseProtocol {
-    func executeMyPage() -> AnyPublisher<ResponseData<UserInfoResponse>, MoyaError>
-    
-    func executeEditUserNameDate(newUsername: String) -> AnyPublisher<ResponseData<String>, MoyaError>
-    
-    func executeLogout() -> AnyPublisher<ResponseData<String>, MoyaError>
-    
-    func executeDeleteProfile(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
-    
-    func executeGetMyInquir() -> AnyPublisher<ResponseData<[MyInquiryResponse]>, MoyaError>
+    func executePostGenerateInquire(inquire: MypageInquireRequest, imageData: [Data]) -> AnyPublisher<ResponseData<MypageInquireResponse>, MoyaError>
+    func executeGetMyInquire() -> AnyPublisher<ResponseData<[MyPageMyInquireResponse]>, MoyaError>
+    func executePatchEditUserName(newUsername: String) -> AnyPublisher<ResponseData<String>, MoyaError>
+    func executeGetUserInfo() -> AnyPublisher<ResponseData<MyPageUserInfoResponse>, MoyaError>
 }

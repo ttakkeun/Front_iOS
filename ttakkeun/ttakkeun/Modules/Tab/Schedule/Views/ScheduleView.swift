@@ -21,6 +21,7 @@ struct ScheduleView: View {
         static let middleVspacing: CGFloat = 9
         static let bottomVspacing: CGFloat = 10
         static let bottomTitleHspacing: CGFloat = 2
+        static let percentIconHspacing: CGFloat = 4
         
         static let percentContentsPadding: EdgeInsets = .init(top: 12, leading: 16, bottom: 12, trailing: 16)
         static let cornerRadius: CGFloat = 20
@@ -120,15 +121,11 @@ struct ScheduleView: View {
     
     /// 하단 영역
     private var bottomPercentContents: some View {
-        HStack(alignment: .center, content: {
+        HStack(alignment: .center, spacing: ScheduleConstants.percentIconHspacing, content: {
             if !viewModel.isLoading {
                 if let data = viewModel.completionData {
                     ForEach(PartItem.allCases, id: \.self) { part in
                         TodoCompletionRate(data: data, partItem: part)
-                        
-                        if part != .teeth {
-                            Spacer()
-                        }
                     }
                 } else {
                     notExistBottomContents

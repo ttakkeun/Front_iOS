@@ -104,8 +104,7 @@ struct JournalRegistContents: View {
                 })
                 .id(question.questionID)
                 .safeAreaInset(edge: .bottom, content: {
-                    
-                    changePageBtn()
+                    changePageBtn(isDisable: viewModel.isNextEnabled)
                 })
                 .contentMargins(.top, UIConstants.topScrollPadding, for: .scrollContent)
             }
@@ -129,7 +128,7 @@ struct JournalRegistContents: View {
             
             Spacer()
             
-            changePageBtn()
+            changePageBtn(isDisable: true)
         })
     }
     
@@ -163,7 +162,7 @@ extension JournalRegistContents {
     
     /// 2 ~ 5 페이지 뷰 이전 다음 버튼
     /// - Returns: 버튼 뷰 반환
-    func changePageBtn() -> some View {
+    func changePageBtn(isDisable: Bool = false) -> some View {
         ZStack(alignment: .bottom) {
             Color.white.ignoresSafeArea()
                 .frame(height: UIConstants.safeBottom)
@@ -181,7 +180,7 @@ extension JournalRegistContents {
                 MainButton(btnText: viewModel.currentPage == 5 ? JournalRegistConstants.completeText : viewModel.isNextEnabled ? JournalRegistConstants.nextText : JournalRegistConstants.noSelectAnswerText, height: JournalRegistConstants.mainBtnHeght, action: {
                     mainButtonAction()
                 }, color: Color.mainPrimary)
-                .disabled(!viewModel.isNextEnabled)
+                .disabled(!isDisable)
             })
         }
     }

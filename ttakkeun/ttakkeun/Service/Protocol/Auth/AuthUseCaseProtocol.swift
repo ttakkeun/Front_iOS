@@ -11,15 +11,14 @@ import CombineMoya
 import Moya
 
 protocol AuthUseCaseProtocol {
-    func executeAppleLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError>
-    
-    func executeSignUpApple(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError>
-    
-    func executeKakaoLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError>
-    
-    func executeSignUpkakaoLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError>
-    
-    func executeDeleteAppleAccount(authorizationCode: String) -> AnyPublisher<ResponseData<String>, MoyaError>
-    
     func executeLogout() -> AnyPublisher<ResponseData<String>, MoyaError>
+    
+    func executeKakaoLogin(kakaoLoginRequest: KakaoLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError>
+    func executeSignUpkakaoLogin(kakaoLoginRequest: KakaoLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError>
+    
+    func executeAppleLogin(appleLoginRequest: AppleLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError>
+    func executeSignUpApple(appleLoginRequest: AppleLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError>
+    
+    func executeDeleteKakaoAccount() -> AnyPublisher<ResponseData<String>, MoyaError>
+    func executeDeleteAppleAccount(authorizationCode: String) -> AnyPublisher<ResponseData<String>, MoyaError>
 }

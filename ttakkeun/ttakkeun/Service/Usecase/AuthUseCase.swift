@@ -11,44 +11,41 @@ import CombineMoya
 import Moya
 
 class AuthUseCase: AuthUseCaseProtocol {
-    private let repository: AuthRepositoryProtocol
+    private let service: AuthServiceProtocol
     
-    init(repository: AuthRepositoryProtocol = AuthRepository()) {
-        self.repository = repository
+    init(service: AuthServiceProtocol = AuthService()) {
+        self.service = service
     }
     
-    func executeAppleLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
-        return repository.loginWithApple(signUpRequest: signUpRequest)
-            .mapError { $0 as MoyaError }
-            .eraseToAnyPublisher()
+    /// 로그아웃
+    func executeLogout() -> AnyPublisher<ResponseData<String>, Moya.MoyaError> {
+        return service.logout()
+    }
+    /// 카카오 로그인
+    func executeKakaoLogin(kakaoLoginRequest: KakaoLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, Moya.MoyaError> {
+        return service.kakaoLogin(kakaoLoginRequest: kakaoLoginRequest)
+    }
+    /// 카카오 회원가입
+    func executeSignUpkakaoLogin(kakaoLoginRequest: KakaoLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, Moya.MoyaError> {
+        return service.signUpkakaoLogin(kakaoLoginRequest: kakaoLoginRequest)
+    }
+    /// 애플 로그인
+    func executeAppleLogin(appleLoginRequest: AppleLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, Moya.MoyaError> {
+        return service.appleLogin(appleLoginRequest: appleLoginRequest)
     }
     
-    func executeSignUpApple(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
-        return repository.signUpWithApple(signUpRequest: signUpRequest)
-            .mapError { $0 as MoyaError }
-            .eraseToAnyPublisher()
-    }
-    func executeKakaoLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
-        return repository.kakaoLogin(signUpRequest: signUpRequest)
-            .mapError { $0 as MoyaError }
-            .eraseToAnyPublisher()
+    /// 애플 회원가입
+    func executeSignUpApple(appleLoginRequest: AppleLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, Moya.MoyaError> {
+        return service.signUpAppleLogin(appleLoginRequest: appleLoginRequest)
     }
     
-    func executeSignUpkakaoLogin(signUpRequest: SignUpRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError> {
-        return repository.signUpkakaoLogin(signUpRequest: signUpRequest)
-            .mapError { $0 as MoyaError }
-            .eraseToAnyPublisher()
+    /// 카카오 계정 삭제
+    func executeDeleteKakaoAccount() -> AnyPublisher<ResponseData<String>, Moya.MoyaError> {
+        return service.deleteKakaoAccount()
     }
     
-    func executeDeleteAppleAccount(authorizationCode: String) -> AnyPublisher<ResponseData<String>, MoyaError> {
-        return repository.deleteAppleAccount(authorizationCode: authorizationCode)
-            .mapError { $0 as MoyaError }
-            .eraseToAnyPublisher()
-    }
-    
-    func executeLogout() -> AnyPublisher<ResponseData<String>, MoyaError> {
-        return repository.logout()
-            .mapError { $0 as MoyaError }
-            .eraseToAnyPublisher()
+    /// 애플 계정 삭제
+    func executeDeleteAppleAccount(authorizationCode: String) -> AnyPublisher<ResponseData<String>, Moya.MoyaError> {
+        return service.deleteAppleAccount(authorizationCode: authorizationCode)
     }
 }

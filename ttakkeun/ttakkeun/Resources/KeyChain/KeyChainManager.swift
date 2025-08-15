@@ -9,6 +9,8 @@ import Foundation
 import Security
 
 class KeyChainManager: @unchecked Sendable {
+    static let keyChainSession: String =
+    "ttakkeunUser"
     static let standard = KeyChainManager()
     
     // MARK: - KeyChainManagerFunction

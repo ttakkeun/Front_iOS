@@ -33,7 +33,7 @@ enum ProductLocation {
     var backgroundPadding: (CGFloat, CGFloat, CGFloat, CGFloat) {
         switch self {
         case .naver:
-            return (0, 0, 0, 0)
+            return (10, 10, 10, 10)
         case .localDB:
             return (21, 23, 19, 23)
         }

@@ -14,6 +14,7 @@ struct SearchResultView: View {
     
     // MARK: Constants
     fileprivate enum SearchResultConstants {
+        static let gridSpacing: CGFloat = 8
         static let contentsVspacing: CGFloat = 27
         static let listSpacing: CGFloat = 10
         static let lineSpacing: CGFloat = 2
@@ -73,23 +74,21 @@ struct SearchResultView: View {
     @ViewBuilder
     private var naverNotLoadingResult: some View {
         if !viewModel.naverData.isEmpty {
-            List(content: {
-                ForEach($viewModel.naverData, id: \.id) { $data in
-                    RecentRecommendCard(
-                        data: $data,
-                        type: .naver,
-                        action: { viewModel.likeProduct(
-                            productId: data.productId,
-                            productData: viewModel.makeLikePatchRequest(data: data))
-                        })
-                    .handleTapGesture(with: viewModel, data: data, source: .searchNaverProduct)
-                }
-                .listRowSeparator(.hidden)
-                .listRowInsets(EdgeInsets())
+            ScrollView(.vertical, content: {
+                LazyVStack(spacing: SearchResultConstants.listSpacing, content: {
+                    ForEach($viewModel.naverData, id: \.id) { $data in
+                        RecentRecommendCard(
+                            data: $data,
+                            type: .naver,
+                            action: { viewModel.likeProduct(
+                                productId: data.productId,
+                                productData: viewModel.makeLikePatchRequest(data: data))
+                            })
+                        .handleTapGesture(with: viewModel, data: data, source: .searchNaverProduct)
+                    }
+                })
             })
             .contentMargins(.bottom, 10, for: .scrollContent)
-            .listRowSpacing(SearchResultConstants.listSpacing)
-            .listStyle(.plain)
             .frame(height: SearchResultConstants.listHeight)
             .scrollIndicators(.hidden)
         } else {
@@ -120,7 +119,7 @@ struct SearchResultView: View {
     /// 앱 내 검색 결과 비로딩시
     @ViewBuilder
     private var localNotLoadingResult: some View {
-        let columns = Array(repeating: GridItem(.flexible()), count: SearchResultConstants.itemColumCount)
+        let columns = Array(repeating: GridItem(.flexible(), spacing: SearchResultConstants.gridSpacing), count: SearchResultConstants.itemColumCount)
         
         if !viewModel.localDbData.isEmpty {
             LazyVGrid(columns: columns, spacing: SearchResultConstants.itemHspacing, content: {
@@ -130,13 +129,14 @@ struct SearchResultView: View {
                             viewModel.likeProduct(productId: data.productId, productData: viewModel.makeLikePatchRequest(data: data))
                         })
                     .handleTapGesture(with: viewModel, data: data, source: .searchLocalProduct)
-                    .task {
-                        guard !viewModel.localDBDataIsLoading else { return }
-                        
-                        if data == viewModel.localDbData.last {
-                            viewModel.searchLocalDb(keyword: viewModel.searchText, page: viewModel.localPage)
-                        }
-                    }
+                    // TODO: - 무한 스크롤 기능
+//                    .task {
+//                        guard !viewModel.localDBDataIsLoading else { return }
+//                        
+//                        if data == viewModel.localDbData.last {
+//                            viewModel.searchLocalDb(keyword: viewModel.searchText, page: viewModel.localPage)
+//                        }
+//                    }
                 }
             })
         }
@@ -153,7 +153,6 @@ struct SearchResultView: View {
         Text(text)
             .font(.H4_bold)
             .foregroundStyle(Color.gray900)
-            .padding(.leading)
     }
     
     /// 검색 결과 없을 시 작성하는 경고 텍스트

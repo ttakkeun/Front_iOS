@@ -9,9 +9,9 @@ import Foundation
 import Moya
 
 class TokenProvider: TokenProviding {
-    private let userSession = "ttakkeunUser"
+    private let userSession = KeyChainManager.keyChainSession
     private let keyChain = KeyChainManager.standard
-    private let provider = MoyaProvider<AuthAPITarget>()
+    private let provider = MoyaProvider<AuthRouter>()
     
     var accessToken: String? {
         get {
@@ -21,7 +21,7 @@ class TokenProvider: TokenProviding {
         set {
             guard var userInfo = keyChain.loadSession(for: userSession) else { return }
             userInfo.accessToken = newValue
-            if keyChain.saveSession(userInfo, for: "ttakkeunUser") {
+            if keyChain.saveSession(userInfo, for: userSession) {
                 print("유저 액세스 토큰 갱신됨: \(String(describing: newValue))")
             }
         }
@@ -44,7 +44,7 @@ class TokenProvider: TokenProviding {
     
     func refreshToken(completion: @escaping (String?, (any Error)?) -> Void) {
         guard let userInfo = keyChain.loadSession(for: userSession), let refreshToken = userInfo.refreshToken else {
-            let error = NSError(domain: "ttakkeun.com", code: -2, userInfo: [NSLocalizedDescriptionKey: "User session or refresh token not found"])
+            let error = NSError(domain: userSession, code: -2, userInfo: [NSLocalizedDescriptionKey: "User session or refresh token not found"])
             completion(nil, error)
             return
         }

@@ -10,42 +10,41 @@ import Moya
 import Combine
 import CombineMoya
 
-class MyPageService: MyPageServiceProtocol {
+class MyPageService: MyPageServiceProtocol, BaseAPIService {
+    typealias Target = MyPageRouter
     
+    let provider: MoyaProvider<MyPageRouter>
+    let decoder: JSONDecoder
+    let callbackQueue: DispatchQueue
     
-    private let provider: MoyaProvider<MyPageAPITarget>
-    
-    init(provider: MoyaProvider<MyPageAPITarget> = APIManager.shared.createProvider(for: MyPageAPITarget.self)) {
+    init(
+        provider: MoyaProvider<MyPageRouter> = APIManager.shared.createProvider(for: MyPageRouter.self),
+        decoder: JSONDecoder = {
+            let d = JSONDecoder()
+            d.keyDecodingStrategy = .convertFromSnakeCase
+            return d
+        }(),
+        callbackQueue: DispatchQueue = .main
+        
+    ) {
         self.provider = provider
+        self.decoder = decoder
+        self.callbackQueue = callbackQueue
     }
     
-    func getUserInfoData() -> AnyPublisher<ResponseData<UserInfoResponse>, MoyaError> {
-        return provider.requestPublisher(.getUserInfo)
-            .map(ResponseData<UserInfoResponse>.self)
-            .eraseToAnyPublisher()
+    func postGenerateInquire(inquire: MypageInquireRequest, imageData: [Data]) -> AnyPublisher<ResponseData<MypageInquireResponse>, Moya.MoyaError> {
+        request(.postGenerateInquire(inquire: inquire, imageData: imageData))
     }
     
-    func userNameDate(newUsername: String) -> AnyPublisher<ResponseData<String>, MoyaError> {
-        return provider.requestPublisher(.editUserName(newUsername: newUsername))
-            .map(ResponseData<String>.self)
-            .eraseToAnyPublisher()
+    func getMyInquire() -> AnyPublisher<ResponseData<[MyPageMyInquireResponse]>, Moya.MoyaError> {
+        request(.getMyInquire)
     }
     
-    func logoutData() -> AnyPublisher<ResponseData<String>, MoyaError> {
-        return provider.requestPublisher(.logout)
-            .map(ResponseData<String>.self)
-            .eraseToAnyPublisher()
+    func patchEditUserName(newUsername: String) -> AnyPublisher<ResponseData<String>, Moya.MoyaError> {
+        request(.patchEditUserName(newUsername: newUsername))
     }
     
-    func deleteProfileData(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError> {
-        return provider.requestPublisher(.deleteProfile(petId: petId))
-            .map(ResponseData<EmptyResponse>.self)
-            .eraseToAnyPublisher()
-    }
-    
-    func getMyInquireData() -> AnyPublisher<ResponseData<[MyInquiryResponse]>, MoyaError> {
-        return provider.requestPublisher(.getMyInquire)
-            .map(ResponseData<[MyInquiryResponse]>.self)
-            .eraseToAnyPublisher()
+    func getUserInfo() -> AnyPublisher<ResponseData<MyPageUserInfoResponse>, Moya.MoyaError> {
+        request(.getUserInfo)
     }
 }

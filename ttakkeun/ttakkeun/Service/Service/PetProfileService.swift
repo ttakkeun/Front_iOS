@@ -11,49 +11,49 @@ import Combine
 import CombineMoya
 import SwiftUI
 
-class PetProfileService: PetProfileServiceProtocol {
+class PetProfileService: PetProfileServiceProtocol, BaseAPIService {
+    typealias Target = PetRouter
     
-    private let provider: MoyaProvider<PetAPITarget>
+    let provider: MoyaProvider<PetRouter>
+    let decoder: JSONDecoder
+    let callbackQueue: DispatchQueue
     
-    init(provider: MoyaProvider<PetAPITarget> = APIManager.shared.createProvider(for: PetAPITarget.self)) {
+    init(
+        provider: MoyaProvider<PetRouter> = APIManager.shared.createProvider(for: PetRouter.self),
+        decoder: JSONDecoder = {
+            let d = JSONDecoder()
+            d.keyDecodingStrategy = .convertFromSnakeCase
+            return d
+        }(),
+        callbackQueue: DispatchQueue = .main
+    ) {
         self.provider = provider
+        self.decoder = decoder
+        self.callbackQueue = callbackQueue
     }
     
-    // 펫 프로파일 생성
-    func makePetProfileData(petInfo: PetInfo) -> AnyPublisher<ResponseData<MakePetProfileResponse>, MoyaError> {
-        return provider.requestPublisher(.makePetProfile(petInfo: petInfo))
-            .map(ResponseData<MakePetProfileResponse>.self)
-            .eraseToAnyPublisher()
+    func postGenerateProfileData(petInfo: PetInfo) -> AnyPublisher<ResponseData<PetAddResponse>, Moya.MoyaError> {
+        request(.postGenerateProfile(petInfo: petInfo))
     }
     
-    // 펫 프로필 이미지 등록
-    func patchPetProfileImageData(petId: Int, image: UIImage) -> AnyPublisher<ResponseData<PatchPetImageResponse>, MoyaError> {
-        return provider.requestPublisher(.patchPetProfileImage(petId: petId, image: image))
-            .map(ResponseData<PatchPetImageResponse>.self)
-            .eraseToAnyPublisher()
+    func patchPetProfileImageData(petId: Int, image: UIImage) -> AnyPublisher<ResponseData<PetProfileImageResponse>, Moya.MoyaError> {
+        request(.patchPetProfileImage(petId: petId, image: image))
     }
     
-    func getPetProfileData() -> AnyPublisher<ResponseData<PetProfileResponse>, MoyaError> {
-        return provider.requestPublisher(.getPetProfile)
-            .map(ResponseData<PetProfileResponse>.self)
-            .eraseToAnyPublisher()
+    func patchPetProfile(petId: Int, petInfo: PetInfo) -> AnyPublisher<ResponseData<PetProfileInfoResponse>, Moya.MoyaError> {
+        request(.patchPetProfile(petId: petId, petInfo: petInfo))
     }
     
-    func getSpecificPetProfileData(petId: Int) -> AnyPublisher<ResponseData<HomeProfileResponseData>, MoyaError> {
-        return provider.requestPublisher(.getSpecificPetProfile(petId: petId))
-            .map(ResponseData<HomeProfileResponseData>.self)
-            .eraseToAnyPublisher()
+    func getSpecificPetProfileData(petId: Int) -> AnyPublisher<ResponseData<PetSpacialProfileResponse>, Moya.MoyaError> {
+        request(.getSpecificPetProfile(petId: petId))
     }
     
-    func patchPetProfile(petId: Int, petInfo: PetInfo) -> AnyPublisher<ResponseData<EditProfileResponse>, MoyaError> {
-        return provider.requestPublisher(.patchPetProfile(petId: petId, petInfo: petInfo))
-            .map(ResponseData<EditProfileResponse>.self)
-            .eraseToAnyPublisher()
+    func deletePetprofileData(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, Moya.MoyaError> {
+        request(.deletePetProfile(petId: petId))
     }
     
-    func deletePetprofileData(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError> {
-        return provider.requestPublisher(.deletePetProfile(petId: petId))
-            .map(ResponseData<EmptyResponse>.self)
-            .eraseToAnyPublisher()
+    func getPetProfileData() -> AnyPublisher<ResponseData<PetAllResponse>, Moya.MoyaError> {
+        request(.getPetProfile)
     }
+    
 }

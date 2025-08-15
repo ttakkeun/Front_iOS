@@ -41,7 +41,7 @@ struct AgreementSheetView: View {
             Capsule()
                 .modifier(CapsuleModifier())
         })
-        .safeAreaPadding(.top, UIConstants.defaultSafeTop)
+        .safeAreaPadding(.top, UIConstants.capusuleTopPadding)
     }
     
     // MARK: - TopContents
