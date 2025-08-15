@@ -1,13 +1,19 @@
 //
-//  TipsResponse.swift
+//  TipGenerateDTO.swift
 //  ttakkeun
 //
-//  Created by 정의찬 on 12/3/24.
+//  Created by Apple Coding machine on 8/14/25.
 //
 
 import Foundation
 
-struct TipsResponse: Identifiable, Codable, Hashable {
+struct TipGenerateRequest: Codable {
+    let title: String
+    let content: String
+    let category: PartItem
+}
+
+struct TipGenerateResponse: Identifiable, Codable, Hashable {
     var id = UUID()
     var tipId: Int
     var category: PartItem

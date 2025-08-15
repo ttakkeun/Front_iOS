@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LikePatchRequest: Codable {
+struct ProductLikeRequest: Codable {
     var title: String
     var image: String
     var price : Int
@@ -17,4 +17,9 @@ struct LikePatchRequest: Codable {
     var category2: String?
     var category3: String?
     var category4: String?
+}
+
+struct ProductLikeResponse: Codable {
+    var totalLikes: Int
+    var isLike: Bool
 }

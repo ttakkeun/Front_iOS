@@ -1,8 +1,8 @@
 //
-//  ProductResponse.swift
+//  ProductTagDTO.swift
 //  ttakkeun
 //
-//  Created by 정의찬 on 11/6/24.
+//  Created by Apple Coding machine on 8/14/25.
 //
 
 import Foundation
