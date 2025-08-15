@@ -1,14 +1,14 @@
 //
-//  JournalResultResponse.swift
+//  RecordResultDTO.swift
 //  ttakkeun
 //
-//  Created by 정의찬 on 11/18/24.
+//  Created by Apple Coding machine on 8/15/25.
 //
 
 import Foundation
 
 /// 일지 생성 시 선택 및 입력했던 일지 내용 결과
-struct JournalResultResponse: Codable, Identifiable, Hashable {
+struct RecordResultResponse: Codable, Identifiable, Hashable {
     let id: UUID = .init()
     let category: PartItem
     let date: String

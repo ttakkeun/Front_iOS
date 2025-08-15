@@ -1,13 +1,17 @@
 //
-//  UpdateNaverResponse.swift
+//  DiagnoseNaverDTO.swift
 //  ttakkeun
 //
-//  Created by 정의찬 on 12/8/24.
+//  Created by Apple Coding machine on 8/15/25.
 //
 
 import Foundation
 
-struct UpdateNaverResponse: Codable {
+struct DiagnoseNaverRequest: Codable {
+    var products: [String]
+}
+
+struct DiagnoseNaverResponse: Codable {
     var products: [Product]
 }
 

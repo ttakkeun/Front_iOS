@@ -1,13 +1,13 @@
 //
-//  DiagnosticResolutionResponse.swift
+//  DiagnoseDetailDTO.swift
 //  ttakkeun
 //
-//  Created by 정의찬 on 11/19/24.
+//  Created by Apple Coding machine on 8/15/25.
 //
 
 import Foundation
 
-struct DiagnosticResolutionResponse: Codable, Identifiable {
+struct DiagnoseDetailResponse: Codable, Identifiable {
     let id: Int
     let score: Int
     let detailValue: String
@@ -23,7 +23,6 @@ struct DiagnosticResolutionResponse: Codable, Identifiable {
     }
 }
 
-
 struct AIProducts: Codable, Hashable, Identifiable {
     var id: UUID = .init()
     let title: String
@@ -31,3 +30,4 @@ struct AIProducts: Codable, Hashable, Identifiable {
     let lprice: Int
     let brand: String
 }
+

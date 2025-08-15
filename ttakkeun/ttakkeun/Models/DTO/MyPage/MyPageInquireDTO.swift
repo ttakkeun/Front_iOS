@@ -1,13 +1,13 @@
 //
-//  inquiryRequestDTO.swift
+//  MypageInquireDTO.swift
 //  ttakkeun
 //
-//  Created by 정의찬 on 12/25/24.
+//  Created by Apple Coding machine on 8/15/25.
 //
 
 import Foundation
 
-struct InquiryRequestDTO: Codable {
+struct MypageInquireRequest: Codable {
     var contents: String
     var email: String
     var inquiryType: InquireType

@@ -1,13 +1,13 @@
 //
-//  JournalQuestionResponse.swift
+//  RecordSearchDTO.swift
 //  ttakkeun
 //
-//  Created by 정의찬 on 11/11/24.
+//  Created by Apple Coding machine on 8/15/25.
 //
 
 import Foundation
 
-struct JournalQuestionResponse: Codable {
+struct RecordQuestionResponse: Codable {
     let category: String
     let question: [QuestionDetailData]
     

@@ -1,13 +1,13 @@
 //
-//  JournalListResponse.swift
+//  RecordListDTO.swift
 //  ttakkeun
 //
-//  Created by 정의찬 on 11/9/24.
+//  Created by Apple Coding machine on 8/15/25.
 //
 
 import Foundation
 
-struct JournalListResponse: Codable {
+struct RecordListResponse: Codable {
     var category: PartItem
     var recordList: [JournalListItem]
 }
