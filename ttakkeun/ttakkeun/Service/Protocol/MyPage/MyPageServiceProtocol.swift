@@ -12,13 +12,11 @@ import Moya
 import SwiftUI
 
 protocol MyPageServiceProtocol {
-    func getUserInfoData() -> AnyPublisher<ResponseData<UserInfoResponse>, MoyaError>
+    func postGenerateInquire(inquire: MypageInquireRequest, imageData: [Data]) -> AnyPublisher<ResponseData<MypageInquireResponse>, MoyaError>
     
-    func userNameDate(newUsername: String) -> AnyPublisher<ResponseData<String>, MoyaError>
+    func getMyInquire() -> AnyPublisher<ResponseData<[MyPageMyInquireResponse]>, MoyaError>
     
-    func logoutData() -> AnyPublisher<ResponseData<String>, MoyaError>
+    func patchEditUserName(newUsername: String) -> AnyPublisher<ResponseData<String>, MoyaError>
     
-    func deleteProfileData(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
-    
-    func getMyInquireData() -> AnyPublisher<ResponseData<[MyInquiryResponse]>, MoyaError>
+    func getUserInfo() -> AnyPublisher<ResponseData<MyPageUserInfoResponse>, MoyaError>
 }

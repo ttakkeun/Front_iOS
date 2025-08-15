@@ -11,39 +11,26 @@ import CombineMoya
 import Moya
 
 class MyPageUseCase: MyPageUseCaseProtocol {
-    private let repository: MyPageRepository
+    private let service: MyPageServiceProtocol
     
-    init(repository: MyPageRepository = MyPageRepository()) {
-        self.repository = repository
+    init(service: MyPageServiceProtocol = MyPageService()) {
+        self.service = service
     }
     
-    func executeMyPage() -> AnyPublisher<ResponseData<UserInfoResponse>, MoyaError> {
-        return repository.getUserInfo()
-            .mapError { $0 as MoyaError }
-            .eraseToAnyPublisher()
+    func executePostGenerateInquire(inquire: MypageInquireRequest, imageData: [Data]) -> AnyPublisher<ResponseData<MypageInquireResponse>, Moya.MoyaError> {
+        return service.postGenerateInquire(inquire: inquire, imageData: imageData)
     }
     
-    func executeEditUserNameDate(newUsername: String) -> AnyPublisher<ResponseData<String>, MoyaError> {
-        return repository.editUserName(newUsername: newUsername)
-            .mapError { $0 as MoyaError }
-            .eraseToAnyPublisher()
+    func executeGetMyInquire() -> AnyPublisher<ResponseData<[MyPageMyInquireResponse]>, Moya.MoyaError> {
+        return service.getMyInquire()
     }
     
-    func executeLogout() -> AnyPublisher<ResponseData<String>, MoyaError> {
-        return repository.logout()
-            .mapError { $0 as MoyaError }
-            .eraseToAnyPublisher()
+    func executePatchEditUserName(newUsername: String) -> AnyPublisher<ResponseData<String>, Moya.MoyaError> {
+        return service.patchEditUserName(newUsername: newUsername)
     }
     
-    func executeDeleteProfile(petId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError> {
-        return repository.deleteProfile(petId: petId)
-            .mapError { $0 as MoyaError }
-            .eraseToAnyPublisher()
+    func executeGetUserInfo() -> AnyPublisher<ResponseData<MyPageUserInfoResponse>, Moya.MoyaError> {
+        return service.getUserInfo()
     }
     
-    func executeGetMyInquir() -> AnyPublisher<ResponseData<[MyInquiryResponse]>, MoyaError> {
-        return repository.getMyInquire()
-            .mapError { $0 as MoyaError }
-            .eraseToAnyPublisher()
-    }
 }

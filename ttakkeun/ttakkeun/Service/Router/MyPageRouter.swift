@@ -8,56 +8,62 @@
 import Foundation
 import Moya
 
-enum MyPageAPITarget {
-    case getUserInfo
-    case editUserName(newUsername: String)
-    case logout
-    case deleteProfile(petId: Int)
-    
+enum MyPageRouter {
+    /// 문의하기
+    case postGenerateInquire(inquire: MypageInquireRequest, imageData: [Data])
+    /// 문의 내용 조회
     case getMyInquire
+    /// 유저 닉네임 변경
+    case patchEditUserName(newUsername: String)
+    /// 유저 정보 조회
+    case getUserInfo
 }
 
-extension MyPageAPITarget: APITargetType {
+extension MyPageRouter: APITargetType {
     var path: String {
         switch self {
-        case .getUserInfo:
-            return "/api/mypage/info"
-        case .editUserName:
-            return "/api/mypage/username"
-        case .logout:
-            return "/api/auth/logout"
-        case .deleteProfile(let petId):
-            return "/api/pet-profile/\(petId)"
+        case .postGenerateInquire:
+            return "/api/inquiry/add"
         case .getMyInquire:
             return "/api/inquiry/myInquiry"
+        case .patchEditUserName:
+            return "/api/mypage/username"
+        case .getUserInfo:
+            return "/api/mypage/info"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .getUserInfo:
-            return .get
-        case .editUserName:
-            return .patch
-        case .logout:
+        case .postGenerateInquire:
             return .post
-        case .deleteProfile:
-            return .delete
         case .getMyInquire:
+            return .get
+        case .patchEditUserName:
+            return .patch
+        case .getUserInfo:
             return .get
         }
     }
     
     var task: Task {
         switch self {
-        case .getUserInfo, .logout, .deleteProfile, .getMyInquire:
+        case .postGenerateInquire(let inquire, let imageData):
+            let formData = inquire.multipartFormParts(jsonFieldName: "inquiryRequestDTO", images: imageData)
+            return .uploadMultipart(formData)
+        case .patchEditUserName(let newUsername):
+            return .requestParameters(parameters: ["newUsername": newUsername], encoding: URLEncoding.default)
+        case .getUserInfo, .getMyInquire:
             return .requestPlain
-        case .editUserName(let newUsername):
-            return .requestParameters(parameters: ["newUsername": newUsername], encoding: JSONEncoding.default)
         }
     }
     
     var headers: [String : String]? {
-        return ["Content-Type": "application/json"]
+        switch self {
+        case .postGenerateInquire:
+            return ["Content-Type": "multipart/form-data"]
+        default:
+            return ["Content-Type": "application/json"]
+        }
     }
 }

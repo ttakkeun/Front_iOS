@@ -12,3 +12,7 @@ struct MypageInquireRequest: Codable {
     var email: String
     var inquiryType: InquireType
 }
+
+struct MypageInquireResponse: Codable {
+    let petId: Int
+}
