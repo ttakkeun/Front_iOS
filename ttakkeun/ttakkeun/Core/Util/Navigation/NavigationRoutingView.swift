@@ -42,7 +42,7 @@ private extension NavigationRoutingView {
     func authView(_ route: NavigationDestination.Auth) -> some View {
         switch route {
         case .signUp(let socialType, let signUpRequest):
-            SignUpView(socialType: socialType, singUpRequest: signUpRequest, container: container, appFlowViewModel: appFlowViewModel)
+            SignUpView(socialType: socialType, signup: SignUpData, container: container, appFlowViewModel: appFlowViewModel)
         case .deleteAccount:
             DeleteAccountView(container: container)
         }

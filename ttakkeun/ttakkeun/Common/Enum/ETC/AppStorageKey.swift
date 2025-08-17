@@ -11,6 +11,7 @@ import Foundation
 enum AppStorageKey {
     static let userNickname = "UserNickname"
     static let userEmail = "UserEmail"
+    static let userName: "UserName"
     static let userLoginType = "UserLoginType"
     static let petName = "PetName"
     static let petId = "PetId"

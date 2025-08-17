@@ -13,3 +13,5 @@ struct ResponseData<T: Codable>: Codable {
     let message: String
     let result: T?
 }
+
+extension ResponseData: ResponseDataProtocol {}

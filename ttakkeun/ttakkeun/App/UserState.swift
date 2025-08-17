@@ -62,14 +62,6 @@ class UserState: ObservableObject {
         return userName
     }
     
-    public func getUserEmail() -> String {
-        guard let userEmail = UserDefaults.standard.string(forKey: AppStorageKey.userEmail) else {
-            return "이메일 정보 없음"
-        }
-        
-        return userEmail
-    }
-    
     public func getLoginType() -> SocialLoginType {
         if let loginTypeRawValue = UserDefaults.standard.string(forKey: AppStorageKey.userLoginType),
            let loginType = SocialLoginType(rawValue: loginTypeRawValue) {

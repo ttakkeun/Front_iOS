@@ -13,7 +13,7 @@ struct SignUpView: View {
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
     @State var viewModel: SignUpViewModel
-    @State var signUpRequest: SignUpRequest
+    var signup: SignUpData
     
     let socialType: SocialLoginType
     
@@ -48,12 +48,12 @@ struct SignUpView: View {
     // MARK: - Init
     init(
         socialType: SocialLoginType,
-        singUpRequest: SignUpRequest,
+        signup: SignUpData,
         container: DIContainer,
         appFlowViewModel: AppFlowViewModel
     ) {
         self.socialType = socialType
-        self.signUpRequest = singUpRequest
+        self.signup = signup
         self.viewModel = .init(container: container, appFlowViewModel: appFlowViewModel)
     }
     
@@ -88,7 +88,7 @@ struct SignUpView: View {
         })
     }
     private var emailField: some View {
-        makeUserInfo(title: SignUpConstants.emailFieldText, placeholder: signUpRequest.email, value: .constant(""))
+        makeUserInfo(title: SignUpConstants.emailFieldText, placeholder: signup.email, value: .constant(""))
             .disabled(true)
     }
     
@@ -205,6 +205,7 @@ extension SignUpView {
         return ischecked ? Image(.check) : Image(.uncheck)
     }
     
+    // 카카오 및 애플 로그인 분기처리
     func returnSignUpData() -> SignUpRequest {
         return SignUpRequest(identityToken: signUpRequest.identityToken, email: signUpRequest.email, name: viewModel.userNickname)
     }

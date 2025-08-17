@@ -23,30 +23,31 @@ class AppleLoginManager: NSObject {
 
 extension AppleLoginManager: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-            DispatchQueue.main.async {
-                let fullName =  appleIDCredential.fullName.flatMap { nameComponents in
-                    [nameComponents.familyName, nameComponents.givenName]
-                        .compactMap{ $0 }
-                        .joined(separator: "")
-                }
-                
-                let appleUserData = AppleUserData(
-                    userIdentifier: appleIDCredential.user,
-                    fullName: fullName ?? "",
-                    email: appleIDCredential.email ?? "",
-                    authorizationCode: String(data: appleIDCredential.authorizationCode ?? Data(), encoding: .utf8),
-                    identityToken: String(data: appleIDCredential.identityToken ?? Data(), encoding: .utf8)
-                )
-                
-                if let identityCode = appleUserData.identityToken {
-                    self.onAuthorizationCompleted?(identityCode, appleUserData.email, appleUserData.fullName)
-                    print("유저 인가 코드: \(identityCode)")
-                    print("유저 이메일 : \(appleUserData.email ?? "")")
-                    print("유저 이름 : \(appleUserData.fullName)")
-                }
-            }
+        guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else {
+            print("credential 형변환 실패")
+            return
         }
+        
+        let formatter = PersonNameComponentsFormatter()
+        let fullName = credential.fullName.flatMap { formatter.string(from: $0) }
+        
+        guard
+            let identityTokenData = credential.identityToken,
+            let identityToken = String(data: identityTokenData, encoding: .utf8)
+        else {
+            print("identityToken 변환 실패")
+            return
+        }
+        
+        let email = credential.email
+        self.onAuthorizationCompleted?(identityToken, email, fullName)
+        
+        #if DEBUG
+        print("Apple 로그인 성공")
+        print("토큰: \(identityToken)")
+        print("이메일: \(email ?? "없음")")
+        print("이름: \(fullName ?? "없음")")
+        #endif
     }
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {

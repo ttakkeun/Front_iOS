@@ -20,6 +20,7 @@ struct LoadingOverlayModifier: ViewModifier {
     /// 로딩 텍스트 타입
     enum LoadingTextType: String {
         /// 프로필 생성 시 사용
+        case loginLoading = "로그인 중입니다. 잠시만 기다려 주세요."
         case createProfile = "반려동물 프로필 생성 중입니다."
         case createJournal = "일지 생성 중입니다. \n잠시 기다려주세요"
         case createTips = "작성한 Tips를 생성 중입니다."

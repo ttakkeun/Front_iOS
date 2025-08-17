@@ -12,7 +12,7 @@ enum NavigationDestination: Hashable {
     /// 회원관련
     enum Auth: Hashable {
         /// 회원 가입 이동
-        case signUp(socialType: SocialLoginType, signUpRequest: SignUpRequest)
+        case signUp(socialType: SocialLoginType, signup: SignUpData)
         /// 회원 탈퇴 이동
         case deleteAccount
     }

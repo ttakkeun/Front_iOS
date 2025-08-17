@@ -9,35 +9,33 @@ import Foundation
 
 protocol UseCaseProtocol {
     var authUseCase: AuthUseCase { get set }
-    var petProfileUseCase: PetProfileUseCase { get set }
-    var scheduleUseCase: ScheduleUseCase { get set }
-    var productRecommendUseCase: ProductRecommendUseCase { get set }
-    var journalUseCase: JournalUseCase { get set }
-    var searchUseCase: SearchUseCase { get set }
-    var qnaUseCase: QnAUseCase { get set }
+    var diagnoseUseCase: DiagnoseUseCase { get set }
     var myPageUseCase: MyPageUseCase { get set }
+    var petProfileUseCase: PetProfileUseCase { get set }
+    var productUseCase: ProductUseCase { get set }
+    var recordUseCase: RecordUseCase { get set }
+    var tipUseCase: TipUseCase { get set }
+    var todoUseCase: TodoUseCase { get set }
 }
 
 class UseCaseProvider: UseCaseProtocol {
-    
     var authUseCase: AuthUseCase
-    var petProfileUseCase: PetProfileUseCase
-    var scheduleUseCase: ScheduleUseCase
-    var productRecommendUseCase: ProductRecommendUseCase
-    var journalUseCase: JournalUseCase
-    var searchUseCase: SearchUseCase
-    var qnaUseCase: QnAUseCase
+    var diagnoseUseCase: DiagnoseUseCase
     var myPageUseCase: MyPageUseCase
-    
+    var petProfileUseCase: PetProfileUseCase
+    var productUseCase: ProductUseCase
+    var recordUseCase: RecordUseCase
+    var tipUseCase: TipUseCase
+    var todoUseCase: TodoUseCase
     
     init() {
         self.authUseCase = AuthUseCase()
-        self.petProfileUseCase = PetProfileUseCase()
-        self.scheduleUseCase = ScheduleUseCase()
-        self.productRecommendUseCase = ProductRecommendUseCase()
-        self.journalUseCase = JournalUseCase()
-        self.searchUseCase = SearchUseCase()
-        self.qnaUseCase = QnAUseCase()
+        self.diagnoseUseCase = DiagnoseUseCase()
         self.myPageUseCase = MyPageUseCase()
+        self.petProfileUseCase = PetProfileUseCase()
+        self.productUseCase = ProductUseCase()
+        self.recordUseCase = RecordUseCase()
+        self.tipUseCase = TipUseCase()
+        self.todoUseCase = TodoUseCase()
     }
 }

@@ -39,10 +39,8 @@ class AppFlowViewModel {
     
     /// 로그인 성공 후 호출
     public func onLoginSuccess(loginViewModel: LoginViewModel) {
-        if loginViewModel.isLogin {
-            // 로그인 성공하면 프로필 화면 이동
-            appState = .profile
-        }
+        // 로그인 성공하면 프로필 화면 이동
+        appState = .profile
     }
     
     /// 회원 가입 성공 후 호출

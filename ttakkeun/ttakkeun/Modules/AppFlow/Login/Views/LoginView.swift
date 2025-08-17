@@ -46,6 +46,7 @@ struct LoginView: View {
             .navigationDestination(for: NavigationDestination.self) { destination in
                 NavigationRoutingView(destination: destination)
             }
+            .loadingOverlay(isLoading: viewModel.isLoading, loadingTextType: .loginLoading)
         }
     }
     // MARK: - TopContents
