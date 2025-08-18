@@ -81,22 +81,27 @@ struct SignUpView: View {
     }
     
     // MARK: - TopContents
+    /// 상단 사진, 이름, 닉네임 입력 필드
     private var topContents: some View {
         VStack(alignment: .leading, spacing: SignUpConstants.topVspacing, content: {
             emailField
             nicknameField
         })
     }
+    
+    /// 이메일 작성 필드
     private var emailField: some View {
         makeUserInfo(title: SignUpConstants.emailFieldText, placeholder: signup.email, value: .constant(""))
             .disabled(true)
     }
     
+    /// 닉네임 작성 필드
     private var nicknameField: some View {
         makeUserInfo(title: SignUpConstants.nicknameFieldText, placeholder: SignUpConstants.nicknamePlaceholder, value: $viewModel.userNickname)
     }
     
     // MARK: - MiddleContents
+    /// 중간 동의항목 컴포넌트
     private var middleContents: some View {
         VStack(alignment: .leading, spacing: SignUpConstants.agreementVspacing, content: {
             makeTitle(text: SignUpConstants.agreementText)
@@ -105,6 +110,7 @@ struct SignUpView: View {
         })
     }
     
+    /// 동의 항목 전체 그룹
     @ViewBuilder
     private var agreementGroup: some View {
         VStack(alignment: .leading, spacing: SignUpConstants.individualAgreementVspacing, content: {
@@ -115,6 +121,9 @@ struct SignUpView: View {
         })
     }
     
+    /// 동의 항목 중 개별 항목
+    /// - Parameter item: 개별 항목의 아이템
+    /// - Returns: 뷰 반환
     private func individualAgreement(item: AgreementData) -> some View {
         HStack(alignment: .center, spacing: SignUpConstants.agreementHspacing, content: {
             
@@ -137,6 +146,7 @@ struct SignUpView: View {
         })
     }
     
+    /// 전체 동의 체크
     private var totalAgreement: some View {
         ZStack(alignment: .leading, content: {
             RoundedRectangle(cornerRadius: SignUpConstants.cornerRadius)
@@ -148,6 +158,7 @@ struct SignUpView: View {
         })
     }
     
+    /// 전체 동의 항목 내용 보기
     private var totalInContents: some View {
         HStack(alignment: .center, spacing: SignUpConstants.totalHspacing, content: {
             Button(action: {
@@ -166,17 +177,16 @@ struct SignUpView: View {
     }
     
     // MARK: - BottomContents
+    /// 하단 회원 생성 버튼
     private var bottomContents: some View {
         MainButton(btnText: SignUpConstants.mainButtonText,
                    action: {
             if viewModel.isAllMandatoryChecked {
                 switch socialType {
                 case .kakao:
-                    viewModel.signUpKakao(signUpRequet: returnSignUpData())
-                    UserState.shared.setLoginType(.kakao)
+                    viewModel.signUpKakao(kakao: viewModel.convertRequest(signup, type: .kakao) as! KakaoLoginRequest)
                 case .apple:
-                    viewModel.signUpApple(signUpRequet: returnSignUpData())
-                    UserState.shared.setLoginType(.apple)
+                    viewModel.signUpApple(apple: viewModel.convertRequest(signup, type: .apple) as! AppleLoginRequest)
                 }
             }
         },
@@ -205,20 +215,9 @@ extension SignUpView {
         return ischecked ? Image(.check) : Image(.uncheck)
     }
     
-    // 카카오 및 애플 로그인 분기처리
-    func returnSignUpData() -> SignUpRequest {
-        return SignUpRequest(identityToken: signUpRequest.identityToken, email: signUpRequest.email, name: viewModel.userNickname)
-    }
-    
     func makePlaceholder(text: String) -> Text {
         Text(text)
             .font(.Body3_medium)
             .foregroundStyle(.gray400)
     }
-}
-
-#Preview {
-    SignUpView(socialType: .apple, singUpRequest: .init(identityToken: "s", email: "s", name: "S"), container: DIContainer(), appFlowViewModel: AppFlowViewModel())
-        .environment(AppFlowViewModel())
-        .environmentObject(DIContainer())
 }

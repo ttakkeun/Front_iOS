@@ -17,10 +17,10 @@ struct LoginView: View {
     fileprivate enum LoginConstants {
         static let contentsVspacing: CGFloat = 17
         static let logoVspacing: CGFloat = 5
+        static let loginBtnVspacing: CGFloat = 17
         
         static let fontSize: CGFloat = 60
-        static let logoBgWidth: CGFloat = 229
-        static let logoBgHeight: CGFloat = 115
+        static let lgooBgSize: CGSize = .init(width: 229, height: 115)
         static let logoOffset: CGFloat = -10
         static let logoTextSize: CGFloat = 14
         
@@ -40,7 +40,7 @@ struct LoginView: View {
                 Spacer()
                 topContents
                 Spacer()
-                appleLoginButton
+                bottomContents
             }
             .safeAreaPadding(.bottom, UIConstants.safeBottom)
             .navigationDestination(for: NavigationDestination.self) { destination in
@@ -66,7 +66,7 @@ struct LoginView: View {
         ZStack(alignment: .bottom, content: {
             Image(.logoBackground)
                 .resizable()
-                .frame(width: LoginConstants.logoBgWidth, height: LoginConstants.logoBgHeight)
+                .frame(width: LoginConstants.lgooBgSize.width, height: LoginConstants.lgooBgSize.height)
             
             logoTextAndImage
                 .offset(y: LoginConstants.logoOffset)
@@ -85,6 +85,13 @@ struct LoginView: View {
     }
     
     // MARK: - BottomContents
+    /// 하단 로그인 버튼 컨텐츠
+    private var bottomContents: some View {
+        VStack(spacing: LoginConstants.loginBtnVspacing, content: {
+            appleLoginButton
+            kakaoLoginButton
+        })
+    }
     /// 애플 로그인 버튼
     private var appleLoginButton: some View {
         Button(action: {
@@ -95,7 +102,8 @@ struct LoginView: View {
         })
     }
     
-    private var kkakaoLoginButton: some View {
+    /// 카카오 로그인 버튼
+    private var kakaoLoginButton: some View {
         Button(action: {
             viewModel.kakaoLogin()
         }, label: {
