@@ -13,22 +13,23 @@ import PhotosUI
 
 @Observable
 class JournalRegistViewModel {
-
+    
     var currentPage: Int = 1
     
     // MARK: - Property
     var selectedPart: PartItem?
     let buttonList: [PartItem] = [.ear, .hair, .eye, .claw , .teeth]
-    var getQuestions: JournalQuestionResponse?
-    var selectedAnswerData: SelectedAnswerRequest
-    var questionImages: [Int: [UIImage]] = [:]
-    var imageItems: [PhotosPickerItem] = []
-    
+    var getQuestions: RecordQuestionResponse?
+    var selectedAnswerData: RecordGenerateRequest
     var currentQuestion: QuestionDetailData? {
         guard let getQuestion = getQuestions, currentPage - 1 <= getQuestion.question.count else { return nil }
         return getQuestion.question[currentPage - 2]
     }
+    let petId = UserDefaults.standard.integer(forKey: AppStorageKey.petId)
     
+    // MARK: - ImageProperty
+    var questionImages: [Int: [Data]] = [:]
+    var imageItems: [PhotosPickerItem] = []
     var selectedImageCount: Int {
         guard let questionID = currentQuestion?.questionID else { return 0 }
         return questionImages[questionID]?.count ?? 0
@@ -51,7 +52,7 @@ class JournalRegistViewModel {
         self.container = container
     }
     
-    // MARK: - Method
+    // MARK: - Common
     func updateAnswer(for questionID: Int, selectedAnswer: [String]) {
         selectedAnswerData.answers[questionID] = selectedAnswer
     }
@@ -59,7 +60,7 @@ class JournalRegistViewModel {
     func convertPickerItemsToUIImages(items: [PhotosPickerItem]) {
         var loadedImages: [UIImage] = []
         let dispatchGroup = DispatchGroup()
-
+        
         for item in items {
             dispatchGroup.enter()
             item.loadTransferable(type: Data.self) { result in
@@ -74,30 +75,86 @@ class JournalRegistViewModel {
                 }
             }
         }
-
+        
         dispatchGroup.notify(queue: .main) {
             self.addImage(loadedImages)
+        }
+    }
+    
+    // MARK: - Record API
+    /// 질문 받아오기 API
+    public func getAnswerList() {
+        if let selectedPart = selectedPart {
+            questionIsLoading = true
+            
+            container.useCaseProvider.recordUseCase.executeGetAnswerList(category: selectedPart.rawValue)
+                .validateResult()
+                .sink(receiveCompletion: { [weak self] completion in
+                    guard let self = self else { return }
+                    defer { self.questionIsLoading = false }
+                    
+                    switch completion {
+                    case .finished:
+                        print("Get Answer List Completed")
+                    case .failure(let failure):
+                        print("Get Answer List Failure: \(failure)")
+                    }
+                }, receiveValue: { [weak self] responseData in
+                    guard let self = self else { return }
+                    getQuestions = responseData
+                })
+                .store(in: &cancellables)
+        }
+    }
+    
+    /// 일지 생성하기
+    public func makeJournal() {
+        if let selectedPart = selectedPart {
+            makeJournalsLoading = true
+            
+            container.useCaseProvider.recordUseCase.executePostGenerateJournal(petId: petId, category: selectedPart.rawValue, data: selectedAnswerData, questionImage: questionImages)
+                .validateResult()
+                .sink(receiveCompletion: { completion in
+                    switch completion {
+                    case .finished:
+                        print("Make Journal Completed")
+                    case .failure(let failure):
+                        print("Make Journal failure: \(failure.localizedDescription)")
+                    }
+                }, receiveValue: { [weak self] responseData in
+                    guard let self = self else { return }
+                    makeJournalsLoading = false
+                    container.navigationRouter.pop()
+                    
+                    #if DEBUG
+                    print("생성된 일지: \(String(describing: responseData))")
+                    #endif
+                })
+                .store(in: &cancellables)
         }
     }
 }
 
 extension JournalRegistViewModel: PhotoPickerHandle {
     func addImage(_ images: [UIImage]) {
-        // guard let questionId = currentQuestion?.questionID else { return }
-        let questionId = 1
-
+        guard let questionId = currentQuestion?.questionID else { return }
         DispatchQueue.global(qos: .userInitiated).async {
             let originalImages = images
-
-            DispatchQueue.main.async {
-                self.questionImages[questionId] = Array(originalImages.prefix(5))
+            
+            DispatchQueue.global(qos: .userInitiated).async {
+                let imageDataArray = images
+                    .prefix(5)
+                    .compactMap { $0.jpegData(compressionQuality: 0.8) }
+                
+                DispatchQueue.main.async {
+                    self.questionImages[questionId] = imageDataArray
+                }
             }
         }
     }
     
     func removeImage(at index: Int) {
-//        guard let questionID = currentQuestion?.questionID else { return }
-        let questionID = 1
+        guard let questionID = currentQuestion?.questionID else { return }
         questionImages[questionID]?.remove(at: index)
         
         if imageItems.indices.contains(index) {
@@ -106,87 +163,7 @@ extension JournalRegistViewModel: PhotoPickerHandle {
     }
     
     func getImages() -> [UIImage] {
-//        guard let questionID = currentQuestion?.questionID else { return [] }
-        let questionID = 1
-        return questionImages[questionID] ?? []
-    }
-}
-
-// MARK: - RegistJournalAPI
-
-extension JournalRegistViewModel {
-    public func getAnswerList() {
-        if let selectedPart = selectedPart {
-            questionIsLoading = true
-            
-            container.useCaseProvider.journalUseCase.executeGetAnswerListData(category: selectedPart.rawValue)
-                .tryMap { responseData -> ResponseData<JournalQuestionResponse> in
-                    if !responseData.isSuccess {
-                        throw APIError.serverError(message: responseData.message, code: responseData.code)
-                    }
-                    
-                    guard let _ = responseData.result else {
-                        throw APIError.emptyResult
-                    }
-                    
-                    print("AnswerList Server: \(responseData)")
-                    return responseData
-                }
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { [weak self] completion in
-                    guard let self = self else { return }
-                    questionIsLoading = false
-                    
-                    switch completion {
-                    case .finished:
-                        print("Get Answer List Completed")
-                    case .failure(let failure):
-                        print("Get Answer List Failure: \(failure)")
-                    }
-                },
-                      receiveValue: { [weak self] responseData in
-                    guard let self = self else { return }
-                    
-                    getQuestions = responseData.result
-                })
-                .store(in: &cancellables)
-        }
-    }
-    
-    public func makeJournal() {
-        if let selectedPart = selectedPart {
-            makeJournalsLoading = true
-            
-            container.useCaseProvider.journalUseCase.executeMakeJournal(category: selectedPart.rawValue, data: selectedAnswerData, questionImage: questionImages)
-                .tryMap { responseData -> ResponseData<MakeJournalResultResponse> in
-                    
-                    if !responseData.isSuccess {
-                        throw APIError.serverError(message: responseData.message, code: responseData.code)
-                    }
-                    
-                    guard let _ = responseData.result else {
-                        throw APIError.emptyResult
-                    }
-                    
-                    print("MakeJournal Server: \(responseData)")
-                    return responseData
-                }
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { completion in
-                    switch completion {
-                    case .finished:
-                        print("Make Journal Completed")
-                    case .failure(let failure):
-                        print("Make Journal failure: \(failure.localizedDescription)")
-                    }
-                },
-                      receiveValue: { [weak self] responseData in
-                    guard let self = self else { return }
-                    print("생성된 일지: \(String(describing: responseData.result))")
-                    makeJournalsLoading = false
-                    container.navigationRouter.pop()
-                })
-                .store(in: &cancellables)
-        }
+        guard let questionID = currentQuestion?.questionID else { return [] }
+        return questionImages[questionID]?.compactMap { UIImage(data: $0) } ?? []
     }
 }

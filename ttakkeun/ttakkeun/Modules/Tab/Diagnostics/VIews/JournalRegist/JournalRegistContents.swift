@@ -56,7 +56,6 @@ struct JournalRegistContents: View {
     }
     
     // MARK: - 1 Page(부위 선택)
-    //
     private var firstPageContents: some View {
         VStack(content: {
             titleText(title: JournalRegistConstants.firstTitle, subTitle: JournalRegistConstants.firstSubTitle)

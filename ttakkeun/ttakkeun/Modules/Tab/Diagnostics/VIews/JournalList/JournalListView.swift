@@ -167,7 +167,6 @@ struct JournalListView: View {
             container.navigationRouter.push(to: .diagnostic(.makeJournalist))
         } else {
             if viewModel.selectedCnt >= 1 {
-                viewModel.patchUserPoint()
                 viewModel.getUserPoint()
                 showAletAction()
             }
@@ -183,6 +182,7 @@ struct JournalListView: View {
         } else {
             alert.trigger(type: .aiAlert(count: viewModel.selectedCnt, aiCount: viewModel.aiPoint), showAlert: viewModel.showDiagnosedAlert, action: {
                 viewModel.showFullScreenAI = true
+                viewModel.patchUserPoint()
                 viewModel.makeDiag()
             })
         }

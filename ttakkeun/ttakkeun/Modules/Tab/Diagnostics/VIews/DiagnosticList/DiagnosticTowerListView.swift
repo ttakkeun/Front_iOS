@@ -50,12 +50,12 @@ struct DiagnosticTowerListView: View {
                 })
             })
             .task {
+                guard viewModel.diagResultListResponse.isEmpty else { return }
+                viewModel.getDiagResultList(category: selectedPartItem.rawValue, page: .zero)
+                
                 if let lastID = viewModel.diagResultListResponse.last?.id {
                     scrollProxy.scrollTo(lastID, anchor: .bottom)
                 }
-            }
-            .refreshable {
-                viewModel.getDiagResultList(category: selectedPartItem.rawValue, page: 0, refresh: true)
             }
             .fullScreenCover(isPresented: $viewModel.isShowDetailDiag, content: {
                 if let id = viewModel.selectedDiagId {
@@ -99,14 +99,17 @@ struct DiagnosticTowerListView: View {
     private var towerForEach: some View {
         ForEach(viewModel.diagResultListResponse, id: \.id) { data in
             DiagnosticTower(data: data) {
-                viewModel.selectedDiagId = data.diagnose_id
+                viewModel.selectedDiagId = data.diagnoseID
                 viewModel.isShowDetailDiag = true
             }
-            .task {
+            .task(id: selectedPartItem) {
                 guard !viewModel.diagResultListResponse.isEmpty else { return }
                 if data == viewModel.diagResultListResponse.last && viewModel.canLoadMore {
                     viewModel.getDiagResultList(category: self.selectedPartItem.rawValue, page: viewModel.currentPage)
                 }
+            }
+            .refreshable {
+                viewModel.getDiagResultList(category: selectedPartItem.rawValue, page: .zero, refresh: true)
             }
         }
     }

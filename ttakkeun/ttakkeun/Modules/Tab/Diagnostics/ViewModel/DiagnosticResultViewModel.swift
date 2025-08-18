@@ -12,100 +12,88 @@ import CombineMoya
 @Observable
 class DiagnosticResultViewModel {
     
-    var diagnosticResolutionData: DiagnosticResolutionResponse?
-     var diagResultListResponse: [diagDetailData] = []
+    // MARK: - Property
+    var diagnosticResolutionData: DiagnoseDetailResponse?
+    var diagResultListResponse: [DiagDetailData] = []
+    var selectedDiagId: Int? = nil
+    let petId = UserDefaults.standard.integer(forKey: AppStorageKey.petId)
     
-     var isShowDetailDiag: Bool = false
-     var selectedDiagId: Int? = nil
+    // MARK: - StateProperty
+    var isShowDetailDiag: Bool = false
+    var isFetching: Bool = false
+    var canLoadMore: Bool = true
+    var currentPage: Int = 0
     
-     var isFetching: Bool = false
-     var canLoadMore: Bool = true
-     var currentPage: Int = 0
-    
+    // MARK: - Dependency
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
     
+    // MARK: - Init
     init(container: DIContainer) {
         self.container = container
     }
     
-    public func getDiagResult(diagId: Int) {
-        container.useCaseProvider.journalUseCase.executeGetDiagResult(diagId: diagId)
-            .tryMap { responseData -> ResponseData<DiagnosticResolutionResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                print("✅ getDiagResult: \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    print("✅ getDiagResult Completed")
-                case .failure(let failure):
-                    print("❌ getDiagResult Failure: \(failure)")
-                }
-                
-            },
-                  receiveValue: { [weak self] responseData in
-                guard let self = self else { return }
-                self.diagnosticResolutionData = responseData.result
-            })
-            .store(in: &cancellables)
-    }
-    
-    public func getDiagResultList(category: PartItem.RawValue, page: Int, refresh: Bool = false) {
-        
-        guard !isFetching, canLoadMore || refresh else { return }
-        
+    // MARK: - Common
+    private func refreshAction(refresh: Bool) {
         if refresh {
             currentPage = 0
             diagResultListResponse.removeAll()
             canLoadMore = true
         }
-        
-        isFetching = true
-        
-        container.useCaseProvider.journalUseCase.executeGetDiagList(petId: UserState.shared.getPetId(), category: category, page: page)
-            .tryMap { responseData -> ResponseData<DiagResultListResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                print("✅ getDiagLit: \(responseData)")
-                return responseData
-            }
+    }
+    
+    /// 단일 진단 결과 받아오기
+    /// - Parameter diagId: 진단 결과 아이디
+    public func getDiagResult(diagId: Int) {
+        container.useCaseProvider.diagnoseUseCase.executeGetDetailDiag(diagId: diagId)
+            .validateResult()
             .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("getDiagResult Completed")
+                case .failure(let failure):
+                    print("getDiagResult Failure: \(failure)")
+                }
+            }, receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                self.diagnosticResolutionData = responseData
+            })
+            .store(in: &cancellables)
+    }
+    
+    /// 진단 결과 리스트 가져오기
+    /// - Parameters:
+    ///   - category: 진단 카테고리
+    ///   - page: 진단 페이지
+    ///   - refresh: 새로고침 여부
+    public func getDiagResultList(category: PartItem.RawValue, page: Int, refresh: Bool = false) {
+        guard !isFetching, canLoadMore || refresh else { return }
+        isFetching = true
+        refreshAction(refresh: refresh)
+        
+        container.useCaseProvider.diagnoseUseCase.executeGetDiagResultList(petId: petId, category: category, page: page)
+            .validateResult()
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
-                
-                isFetching = false
+                defer { self.isFetching = false }
                 
                 switch completion {
                 case .finished:
-                    print("✅ getDiagLit Completed")
+                    print("getDiagLit Completed")
                 case .failure(let failure):
-                    print("❌ getDiagLit Failure: \(failure)")
+                    print("getDiagLit Failure: \(failure)")
                     canLoadMore = false
                 }
-                
-            },
-                  receiveValue: { [weak self] responseData in
+            }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                if let newRecords = responseData.result?.diagnoses, !newRecords.isEmpty {
+                let newRecords = responseData.diagnoses
+                if !newRecords.isEmpty {
                     self.diagResultListResponse.append(contentsOf: newRecords)
                     self.currentPage += 1
-                    canLoadMore = true
+                    self.canLoadMore = true
                 } else {
-                    canLoadMore = false
+                    self.canLoadMore = false
                 }
             })
             .store(in: &cancellables)
