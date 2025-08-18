@@ -55,7 +55,7 @@ struct ProfileCardBack: View {
     }
     
     // MARK: - BottomArea
-    private func bottomArea(data: HomeProfileResponseData?) -> some View {
+    private func bottomArea(data: PetSpacialProfileResponse?) -> some View {
         VStack {
             if let data = data {
                 myPetTag(data: data)
@@ -82,7 +82,7 @@ struct ProfileCardBack: View {
     }
     
     @ViewBuilder
-    private func myPetTag(data: HomeProfileResponseData) -> some View {
+    private func myPetTag(data: PetSpacialProfileResponse) -> some View {
         HStack {
             Text("내 \(data.type.toKorean()) 정보")
                 .font(.suit(type: .semibold, size: ProfileCardConstants.tagFontSize))
@@ -111,7 +111,7 @@ struct ProfileCardBack: View {
     
     // MARK: - TopArea
     
-    private func topArea(data: HomeProfileResponseData) -> some View {
+    private func topArea(data: PetSpacialProfileResponse) -> some View {
         HStack(alignment: .top, spacing: ProfileCardConstants.rightHspacing, content: {
             leftInfo(data: data)
             rightInfo(data: data)
@@ -119,7 +119,7 @@ struct ProfileCardBack: View {
         .offset(y: ProfileCardConstants.topAreaOffsetY)
     }
     
-    private func leftInfo(data: HomeProfileResponseData) -> some View {
+    private func leftInfo(data: PetSpacialProfileResponse) -> some View {
         VStack(alignment: .center, spacing: ProfileCardConstants.leftPetVspacing, content: {
             ProfileImage(profileImageUrl: data.image, imageSize: ProfileCardConstants.leftImageSize)
             
@@ -127,7 +127,7 @@ struct ProfileCardBack: View {
         })
     }
     
-    private func rightInfo(data: HomeProfileResponseData) -> some View {
+    private func rightInfo(data: PetSpacialProfileResponse) -> some View {
         VStack(alignment: .leading, spacing: ProfileCardConstants.rightPetVspacing, content: {
             makeRightInfo(text: "상태 : \(data.neutralization ? "중성화 완료" : "중성화 미완료")")
             makeRightInfo(text: "품종: \(data.variety)")

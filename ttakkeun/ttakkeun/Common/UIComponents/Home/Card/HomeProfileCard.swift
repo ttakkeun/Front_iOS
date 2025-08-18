@@ -26,6 +26,9 @@ struct HomeProfileCard: View {
                 ProfileCardBack(viewModel: viewModel)
             }
         }
+        .task {
+            viewModel.getSpecificProfile()
+        }
         .animation(.bouncy(duration: HomeProfileCardConstants.duration), value: viewModel.isShowFront)
     }
 }
