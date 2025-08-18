@@ -93,7 +93,7 @@ struct ProfileView: View {
                 }
                 .scrollIndicators(.hidden)
                 .task {
-                    if let firstId = self.viewModel.petProfileResponse?.result.first?.petId {
+                    if let firstId = self.viewModel.petAllResponse?.result.first?.petId {
                         proxy.scrollTo(firstId, anchor: .center)
                     } else {
                         proxy.scrollTo(ProfileConstants.createProfileId, anchor: .center)
@@ -107,7 +107,7 @@ struct ProfileView: View {
     private func profileContent(geometry: GeometryProxy) -> some View {
         HStack(spacing: .zero, content: {
             
-            if let results = viewModel.petProfileResponse?.result {
+            if let results = viewModel.petAllResponse?.result {
                 ForEach(results, id: \.self) { data in
                     profileReadView(geometry: geometry, data: data)
                         .id(data.petId)

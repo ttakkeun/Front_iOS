@@ -126,7 +126,6 @@ struct SignUpView: View {
     /// - Returns: 뷰 반환
     private func individualAgreement(item: AgreementData) -> some View {
         HStack(alignment: .center, spacing: SignUpConstants.agreementHspacing, content: {
-            
             Button(action: {
                 viewModel.toggleCheck(for: item)
             }, label: {

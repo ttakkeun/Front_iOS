@@ -17,13 +17,13 @@ class ProfileViewModel {
     let colors: [Color] = [Color.card001, Color.card002, Color.card003, Color.card004, Color.card005, Color.mainPrimary]
     var usedColor: [Color] = []
     var backgroudColor: Color = .white
-    var petProfileResponse: PetProfileResponse?
+    var petAllResponse: PetAllResponse?
+    var titleName: String = ""
     
     // MARK: - StateProperty
     var isLastedCard: Bool = true
     var isLoading: Bool = false
     var showFullScreen: Bool = false
-    var titleName: String = ""
     
     // MARK: - Dependency
     let container: DIContainer
@@ -34,7 +34,8 @@ class ProfileViewModel {
         self.container = container
     }
     
-    // MARK: - Method
+    // MARK: - Common
+    /// 백그라운드 색 변경 함수
     public func updateBackgroundColor() async {
         if usedColor.count == colors.count {
             usedColor.removeAll()
@@ -51,31 +52,17 @@ class ProfileViewModel {
         self.backgroudColor = newColor
         }
     }
-}
-
-// MARK: - GetPetProfile
-
-extension ProfileViewModel {
+    
+    // MARK: - GetProfile
+    /// 로그인한 사용자의 모든 반려 동물 조회
     public func getPetProfile() {
         isLoading = true
-        defer { isLoading = false }
         
-        container.useCaseProvider.petProfileUseCase.executegetPetProfile()
-            .tryMap { responseData -> ResponseData<PetProfileResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                print("getProfileServerResponse: \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.petProfileUseCase.executeGetPetProfile()
+            .validateResult()
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
-                self.isLoading = false
+                defer { isLoading = false }
                 
                 switch completion {
                 case .finished:
@@ -85,7 +72,7 @@ extension ProfileViewModel {
                 }
             }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                self.petProfileResponse = responseData.result
+                self.petAllResponse = responseData
             })
             .store(in: &cancellalbes)
     }

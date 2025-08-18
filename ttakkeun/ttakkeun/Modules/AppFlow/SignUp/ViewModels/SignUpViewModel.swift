@@ -47,6 +47,7 @@ class SignUpViewModel: ObservableObject {
         self.container = container
         self.appFlowViewModel = appFlowViewModel
     }
+    
     // MARK: - Common
     /// 선택한 항목의 토클 액션
     /// - Parameter item: 무엇을 선택했는지 파악하기
@@ -87,7 +88,10 @@ class SignUpViewModel: ObservableObject {
         if let responseData = responseData {
             let userInfo = UserInfo(accessToken: responseData.accessToken, refreshToken: responseData.refreshToken)
             let success = KeyChainManager.standard.saveSession(userInfo, for: KeyChainManager.keyChainSession)
+            
+            #if DEBUG
             print("회원 가입 후 로그인 성공: \(success)")
+            #endif
         }
     }
     
@@ -117,7 +121,6 @@ class SignUpViewModel: ObservableObject {
                 saveUserInfo(email: apple.email, .apple)
                 container.navigationRouter.pop()
                 appFlowViewModel.onSignUpSuccess()
-                
             })
             .store(in: &cancellables)
     }

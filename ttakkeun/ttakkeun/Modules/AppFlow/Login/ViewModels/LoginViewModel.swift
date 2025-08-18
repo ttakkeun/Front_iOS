@@ -123,7 +123,6 @@ class LoginViewModel {
             .validateResult(onFailureAction: {
                 self.signUpFlow(socialType: .apple, signUpData: self.convertSignUpData(apple: appleRequest), message: "애플 로그인 실패")
             })
-            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
                 defer { isLoading = false }
