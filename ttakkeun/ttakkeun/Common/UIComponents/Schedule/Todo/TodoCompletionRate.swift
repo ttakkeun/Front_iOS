@@ -10,7 +10,7 @@ import SwiftUI
 struct TodoCompletionRate: View {
     
     // MARK: - Property
-    var data: TodoCompleteResponse
+    var data: TodoCompletionResponse
     
     // MARK: - Constants
     fileprivate enum TodoCompletionRateConstants {
@@ -26,7 +26,7 @@ struct TodoCompletionRate: View {
     }
     
     // MARK: - Init
-    init(data: TodoCompleteResponse, partItem: PartItem) {
+    init(data: TodoCompletionResponse, partItem: PartItem) {
         self.data = data
         self.data.partItem = partItem
     }

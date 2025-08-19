@@ -139,16 +139,12 @@ extension JournalRegistViewModel: PhotoPickerHandle {
     func addImage(_ images: [UIImage]) {
         guard let questionId = currentQuestion?.questionID else { return }
         DispatchQueue.global(qos: .userInitiated).async {
-            let originalImages = images
+            let imageDataArray = images
+                .prefix(5)
+                .compactMap { $0.jpegData(compressionQuality: 0.8) }
             
-            DispatchQueue.global(qos: .userInitiated).async {
-                let imageDataArray = images
-                    .prefix(5)
-                    .compactMap { $0.jpegData(compressionQuality: 0.8) }
-                
-                DispatchQueue.main.async {
-                    self.questionImages[questionId] = imageDataArray
-                }
+            DispatchQueue.main.async {
+                self.questionImages[questionId] = imageDataArray
             }
         }
     }

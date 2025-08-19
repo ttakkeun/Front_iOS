@@ -37,9 +37,9 @@ enum TipRouter {
 extension TipRouter: APITargetType {
     var path: String {
         switch self {
-        case .postTipReport(let report, _):
+        case .postTipReport:
             return "/api/tips/report"
-        case .postGenerateTip(let tip):
+        case .postGenerateTip:
             return "/api/tips/add"
         case .patchTipsImage(let tipId, _):
             return "/api/tips/\(tipId)/images"

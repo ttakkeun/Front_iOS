@@ -14,13 +14,12 @@ struct ReportWriteView: View {
     @EnvironmentObject var container: DIContainer
     @Environment(\.alert) var alert
     @State var viewModel: ReportViewModel
-    let reportType: ReportType
+    let reportType: ReportType = .etcReport
     let tipId: Int
     
     // MARK: - Init
-    init(container: DIContainer, reportType: ReportType, tipId: Int) {
+    init(container: DIContainer, tipId: Int) {
         self.viewModel = .init(container: container)
-        self.reportType = reportType
         self.tipId = tipId
     }
     

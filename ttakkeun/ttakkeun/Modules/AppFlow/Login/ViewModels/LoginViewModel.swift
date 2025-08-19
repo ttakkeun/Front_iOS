@@ -51,7 +51,7 @@ class LoginViewModel {
                 UserDefaults.standard.setValue(email, forKey: AppStorageKey.userEmail)
             }
             
-            self.loginApple(signUpRequest: .init(identityToken: authorization, email: userEmail, name: userName))
+            self.loginApple(appleRequest: .init(identityToken: authorization, email: userEmail, name: userName))
         }
     }
     
@@ -90,12 +90,13 @@ class LoginViewModel {
     ///   - kakao: 카카오 데이터 변환
     ///   - apple: 애플 데이터 변환
     /// - Returns: 회원 가입 데이터 변환 값
-    private func convertSignUpData(kakao: KakaoLoginRequest? = nil, apple: AppleLoginRequest? = nil) -> SignUpData {
+    private func convertSignUpData(kakao: KakaoLoginRequest? = nil, apple: AppleLoginRequest? = nil) -> SignUpData? {
         if let kakao = kakao {
             return SignUpData(token: kakao.accessToken, email: kakao.email, name: kakao.name)
         } else if let apple = apple {
             return SignUpData(token: apple.identityToken, email: apple.email, name: apple.name)
         }
+        return nil
     }
     
     /// API 성공 후 처리 액션
@@ -121,7 +122,7 @@ class LoginViewModel {
         
         container.useCaseProvider.authUseCase.executeAppleLogin(appleLoginRequest: appleRequest)
             .validateResult(onFailureAction: {
-                self.signUpFlow(socialType: .apple, signUpData: self.convertSignUpData(apple: appleRequest), message: "애플 로그인 실패")
+                self.signUpFlow(socialType: .apple, signUpData: self.convertSignUpData(apple: appleRequest)!, message: "애플 로그인 실패")
             })
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
@@ -187,7 +188,7 @@ class LoginViewModel {
         
         container.useCaseProvider.authUseCase.executeKakaoLogin(kakaoLoginRequest: kakaoRequest)
             .validateResult(onFailureAction: {
-                self.signUpFlow(socialType: .kakao, signUpData: self.convertSignUpData(kakao: kakaoRequest), message: "카카오 로그인 실패")
+                self.signUpFlow(socialType: .kakao, signUpData: self.convertSignUpData(kakao: kakaoRequest)!, message: "카카오 로그인 실패")
             })
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }

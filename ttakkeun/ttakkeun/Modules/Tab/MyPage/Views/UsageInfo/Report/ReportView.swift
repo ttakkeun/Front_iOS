@@ -55,8 +55,3 @@ struct ReportView: View {
         }
     }
 }
-
-#Preview {
-    ReportView(container: DIContainer())
-        .environmentObject(DIContainer())
-}

@@ -100,8 +100,3 @@ struct ReportDetailView: View {
         }
     }
 }
-
-#Preview {
-    ReportDetailView(container: DIContainer(), selectedCategory: .animalAbuse)
-        .environmentObject(DIContainer())
-}
