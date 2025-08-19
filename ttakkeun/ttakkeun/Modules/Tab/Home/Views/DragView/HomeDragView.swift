@@ -71,10 +71,12 @@ struct HomeDragView: View {
                 .ignoresSafeArea()
         }
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
-        // TODO: : task 작성 필요 데이터 조회 데이터
         .offset(y: offset + dragOffset)
         .task {
             await initializeOffset(screenHeight: screenHeight, minOffset: minOffset)
+            homeRecommendViewModel.getAIProduct()
+            homeRecommendViewModel.getUserProduct()
+            homeTodoViewModel.getTodoSchedule()
         }
     }
     

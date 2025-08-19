@@ -11,39 +11,33 @@ import CombineMoya
 
 @Observable
 class ScheduleViewModel {
-    var completionData: TodoCompleteResponse? = .init(earTotal: 20, earCompleted: 10, hairTotal: 20, hairCompleted: 10, clawTotal: 20, clawCompleted: 10, eyeTotal: 20, eyeCompleted: 10, teethTotal: 20, teethCompleted: 10)
+    // MARK: - StateProperty
     var isLoading: Bool = false
     
+    // MARK: - Property
+    var completionData: TodoCompletionResponse?
+    let petId = UserDefaults.standard.integer(forKey: AppStorageKey.petId)
+    
+    // MARK: - Dependency
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
     
+    // MARK: - Init
     init(container: DIContainer) {
         self.container = container
         self.getCompletionData()
     }
     
+    // MARK: - CompletionAPI
+    /// 알정 완수율 조회
     func getCompletionData() {
-        
         isLoading = true
         
-        container.useCaseProvider.scheduleUseCase.executeGetCompleteRate(petId: UserState.shared.getPetId())
-            .tryMap { responseData -> ResponseData<TodoCompleteResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                print("CompletionTodo LoginServer: \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.todoUseCase.executeGetCompleteRate(petId: petId)
+            .validateResult()
             .sink(receiveCompletion: { [weak self] completion in
-                
                 guard let self = self else { return }
-                
-                isLoading = false
+                defer { self.isLoading = false }
                 
                 switch completion {
                 case .finished:
@@ -53,11 +47,7 @@ class ScheduleViewModel {
                 }
             }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                if let responseData = responseData.result {
-                    completionData = responseData
-                } else {
-                    completionData = nil
-                }
+                completionData = responseData
             })
             .store(in: &cancellables)
     }

@@ -101,6 +101,8 @@ class ProfileFormViewModel {
         }
     }
     
+    /// 프로필 생성 및 수정 액션
+    /// - Parameter completion: 생성 후, 다음 작업
     func submit(completion: @escaping () -> Void) {
         switch mode {
         case .create:
@@ -111,30 +113,16 @@ class ProfileFormViewModel {
             patchPetProfile()
         }
     }
-}
-
-// MARK: - CreatePetProfile
-extension ProfileFormViewModel {
     
+    // MARK: - PetProfileAPI
+    /// 펫 프로필 생성
     public func makePetProfile(completion: (() -> Void)? = nil) {
         isLoading = true
         
-        container.useCaseProvider.petProfileUseCase.executeMakePetProfile(petInfo: requestData)
-            .tryMap { responseData -> ResponseData<MakePetProfileResponse> in
-                if !responseData.isSuccess {
-                    self.isLoading = false
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                print("MakeProfileServerResponse: \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.petProfileUseCase.executePostGenerateProfile(petInfo: requestData)
+            .validateResult()
             .sink(receiveCompletion: {completionStatus in
-                
+                defer { self.isLoading = false }
                 switch completionStatus {
                 case .finished:
                     print("PetProfile Make Complete")
@@ -143,84 +131,60 @@ extension ProfileFormViewModel {
                 }
             }, receiveValue: { [weak self] petProfileResponse in
                 guard let self = self else { return }
-                
-                if let petId = petProfileResponse.result?.petId {
-                    self.patchPetProfileImage(petId: petId, completion: completion)
-                }
+                let petId = petProfileResponse.petId
+                self.patchPetProfileImage(petId: petId, completion: completion)
             })
             .store(in: &cancellables)
     }
-    // MARK: - patchPetProfileImage
     
-    public func patchPetProfileImage(petId: Int, completion: (() -> Void)? = nil) {
+    /// 펫 프로필 이미지 수정
+    /// - Parameter petId: 펫 아이디
+    private func patchPetProfileImage(petId: Int, completion: (() -> Void)? = nil) {
         if let selectedImage = selectedImage {
             container.useCaseProvider.petProfileUseCase.executePatchPetProfileImage(petId: petId, image: selectedImage)
-                .tryMap { responseData -> ResponseData<PatchPetImageResponse> in
-                    if !responseData.isSuccess {
-                        throw APIError.serverError(message: responseData.message, code: responseData.code)
-                    }
-                    
-                    guard let _ = responseData.result else {
-                        throw APIError.emptyResult
-                    }
-                    print("server: \(responseData)")
-                    return responseData
-                }
-                .receive(on: DispatchQueue.main)
+                .validateResult()
                 .sink(receiveCompletion: { [weak self] completionStatus in
                     guard let self = self else { return }
-                    
-                    self.isLoading = false
+                    defer { self.isLoading = false }
+                    completion?()
                     
                     switch completionStatus {
                     case .finished:
                         print("Patch PetProfile Image Complete")
-                        completion?() // 성공 시 completion 호출
-                        self.container.navigationRouter.pop()
                     case .failure(let failure):
                         print("Patch PetProfile Image Failure: \(failure)")
                     }
                 }, receiveValue: { patchPetProfileResponse in
+                    self.container.navigationRouter.pop()
+                    
+                    #if DEBUG
                     print("펫 이미지 생성: \(patchPetProfileResponse)")
+                    #endif
                 })
                 .store(in: &cancellables)
-        } else {
-            completion?()
         }
     }
-}
-
-// MARK: - EditPetProfile
-extension ProfileFormViewModel {
+    
+    // MARK: - EditProfile
+    /// 동물 프로필 수정, 홈 화면에서 접근 시 사용
     public func patchPetProfile() {
         let petId = UserDefaults.standard.integer(forKey: AppStorageKey.petId)
         
         container.useCaseProvider.petProfileUseCase.executePatchPetProfile(petId: petId, PetInfo: requestData)
-               .tryMap { responseData -> ResponseData<EditProfileResponse> in
-                   if !responseData.isSuccess {
-                       throw APIError.serverError(message: responseData.message, code: responseData.code)
-                   }
-                   
-                   guard let _ = responseData.result else {
-                       throw APIError.emptyResult
-                   }
-                   print("Patch PetProfile Server: \(responseData)")
-                   return responseData
-               }
-               .receive(on: DispatchQueue.main)
-               .sink(receiveCompletion: { [weak self] completion in
-                   guard let self = self else { return }
-                   switch completion {
-                   case .finished:
-                       print("Patch Pet Profile Completed")
-                       self.patchPetProfileImage(petId: UserState.shared.getPetId())
-                   case .failure(let failure):
-                       print("Patch Pet Profile Failure: \(failure)")
-                   }
-               }, receiveValue: { responseData in
-                   print("펫 프로필 수정 데이터: \(String(describing: responseData.result))")
-               })
-               .store(in: &cancellables)
-       }
+            .validateResult()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                switch completion {
+                case .finished:
+                    print("Patch Pet Profile Completed")
+                    self.patchPetProfileImage(petId: UserState.shared.getPetId())
+                case .failure(let failure):
+                    print("Patch Pet Profile Failure: \(failure)")
+                }
+            }, receiveValue: { responseData in
+                print("펫 프로필 수정 데이터: \(String(describing: responseData))")
+            })
+            .store(in: &cancellables)
+    }
 }
-

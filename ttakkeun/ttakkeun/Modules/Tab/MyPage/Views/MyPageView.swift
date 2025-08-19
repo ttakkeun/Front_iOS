@@ -45,7 +45,7 @@ struct MyPageView: View {
     
     // MARK: - Init
     init(container: DIContainer) {
-        self._viewModel = .init(wrappedValue: .init(container: container))
+        self.viewModel = .init(container: container)
         self.viewModel.getUserInfo()
     }
     
@@ -182,10 +182,12 @@ struct MyPageView: View {
             ])
             MyPageInfoBox(groupType: .account, actions: [
                 .logout: { alert.trigger(type: .logoutProfileAlert, showAlert: true, action: {
-                    print("로그아웃 버튼 클릭")
+                    viewModel.logout()
+                    appFlowViewModel.logout()
                 }) },
                 .deleteProfile: { alert.trigger(type: .deleteProfileAlert, showAlert: true, action: {
-                    print("프로필 삭제하기")
+                    viewModel.deleteProfile()
+                    appFlowViewModel.deleteProfile()
                 }) },
                 .leave: { container.navigationRouter.push(to: .auth(.deleteAccount))}
             ])

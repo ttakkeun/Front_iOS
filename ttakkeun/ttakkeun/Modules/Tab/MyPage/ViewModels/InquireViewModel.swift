@@ -12,75 +12,74 @@ import CombineMoya
 
 @Observable
 class InquireViewModel {
-    
-    var myInquiryData: [MyInquiryResponse] = []
+    // MARK: - StateProperty
     var isLoading: Bool = false
-    
-    
-    var inquireText: String = ""
-    var emailText: String = ""
     var isAgreementCheck: Bool = false
     var isInquireMainBtnClicked: Bool = false
     
-    // MARK: - Image
-    var inquirfeImages: [UIImage] = .init()
-    
-    var isImagePickerPresented: Bool = false
-    
+    // MARK: - Property
+    var myInquiryData: [MyPageMyInquireResponse] = []
     var selectedImageCount: Int {
         return inquirfeImages.count
     }
     
-    // MARK: Func & Property
+    var inquireText: String = ""
+    var emailText: String = ""
     
     
+    // MARK: - Image
+    var inquirfeImages: [UIImage] = .init()
+    var isImagePickerPresented: Bool = false
+    
+    // MARK: Dependency
     let container: DIContainer
     private var cancellables =  Set<AnyCancellable>()
     
+    // MARK: - Init
     init(container: DIContainer) {
         self.container = container
     }
     
-    public func makeInquireRequestDto(type: InquireType) -> InquiryRequestDTO {
-        return InquiryRequestDTO(contents: self.inquireText, email: self.emailText, inquiryType: type)
-    }
-    
+    // MARK: - Common
+    /// 나의 문의 하기 데이터 가져오기
     public func getMyInquire() {
-        
         isLoading = true
         
-        container.useCaseProvider.myPageUseCase.executeGetMyInquir()
-            .tryMap { responseData -> ResponseData<[MyInquiryResponse]> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                print("✅ GetMyInquiry: \(String(describing: responseData.result))")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.myPageUseCase.executeGetMyInquire()
+            .validateResult()
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
-                
-                isLoading = false
+                defer { self.isLoading = false }
                 
                 switch completion {
                 case .finished:
-                    print("✅ GetMyInquiry Completed")
+                    print("GetMyInquiry Completed")
                     
                 case .failure(let failure):
-                    print("❌ GetMyInquiry Failure: \(failure)")
+                    print("GetMyInquiry Failure: \(failure)")
                 }
-                
             }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                if let responseData = responseData.result {
-                    self.myInquiryData = responseData
+                self.myInquiryData = responseData
+            })
+            .store(in: &cancellables)
+    }
+    
+    /// 문의 내용 전달하기
+    public func postInquire(inquire: MypageInquireRequest) {
+        container.useCaseProvider.myPageUseCase.executePostGenerateInquire(inquire: inquire, imageData: convertImageToData())
+            .validateResult()
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("Inquire Completed")
+                case .failure(let failure):
+                    print("Inquire Failed: \(failure)")
                 }
+            }, receiveValue: { responseData in
+                #if DEBUG
+                print("Inquire Response: \(responseData)")
+                #endif
             })
             .store(in: &cancellables)
     }
@@ -88,7 +87,7 @@ class InquireViewModel {
 
 extension InquireViewModel: PhotoPickerHandle {
     func addImage(_ images: [UIImage]) {
-        print("이미지")
+        inquirfeImages = images
     }
     
     func removeImage(at index: Int) {
@@ -101,5 +100,11 @@ extension InquireViewModel: PhotoPickerHandle {
     
     func getImages() -> [UIImage] {
         return inquirfeImages
+    }
+    
+    func convertImageToData() -> [Data]? {
+        guard !inquirfeImages.isEmpty else { return nil }
+        let result = inquirfeImages.compactMap { $0.jpegData(compressionQuality: 0.8) }
+        return result.isEmpty ? nil : result
     }
 }

@@ -12,7 +12,7 @@ enum NavigationDestination: Hashable {
     /// 회원관련
     enum Auth: Hashable {
         /// 회원 가입 이동
-        case signUp(socialType: SocialLoginType, signUpRequest: SignUpRequest)
+        case signUp(socialType: SocialLoginType, signup: SignUpData)
         /// 회원 탈퇴 이동
         case deleteAccount
     }
@@ -40,11 +40,11 @@ enum NavigationDestination: Hashable {
         /// 팁 작성 이동
         case writeTips(category: ExtendPartItem)
         /// 팁스 신고하기 이동
-        case tipsReport
+        case tipsReport(tipId: Int)
         /// 팁스 신고하기 상세 선택 이동
-        case tipsReportDetail(selectedReportCategory: ReportType)
+        case tipsReportDetail(selectedReportCategory: ReportType, tipId: Int)
         /// 팁스 신고하기 작성 이동
-        case tipsWriteReport
+        case tipsWriteReport(tipId: Int)
     }
     
     /// 마이 페이지 탭
@@ -74,7 +74,7 @@ enum NavigationDestination: Hashable {
         /// 내가 문의한 목록 이동
         case myInquire
         /// 내가 문의한 상세 내용 이동
-        case myInquiryConfirm(selectedInquiryData: MyInquiryResponse)
+        case myInquiryConfirm(selectedInquiryData: MyPageMyInquireResponse)
     }
     
     case auth(Auth)

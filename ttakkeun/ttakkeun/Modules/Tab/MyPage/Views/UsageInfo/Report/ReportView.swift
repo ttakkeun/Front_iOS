@@ -6,12 +6,12 @@
 //
 import SwiftUI
 
-/// 신고하기 선택 시 기본 화면
+/// 팁 신고하기 선택 시 기본 화면
 struct ReportView: View {
     
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
-    @State var viewModel: MyPageViewModel
+    let tipId: Int
     
     // MARK: - Constants
     fileprivate enum ReportConstants {
@@ -21,8 +21,8 @@ struct ReportView: View {
     }
     
     // MARK: - Init
-    init(container: DIContainer) {
-        self.viewModel = .init(container: container)
+    init(tipId: Int) {
+        self.tipId = tipId
     }
     
     // MARK: - Body
@@ -47,16 +47,11 @@ struct ReportView: View {
         ReportType.allCases.map { category in
             BtnInfo(name: category.text, date: nil, action: {
                 if category == .etcReport {
-                    container.navigationRouter.push(to: .tips(.tipsWriteReport))
+                    container.navigationRouter.push(to: .tips(.tipsWriteReport(tipId: tipId)))
                 } else {
-                    container.navigationRouter.push(to: .tips(.tipsReportDetail(selectedReportCategory: category.param)))
+                    container.navigationRouter.push(to: .tips(.tipsReportDetail(selectedReportCategory: category.param, tipId: tipId)))
                 }
             })
         }
     }
-}
-
-#Preview {
-    ReportView(container: DIContainer())
-        .environmentObject(DIContainer())
 }

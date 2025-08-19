@@ -32,7 +32,7 @@ class MyPageService: MyPageServiceProtocol, BaseAPIService {
         self.callbackQueue = callbackQueue
     }
     
-    func postGenerateInquire(inquire: MypageInquireRequest, imageData: [Data]) -> AnyPublisher<ResponseData<MypageInquireResponse>, Moya.MoyaError> {
+    func postGenerateInquire(inquire: MypageInquireRequest, imageData: [Data]?) -> AnyPublisher<ResponseData<MypageInquireResponse>, Moya.MoyaError> {
         request(.postGenerateInquire(inquire: inquire, imageData: imageData))
     }
     

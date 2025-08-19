@@ -11,7 +11,7 @@ import SwiftUI
 struct DiagnosticTower: View {
     
     // MARK: - Property
-    let data: diagDetailData
+    let data: DiagDetailData
     let onTap: () -> Void
     
     
@@ -33,7 +33,7 @@ struct DiagnosticTower: View {
     }
     
     // MARK: - Init
-    init(data: diagDetailData, onTap: @escaping () -> Void) {
+    init(data: DiagDetailData, onTap: @escaping () -> Void) {
         self.data = data
         self.onTap = onTap
     }
@@ -51,9 +51,9 @@ struct DiagnosticTower: View {
     /// 일지 날짜 시간 데이터
     private var diagInfoText: some View {
         HStack {
-            contentsText(data.created_at.convertedToKoreanTimeDateString())
+            contentsText(data.createdAt.convertedToKoreanTimeDateString())
             Spacer().frame(maxWidth: DiagnosisTowerConstants.imageSpacer)
-            contentsText(data.created_at.toHourMinuteString())
+            contentsText(data.createdAt.toHourMinuteString())
         }
     }
     
@@ -100,10 +100,4 @@ struct DiagnosticTower: View {
             return Image(.bonesFirst)
         }
     }
-}
-
-#Preview {
-    DiagnosticTower(data: .init(diagnose_id: 0, created_at: "2025-07-15T12:32:54.260Z", score: 100), onTap: {
-        print("hello")
-    })
 }

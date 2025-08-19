@@ -15,6 +15,7 @@ struct DeleteAccountView: View {
     @Environment(\.appFlow) var appFlowViewModel
     @State var viewModel: DeleteAccountViewModel
     @AppStorage(AppStorageKey.userEmail) var userEmail: String = "유저 이메일을 불러오지 못했습니다."
+    @AppStorage(AppStorageKey.userLoginType) var loginType: String = ""
     @Environment(\.alert) var alert
     @FocusState var isFoucsed: Bool
     
@@ -298,11 +299,22 @@ struct DeleteAccountView: View {
             Spacer()
             generateButton(DeleteAccountConstants.secondBtnCompleteText, btnCondition: true, action: {
                 alert.trigger(type: .deleteAccountAlert, showAlert: true, action: {
-                    alert.showAlert = false
-                    // TODO: - 탈퇴 API 함수 작성
+                    deleteAction()
+                    appFlowViewModel.deleteAccount()
                 })
             })
             .disabled(!viewModel.isMyAccountCheck)
+        }
+    }
+    
+    private func deleteAction() {
+        if let loginType = SocialLoginType(rawValue: loginType) {
+            switch loginType {
+            case .kakao:
+                viewModel.deleteKakao()
+            case .apple:
+                viewModel.deleteApple()
+            }
         }
     }
     

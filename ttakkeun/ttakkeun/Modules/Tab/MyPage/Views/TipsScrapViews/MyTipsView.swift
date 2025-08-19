@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// TODO: - API 작성 시 완성하기
 struct MyTipsView: View {
     
     // MARK: - Property
@@ -29,7 +28,18 @@ struct MyTipsView: View {
     var body: some View {
         ScrollView(.vertical, content: {
             LazyVStack(spacing: MyTipsContents.contentsVspacing, content: {
-                
+                ForEach($viewModel.myWriteTips, id: \.id) { $tip in
+                    TipsContentsCard(data: $tip, tipsType: .writeMyTips, deleteTipsAction: {
+                        viewModel.deleteTips(tipId: tip.tipId)
+                    }, reportActoin: { })
+                    .task(id: tip.id) {
+                        guard !viewModel.myWriteTips.isEmpty else { return }
+                        
+                        if tip == viewModel.myWriteTips.last && viewModel.canLoadMore {
+                            viewModel.getMyTips(page: viewModel.currentPage)
+                        }
+                    }
+                }
             })
         })
         .navigationBarBackButtonHidden(true)
@@ -39,22 +49,13 @@ struct MyTipsView: View {
             container.navigationRouter.pop()
         }, naviIcon: Image(systemName: MyTipsContents.naviBackImage))
         .contentMargins(.horizontal, UIConstants.defaultSafeHorizon, for: .scrollContent)
+        .task {
+            viewModel.getMyTips(page: .zero)
+        }
     }
-    
-    /// 내가 쓴 tips 콘텐츠들
-    // TODO: - 팁스 조회 작성하기
-//    private var contents: some View {
-//        LazyVStack(spacing: 20) {
-//            ForEach($response, id: \.id) { $tip in
-//                TipsContentsCard(
-//                    data: $tip,
-//                    tipsType: .writeMyTips,
-//                    deleteTipsAction: {
-//                        //TODO: - 삭제하기 버튼 액션 필요
-//                        print("Delete button tapped for \(tip.title)")
-//                    }
-//                )
-//            }
-//        }
-//    }
+}
+
+#Preview {
+    MyTipsView(container: DIContainer())
+        .environmentObject(DIContainer())
 }

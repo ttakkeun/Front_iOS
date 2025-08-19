@@ -11,23 +11,7 @@ import CombineMoya
 
 @Observable
 class HomeTodoViewModel: TodoCheckProtocol {
-    var inputDate: TodoDateRequest
-    
-    let container: DIContainer
-    private var cancellables = Set<AnyCancellable>()
-    
-    init(container: DIContainer) {
-        self.container = container
-        
-        let currentDate = Date()
-        let calendar = Calendar.current
-        let year = calendar.component(.year, from: currentDate)
-        let month = calendar.component(.month, from: currentDate)
-        let day = calendar.component(.day, from: currentDate)
-        
-        self.inputDate = TodoDateRequest(year: year, month: month, date: day)
-    }
-    
+    // MARK: - StateProperty
     var todoIsLoading: Bool = false
     var allTodosEmpty: Bool {
         earTodos.isEmpty &&
@@ -37,21 +21,46 @@ class HomeTodoViewModel: TodoCheckProtocol {
         teethTodos.isEmpty
     }
     
-    var earTodos: [TodoList] = [
-        .init(todoID: 1, todoName: "으아아아ㅏ아아아아아아", todoStatus: false),
-        .init(todoID: 2, todoName: "으아아으이이이이이이이잉아ㅏ아아아아아아", todoStatus: false),
-    ]
+    // MARK: - Property
+    var inputDate: TodoCalendarRequest
+    let petId = UserDefaults.standard.integer(forKey: AppStorageKey.petId)
+    
+    // MARK: - PartProperty
+    var earTodos: [TodoList] = []
     var hairTodos: [TodoList] = []
     var clawTodos: [TodoList] = []
     var eyeTodos: [TodoList] = []
     var teethTodos: [TodoList] = []
     
+    // MARK: - IncompletedPart
     var incompleteEarTodos: [TodoList] { earTodos.filter { !$0.todoStatus } }
     var incompleteEyeTodos: [TodoList] { eyeTodos.filter { !$0.todoStatus } }
     var incompleteHairTodos: [TodoList] { hairTodos.filter { !$0.todoStatus } }
     var incompleteClawTodos: [TodoList] { clawTodos.filter { !$0.todoStatus } }
     var incompleteToothTodos: [TodoList] { teethTodos.filter { !$0.todoStatus } }
     
+    // MARK: - Dependency
+    let container: DIContainer
+    private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: - Init
+    init(container: DIContainer) {
+        self.container = container
+        
+        let currentDate = Date()
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: currentDate)
+        let month = calendar.component(.month, from: currentDate)
+        let day = calendar.component(.day, from: currentDate)
+        
+        self.inputDate = .init(year: year, month: month, date: day)
+    }
+    // MARK: - Common
+    
+    /// 투두 체크 박스 선택 및 해제
+    /// - Parameters:
+    ///   - category: 카테고리 값
+    ///   - todoID: 투두 아이디
     public func toggleTodoStatus(for category: PartItem, todoID: UUID) {
         switch category {
         case .ear:
@@ -77,66 +86,44 @@ class HomeTodoViewModel: TodoCheckProtocol {
         }
     }
     
-    private func processFetchData(_ data: ScheduleInquiryResponse) {
+    /// 서버로부터 받은 데이터 분배
+    /// - Parameter data: 투두 값 분배
+    private func processFetchData(_ data: TodoCalendarResponse) {
         self.earTodos = data.earTodo
         self.hairTodos = data.hairTodo
         self.clawTodos = data.clawTodo
         self.eyeTodos = data.eyeTodo
         self.teethTodos = data.toothTodo
     }
-}
-
-// MARK: - HomeTodoAPI
-
-extension HomeTodoViewModel {
+    
+    // MARK: - Todo API
+    /// 투두 스케줄 가져오기
     public func getTodoSchedule() {
         todoIsLoading = true
         
-        container.useCaseProvider.scheduleUseCase.executeGetTodoScheduleData(petId: UserState.shared.getPetId(), todoDateRequest: inputDate)
-            .tryMap { responseData -> ResponseData<ScheduleInquiryResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                print("Home Todo Server: \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.todoUseCase.executeGetCalendar(petId: petId, todoDateRequest: inputDate)
+            .validateResult()
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
-                self.todoIsLoading = false
-                
+                defer { self.todoIsLoading = false }
                 switch completion {
                 case .finished:
                     print("Todo Loaded Completed")
                 case .failure(let failure):
                     print("Todo Loaded Failure: \(failure)")
                 }
-                
             }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                if let responseData = responseData.result {
-                    processFetchData(responseData)
-                }
+                processFetchData(responseData)
             })
             .store(in: &cancellables)
     }
     
+    /// 투두 상태 체크
+    /// - Parameter todoId: 체크하려는 투두 아이디
     func sendTodoStatus(todoId: Int) {
-        container.useCaseProvider.scheduleUseCase.executePatchTodoCheck(todoId: todoId)
-            .tryMap { responseData -> ResponseData<TodoCheckResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                print("patchTodoStatus Server : \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.todoUseCase.executePatchTodoCheck(todoId: todoId)
+            .validateResult()
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -144,11 +131,10 @@ extension HomeTodoViewModel {
                 case .failure(let failure):
                     print("patchTodoStatus Get Failure: \(failure)")
                 }
-                
             }, receiveValue: { responseData in
-                if let responseData = responseData.result {
-                    print("투두 체크 상태: \(responseData)")
-                }
+                #if DEBUG
+                print("투두 체크 상태: \(responseData)")
+                #endif
             })
             .store(in: &cancellables)
     }

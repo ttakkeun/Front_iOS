@@ -17,7 +17,7 @@ class MyPageUseCase: MyPageUseCaseProtocol {
         self.service = service
     }
     
-    func executePostGenerateInquire(inquire: MypageInquireRequest, imageData: [Data]) -> AnyPublisher<ResponseData<MypageInquireResponse>, Moya.MoyaError> {
+    func executePostGenerateInquire(inquire: MypageInquireRequest, imageData: [Data]?) -> AnyPublisher<ResponseData<MypageInquireResponse>, Moya.MoyaError> {
         return service.postGenerateInquire(inquire: inquire, imageData: imageData)
     }
     

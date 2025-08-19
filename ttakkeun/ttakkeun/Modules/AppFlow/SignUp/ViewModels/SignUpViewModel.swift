@@ -10,11 +10,26 @@ import Combine
 
 @Observable
 class SignUpViewModel: ObservableObject {
-    var agreements: [AgreementData] = AgreementDetailData.loadAgreements()
-    var selectedAgreement: AgreementData?
-    var tokenResponse: TokenResponse? = nil
+    // MARK: - StateProperty
+    /// 전부 체크 되었는지 확인
+    var isAllChecked: Bool {
+        agreements.allSatisfy { $0.isChecked }
+    }
     
+    /// 필스 요건 체크 했는지 확인
+    var isAllMandatoryChecked: Bool {
+        agreements.filter { $0.isMandatory }.allSatisfy { $0.isChecked }
+    }
+    
+    // MARK: - Property
+    /// 동의 항목 상태
+    var agreements: [AgreementData] = AgreementDetailData.loadAgreements()
+    /// 동의 항목 체크 후 시트 뷰
+    var selectedAgreement: AgreementData?
+    
+    /// 유저 이메일 값
     var userEmail: String = ""
+    /// 유저 닉네임 값
     var userNickname: String = "" {
         didSet {
             if userNickname.count > 8 {
@@ -22,22 +37,27 @@ class SignUpViewModel: ObservableObject {
             }
         }
     }
-    
+    // MARK: - Dependency
     let container: DIContainer
     let appFlowViewModel: AppFlowViewModel
     private var cancellables = Set<AnyCancellable>()
     
+    // MARK: - Init
     init(container: DIContainer, appFlowViewModel: AppFlowViewModel) {
         self.container = container
         self.appFlowViewModel = appFlowViewModel
     }
     
+    // MARK: - Common
+    /// 선택한 항목의 토클 액션
+    /// - Parameter item: 무엇을 선택했는지 파악하기
     public func toggleCheck(for item: AgreementData) {
         if let index = agreements.firstIndex(where: { $0.id == item.id }) {
             agreements[index].isChecked.toggle()
         }
     }
     
+    /// 전체 동의 액션
     public func toggleAllAgreements() {
         let newValue = !isAllChecked
         for index in agreements.indices {
@@ -45,45 +65,48 @@ class SignUpViewModel: ObservableObject {
         }
     }
     
-    var isAllChecked: Bool {
-        agreements.allSatisfy { $0.isChecked }
+    /// 전달 Request 변환
+    /// - Parameters:
+    ///   - data: 회원가입 뷰 사용 데이터
+    ///   - type: 회원가입 소셜 타입
+    /// - Returns: 카카오 또는 애플 데이터 반환
+    public func convertRequest(_ data: SignUpData, type: SocialLoginType) -> Any {
+        switch type {
+        case .apple:
+            return AppleLoginRequest(identityToken: data.token, email: data.email, name: userNickname)
+        case .kakao:
+            return KakaoLoginRequest(accessToken: data.token, email: data.email, name: userEmail)
+        }
     }
+    // MARK: - Keychain
     
-    var isAllMandatoryChecked: Bool {
-        agreements.filter { $0.isMandatory }.allSatisfy { $0.isChecked }
-    }
-    
-    
+    /// API 호출 후 키체인 값 저장
+    /// - Parameters:
+    ///   - responseData: 서버로부터 전달 받은 키체인
+    ///   - socialType: 소셜 로그인 타입
     private func saveKeyChain(responseData: TokenResponse?, socialType: SocialLoginType) {
         if let responseData = responseData {
             let userInfo = UserInfo(accessToken: responseData.accessToken, refreshToken: responseData.refreshToken)
-            let success = KeyChainManager.standard.saveSession(userInfo, for: "ttakkeunUser")
+            let success = KeyChainManager.standard.saveSession(userInfo, for: KeyChainManager.keyChainSession)
+            
+            #if DEBUG
             print("회원 가입 후 로그인 성공: \(success)")
+            #endif
         }
     }
     
-    private func saveUserInfo(signUpRequest: SignUpRequest) {
-        UserDefaults.standard.set(signUpRequest.name, forKey: "UserNickname")
-        UserDefaults.standard.set(signUpRequest.email, forKey: "UserEmail")
+    /// 유저 정보 디폴트 값 저장
+    /// - Parameter signUpdata: 회원가입 시 데이터
+    private func saveUserInfo(email: String, _ loginType: SocialLoginType) {
+        UserDefaults.standard.set(self.userNickname, forKey: AppStorageKey.userNickname)
+        UserDefaults.standard.set(email, forKey: AppStorageKey.userEmail)
+        UserDefaults.standard.setValue(loginType, forKey: AppStorageKey.userLoginType)
     }
     
-}
-
-// MARK: - SignUp
-
-extension SignUpViewModel {
-    public func signUpApple(signUpRequet: SignUpRequest) {
-        container.useCaseProvider.authUseCase.executeSignUpApple(signUpRequest: signUpRequet)
-            .tryMap { responseData -> ResponseData<TokenResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                return responseData
-            }
+    // MARK: - Apple Signup
+    public func signUpApple(apple: AppleLoginRequest) {
+        container.useCaseProvider.authUseCase.executeSignUpApple(appleLoginRequest: apple)
+            .validateResult()
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -94,28 +117,17 @@ extension SignUpViewModel {
                 }
             }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                self.tokenResponse = responseData.result
-                saveKeyChain(responseData: tokenResponse, socialType: .apple)
-                saveUserInfo(signUpRequest: signUpRequet)
+                saveKeyChain(responseData: responseData, socialType: .apple)
+                saveUserInfo(email: apple.email, .apple)
                 container.navigationRouter.pop()
                 appFlowViewModel.onSignUpSuccess()
-                
             })
             .store(in: &cancellables)
     }
-    
-    public func signUpKakao(signUpRequet: SignUpRequest) {
-        container.useCaseProvider.authUseCase.executeSignUpkakaoLogin(signUpRequest: signUpRequet)
-            .tryMap { responseData -> ResponseData<TokenResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                return responseData
-            }
+    // MARK: - Kakao Signup
+    public func signUpKakao(kakao: KakaoLoginRequest) {
+        container.useCaseProvider.authUseCase.executeSignUpkakaoLogin(kakaoLoginRequest: kakao)
+            .validateResult()
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -126,9 +138,8 @@ extension SignUpViewModel {
                 }
             }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                self.tokenResponse = responseData.result
-                saveKeyChain(responseData: tokenResponse, socialType: .kakao)
-                saveUserInfo(signUpRequest: signUpRequet)
+                saveKeyChain(responseData: responseData, socialType: .kakao)
+                saveUserInfo(email: kakao.email, .kakao)
                 container.navigationRouter.pop()
                 appFlowViewModel.onSignUpSuccess()
                 

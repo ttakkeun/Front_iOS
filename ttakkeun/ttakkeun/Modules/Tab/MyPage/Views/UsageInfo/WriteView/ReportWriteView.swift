@@ -14,10 +14,13 @@ struct ReportWriteView: View {
     @EnvironmentObject var container: DIContainer
     @Environment(\.alert) var alert
     @State var viewModel: ReportViewModel
+    let reportType: ReportType = .etcReport
+    let tipId: Int
     
     // MARK: - Init
-    init(container: DIContainer) {
+    init(container: DIContainer, tipId: Int) {
         self.viewModel = .init(container: container)
+        self.tipId = tipId
     }
     
     var body: some View {
@@ -27,6 +30,7 @@ struct ReportWriteView: View {
             images: $viewModel.selectedImage,
             type: .writeReport
         ) {
+            await viewModel.report(report: .init(tip_id: tipId, report_category: reportType, report_detail: viewModel.contentsText))
             await alert.trigger(type: .receivingReportAlert, showAlert: true, action: {
                 Task {
                     await container.navigationRouter.pop()
@@ -35,9 +39,4 @@ struct ReportWriteView: View {
         }
         .customAlert(alert: alert)
     }
-}
-
-#Preview {
-    ReportWriteView(container: DIContainer())
-        .environmentObject(DIContainer())
 }

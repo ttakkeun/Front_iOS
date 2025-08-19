@@ -59,7 +59,7 @@ class TokenProvider: TokenProviding {
                         self.refreshToken = tokenData.result?.refreshToken
                         completion(self.accessToken, nil)
                     } else {
-                        let error = NSError(domain: "example.com", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token Refresh failed: isSuccess false"])
+                        let error = NSError(domain: "ttakkuen.com", code: -1, userInfo: [NSLocalizedDescriptionKey: "Token Refresh failed: isSuccess false"])
                         completion(nil, error)
                     }
                 } catch {

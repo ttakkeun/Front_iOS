@@ -86,7 +86,7 @@ struct DiagnosticResultView: View {
     /// 상단 백그라운드 모양
     /// - Parameter data: 진단 데이터
     /// - Returns: 백그라운드 뷰 반환
-    func topBackground(data: DiagnosticResolutionResponse) -> some View {
+    func topBackground(data: DiagnoseDetailResponse) -> some View {
         ZStack {
             Image(.diagnosisTopBg)
                 .resizable()
@@ -107,7 +107,7 @@ struct DiagnosticResultView: View {
     /// 상단 그래프
     /// - Parameter data: 진단 데이터
     /// - Returns: 진단 그래프 뷰
-    func makeResultGraph(data: DiagnosticResolutionResponse) -> some View {
+    func makeResultGraph(data: DiagnoseDetailResponse) -> some View {
         HStack(alignment: .center, spacing: DiagnosingResultConstants.topGraphHspacing, content: {
             graphTitle
             
@@ -137,7 +137,7 @@ struct DiagnosticResultView: View {
     /// 차트 뷰
     /// - Parameter data: 차트 내부 데이터
     /// - Returns: 차트 반환
-    private func chartView(data: DiagnosticResolutionResponse) -> some View {
+    private func chartView(data: DiagnoseDetailResponse) -> some View {
         Chart {
             SectorMark(
                 angle: .value(DiagnosingResultConstants.scoreText, data.score),
@@ -159,7 +159,7 @@ struct DiagnosticResultView: View {
     }
     
     // MARK: - MiddleContents
-    private func middleContents(data: DiagnosticResolutionResponse) -> some View {
+    private func middleContents(data: DiagnoseDetailResponse) -> some View {
         VStack(alignment: .leading, spacing: DiagnosingResultConstants.middleVspacing, content: {
             diagResultSection(data: data)
             followManagement(data: data)
@@ -169,7 +169,7 @@ struct DiagnosticResultView: View {
     /// 진단 결과 섹션
     /// - Parameter data: 진단 결과 사용 데이터
     /// - Returns: 진단 결과 섹션
-    private func diagResultSection(data: DiagnosticResolutionResponse) -> some View {
+    private func diagResultSection(data: DiagnoseDetailResponse) -> some View {
         sectionContents(DiagnosingResultConstants.diagResultText, {
             contentsText(text: data.detailValue)
         })
@@ -178,7 +178,7 @@ struct DiagnosticResultView: View {
     /// 추후 관리법 섹션
     /// - Parameter data: 추후 관리법 결과 사용 데이터
     /// - Returns: 추후 결과 섹션
-    private func followManagement(data: DiagnosticResolutionResponse) -> some View {
+    private func followManagement(data: DiagnoseDetailResponse) -> some View {
         sectionContents(DiagnosingResultConstants.followManageText, {
             contentsText(text: data.afterCare)
         })
@@ -187,7 +187,7 @@ struct DiagnosticResultView: View {
     /// 추천 제품 섹션
     /// - Parameter data: 추천 제품 사용 섹션
     /// - Returns: 추천ㅇ 제품 섹션
-    private func recommendProducts(data: DiagnosticResolutionResponse) -> some View {
+    private func recommendProducts(data: DiagnoseDetailResponse) -> some View {
         sectionContents(DiagnosingResultConstants.recommendProduct, {
             ForEach(data.products, id: \.id) { data in
                 DiagnosticAIProduct(data: data)

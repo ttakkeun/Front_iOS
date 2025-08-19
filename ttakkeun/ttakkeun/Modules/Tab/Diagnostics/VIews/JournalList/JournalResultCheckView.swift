@@ -11,7 +11,7 @@ import SwiftUI
 struct JournalResultCheckView: View {
     
     // MARK: - Property
-    let journalResultResponse: JournalResultResponse
+    let recordResultResponse: RecordResultResponse
     
     // MARK: - Constants
     fileprivate enum JournalResultConstants {
@@ -30,9 +30,9 @@ struct JournalResultCheckView: View {
     // MARK: - Body
     var body: some View {
         VStack(spacing: JournalResultConstants.middleVspacing, content: {
-            topTitle(data: (journalResultResponse.date, journalResultResponse.time))
+            topTitle(data: (recordResultResponse.date, recordResultResponse.time))
             
-            journalResultContents(data: journalResultResponse)
+            journalResultContents(data: recordResultResponse)
         })
         .safeAreaInset(edge: .top, spacing: UIConstants.capsuleSpacing, content: {
             Capsule()
@@ -109,7 +109,7 @@ extension JournalResultCheckView {
         
     }
     
-    func journalResultContents(data: JournalResultResponse) -> some View {
+    func journalResultContents(data: RecordResultResponse) -> some View {
         ScrollView(.vertical, content: {
             VStack(spacing: JournalResultConstants.answerBoxVspacing, content: {
                 ForEach(data.qnaList.indices, id: \.self) { index in
@@ -123,12 +123,4 @@ extension JournalResultCheckView {
         })
         .contentMargins(.horizontal, UIConstants.horizonScrollBottomPadding, for: .scrollContent)
     }
-}
-
-#Preview {
-    JournalResultCheckView(journalResultResponse: .init(category: .claw, date: "2024-06-23", time: "10:23", qnaList: [
-        .init(question: "털에 윤기가 잘 나고 있나요?", answer: [
-            "윤기가 나요"
-        ], image: nil)
-    ], etcString: "자세히 적어주세요! 정확한 진단 결과를 받아볼 수 있어요.자세히 적어주세요! 정확한 진단 결과를 받아볼 수 있어요.자세히 적어주세요! 정확한 진단 결과를 받아볼 수 있어요.자세히 적어주세요!자세히 적어주세요! 정확한 진단 결과를 받아볼 수 있어요.자세히 적어주세요! "))
 }

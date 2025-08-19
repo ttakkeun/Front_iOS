@@ -34,10 +34,10 @@ struct InquireWriteView: View {
             images: $viewModel.inquirfeImages,
             type: .writeInquire(path: type)
         ) {
-            // TODO: - API 연결 시 수정 부분
+            await viewModel.postInquire(inquire: .init(contents: viewModel.inquireText, email: viewModel.emailText, inquiryType: type))
             await alert.trigger(type: .receivingInquiryAlert, showAlert: true, action: {
                 Task {
-                    await container.navigationRouter.pop()
+                    await container.navigationRouter.popToRootView()
                 }
             })
         }

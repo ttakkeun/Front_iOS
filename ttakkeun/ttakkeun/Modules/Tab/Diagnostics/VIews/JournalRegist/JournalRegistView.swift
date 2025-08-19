@@ -41,6 +41,9 @@ struct JournalRegistView: View {
                 currentPage: viewModel.currentPage
             )
             .loadingOverlay(isLoading: viewModel.makeJournalsLoading, loadingTextType: .createJournal)
+            .task {
+                viewModel.getAnswerList()
+            }
     }
 }
 

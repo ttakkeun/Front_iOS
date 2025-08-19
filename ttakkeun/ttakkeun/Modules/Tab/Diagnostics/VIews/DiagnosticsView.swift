@@ -68,7 +68,6 @@ struct DiagnosticsView: View {
         switch diagnosingValue.selectedSegment {
         case .journalList:
             JournalListView(viewModel: journalListViewModel, selectedPartItem: $diagnosingValue.selectedPartItem)
-                .environment(alert)
         case .diagnosticResults:
             DiagnosticTowerListView(viewModel: diagnosticViewModel, selectedPartItem: $diagnosingValue.selectedPartItem)
         }
@@ -81,7 +80,7 @@ struct DiagnosticsView: View {
         if journalListViewModel.isShowMakeDiagLoading {
             DiagnosticLoadingView()
         } else {
-            DiagnosticResultView(viewModel: diagnosticViewModel, showFullScreenAI: $journalListViewModel.showFullScreenAI, diagId: journalListViewModel.diagResultResponse?.result_id ?? 0)
+            DiagnosticResultView(viewModel: diagnosticViewModel, showFullScreenAI: $journalListViewModel.showFullScreenAI, diagId: journalListViewModel.diagResultResponse?.resultID ?? .zero)
         }
     }
     

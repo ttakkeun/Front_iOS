@@ -11,16 +11,21 @@ import CombineMoya
 
 @Observable
 class HomeRecommendViewModel {
-    var aiProduct: [ProductResponse] = []
-    var userProduct: [ProductResponse] = []
+    // MARK: - StateProperty
     var aiRecommendIsLoading: Bool = true
     var userRecommendIsLoading: Bool = true
     
+    // MARK: - Property
+    var aiProduct: [ProductResponse] = []
+    var userProduct: [ProductResponse] = []
+    let petId = UserDefaults.standard.integer(forKey: AppStorageKey.petId)
+    
+    // MARK: - Dependency
     private var aiCancellables = Set<AnyCancellable>()
     private var userCancellables = Set<AnyCancellable>()
-    
     let container: DIContainer
     
+    // MARK: - Init
     init(container: DIContainer) {
         self.container = container
     }
@@ -29,33 +34,17 @@ class HomeRecommendViewModel {
         aiCancellables.forEach { $0.cancel() }
         userCancellables.forEach { $0.cancel() }
     }
-}
-
-// MARK: - GetProduct API
-
-extension HomeRecommendViewModel {
+    
+    // MARK: - GetAIProductAPI
+    /// AI 추천 상품 조회
     public func getAIProduct() {
-        DispatchQueue.main.async {
-            self.aiRecommendIsLoading = true
-        }
+        self.aiRecommendIsLoading = true
         
-        container.useCaseProvider.productRecommendUseCase.executeGetAIRecommend(petId: UserState.shared.getPetId())
-            .tryMap { responseData -> ResponseData<[ProductResponse]> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.productUseCase.executeGetAIRecommendData(petId: petId)
+            .validateResult()
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
-                DispatchQueue.main.async {
-                    self.aiRecommendIsLoading = false
-                }
+                defer { self.aiRecommendIsLoading = false }
                 
                 if case .failure(let error) = completion {
                     print("Home Get AIProduct Failed: \(error)")
@@ -63,33 +52,22 @@ extension HomeRecommendViewModel {
                 }
             }, receiveValue: { [weak self] aiProductData in
                 guard let self = self else { return }
-                DispatchQueue.main.async {
-                    if let result = aiProductData.result {
-                        self.aiProduct = result
-                        print("aiProduct: \(String(describing: self.aiProduct))")
-                    }
-                }
+                self.aiProduct = aiProductData
+                
+                #if DEBUG
+                print("aiProduct: \(String(describing: self.aiProduct))")
+                #endif
             })
             .store(in: &aiCancellables)
     }
     
+    // MARK: - GetUserProductAPI
+    /// 유저 추천 상품 조회
     public func getUserProduct() {
-        DispatchQueue.main.async {
-            self.userRecommendIsLoading = true
-        }
+        self.userRecommendIsLoading = true
         
-        container.useCaseProvider.productRecommendUseCase.executeGetRankProduct(pageNum: 0)
-            .tryMap { responseData -> ResponseData<[ProductResponse]> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.productUseCase.executeGetRankProductData(pageNum: .zero)
+            .validateResult()
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
@@ -101,11 +79,7 @@ extension HomeRecommendViewModel {
                 }
             }, receiveValue: { [weak self] userProductData in
                 guard let self = self else { return }
-                DispatchQueue.main.async {
-                    if let result = userProductData.result {
-                        self.userProduct = result
-                    }
-                }
+                self.userProduct = userProductData
             })
             .store(in: &userCancellables)
     }

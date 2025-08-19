@@ -12,42 +12,37 @@ import CombineMoya
 
 @Observable
 class RecommendationProductViewModel: TapGestureProduct, ProductUpdate {
-    
-    var selectedCategory: ExtendPartItem = .all
-    var aiProducts: [ProductResponse] = []
-    var recommendProducts: [ProductResponse] = []
-    
+    // MARK: - StateProperty
+    var isLoadingRankTagProduct: Bool = false
     var isLoadingAIProduct: Bool = false
-    
     var isLoadingUserProduct: Bool = false
+    var isLoadingSheetView: Bool = false
+    var isShowSheetView: Bool = false
     var canLoadMoarUserProduct: Bool = true
     var userAllisIitialLoading: Bool = true
-    
-    // MARK: - RankTag
-    var isLoadingRankTagProduct: Bool = false
     var canLoadMoreRankTagProduct: Bool = true
     var userRankTagisIitialLoading: Bool = true
     
     var userProductPage: Int = 0
     
+    // MARK: - Property
+    var aiProducts: [ProductResponse] = []
+    var recommendProducts: [ProductResponse] = []
+    var selectedData: ProductResponse? = nil
+    var selectedCategory: ExtendPartItem = .all
+    var selectedSource: RecommendProductType = .none
+    let petId = UserDefaults.standard.integer(forKey: AppStorageKey.petId)
+    
+    // MARK: - Dependency
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
     
+    // MARK: - Init
     init(container: DIContainer) {
         self.container = container
     }
     
-    public func goToSearchView() {
-        container.navigationRouter.push(to: .recommend(.productSearch))
-    }
-    
-    // MARK: - ProductSheet
-    
-    var selectedData: ProductResponse? = nil
-    var isLoadingSheetView: Bool = false
-    var isShowSheetView: Bool = false
-    var selectedSource: RecommendProductType = .none
-    
+    // MARK: - Common
     func handleTap(data: ProductResponse, source: RecommendProductType) {
         self.selectedData = data
         self.selectedSource = source
@@ -68,94 +63,6 @@ class RecommendationProductViewModel: TapGestureProduct, ProductUpdate {
             break
         }
     }
-}
-
-extension RecommendationProductViewModel {
-    func getAIProucts() {
-        
-        isLoadingAIProduct = true
-        
-        container.useCaseProvider.productRecommendUseCase.executeGetAIRecommend(petId: UserState.shared.getPetId())
-            .tryMap { responseData -> ResponseData<[ProductResponse]> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.message)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                print("✅ getAIRecommendProducts Server : \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                guard let self = self else { return }
-                isLoadingAIProduct = false
-                
-                switch completion {
-                case .finished:
-                    print("✅ getAIRecommendProducts Server Completed")
-                case .failure(let failure):
-                    print("❌ getAIRecommendProducts Server Failure \(failure)")
-                }
-            },
-                  receiveValue: { [weak self] responseData in
-                guard let self else { return }
-                if let data = responseData.result, !data.isEmpty {
-                    self.aiProducts = data
-                }
-            })
-            .store(in: &cancellables)
-    }
-    
-    func getUserRecommendAll(page: Int) {
-    
-        guard !isLoadingUserProduct && canLoadMoarUserProduct else { return }
-        
-        isLoadingUserProduct = true
-        
-        container.useCaseProvider.productRecommendUseCase.executeGetRankProduct(pageNum: page)
-            .tryMap { responseData -> ResponseData<[ProductResponse]> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.message)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                print("✅ getUserRecommendProductsAll Server : \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                guard let self = self else { return }
-                
-                isLoadingUserProduct = false
-                
-                switch completion {
-                case .finished:
-                    print("✅ getUserRecommendProductsAll Server Completed")
-                case .failure(let failure):
-                    print("❌ getUserRecommendProductsAll Server Failure \(failure)")
-                    canLoadMoarUserProduct = false
-                }
-            },
-                  receiveValue: { [weak self] responseData in
-                guard let self = self else { return }
-                if let data = responseData.result, !data.isEmpty {
-                    self.recommendProducts.append(contentsOf: data)
-                    self.userProductPage += 1
-                    self.canLoadMoarUserProduct = true
-                } else {
-                    self.canLoadMoarUserProduct = false
-                }
-                
-                self.userAllisIitialLoading = false
-            })
-            .store(in: &cancellables)
-    }
     
     func startNewUserProductAll() {
         self.userProductPage = 0
@@ -164,42 +71,102 @@ extension RecommendationProductViewModel {
         self.userAllisIitialLoading = true
         getUserRecommendAll(page: userProductPage)
     }
+  
+    func startNewRankTagProducts() {
+        self.userProductPage = 0
+        self.canLoadMoreRankTagProduct = true
+        self.recommendProducts = []
+        self.userRankTagisIitialLoading = true
+        getUserRecommendTag(tag: selectedCategory.toPartItemRawValue() ?? "EAR", page: userProductPage)
+    }
+
+    func makeLikePatchRequest(data: ProductResponse) -> ProductLikeRequest {
+        return .init(
+            title: data.title,
+            image: data.image,
+            price: data.price,
+            brand: data.brand ?? "",
+            link: data.purchaseLink,
+            category1: data.category1 ?? "",
+            category2: data.category2 ?? "",
+            category3: data.category3 ?? "",
+            category4: data.category4 ?? ""
+        )
+    }
     
-    func getUserRecommendTag(tag: PartItem.RawValue, page: Int) {
-        guard !isLoadingRankTagProduct && canLoadMoreRankTagProduct else { return }
+    // MARK: - AI Products
+    /// AI 추천 제품 받아오기
+    func getAIProucts() {
+        isLoadingAIProduct = true
         
-        isLoadingRankTagProduct = true
-        
-        container.useCaseProvider.productRecommendUseCase.executeGetRankProductTag(tag: tag, page: page)
-            .tryMap { responseData -> ResponseData<[ProductResponse]> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.message)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                print("✅ getUserRecommendProductsTag Server : \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.productUseCase.executeGetAIRecommendData(petId: petId)
+            .validateResult()
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
-                
-                isLoadingRankTagProduct = false
+                defer { self.isLoadingAIProduct = false }
                 
                 switch completion {
                 case .finished:
-                    print("✅ getUserRecommendProductsTag Server Completed")
+                    print("getAIRecommendProducts Server Completed")
                 case .failure(let failure):
-                    print("❌ getUserRecommendProductsTag Server Failure \(failure)")
+                    print("getAIRecommendProducts Server Failure \(failure)")
+                }
+            }, receiveValue: { [weak self] responseData in
+                guard let self else { return }
+                self.aiProducts = responseData
+            })
+            .store(in: &cancellables)
+    }
+    
+    // MARK: - User Products
+    func getUserRecommendAll(page: Int) {
+        guard !isLoadingUserProduct && canLoadMoarUserProduct else { return }
+        isLoadingUserProduct = true
+        container.useCaseProvider.productUseCase.executeGetRankProductData(pageNum: page)
+            .validateResult()
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                defer { self.isLoadingUserProduct = false }
+                switch completion {
+                case .finished:
+                    print("getUser Recommend Product Server Completed")
+                case .failure(let failure):
+                    print("getUser Recommend Product Server Failure \(failure)")
+                }
+            }, receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                let data = responseData
+                if !data.isEmpty {
+                    self.recommendProducts.append(contentsOf: data)
+                    self.canLoadMoarUserProduct = true
+                } else {
+                    self.canLoadMoarUserProduct = false
+                }
+                self.userAllisIitialLoading = false
+            })
+            .store(in: &cancellables)
+    }
+    
+    func getUserRecommendTag(tag: PartItem.RawValue, page: Int) {
+        guard !isLoadingRankTagProduct && canLoadMoreRankTagProduct else { return }
+        isLoadingRankTagProduct = true
+        
+        container.useCaseProvider.productUseCase.executeGetRankProductTagData(tag: tag, page: page)
+            .validateResult()
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                defer { self.isLoadingRankTagProduct = false }
+                switch completion {
+                case .finished:
+                    print("getUserRecommendProductsTag Server Completed")
+                case .failure(let failure):
+                    print("getUserRecommendProductsTag Server Failure \(failure)")
                     canLoadMoreRankTagProduct = false
                 }
-            },
-                  receiveValue: { [weak self] responseData in
+            }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                if let data = responseData.result, !data.isEmpty {
+                let data = responseData
+                if !data.isEmpty {
                     self.recommendProducts.append(contentsOf: data)
                     self.userProductPage += 1
                     canLoadMoreRankTagProduct = true
@@ -211,54 +178,28 @@ extension RecommendationProductViewModel {
             .store(in: &cancellables)
     }
     
-    func startNewRankTagProducts() {
-        self.userProductPage = 0
-        self.canLoadMoreRankTagProduct = true
-        self.recommendProducts = []
-        self.userRankTagisIitialLoading = true
-        getUserRecommendTag(tag: selectedCategory.toPartItemRawValue() ?? "EAR", page: userProductPage)
-    }
+    // MARK: - Like
     
-    func likeProduct(productId: Int, productData: LikePatchRequest) {
-        container.useCaseProvider.productRecommendUseCase.executeLikeProduct(productId: productId, likeData: productData)
-            .tryMap { responseData -> ResponseData<LikeProductResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                print("✅ ProductLike Server : \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+    /// 좋아요 누른 상품
+    /// - Parameters:
+    ///   - productId: 상품 ID
+    ///   - productData: 상품 정보
+    func likeProduct(productId: Int, productData: ProductLikeRequest) {
+        container.useCaseProvider.productUseCase.executePutLikeProductData(productId: productId, likeData: productData)
+            .validateResult()
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
-                    print("✅ ProductLike Server Completed")
+                    print("ProductLike Server Completed")
                 case .failure(let failure):
-                    print("❌ ProductLike Server Failure \(failure)")
+                    print("ProductLike Server Failure \(failure)")
                 }
-            },
-                  receiveValue: { responseData in
-                if let result = responseData.result {
-                    print("ProductLike: \(result)")
-                }
+            }, receiveValue: { responseData in
+                
+                #if DEBUG
+                print("ProductLike: \(responseData)")
+                #endif
             })
             .store(in: &cancellables)
-    }
-    
-    func makeLikePatchRequest(data: ProductResponse) -> LikePatchRequest {
-        return LikePatchRequest(title: data.title,
-                                image: data.image,
-                                price: data.price,
-                                brand: data.brand ?? "",
-                                link: data.purchaseLink,
-                                category1: data.category1 ?? "",
-                                category2: data.category2 ?? "",
-                                category3: data.category3 ?? "",
-                                category4: data.category4 ?? "")
     }
 }
