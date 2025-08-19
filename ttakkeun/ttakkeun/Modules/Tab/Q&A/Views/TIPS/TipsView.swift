@@ -21,7 +21,7 @@ struct TipsView: View {
     
     // MARK: - Init
     init(container: DIContainer) {
-        self._viewModel = .init(wrappedValue: .init(container: container))
+        self.viewModel = .init(container: container)
     }
     
     // MARK: - Body
@@ -30,13 +30,12 @@ struct TipsView: View {
             TipsSegment(viewModel: viewModel)
             middleContents
         })
-        // TODO: - 추후 ViewModel 수정 시 다시 수정하기
-//        .onChange(of: viewModel.isSelectedCategory, {
-//            loadInitialTIps()
-//        })
-//        .task {
-//            loadInitialTIps()
-//        }
+        .onChange(of: viewModel.isSelectedCategory, {
+            loadInitialTIps()
+        })
+        .task {
+            loadInitialTIps()
+        }
     }
     
     // MARK: - Top
@@ -123,7 +122,7 @@ extension TipsView {
     
     /// 꿀팁카드 조회 시 무한 스크롤 액션
     /// - Parameter data: 꿀팁 카드 조회
-    func cardTaskActoin(data: TipsResponse) {
+    func cardTaskActoin(data: TipGenerateResponse) {
         guard !viewModel.tipsResponse.isEmpty else { return }
         if data == viewModel.tipsResponse.last && viewModel.canLoadMoreTips {
             categoryAction()

@@ -14,9 +14,7 @@ class SearchViewModel: TapGestureProduct, ProductUpdate {
     var isShowingSearchResult: Bool = true
     var isShowingRealTimeResults: Bool = false
     var isManualSearch: Bool = false
-    var isIitialLoading: Bool = true
     var isFirstAppear: Bool = false
-    
     var naverDataIsLoading: Bool = false
     var localDBDataIsLoading: Bool = false
     
@@ -38,26 +36,49 @@ class SearchViewModel: TapGestureProduct, ProductUpdate {
     var selectedData: ProductResponse? = nil
     var selectedSource: RecommendProductType = .none
     
+    // MARK: - Dependency
+    let container: DIContainer
+    private var cancellables = Set<AnyCancellable>()
     private var debounceTask: Task<Void, Never>? = nil
-
-       private func handleSearchTextChange() {
-           debounceTask?.cancel() // 이전 debounce 취소
-
-           debounceTask = Task { @MainActor in
-               try? await Task.sleep(nanoseconds: 500_000_000)
-
-               if isManualSearch {
-                   fetchSearchResults(for: searchText)
-                   isManualSearch = false
-               } else {
-                   if searchText.isEmpty {
-                       realTimeSearchResult = []
-                   } else {
-                       fetchRealTimeResults(for: searchText)
-                   }
-               }
-           }
-       }
+    
+    // MARK: - Init
+    init(container: DIContainer) {
+        self.container = container
+    }
+    
+    // MARK: - Common
+    private func handleSearchTextChange() {
+        debounceTask?.cancel()
+        
+        debounceTask = Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 500_000_000)
+            
+            if isManualSearch {
+                fetchSearchResults(for: searchText)
+                isManualSearch = false
+            } else {
+                if searchText.isEmpty {
+                    realTimeSearchResult = []
+                } else {
+                    fetchRealTimeResults(for: searchText)
+                }
+            }
+        }
+    }
+    
+    func makeLikePatchRequest(data: ProductResponse) -> ProductLikeRequest {
+        return .init(
+            title: data.title,
+            image: data.image,
+            price: data.price,
+            brand: data.brand ?? "",
+            link: data.purchaseLink,
+            category1: data.category1 ?? "",
+            category2: data.category2 ?? "",
+            category3: data.category3 ?? "",
+            category4: data.category4 ?? ""
+        )
+    }
     
     func handleTap(data: ProductResponse, source: RecommendProductType) {
         self.selectedData = data
@@ -79,41 +100,32 @@ class SearchViewModel: TapGestureProduct, ProductUpdate {
         }
     }
     
-    
-    let container: DIContainer
-    private var cancellables = Set<AnyCancellable>()
-    
-    init(container: DIContainer) {
-        self.container = container
-    }
-    
-    func makeLikePatchRequest(data: ProductResponse) -> LikePatchRequest {
-        return LikePatchRequest(title: data.title,
-                                image: data.image,
-                                price: data.price,
-                                brand: data.brand ?? "",
-                                link: data.purchaseLink,
-                                category1: data.category1 ?? "",
-                                category2: data.category2 ?? "",
-                                category3: data.category3 ?? "",
-                                category4: data.category4 ?? "")
-    }
-}
-
-extension SearchViewModel {
-    
     func fetchRealTimeResults(for query: String) {
         isShowingRealTimeResults = true
-        print("실시간 검색 데이터 받아옴: \(query)")
         searchNaver(isRealTime: true, keyword: query)
+        
+#if DEBUG
+        print("실시간 검색 데이터 받아옴: \(query)")
+#endif
     }
     
     func fetchSearchResults(for query: String) {
         self.isShowingSearchResult = true
-        print("검색 결과 받아옴: \(query)")
         self.searchText = query
         searchNaver(isRealTime: false, keyword: query)
         startNewLocalDbSearch(query)
+        
+#if DEBUG
+        print("검색 결과 받아옴: \(query)")
+#endif
+    }
+    
+    func startNewLocalDbSearch(_ keyword: String) {
+        self.searchText = keyword
+        self.localPage = 0
+        self.canLoadMore = true
+        self.localDbData = []
+        searchLocalDb(keyword: searchText, page: localPage)
     }
     
     func handleSearchTextChange(_ oldValue: String, _ newValue: String) {
@@ -139,7 +151,6 @@ extension SearchViewModel {
                 self.recentSearches.removeLast()
             }
         }
-        
         UserDefaults.standard.set(self.recentSearches, forKey: "RecentSearches")
     }
     
@@ -149,31 +160,22 @@ extension SearchViewModel {
             UserDefaults.standard.set(self.recentSearches, forKey: "RecentSearches")
         }
     }
-}
-
-extension SearchViewModel {
+    
+    // MARK: - SearchNaver
+    /// 네이버 검색
+    /// - Parameters:
+    ///   - isRealTime: 실시간 여부
+    ///   - keyword: 키워드
     private func searchNaver(isRealTime: Bool, keyword: String) {
         naverDataIsLoading = true
         
-        container.useCaseProvider.searchUseCase.executeSearchNaver(keyword: keyword)
-            .tryMap { responseData -> ResponseData<[ProductResponse]> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                print("✅ SearchNaver Server : \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.productUseCase.executeGetSearchNaver(keyword: keyword)
+            .validateResult()
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
                 switch completion {
                 case .finished:
-                    print("✅ SearchNaver Product Server Completed")
+                    print("SearchNaver Product Server Completed")
                     
                 case .failure(let failure):
                     if isRealTime {
@@ -181,17 +183,15 @@ extension SearchViewModel {
                     } else {
                         self.naverData = []
                     }
-                    print("❌ SearchNaver Product Server Failure \(failure)")
+                    print("SearchNaver Product Server Failure \(failure)")
                 }
-            },
-                  receiveValue: { [weak self] responseData in
+            }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                print("🔵 SearchNaver Product Data: \(responseData)")
-                if let data = responseData.result {
+                if !responseData.isEmpty {
                     if isRealTime {
-                        self.realTimeSearchResult = data
+                        self.realTimeSearchResult = responseData
                     } else {
-                        self.naverData = data
+                        self.naverData = responseData
                         naverDataIsLoading = false
                     }
                 } else {
@@ -200,98 +200,59 @@ extension SearchViewModel {
                     } else {
                         self.naverData = []
                         naverDataIsLoading = false
-                        naverDataIsLoading = false
                     }
                 }
+                print("SearchNaver Product Data: \(responseData)")
             })
             .store(in: &cancellables)
     }
     
+    // MARK: - LocalSearch
     public func searchLocalDb(keyword: String, page: Int) {
         guard !localDBDataIsLoading && canLoadMore else { return }
-        
         localDBDataIsLoading = true
         
-        container.useCaseProvider.searchUseCase.executeSearchLocalDB(keyword: keyword, page: page)
-            .tryMap { responseData -> ResponseData<[ProductResponse]> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                print("✅ searchLocalDb Server : \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.productUseCase.executeGetSearchLocal(keyword: keyword, page: page)
+            .validateResult()
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
-                
-                localDBDataIsLoading = false
+                defer { self.localDBDataIsLoading = false }
                 
                 switch completion {
                 case .finished:
-                    print("✅ localDB Product Server Completed")
+                    print("localDB Product Server Completed")
                 case .failure(let failure):
-                    print("❌ localDB Product Server Failure \(failure)")
+                    print("localDB Product Server Failure \(failure)")
                     canLoadMore = false
                 }
-            },
-                  receiveValue: { [weak self] responseData in
+            }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                if let data = responseData.result {
-                    if !data.isEmpty {
-                        self.localDbData.append(contentsOf: data)
-                        self.localPage += 1
-                        self.canLoadMore = true
-                    } else {
-                        self.canLoadMore = false
-                    }
+                if !responseData.isEmpty {
+                    self.localDbData.append(contentsOf: responseData)
+                    self.localPage += 1
+                    self.canLoadMore = true
+                } else {
+                    self.canLoadMore = false
                 }
-                
-                self.isIitialLoading = false
             })
             .store(in: &cancellables)
     }
     
-    func startNewLocalDbSearch(_ keyword: String) {
-        self.searchText = keyword
-        self.localPage = 0
-        self.canLoadMore = true
-        self.localDbData = []
-        self.isIitialLoading = true
-        searchLocalDb(keyword: searchText, page: localPage)
-    }
-    
-    func likeProduct(productId: Int, productData: LikePatchRequest) {
-        container.useCaseProvider.productRecommendUseCase.executeLikeProduct(productId: productId, likeData: productData)
-            .tryMap { responseData -> ResponseData<LikeProductResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                print("✅ ProductLike Server : \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+    // MARK: - Like
+    func likeProduct(productId: Int, productData: ProductLikeRequest) {
+        container.useCaseProvider.productUseCase.executePutLikeProductData(productId: productId, likeData: productData)
+            .validateResult()
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
-                    print("✅ ProductLike Server Completed")
+                    print("ProductLike Server Completed")
                 case .failure(let failure):
-                    print("❌ ProductLike Server Failure \(failure)")
+                    print("ProductLike Server Failure \(failure)")
                 }
-            },
-                  receiveValue: { responseData in
-                if let result = responseData.result {
-                    print("ProductLike: \(result)")
-                }
+            }, receiveValue: { responseData in
+                #if DEBUG
+                print("ProductLike: \(responseData)")
+                #endif
             })
             .store(in: &cancellables)
     }

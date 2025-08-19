@@ -13,7 +13,7 @@ struct TipsContentsCard: View {
     
     // MARK: - Property
     @State var isExpand: TipsExpandType = .beforeExpand
-    @Binding var data: TipsResponse
+    @Binding var data: TipGenerateResponse
     let tipsType: TipsType
     
     let tipsButtonOption: TipsButtonOption?
@@ -57,7 +57,7 @@ struct TipsContentsCard: View {
     }
     
     // MARK: - Init
-    init(data: Binding<TipsResponse>,
+    init(data: Binding<TipGenerateResponse>,
          tipsType: TipsType,
          tipsButtonOption: TipsButtonOption? = nil,
          deleteTipsAction: (() -> Void)? = nil,

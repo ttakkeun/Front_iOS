@@ -77,16 +77,13 @@ struct RecommendView: View {
             .presentationDragIndicator(Visibility.hidden)
             .presentationCornerRadius(UIConstants.sheetCornerRadius)
         })
-        //TODO: - API 연결 시 해제
-//        .task {
-//            viewModel.getAIProucts()
-//        }
-//        .onChange(of: viewModel.selectedCategory, {
-//            loadInitialData()
-//        })
-//        .task {
-//            loadInitialData()
-//        }
+        .task {
+            loadInitialData()
+            viewModel.getAIProucts()
+        }
+        .onChange(of: viewModel.selectedCategory, {
+            loadInitialData()
+        })
     }
     
     // MARK: - TopContents
@@ -138,7 +135,7 @@ struct RecommendView: View {
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            viewModel.goToSearchView()
+            container.navigationRouter.push(to: .recommend(.productSearch))
         }
     }
     
@@ -233,7 +230,7 @@ struct RecommendView: View {
                     )
                 })
                 .handleTapGesture(with: viewModel, data: viewModel.recommendProducts[index], source: .userProduct)
-                .task {
+                .task(id: viewModel.selectedCategory) {
                     rankCardTaskAction(product: product)
                 }
             }

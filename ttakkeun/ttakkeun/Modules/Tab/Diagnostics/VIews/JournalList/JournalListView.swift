@@ -46,7 +46,7 @@ struct JournalListView: View {
             viewModel.getJournalList(category: selectedPartItem.rawValue, page: .zero)
         }
         .sheet(item: $viewModel.journalResultData, content: { journalResultData in
-            JournalResultCheckView(journalResultResponse: journalResultData)
+            JournalResultCheckView(recordResultResponse: journalResultData)
                 .presentationCornerRadius(UIConstants.sheetCornerRadius)
         })
     }

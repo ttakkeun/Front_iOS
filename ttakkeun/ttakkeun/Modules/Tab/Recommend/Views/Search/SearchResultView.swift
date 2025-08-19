@@ -129,14 +129,14 @@ struct SearchResultView: View {
                             viewModel.likeProduct(productId: data.productId, productData: viewModel.makeLikePatchRequest(data: data))
                         })
                     .handleTapGesture(with: viewModel, data: data, source: .searchLocalProduct)
-                    // TODO: - 무한 스크롤 기능
-//                    .task {
-//                        guard !viewModel.localDBDataIsLoading else { return }
-//                        
-//                        if data == viewModel.localDbData.last {
-//                            viewModel.searchLocalDb(keyword: viewModel.searchText, page: viewModel.localPage)
-//                        }
-//                    }
+                    
+                    .task(id: data.id) {
+                        guard !viewModel.localDbData.isEmpty else { return }
+                        
+                        if data == viewModel.localDbData.last && viewModel.canLoadMore {
+                            viewModel.searchLocalDb(keyword: viewModel.searchText, page: viewModel.localPage)
+                        }
+                    }
                 }
             })
         }

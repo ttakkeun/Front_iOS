@@ -32,7 +32,7 @@ struct JournalResultCheckView: View {
         VStack(spacing: JournalResultConstants.middleVspacing, content: {
             topTitle(data: (recordResultResponse.date, recordResultResponse.time))
             
-            journalResultContents(data: journalResultResponse)
+            journalResultContents(data: recordResultResponse)
         })
         .safeAreaInset(edge: .top, spacing: UIConstants.capsuleSpacing, content: {
             Capsule()

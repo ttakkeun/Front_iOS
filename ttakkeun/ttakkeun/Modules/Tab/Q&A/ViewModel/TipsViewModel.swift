@@ -10,29 +10,31 @@ import Combine
 
 @Observable
 class TipsViewModel {
-    
+    // MARK: - State Property
     var isShowFloating: Bool = false
-    
     var isSelectedCategory: ExtendPartItem = .all
-    var tipsResponse: [TipsResponse] = [
-        .init(tipId: 0, category: .claw, title: "하하하하하하하하하하하하하하하히히히히히하하하하하하하하하하하하하하하히히히히히히핳하하하하하하하하하하하하하하하히히히히히히핳히핳", content: "흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애흥애", createdAt: "111", imageUrls: [
-            "https://i.namu.wiki/i/eC1vniead0RwuZfQweto2OXCVWoZPMCuCDQbFLZuaG4Yc-yKxGqbzrUVTow598yEpEhbwpk1Nvw6D4v4BCkGfp8k7KMRElCHnqzUsMAqCvy5uRwjy0nlgYbtTXJCysbcGgsR4Zj0AD6SOyJdXgd6GA.webp"
-        ], authorName: "으짱이", isLike: true, isPopular: true, isScrap: true)
-    ]
+    var initialLoading: Bool = true
+    
+    // MARK: - Property
+    var tipsResponse: [TipGenerateResponse] = []
     
     // MARK: - Tips Page Property
     var fetchingTips: Bool = false
     var canLoadMoreTips: Bool = true
-    var initialLoading: Bool = true
     var tipsPage: Int = 0
     
+    // MARK: - Dependency
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
     
+    // MARK: - Init
     init(container: DIContainer) {
         self.container = container
     }
     
+    // MARK: - Common
+    /// 팁 좋아요 액션
+    /// - Parameter tipID: 팁 아이디
     func toggleLike(for tipID: Int) {
         if let index = tipsResponse.firstIndex(where: { $0.tipId == tipID }) {
             tipsResponse[index].isLike.toggle()
@@ -41,6 +43,8 @@ class TipsViewModel {
         }
     }
     
+    /// 팁 북마크 액션
+    /// - Parameter tipID: 팁 아이디
     func toggleBookMark(for tipID: Int) {
         if let index = tipsResponse.firstIndex(where: { $0.tipId == tipID }) {
             tipsResponse[index].isScrap.toggle()
@@ -49,225 +53,31 @@ class TipsViewModel {
         }
     }
     
-    private func sendLikeStatusToServer(tipID: Int) {
-        container.useCaseProvider.qnaUseCase.executeLikeTips(tipId: tipID)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    print("TipsLike Completed")
-                case .failure(let failure):
-                    print("TipsLike Failed: \(failure)")
-                }
-            },
-                  receiveValue: { responseData in
-                print("responseData: \(responseData)")
-            })
-            .store(in: &cancellables)
-    }
-    
-    private func sendBookMarkStatusToServer(tipID: Int) {
-        container.useCaseProvider.qnaUseCase.executeTouchScrap(tipId: tipID)
-            .tryMap { responseData -> ResponseData<TouchScrapResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                print("BookMark Tip sServer: \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    print("BookMark Tip Completed")
-                case .failure(let failure):
-                    print("BookMark Tip Failed: \(failure)")
-                }
-            },
-                  receiveValue: { responseData in
-                if let result = responseData.result {
-                    print("BookMark Tip: \(result)")
-                }
-            })
-            .store(in: &cancellables)
-    }
-}
-
-extension TipsViewModel {
-    public func getTipsAll(page: Int, refresh: Bool = false) {
-        guard !fetchingTips && canLoadMoreTips else { return }
-        
+    private func refreshAction(refresh: Bool) {
         if refresh {
             self.tipsPage = 0
             self.tipsResponse.removeAll()
             canLoadMoreTips = true
         }
-        
-        fetchingTips = true
-        
-        container.useCaseProvider.qnaUseCase.executeGetTipsAll(page: page)
-            .tryMap { responseData -> ResponseData<[TipsResponse]> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                print("✅ getTipBest Server : \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                guard let self = self else { return }
-                
-                fetchingTips = false
-                
-                switch completion {
-                case .finished:
-                    print("✅ getTipsAll Completed")
-                case .failure(let failure):
-                    print("❌ getTipsAll Failure: \(failure)")
-                    canLoadMoreTips = false
-                }
-                
-            },
-                  receiveValue: { [weak self] responseData in
-                guard let self = self else { return }
-                
-                if let newTips = responseData.result, !newTips.isEmpty {
-                    self.tipsResponse.append(contentsOf: newTips)
-                    self.tipsPage += 1
-                    self.canLoadMoreTips = true
-                } else {
-                    self.canLoadMoreTips = false
-                }
-                
-                self.initialLoading = false
-            })
-            .store(in: &cancellables)
     }
     
-    public func getTipsBest(refresh: Bool = false) {
-        guard !fetchingTips && canLoadMoreTips else { return }
-        
-        if refresh {
-            self.tipsPage = 0
-            self.tipsResponse.removeAll()
-            canLoadMoreTips = true
+    private func getTipsData(_ responseData: [TipGenerateResponse]) {
+        let newTips = responseData
+        if !newTips.isEmpty {
+            self.tipsResponse.append(contentsOf: newTips)
+            self.tipsPage += 1
+            self.canLoadMoreTips = true
+        } else {
+            self.canLoadMoreTips = false
         }
         
-        fetchingTips = true
-        
-        container.useCaseProvider.qnaUseCase.executeGetTipsBest()
-            .tryMap { responseData -> ResponseData<[TipsResponse]> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                print("✅ getTipsBest Server : \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                guard let self = self else { return }
-                
-                fetchingTips = false
-                
-                switch completion {
-                case .finished:
-                    print("✅ getTipsBest Completed")
-                case .failure(let failure):
-                    print("❌ getTipsBest Failure: \(failure)")
-                    canLoadMoreTips = false
-                }
-            },
-                  receiveValue: { [weak self] responseData in
-                guard let self = self else { return }
-                
-                if let newTips = responseData.result, !newTips.isEmpty {
-                    self.tipsResponse.append(contentsOf: newTips)
-                    self.tipsPage += 1
-                    self.canLoadMoreTips = true
-                } else {
-                    self.canLoadMoreTips = false
-                }
-                self.initialLoading = false
-            })
-            .store(in: &cancellables)
-    }
-    
-    public func getTipsCategory(category: PartItem.RawValue, page: Int, refresh: Bool = false) {
-        guard !fetchingTips && canLoadMoreTips else { return }
-        
-        if refresh {
-            self.tipsPage = 0
-            self.tipsResponse.removeAll()
-            canLoadMoreTips = true
-        }
-        
-        fetchingTips = true
-        
-        container.useCaseProvider.qnaUseCase.executeGetTips(cateogry: category, page: page)
-            .tryMap { responseData -> ResponseData<[TipsResponse]> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                print("✅ getTipCategory Server : \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                guard let self = self else { return }
-                
-                fetchingTips = false
-                
-                switch completion {
-                case .finished:
-                    print("✅ getTipsCategory Completed")
-                case .failure(let failure):
-                    print("❌ getTipsAll Failure: \(failure)")
-                    canLoadMoreTips = false
-                }
-            },
-                  receiveValue: { [weak self] responseData in
-                guard let self = self else { return }
-                
-                if let newTips = responseData.result {
-                    if newTips.isEmpty {
-                        print("❌ 빈 결과가 반환되었습니다.")
-                        self.canLoadMoreTips = false
-                    } else {
-                        self.tipsResponse.append(contentsOf: newTips)
-                        self.tipsPage += 1
-                        self.canLoadMoreTips = true
-                    }
-                } else {
-                    self.canLoadMoreTips = false
-                }
-                self.initialLoading = false
-            })
-            .store(in: &cancellables)
+        self.initialLoading = false
     }
     
     func startNewBaseFunc() {
         self.tipsPage = 0
         self.canLoadMoreTips = true
-        self.tipsResponse = []
+        self.tipsResponse.removeAll()
         self.initialLoading = true
     }
     
@@ -284,5 +94,134 @@ extension TipsViewModel {
     func startNewCategorTipsRequest(part: PartItem) {
         startNewBaseFunc()
         getTipsCategory(category: part.rawValue, page: self.tipsPage)
+    }
+    
+    // MARK: - Tip Like/Scrap API
+    
+    private func sendLikeStatusToServer(tipID: Int) {
+        container.useCaseProvider.tipUseCase.executePatchLikeTip(tipId: tipID)
+            .validateResult()
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("TipsLike Completed")
+                case .failure(let failure):
+                    print("TipsLike Failed: \(failure)")
+                }
+            }, receiveValue: { responseData in
+                #if DEBUG
+                print("responseData: \(responseData)")
+                #endif
+            })
+            .store(in: &cancellables)
+    }
+    
+    private func sendBookMarkStatusToServer(tipID: Int) {
+        container.useCaseProvider.tipUseCase.executePatchTouchScrapData(tipId: tipID)
+            .validateResult()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("BookMark Tip Completed")
+                case .failure(let failure):
+                    print("BookMark Tip Failed: \(failure)")
+                }
+            }, receiveValue: { responseData in
+                #if DEBUG
+                print("BookMark Tip: \(responseData)")
+                #endif
+            })
+            .store(in: &cancellables)
+    }
+    
+    // MARK: - Tip API
+    /// 모든 팁 조회
+    /// - Parameters:
+    ///   - page: 페이지 값
+    ///   - refresh: 리프레시 값
+    public func getTipsAll(page: Int, refresh: Bool = false) {
+        guard !fetchingTips && canLoadMoreTips else { return }
+        refreshAction(refresh: refresh)
+        fetchingTips = true
+        
+        container.useCaseProvider.tipUseCase.executeGetTipsAllData(page: page)
+            .validateResult()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                defer { self.fetchingTips = false }
+                
+                switch completion {
+                case .finished:
+                    print("GetTipsAll Completed")
+                case .failure(let failure):
+                    print("GetTipsAll Failure: \(failure)")
+                    canLoadMoreTips = false
+                }
+            }, receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                getTipsData(responseData)
+            })
+            .store(in: &cancellables)
+    }
+    
+    /// 베스트 팁 조회
+    /// - Parameter refresh: 새로 고침
+    public func getTipsBest(refresh: Bool = false) {
+        guard !fetchingTips && canLoadMoreTips else { return }
+        refreshAction(refresh: refresh)
+        fetchingTips = true
+        
+        container.useCaseProvider.tipUseCase.executeGetTipsBestData()
+            .validateResult()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                defer { self.fetchingTips = false }
+                
+                switch completion {
+                case .finished:
+                    print("getTipsBest Completed")
+                case .failure(let failure):
+                    print("getTipsBest Failure: \(failure)")
+                    canLoadMoreTips = false
+                }
+            }, receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                getTipsData(responseData)
+            })
+            .store(in: &cancellables)
+    }
+    
+    /// 팁 카테고리 조회
+    /// - Parameters:
+    ///   - category: 카테고리
+    ///   - page: 페이지
+    ///   - refresh: 새로고침
+    public func getTipsCategory(category: PartItem.RawValue, page: Int, refresh: Bool = false) {
+        guard !fetchingTips && canLoadMoreTips else { return }
+        refreshAction(refresh: refresh)
+        fetchingTips = true
+        
+        container.useCaseProvider.tipUseCase.executeGetTipsPartData(cateogry: category, page: page)
+            .validateResult()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
+                defer { self.fetchingTips = false }
+                
+                switch completion {
+                case .finished:
+                    print("getTipsCategory Completed")
+                case .failure(let failure):
+                    print("getTipsAll Failure: \(failure)")
+                    canLoadMoreTips = false
+                }
+            }, receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                getTipsData(responseData)
+            })
+            .store(in: &cancellables)
     }
 }

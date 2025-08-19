@@ -27,7 +27,7 @@ struct RecommendSearchView: View {
     
     // MARK: - Init
     init(container: DIContainer) {
-        self._viewModel = .init(wrappedValue: .init(container: container))
+        self.viewModel = .init(container: container)
     }
     
     // MARK: - Body
