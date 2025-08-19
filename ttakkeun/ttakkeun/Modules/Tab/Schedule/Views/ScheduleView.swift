@@ -56,9 +56,9 @@ struct ScheduleView: View {
         .keyboardToolbar {
             isFocused = false
         }
-//        .task {
-//            viewModel.getCompletionData()
-//        }
+        .task {
+            viewModel.getCompletionData()
+        }
     }
     
     // MARK: - TopContents

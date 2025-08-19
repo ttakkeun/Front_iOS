@@ -10,7 +10,7 @@ import Moya
 
 enum MyPageRouter {
     /// 문의하기
-    case postGenerateInquire(inquire: MypageInquireRequest, imageData: [Data])
+    case postGenerateInquire(inquire: MypageInquireRequest, imageData: [Data]?)
     /// 문의 내용 조회
     case getMyInquire
     /// 유저 닉네임 변경

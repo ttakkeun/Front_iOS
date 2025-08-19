@@ -11,23 +11,28 @@ import CombineMoya
 
 @Observable
 class TodoCheckViewModel: TodoCheckProtocol {
-    
-    var scheduleData: ScheduleInquiryResponse?
-    var todos: [TodoList] = []
-    var newTodoText: String = ""
+    // MARK: - StateProperty
     var isAddingNewTodo = false
-    
     var isLoading: Bool = false
     
+    // MARK: - Property
+    var scheduleData: TodoCalendarResponse?
+    var todos: [TodoList] = []
     let partItem: PartItem
+    var newTodoText: String = ""
+    let petId = UserDefaults.standard.integer(forKey: AppStorageKey.petId)
+    
+    // MARK: - Dependency
     let container: DIContainer
     private var cancellables = Set<AnyCancellable>()
     
+    // MARK: - Init
     init(partItem: PartItem, container: DIContainer) {
         self.partItem = partItem
         self.container = container
     }
     
+    // MARK: - Common
     private func fileterTodos() {
         guard let data = self.scheduleData else {
             todos = []
@@ -61,31 +66,20 @@ class TodoCheckViewModel: TodoCheckProtocol {
     func isAddingNewTodoToggle() {
         self.isAddingNewTodo.toggle()
     }
-}
-
-extension TodoCheckViewModel {
+    
+    // MARK: - Todo API
+    /// 투두 가져오기
+    /// - Parameter date: 투두 데이터 날짜 입력
     func getTodoData(date: Date) {
         isLoading = true
         
         let (year, month, day) = date.toYearMonthDay()
         
-        container.useCaseProvider.scheduleUseCase.executeGetTodoScheduleData(petId: UserState.shared.getPetId(), todoDateRequest: TodoDateRequest(year: year, month: month, date: day))
-            .tryMap { responseData -> ResponseData<ScheduleInquiryResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                print("TodoListGet Data Server : \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.todoUseCase.executeGetCalendar(petId: petId, todoDateRequest: .init(year: year, month: month, date: day))
+            .validateResult()
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
-                isLoading = false
+                defer { self.isLoading = false }
                 
                 switch completion {
                 case .finished:
@@ -93,35 +87,19 @@ extension TodoCheckViewModel {
                 case .failure(let failure):
                     print("TodoListGet Data Failure: \(failure)")
                 }
-            },
-                  receiveValue: { [weak self] responseData in
+            }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                
-                if let responseData = responseData.result {
-                    self.scheduleData = responseData
-                    self.fileterTodos()
-                }
-                
-                isLoading = false
+                self.scheduleData = responseData
+                self.fileterTodos()
             })
             .store(in: &cancellables)
     }
     
+    /// 투두 상태 토글 입력
+    /// - Parameter todoId: 투두 아이디
     func patchTodoStatus(todoId: Int) {
-        container.useCaseProvider.scheduleUseCase.executePatchTodoCheck(todoId: todoId)
-            .tryMap { responseData -> ResponseData<TodoCheckResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                print("patchTodoStatus Server : \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.todoUseCase.executePatchTodoCheck(todoId: todoId)
+            .validateResult()
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -131,28 +109,18 @@ extension TodoCheckViewModel {
                 }
                 
             }, receiveValue: { responseData in
-                if let responseData = responseData.result {
-                    print("투두 체크 상태: \(responseData)")
-                }
+#if DEBUG
+                print("투두 체크 상태: \(responseData)")
+#endif
             })
             .store(in: &cancellables)
     }
     
-    func makeTodoContetns(makeTodoData: MakeTodoRequest) {
-        container.useCaseProvider.scheduleUseCase.executeMakeTodoContents(todoData: makeTodoData)
-            .tryMap { responseData -> ResponseData<TodoCheckResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                print("MakeTodoContents Server: \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+    /// 투두 생성 함수
+    /// - Parameter makeTodoData: 투두 데이터
+    func makeTodoContetns(makeTodoData: TodoGenerateRequest) {
+        container.useCaseProvider.todoUseCase.executePostGenerateTodo(todoData: makeTodoData)
+            .validateResult()
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -161,52 +129,23 @@ extension TodoCheckViewModel {
                     print("MakeTodoContents Failure: \(failure)")
                 }
                 
-            },
-                  receiveValue: { [weak self] responseData in
+            }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
+                let newTodo = TodoList(todoID: responseData.todoId,
+                                       todoName: self.newTodoText, todoStatus: responseData.todoStatus)
                 
-                if let result = responseData.result {
-                    
-                    let newTodo = TodoList(todoID: result.todoId,
-                                           todoName: self.newTodoText, todoStatus: result.todoStatus)
-                    
-                    self.todos.append(newTodo)
-                    self.newTodoText = ""
-                    self.isAddingNewTodoToggle()
-                }
+                self.todos.append(newTodo)
+                self.newTodoText.removeAll()
+                self.isAddingNewTodoToggle()
             })
             .store(in: &cancellables)
     }
-}
-
-extension Date {
-    func toYearMonthDay() -> (year: Int, month: Int, day: Int) {
-        let calendar = Calendar.current
-        let year = calendar.component(.year, from: self)
-        let month = calendar.component(.month, from: self)
-        let day = calendar.component(.day, from: self)
-        return (year, month, day)
-    }
-}
-
-extension TodoCheckViewModel {
-    /// 내일 또 하기
-    /// - Parameter todoId: 투두 아이디 입력
+    
+    /// 투두 내일 또 하기
+    /// - Parameter todoId: 투두 아이디
     func postRepeatTodo(todoId: Int) {
-        container.useCaseProvider.scheduleUseCase.executePostRepeatTodoData(todoId: todoId)
-            .tryMap { responseData -> ResponseData<TodoCheckResponse> in
-                
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                print("Repeat Todo Server: \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.todoUseCase.executePostRepeatTodo(todoId: todoId)
+            .validateResult()
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -214,31 +153,18 @@ extension TodoCheckViewModel {
                 case .failure(let failure):
                     print("Repeat Todo Failed: \(failure)")
                 }
-            },
-                  receiveValue: { responseData in
-                if let result = responseData.result {
-                    print("내일 또 하기 결과: \(result)")
-                }
+            }, receiveValue: { responseData in
+                #if DEBUG
+                print("내일 또 하기 결과: \(responseData)")
+                #endif
             })
             .store(in: &cancellables)
     }
     
     /// 투두 다른 날짜 또 하기
     func postAnotherDay(todoId: Int, newDate: String) {
-        container.useCaseProvider.scheduleUseCase.executePostAnotherDayData(todoId: todoId, newDate: newDate)
-            .tryMap { responseData -> ResponseData<TodoCheckResponse> in
-                
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                print("AnotherDay Server: \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.todoUseCase.executePostAnotherDay(todoId: todoId, newDate: .init(newDate: newDate))
+            .validateResult()
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -246,31 +172,18 @@ extension TodoCheckViewModel {
                 case .failure(let failure):
                     print("AnotherDay Failed: \(failure)")
                 }
-            },
-                  receiveValue: { responseData in
-                if let result = responseData.result {
-                    print("다른 날 또하기 결과: \(result)")
-                }
+            }, receiveValue: { responseData in
+                #if DEBUG
+                print("다른 날 또하기 결과: \(responseData)")
+                #endif
             })
             .store(in: &cancellables)
     }
     
     /// 투두 날짜 바꾸기
     func patchTodoTransferAnotherDay(todoId: Int, newDate: String) {
-        container.useCaseProvider.scheduleUseCase.executePatchTodoTransferAnotherDayData(todoId: todoId, newDate: newDate)
-            .tryMap { responseData -> ResponseData<TodoCheckResponse> in
-                
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                print("TransferAnotherDay Server: \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.todoUseCase.executePatchTodoTransferAnotherDay(todoId: todoId, newDate: .init(newDate: newDate))
+            .validateResult()
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -278,15 +191,13 @@ extension TodoCheckViewModel {
                 case .failure(let failure):
                     print("TransferAnotherDay Failed: \(failure)")
                 }
-            },
-                  receiveValue: { [weak self] responseData in
+            }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                
-                if let result = responseData.result {
-                    print("투두 날짜 바꾸기: \(result)")
-                    if let index = todos.firstIndex(where: { $0.todoID == result.todoId }) {
-                        todos.remove(at: index)
-                    }
+                #if DEBUG
+                print("투두 날짜 바꾸기: \(responseData)")
+                #endif
+                if let index = todos.firstIndex(where: { $0.todoID == responseData.todoId }) {
+                    todos.remove(at: index)
                 }
             })
             .store(in: &cancellables)
@@ -294,20 +205,8 @@ extension TodoCheckViewModel {
     
     // 투두 내일하기
     func patchTodoTransferTomorrow(todoId: Int) {
-        container.useCaseProvider.scheduleUseCase.executePatchTodoTransferTomorrow(todoId: todoId)
-            .tryMap { responseData -> ResponseData<TodoCheckResponse> in
-                
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                print("TransferTomorrowDay Server: \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.todoUseCase.executePatchTodoTransferTomorrow(todoId: todoId)
+            .validateResult()
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -315,15 +214,13 @@ extension TodoCheckViewModel {
                 case .failure(let failure):
                     print("TransferTomorrowDay Failed: \(failure)")
                 }
-            },
-                  receiveValue: { [weak self] responseData in
+            }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                
-                if let result = responseData.result {
-                    print("투두 내일하기 \(result)")
-                    if let index = todos.firstIndex(where: { $0.todoID == result.todoId }) {
-                        todos.remove(at: index)
-                    }
+                #if DEBUG
+                print("투두 내일하기 \(responseData)")
+                #endif
+                if let index = todos.firstIndex(where: { $0.todoID == responseData.todoId }) {
+                    todos.remove(at: index)
                 }
             })
             .store(in: &cancellables)
@@ -331,20 +228,8 @@ extension TodoCheckViewModel {
     
     // 투두 삭제하기
     func deleteTodo(todoId: Int) {
-        container.useCaseProvider.scheduleUseCase.executeDeleteTodoDateData(todoID: todoId)
-            .tryMap { responseData -> ResponseData<DeleteTodoResponse> in
-                
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                print("TodoDelete Server: \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.todoUseCase.executeDeleteTodoDate(todoID: todoId)
+            .validateResult()
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -352,17 +237,40 @@ extension TodoCheckViewModel {
                 case .failure(let failure):
                     print("TodoDelete Failed: \(failure)")
                 }
-            },
-                  receiveValue: { [weak self] responseData in
+            }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                
-                if let result = responseData.result {
-                    print("투두 삭제하기 \(result)")
-                    if let index = todos.firstIndex(where: { $0.todoID == result.todoId }) {
-                        todos.remove(at: index)
-                    }
+                print("투두 삭제하기 \(responseData)")
+                if let index = todos.firstIndex(where: { $0.todoID == responseData.todoId }) {
+                    todos.remove(at: index)
                 }
             })
             .store(in: &cancellables)
+    }
+    
+    /// 투두 이름 수정
+    /// - Parameter selectedTodo: 선택한 투두 데이터
+    func patchName(selectedTodo: TodoList) {
+        container.useCaseProvider.todoUseCase.executePatchTodoName(todoId: selectedTodo.todoID, todoName: .init(todoName: selectedTodo.todoName))
+            .validateResult()
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("TodoNamePatch Completed")
+                case .failure(let failure):
+                    print("TodoNamePatch Failed: \(failure)")
+                }
+            }, receiveValue: { responseData in
+                print("투두 이름 변경: \(responseData)")
+            })
+            .store(in: &cancellables)
+    }
+}
+extension Date {
+    func toYearMonthDay() -> (year: Int, month: Int, day: Int) {
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: self)
+        let month = calendar.component(.month, from: self)
+        let day = calendar.component(.day, from: self)
+        return (year, month, day)
     }
 }

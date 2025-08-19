@@ -12,78 +12,66 @@ import CombineMoya
 
 @Observable
 class MyPageViewModel {
+    // MARK: - StateProperty
+    var isLoading: Bool = false
     
+    // MARK: - Property
+    var editNicknameValue: String = ""
+    var userInfo: MyPageUserInfoResponse?
+    let petId = UserDefaults.standard.integer(forKey: AppStorageKey.petId)
+    // MARK: - Dependency
     let container: DIContainer
+    var cancellalbes = Set<AnyCancellable>()
     
+    // MARK: - Init
     init(container: DIContainer) {
         self.container = container
-        
         self.getUserInfo()
     }
     
-    var userInfo: UserInfoResponse?
-    var isLoading: Bool = false
+    // MARK: - Common
+    /// 로그 아웃 및 회원탈퇴 시 처리
+    private func clearUserInfo() {
+        AppStorageKey.allKeys.forEach {
+            UserDefaults.standard.removeObject(forKey: $0)
+        }
+    }
     
-    var editNicknameValue: String = ""
+    /// 프로필 삭제 삭제
+    private func clearProfile() {
+        UserDefaults.standard.removeObject(forKey: AppStorageKey.petId)
+        UserDefaults.standard.removeObject(forKey: AppStorageKey.petName)
+        UserDefaults.standard.removeObject(forKey: AppStorageKey.petType)
+    }
     
-    var cancellalbes = Set<AnyCancellable>()
-}
-
-extension MyPageViewModel {
-    
+    // MARK: - UserAPI
+    /// 유저 정보 조회
     func getUserInfo() {
         isLoading = true
         
-        container.useCaseProvider.myPageUseCase.executeMyPage()
-            .tryMap { responseData -> ResponseData<UserInfoResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                print("getUserInfo Server: \(responseData)")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.myPageUseCase.executeGetUserInfo()
+            .validateResult()
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
-                
-                isLoading = false
-                
+                defer { self.isLoading = false }
                 switch completion {
                 case .finished:
                     print("getUserInfo Completed")
                 case .failure(let failure):
                     print("getUserInfo Failed: \(failure)")
                 }
-            },
-                  receiveValue: { [weak self] responseData in
-                
+            }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                
-                if let reponseData = responseData.result {
-                    userInfo = reponseData
-                }
+                userInfo = responseData
             })
             .store(in: &cancellalbes)
     }
     
-    func editName(newUsername: String) {
-        container.useCaseProvider.myPageUseCase.executeEditUserNameDate(newUsername: newUsername)
-            .tryMap { responseData -> ResponseData<String> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+    /// 닉네임 변경
+    /// - Parameter newUsername: 유저 닉네임
+    func editName() {
+        container.useCaseProvider.myPageUseCase.executePatchEditUserName(newUsername: editNicknameValue)
+            .validateResult()
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -91,64 +79,36 @@ extension MyPageViewModel {
                 case .failure(let failure):
                     print("Edit UserName Failed: \(failure)")
                 }
-            },
-                  receiveValue: { [weak self] responseData in
+            }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                
-                if let result = responseData.result {
-                    UserState.shared.setUserName(result)
-                    getUserInfo()
-                }
+                UserDefaults.standard.set(editNicknameValue, forKey: AppStorageKey.userNickname)
             })
             .store(in: &cancellalbes)
     }
     
-    func logout(completion: @escaping (Result<Void, Error>) -> Void) {
-        container.useCaseProvider.myPageUseCase.executeLogout()
-            .tryMap { responseData -> ResponseData<String> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+    // MARK: - AccountAPI
+    /// 로그아웃
+    func logout() {
+        container.useCaseProvider.authUseCase.executeLogout()
+            .validateResult()
             .sink(receiveCompletion: { completionResult in
                 switch completionResult {
                 case .finished:
-                    KeyChainManager.standard.deleteSession(for: "ttakkeunUser")
-                    completion(.success(()))
+                    print("logout Completed")
                 case .failure(let error):
-                    // 실패 시 Result<Void, Error>에서 에러를 반환
-                    completion(.failure(error))
+                    print("logout Failed: \(error)")
                 }
-            }, receiveValue: { responseData in
-                if let _ = responseData.result {
-                    
-                }
+            }, receiveValue: { [weak self] responseData in
+                self?.clearUserInfo()
+                KeyChainManager.standard.deleteSession(for: KeyChainManager.keyChainSession)
             })
             .store(in: &cancellalbes)
     }
     
+    /// 프로필 삭제
     func deleteProfile() {
-        container.useCaseProvider.myPageUseCase.executeDeleteProfile(petId: UserState.shared.getPetId())
-            .tryMap { responseData -> ResponseData<EmptyResponse> in
-                if !responseData.isSuccess {
-                    throw APIError.serverError(message: responseData.message, code: responseData.code)
-                }
-                
-                guard let _ = responseData.result else {
-                    throw APIError.emptyResult
-                }
-                
-                print("UserProfileDelete")
-                return responseData
-            }
-            .receive(on: DispatchQueue.main)
+        container.useCaseProvider.petProfileUseCase.executeDeletePetprofile(petId: petId)
+            .validateResult()
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -156,12 +116,8 @@ extension MyPageViewModel {
                 case .failure(let failure):
                     print("UserProfileDelete Failed: \(failure)")
                 }
-            },
-                  receiveValue: {responseData in
-                
-                if let _ = responseData.result {
-                    UserState.shared.clearProfile()
-                }
+            }, receiveValue: { _ in
+                self.clearProfile()
             })
             .store(in: &cancellalbes)
     }

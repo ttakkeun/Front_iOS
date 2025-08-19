@@ -60,4 +60,8 @@ class AppFlowViewModel {
     public func deleteProfile() {
         appState = .profile
     }
+    
+    public func deleteAccount() {
+        appState = .login
+    }
 }

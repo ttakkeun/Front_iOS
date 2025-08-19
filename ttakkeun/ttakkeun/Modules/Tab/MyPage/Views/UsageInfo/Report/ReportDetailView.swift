@@ -12,9 +12,10 @@ struct ReportDetailView: View {
     
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
-    @State var viewModel: MyPageViewModel
+    @State var viewModel: ReportViewModel
     @State private var selectedBtnName: String? = nil
     let selectedCategory: ReportType
+    let tipId: Int
     
     // MARK: - Constants
     fileprivate enum ReportDetailConstants {
@@ -25,9 +26,10 @@ struct ReportDetailView: View {
     }
     
     // MARK: - Init
-    init(container: DIContainer, selectedCategory: ReportType) {
+    init(container: DIContainer, selectedCategory: ReportType, tipId: Int) {
         self.viewModel = .init(container: container)
         self.selectedCategory = selectedCategory
+        self.tipId = tipId
     }
     
     // MARK: - Body
@@ -40,8 +42,8 @@ struct ReportDetailView: View {
                 btnText: ReportDetailConstants.naviTitle,
                 height: ReportDetailConstants.btnHeight,
                 action: {
-                    // TODO: - 신고하기
-                    print("hello")
+                    viewModel.report(report: .init(tip_id: tipId, report_category: selectedCategory, report_detail: viewModel.contentsText))
+                    container.navigationRouter.popToRootView()
                 },
                 color: selectedBtnName == nil ? Color.checkBg : Color.mainPrimary
             )

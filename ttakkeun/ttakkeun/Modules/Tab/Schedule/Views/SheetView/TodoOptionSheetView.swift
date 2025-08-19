@@ -87,7 +87,7 @@ struct TodoOptionSheetView: View {
                 .multilineTextAlignment(.center)
                 .submitLabel(.done)
                 .onSubmit {
-                    // MARK: - 변경 이름 서버 전송
+                    viewModel.patchName(selectedTodo: selectedTodo)
                 }
             Spacer()
         })

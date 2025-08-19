@@ -12,7 +12,7 @@ import Moya
 import SwiftUI
 
 protocol MyPageServiceProtocol {
-    func postGenerateInquire(inquire: MypageInquireRequest, imageData: [Data]) -> AnyPublisher<ResponseData<MypageInquireResponse>, MoyaError>
+    func postGenerateInquire(inquire: MypageInquireRequest, imageData: [Data]?) -> AnyPublisher<ResponseData<MypageInquireResponse>, MoyaError>
     
     func getMyInquire() -> AnyPublisher<ResponseData<[MyPageMyInquireResponse]>, MoyaError>
     

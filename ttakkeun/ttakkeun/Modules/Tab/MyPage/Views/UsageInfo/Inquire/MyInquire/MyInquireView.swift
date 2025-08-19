@@ -44,9 +44,9 @@ struct MyInquireView: View {
             container.navigationRouter.pop()
         }, naviIcon: Image(systemName: MyInquireCostants.naviClose))
         .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
-//        .task {
-//            viewModel.getMyInquire()
-//        }
+        .task {
+            viewModel.getMyInquire()
+        }
     }
     
     //MARK: - Components
@@ -70,7 +70,7 @@ struct MyInquireView: View {
     private var inquireBtns: some View {
         VStack(alignment: .leading, spacing: MyInquireCostants.btnVspacing, content: {
             ForEach(viewModel.myInquiryData, id: \.id) { btnInfo in
-                SelectBtnBox(btnInfo: .init(name: btnInfo.contents, date: btnInfo.created_at.convertedToKoreanTimeDateString(), action: {
+                SelectBtnBox(btnInfo: .init(name: btnInfo.contents, date: btnInfo.createdAt.convertedToKoreanTimeDateString(), action: {
                     container.navigationRouter.push(to: .inquire(.myInquiryConfirm(selectedInquiryData: btnInfo)))
                 }))
             }

@@ -88,6 +88,9 @@ struct TipsView: View {
                 reportActoin: {
                     container.navigationRouter.push(to: .tips(.tipsReport))
             })
+            .task(id: data.id) {
+                cardTaskActoin(data: data)
+            }
         }
     }
     

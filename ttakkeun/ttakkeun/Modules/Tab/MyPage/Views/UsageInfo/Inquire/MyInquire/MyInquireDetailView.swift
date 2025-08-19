@@ -12,9 +12,9 @@ import Kingfisher
 struct MyInquireDetailView: View {
     
     @EnvironmentObject var container: DIContainer
-    @State var inquiryResponse: MyInquiryResponse
+    @State var inquiryResponse: MyPageMyInquireResponse
     
-    init(inquiryResponse: MyInquiryResponse) {
+    init(inquiryResponse: MyPageMyInquireResponse) {
         self.inquiryResponse = inquiryResponse
     }
     
@@ -27,10 +27,4 @@ struct MyInquireDetailView: View {
             onSubmit: nil
         )
     }
-}
-
-#Preview {
-    MyInquireDetailView(inquiryResponse: .init(contents: "이 사람 이상해요", email: "eui@com", inquiryType: "11", imageUrl: [
-        "https://i.namu.wiki/i/cusLffdONLphUHKfYy-UclkoCER49OYM6SW96csASHewLpoQtigXVU8__1d_Nm97MuVoNHZ382GPm8gqim_gVI0e8aqzgNECEFNhTHNowe9ItibQynXg7q6NU78kDZGFD1Y0V5k9Oeql15OQo45Qjw.webp"
-    ], created_at: "111"))
 }

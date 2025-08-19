@@ -77,12 +77,12 @@ private extension NavigationRoutingView {
         switch route {
         case .writeTips(let category):
             WriteTipsView(category: category, container: container)
-        case .tipsReport:
-            ReportView(container: container)
-        case .tipsReportDetail(let selectedReportCategory):
-            ReportDetailView(container: container, selectedCategory: selectedReportCategory)
-        case .tipsWriteReport:
-            ReportWriteView(container: container)
+        case .tipsReport(let tipId):
+            ReportView(tipId: tipId)
+        case .tipsReportDetail(let selectedReportCategory, let tipId):
+            ReportDetailView(container: container, selectedCategory: selectedReportCategory, tipId: tipId)
+        case .tipsWriteReport(let tipId):
+            ReportWriteView(container: container, tipId: tipId)
         }
     }
     
