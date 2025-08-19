@@ -7,6 +7,7 @@
 
 import SwiftUI
 import KakaoSDKCommon
+import KakaoSDKAuth
 
 @main
 struct ttakkeunApp: App {
@@ -29,6 +30,11 @@ struct ttakkeunApp: App {
                 LoginView(container: container, appFlowViewModel: appFlowViewModel)
                     .environmentObject(container)
                     .environment(appFlowViewModel)
+                    .onOpenURL(perform: { url in
+                        if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                            _ = AuthController.handleOpenUrl(url: url)
+                        }
+                    })
             case .profile:
                 ProfileView(container: container)
                     .environmentObject(container)
