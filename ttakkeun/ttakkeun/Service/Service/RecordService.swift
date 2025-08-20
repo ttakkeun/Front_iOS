@@ -19,11 +19,7 @@ class RecordService: RecordServiceProtocol, BaseAPIService {
     
     init(
         provider: MoyaProvider<RecordRouter> = APIManager.shared.createProvider(for: RecordRouter.self),
-        decoder: JSONDecoder = {
-            let d = JSONDecoder()
-            d.keyDecodingStrategy = .convertFromSnakeCase
-            return d
-        }(),
+        decoder: JSONDecoder = APIManager.shared.sharedDecoder,
         callbackQueue: DispatchQueue = .main
     ) {
         self.provider = provider

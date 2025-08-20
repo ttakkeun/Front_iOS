@@ -15,7 +15,6 @@ extension Publisher where Failure == MoyaError {
     ) -> AnyPublisher<T, MoyaError> where Output == ResponseData<T> {
         self.tryMap { response in
             guard response.isSuccess else {
-                onFailureAction?()
                 throw MoyaError.underlying(APIError.serverError(message: response.message, code: response.code), nil)
             }
             guard let result = response.result else {
@@ -30,6 +29,18 @@ extension Publisher where Failure == MoyaError {
                 return MoyaError.underlying(error, nil)
             }
         }
+        .handleEvents(receiveCompletion: { completion in
+            guard case .failure = completion else { return }
+            if let actoin = onFailureAction {
+                if Thread.isMainThread {
+                    actoin()
+                } else {
+                    DispatchQueue.main.async {
+                        actoin()
+                    }
+                }
+            }
+        })
         .eraseToAnyPublisher()
     }
 }

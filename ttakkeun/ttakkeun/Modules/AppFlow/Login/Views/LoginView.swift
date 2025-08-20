@@ -42,6 +42,7 @@ struct LoginView: View {
                 Spacer()
                 bottomContents
             }
+            .frame(maxWidth: .infinity)
             .safeAreaPadding(.bottom, UIConstants.safeBottom)
             .navigationDestination(for: NavigationDestination.self) { destination in
                 NavigationRoutingView(destination: destination)
@@ -111,4 +112,10 @@ struct LoginView: View {
                 .fixedSize()
         })
     }
+}
+
+#Preview {
+    LoginView(container: DIContainer(), appFlowViewModel: AppFlowViewModel())
+        .environmentObject(DIContainer())
+        .environment(AppFlowViewModel())
 }

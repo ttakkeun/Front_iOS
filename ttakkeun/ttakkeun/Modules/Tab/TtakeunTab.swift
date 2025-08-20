@@ -35,7 +35,7 @@ struct TtakeunTab: View {
                 NavigationRoutingView(destination: destination)
             })
             .customAlert(alert: alert)
-            .environment(alert)
+            .environment(\.alert, alert)
         })
     }
     

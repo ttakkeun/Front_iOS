@@ -19,11 +19,7 @@ class TodoService: TodoServiceProtocol, BaseAPIService {
     
     init(
         provider: MoyaProvider<TodoRouter> = APIManager.shared.createProvider(for: TodoRouter.self),
-        decoder: JSONDecoder = {
-            let d = JSONDecoder()
-            d.keyDecodingStrategy = .convertFromSnakeCase
-            return d
-        }(),
+        decoder: JSONDecoder = APIManager.shared.sharedDecoder,
         callbackQueue: DispatchQueue = .main
     ) {
         self.provider = provider

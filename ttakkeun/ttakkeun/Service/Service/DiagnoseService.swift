@@ -19,11 +19,7 @@ class DiagnoseService: DiagnoseServiceProtocol, BaseAPIService {
     
     init(
         provider: MoyaProvider<DiagnoseRouter> = APIManager.shared.createProvider(for: DiagnoseRouter.self),
-        decoder: JSONDecoder = {
-            let d = JSONDecoder()
-            d.keyDecodingStrategy = .convertFromSnakeCase
-            return d
-        }(),
+        decoder: JSONDecoder = APIManager.shared.sharedDecoder,
         callbackQueue: DispatchQueue = .main
     ) {
         self.provider = provider

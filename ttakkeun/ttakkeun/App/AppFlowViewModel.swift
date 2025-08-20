@@ -11,7 +11,7 @@ import Foundation
 class AppFlowViewModel {
     private let tokenProvider: TokenProvider = TokenProvider()
     
-    var appState: AppState = .profile
+    var appState: AppState = .onBoarding
     
     public func stateAppFlow(compleition: @escaping (Bool, Error?) -> Void) {
         tokenProvider.refreshToken { [weak self] accessToken, error in

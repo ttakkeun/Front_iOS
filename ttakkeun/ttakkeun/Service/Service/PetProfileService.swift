@@ -20,11 +20,7 @@ class PetProfileService: PetProfileServiceProtocol, BaseAPIService {
     
     init(
         provider: MoyaProvider<PetRouter> = APIManager.shared.createProvider(for: PetRouter.self),
-        decoder: JSONDecoder = {
-            let d = JSONDecoder()
-            d.keyDecodingStrategy = .convertFromSnakeCase
-            return d
-        }(),
+        decoder: JSONDecoder = APIManager.shared.sharedDecoder,
         callbackQueue: DispatchQueue = .main
     ) {
         self.provider = provider

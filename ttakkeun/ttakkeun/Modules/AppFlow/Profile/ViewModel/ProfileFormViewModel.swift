@@ -131,8 +131,7 @@ class ProfileFormViewModel {
                 }
             }, receiveValue: { [weak self] petProfileResponse in
                 guard let self = self else { return }
-                let petId = petProfileResponse.petId
-                self.patchPetProfileImage(petId: petId, completion: completion)
+                self.patchPetProfileImage(petId: petProfileResponse.petId, completion: completion)
             })
             .store(in: &cancellables)
     }

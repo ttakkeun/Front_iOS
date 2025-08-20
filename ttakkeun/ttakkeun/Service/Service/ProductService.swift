@@ -19,11 +19,7 @@ class ProductService: ProductServiceProtocol, BaseAPIService {
     
     init(
         provider: MoyaProvider<ProductRouter> = APIManager.shared.createProvider(for: ProductRouter.self),
-        decoder: JSONDecoder = {
-            let d = JSONDecoder()
-            d.keyDecodingStrategy = .convertFromSnakeCase
-            return d
-        }(),
+        decoder: JSONDecoder = APIManager.shared.sharedDecoder,
         callbackQueue: DispatchQueue = .main
     ) {
         self.provider = provider

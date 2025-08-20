@@ -19,11 +19,7 @@ class TipService: TipServiceProtocol, BaseAPIService {
     
     init(
         provider: MoyaProvider<TipRouter> = APIManager.shared.createProvider(for: TipRouter.self),
-        decoder: JSONDecoder = {
-            let d = JSONDecoder()
-            d.keyDecodingStrategy = .convertFromSnakeCase
-            return d
-        }(),
+        decoder: JSONDecoder = APIManager.shared.sharedDecoder,
         callbackQueue: DispatchQueue = .main
     ) {
         self.provider = provider

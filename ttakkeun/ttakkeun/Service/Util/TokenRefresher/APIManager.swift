@@ -32,4 +32,10 @@ class APIManager: @unchecked Sendable {
     public func testProvider<T: TargetType>(for targetType: T.Type) -> MoyaProvider<T> {
         return MoyaProvider<T>(stubClosure: MoyaProvider.immediatelyStub)
     }
+    
+    lazy var sharedDecoder: JSONDecoder = {
+        let d= JSONDecoder()
+        d.keyDecodingStrategy = .convertFromSnakeCase
+        return d()
+    }
 }

@@ -57,13 +57,13 @@ extension PetRouter: APITargetType {
             return .requestJSONEncodable(petInfo)
         case .patchPetProfileImage(_, let image):
             let multipartData: [MultipartFormData] = image
-                .jpegData(compressionQuality: 0.5)
+                .jpegData(compressionQuality: 0.8)
                 .map {
                     [MultipartFormData(
                         provider: .data($0),
                         name: "multipartFile",
-                        fileName: "multipartFile.jpeg",
-                        mimeType: "multipartFile/jpeg"
+                        fileName: "multipartFile.jpg",
+                        mimeType: "image/jpeg"
                     )]
                 } ?? []
             return .uploadMultipart(multipartData)

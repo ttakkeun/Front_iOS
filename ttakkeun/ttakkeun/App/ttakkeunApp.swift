@@ -25,11 +25,11 @@ struct ttakkeunApp: App {
             switch appFlowViewModel.appState {
             case .onBoarding:
                 OnboardingView()
-                    .environment(appFlowViewModel)
+                    .environment(\.appFlow, appFlowViewModel)
             case .login:
                 LoginView(container: container, appFlowViewModel: appFlowViewModel)
                     .environmentObject(container)
-                    .environment(appFlowViewModel)
+                    .environment(\.appFlow, appFlowViewModel)
                     .onOpenURL(perform: { url in
                         if (AuthApi.isKakaoTalkLoginUrl(url)) {
                             _ = AuthController.handleOpenUrl(url: url)
@@ -38,11 +38,11 @@ struct ttakkeunApp: App {
             case .profile:
                 ProfileView(container: container)
                     .environmentObject(container)
-                    .environment(appFlowViewModel)
+                    .environment(\.appFlow, appFlowViewModel)
             case .tabView:
                 TtakeunTab()
                     .environmentObject(container)
-                    .environment(appFlowViewModel)
+                    .environment(\.appFlow, appFlowViewModel)
             }
         }
     }

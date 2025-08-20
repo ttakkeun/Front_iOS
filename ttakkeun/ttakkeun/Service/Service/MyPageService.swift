@@ -19,11 +19,7 @@ class MyPageService: MyPageServiceProtocol, BaseAPIService {
     
     init(
         provider: MoyaProvider<MyPageRouter> = APIManager.shared.createProvider(for: MyPageRouter.self),
-        decoder: JSONDecoder = {
-            let d = JSONDecoder()
-            d.keyDecodingStrategy = .convertFromSnakeCase
-            return d
-        }(),
+        decoder: JSONDecoder = APIManager.shared.sharedDecoder,
         callbackQueue: DispatchQueue = .main
         
     ) {
