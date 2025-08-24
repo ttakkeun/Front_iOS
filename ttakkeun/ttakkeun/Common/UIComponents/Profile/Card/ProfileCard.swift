@@ -27,7 +27,7 @@ struct ProfileCard: View {
         static let petInfoHeight: CGFloat = 286
         
         static let profileNameVspacing: CGFloat = 10
-        static let profileImageSize: CGFloat = 112
+        static let profileImageSize: CGSize = .init(width: 112, height: 112)
         
         static let profileIconWidth: CGFloat = 113
         static let profileIconHeight: CGFloat = 95
@@ -104,8 +104,10 @@ struct ProfileCard: View {
                 }
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: ProfileCardConstants.profileImageSize, height: ProfileCardConstants.profileImageSize)
+                .frame(width: ProfileCardConstants.profileImageSize.width, height: ProfileCardConstants.profileImageSize.height)
                 .clipShape(Circle())
+        } else {
+            NotProfileURLImage(size: ProfileCardConstants.profileImageSize)
         }
     }
     
@@ -137,7 +139,7 @@ struct ProfileCard: View {
 
 struct ProfileCard_PreView: PreviewProvider {
     static var previews: some View {
-        ProfileCard(data: PetProfileDetail(petId: 1, name: "zbzb", image: "https://i.namu.wiki/i/DT10KWR2W0wL373oAyaXxemQhlvL9fJmLVSbkfbmDEIKYh58psg4EljxPGRnBejIwk7Vu4HnYqSri02gUg2ABedxQqgHZ3wiWk7KcNL15FBLPlXxBWSORpHWAqKgiP6KF7I_BTLK_XrA8hpffU9Fqw.webp", type: .dog, birth: "2021-02-01"))
+        ProfileCard(data: PetProfileDetail(petId: 1, name: "zbzb", image: "", type: .dog, birth: "2021-02-01"))
             .environment(AppFlowViewModel())
     }
 }
