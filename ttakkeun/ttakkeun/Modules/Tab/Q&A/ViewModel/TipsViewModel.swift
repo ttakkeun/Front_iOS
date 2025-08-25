@@ -136,6 +136,7 @@ class TipsViewModel {
     }
     
     // MARK: - Tip API
+    
     /// 모든 팁 조회
     /// - Parameters:
     ///   - page: 페이지 값
