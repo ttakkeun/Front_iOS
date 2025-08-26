@@ -175,6 +175,7 @@ struct CustomAlert: View {
     /// 완료 버튼
     private var completeAlert: some View {
         makeButton(buttonType: .complete, action: {
+            self.yes()
             self.showAlert = false
         })
     }

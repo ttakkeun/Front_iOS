@@ -81,7 +81,7 @@ class MyPageViewModel {
                 }
             }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                UserDefaults.standard.set(editNicknameValue, forKey: AppStorageKey.userNickname)
+                userInfo?.username = editNicknameValue
             })
             .store(in: &cancellalbes)
     }
@@ -98,8 +98,7 @@ class MyPageViewModel {
                 case .failure(let error):
                     print("logout Failed: \(error)")
                 }
-            }, receiveValue: { [weak self] responseData in
-                self?.clearUserInfo()
+            }, receiveValue: { responseData in
                 KeyChainManager.standard.deleteSession(for: KeyChainManager.keyChainSession)
             })
             .store(in: &cancellalbes)

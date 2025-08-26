@@ -16,6 +16,7 @@ struct ProfileFormView: View {
     @State var viewModel: ProfileFormViewModel
     @EnvironmentObject var container: DIContainer
     @Environment(\.dismiss) var dismiss
+    @FocusState var isFocused: Bool
     
     // MARK: - Constants
     fileprivate enum ProfileFormConstants {
@@ -94,6 +95,9 @@ struct ProfileFormView: View {
         })
         .task {
             viewModel.checkInEditMode()
+        }
+        .keyboardToolbar {
+            isFocused = false
         }
     }
     
@@ -230,6 +234,7 @@ struct ProfileFormView: View {
                   prompt: placeholderText(ProfileFormConstants.namePlaceholder))
         .textFieldStyle(ttakkeunTextFieldStyle())
         .submitLabel(.done)
+        .focused($isFocused)
     }
     
     // MARK: - Dog or Cat Type

@@ -90,4 +90,20 @@ extension String {
             return "방금 전"
         }
     }
+    
+    var formattedDateString: String {
+            let inputFormatter = DateFormatter()
+            inputFormatter.locale = Locale(identifier: "en_US_POSIX")
+            inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+
+            let outputFormatter = DateFormatter()
+            outputFormatter.locale = Locale(identifier: "ko_KR")
+            outputFormatter.dateFormat = "yyyy.MM.dd"
+
+            guard let date = inputFormatter.date(from: self) else {
+                return self // 실패 시 원본 반환
+            }
+
+            return outputFormatter.string(from: date)
+        }
 }

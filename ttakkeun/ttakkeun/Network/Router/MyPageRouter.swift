@@ -52,7 +52,7 @@ extension MyPageRouter: APITargetType {
             let formData = inquire.multipartFormParts(jsonFieldName: "inquiryRequestDTO", images: imageData)
             return .uploadMultipart(formData)
         case .patchEditUserName(let newUsername):
-            return .requestParameters(parameters: ["newUsername": newUsername], encoding: URLEncoding.default)
+            return .requestParameters(parameters: ["newUsername": newUsername], encoding: URLEncoding.queryString)
         case .getUserInfo, .getMyInquire:
             return .requestPlain
         }

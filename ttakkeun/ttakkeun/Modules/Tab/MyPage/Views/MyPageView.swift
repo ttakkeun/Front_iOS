@@ -12,7 +12,6 @@ struct MyPageView: View {
     @EnvironmentObject var container: DIContainer
     @Environment(\.appFlow) var appFlowViewModel
     @Environment(\.alert) var alert
-    @AppStorage(AppStorageKey.userNickname) var userNickname: String?
     @AppStorage(AppStorageKey.userEmail) var userEmail: String?
     
     @State var viewModel: MyPageViewModel
@@ -98,7 +97,7 @@ struct MyPageView: View {
     /// 마이 프로필 정보
     private var myProfileInfo: some View {
         VStack(alignment: .leading, spacing: MyPageConstants.myProfileVspacing, content: {
-            Text(userNickname ?? MyPageConstants.userNameText)
+            Text(viewModel.userInfo?.username ?? MyPageConstants.userNameText)
                 .font(.H4_bold)
                 .foregroundStyle(Color.gray900)
             
@@ -111,9 +110,8 @@ struct MyPageView: View {
     /// 닉네임 수정 버튼
     private var editNicknameBtn: some View {
         Button(action: {
-            alert.trigger(type: .editNicknameAlert(currentNickname: userNickname ?? MyPageConstants.userNameText), showAlert: true, action: {
-                // TODO: - 닉네임 수정 API
-                print(viewModel.editNicknameValue)
+            alert.trigger(type: .editNicknameAlert(currentNickname: viewModel.userInfo?.username ?? MyPageConstants.userNameText), showAlert: true, action: {
+                viewModel.editName()
             }, nicknameValue: $viewModel.editNicknameValue)
         }, label: {
             Text(MyPageConstants.editBtnText)
@@ -184,10 +182,12 @@ struct MyPageView: View {
                 .logout: { alert.trigger(type: .logoutProfileAlert, showAlert: true, action: {
                     viewModel.logout()
                     appFlowViewModel.logout()
+                    container.navigationRouter.popToRootView()
                 }) },
                 .deleteProfile: { alert.trigger(type: .deleteProfileAlert, showAlert: true, action: {
                     viewModel.deleteProfile()
                     appFlowViewModel.deleteProfile()
+                    container.navigationRouter.popToRootView()
                 }) },
                 .leave: { container.navigationRouter.push(to: .auth(.deleteAccount))}
             ])

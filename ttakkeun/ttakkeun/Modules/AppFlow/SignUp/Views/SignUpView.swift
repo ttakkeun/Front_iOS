@@ -13,6 +13,7 @@ struct SignUpView: View {
     // MARK: - Property
     @EnvironmentObject var container: DIContainer
     @State var viewModel: SignUpViewModel
+    @FocusState var isKeyboard: Bool
     var signup: SignUpData
     
     let socialType: SocialLoginType
@@ -77,6 +78,9 @@ struct SignUpView: View {
             AgreementSheeetView(agreement: item)
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(SignUpConstants.sheetCornerRadius)
+        }
+        .keyboardToolbar {
+            isKeyboard = false
         }
     }
     
@@ -201,6 +205,7 @@ extension SignUpView {
             
             TextField("", text: value, prompt: makePlaceholder(text: placeholder))
                 .textFieldStyle(ttakkeunTextFieldStyle())
+                .focused($isKeyboard)
         })
     }
     

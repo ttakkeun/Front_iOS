@@ -44,7 +44,7 @@ private extension NavigationRoutingView {
         case .signUp(let socialType, let signUpRequest):
             SignUpView(socialType: socialType, signup: signUpRequest, container: container, appFlowViewModel: appFlowViewModel)
         case .deleteAccount:
-            DeleteAccountView(container: container)
+            DeleteAccountView(container: container, appFlowViewModel: appFlowViewModel)
         }
     }
     

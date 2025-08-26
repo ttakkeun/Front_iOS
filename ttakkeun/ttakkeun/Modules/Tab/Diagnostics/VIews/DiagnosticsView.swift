@@ -20,6 +20,7 @@ struct DiagnosticsView: View {
     fileprivate enum DiagnoticsConstants {
         static let mainVspacing: CGFloat = 12
         static let topVspacing: CGFloat = 18
+        static let topActionBarHeight: CGFloat = 130
         static let calendarHeight: CGFloat = 430
         static let datePickerText: String = "검색 날짜 선택"
     }
@@ -36,7 +37,7 @@ struct DiagnosticsView: View {
             middleContents
         })
         .background(Color.scheduleBg)
-        .safeAreaInset(edge: .top, content: {
+        .safeAreaInset(edge: .top, spacing: DiagnoticsConstants.mainVspacing, content: {
             topStatus
         })
         .fullScreenCover(isPresented: $journalListViewModel.showFullScreenAI, content: {
@@ -60,6 +61,8 @@ struct DiagnosticsView: View {
                 DiagnosticActionBar(diagnosingValue: $diagnosingValue, viewModel: journalListViewModel)
             }
         })
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(height: DiagnoticsConstants.topActionBarHeight, alignment: .top)
     }
     
     // MARK: - MiddleContents

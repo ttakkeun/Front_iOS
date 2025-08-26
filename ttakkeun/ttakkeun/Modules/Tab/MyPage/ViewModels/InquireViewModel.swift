@@ -16,6 +16,7 @@ class InquireViewModel {
     var isLoading: Bool = false
     var isAgreementCheck: Bool = false
     var isInquireMainBtnClicked: Bool = false
+    var isShowAlert: Bool = false
     
     // MARK: - Property
     var myInquiryData: [MyPageMyInquireResponse] = []
@@ -76,7 +77,8 @@ class InquireViewModel {
                 case .failure(let failure):
                     print("Inquire Failed: \(failure)")
                 }
-            }, receiveValue: { responseData in
+            }, receiveValue: { [weak self] responseData in
+                self?.isShowAlert = true
                 #if DEBUG
                 print("Inquire Response: \(responseData)")
                 #endif
