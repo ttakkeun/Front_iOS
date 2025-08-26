@@ -11,6 +11,7 @@ import Combine
 import CombineMoya
 
 class AuthService: AuthServiceProtocol, BaseAPIService {
+    
     typealias Target = AuthRouter
     
     let provider: MoyaProvider<AuthRouter>
@@ -47,11 +48,11 @@ class AuthService: AuthServiceProtocol, BaseAPIService {
         request(.signUpAppleLogin(appleLoginRequest: appleLoginRequest))
     }
     
-    func deleteKakaoAccount() -> AnyPublisher<ResponseData<String>, Moya.MoyaError> {
-        request(.deleteKakaoAccount)
+    func deleteKakaoAccount(kakaoDelete: DeleteRequest) -> AnyPublisher<ResponseData<String>, MoyaError> {
+        request(.deleteKakaoAccount(kakaoDelete: kakaoDelete))
     }
     
-    func deleteAppleAccount(authorizationCode: String) -> AnyPublisher<ResponseData<String>, MoyaError> {
-        request(.deleteAppleAccount(authorizationCode: authorizationCode))
+    func deleteAppleAccount(appleDelete: DeleteRequest, code: String) -> AnyPublisher<ResponseData<String>, MoyaError> {
+        request(.deleteAppleAccount(appleDelete: appleDelete, code: code))
     }
 }

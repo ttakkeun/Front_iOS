@@ -55,8 +55,8 @@ struct DeleteAccountView: View {
     }
     
     // MARK: - Init
-    init(container: DIContainer) {
-        self.viewModel = .init(container: container)
+    init(container: DIContainer, appFlowViewModel: AppFlowViewModel) {
+        self.viewModel = .init(container: container, appFlowViewModel: appFlowViewModel)
     }
     
     // MARK: - Body
@@ -300,7 +300,8 @@ struct DeleteAccountView: View {
             generateButton(DeleteAccountConstants.secondBtnCompleteText, btnCondition: true, action: {
                 alert.trigger(type: .deleteAccountAlert, showAlert: true, action: {
                     deleteAction()
-                    appFlowViewModel.deleteAccount()
+//                    container.navigationRouter.popToRootView()
+//                    appFlowViewModel.deleteAccount()
                 })
             })
             .disabled(!viewModel.isMyAccountCheck)
@@ -339,11 +340,4 @@ extension DeleteAccountView {
             }
         }, color: btnCondition ? Color.mainPrimary : Color.checkBg)
     }
-}
-
-#Preview {
-    DeleteAccountView(container: DIContainer())
-        .environmentObject(DIContainer())
-        .environment(AppFlowViewModel())
-        .environment(AlertStateModel())
 }

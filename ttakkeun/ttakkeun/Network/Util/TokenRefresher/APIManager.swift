@@ -14,11 +14,13 @@ class APIManager: @unchecked Sendable {
     private let tokenProvider: TokenProviding
     private let accessTokenRefresher: AccessTokenRefresher
     private let session: Session
+    private let redirectHandler: RedirectTraceHandler
     
     private init() {
         tokenProvider = TokenProvider()
         accessTokenRefresher = AccessTokenRefresher(tokenProviding: tokenProvider)
-        session = Session(interceptor: accessTokenRefresher)
+        redirectHandler = RedirectTraceHandler()
+        session = Session(interceptor: accessTokenRefresher, redirectHandler: redirectHandler)
     }
     
     public func createProvider<T: TargetType>(for targetType: T.Type) -> MoyaProvider<T> {

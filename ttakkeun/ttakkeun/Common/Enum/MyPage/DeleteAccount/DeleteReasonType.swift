@@ -8,13 +8,13 @@
 import Foundation
 import SwiftUI
 
-enum DeleteReasonType: CaseIterable {
-    case featureDissatisfaction
-    case insufficientContent
-    case technicalIssue
-    case deviceIncompatibility
-    case poorUserExperience
-    case other
+enum DeleteReasonType: String, CaseIterable, Codable {
+    case featureDissatisfaction = "FEATURE_DISSATISFACTION"
+    case insufficientContent = "LACK_OF_CONTENT"
+    case technicalIssue = "TECHNICAL_ISSUES"
+    case deviceIncompatibility = "COMPATIBILITY_ISSUES"
+    case poorUserExperience = "UX_INCONVENIENCE"
+    case other = "OTHER"
     
     var text: String {
         switch self {

@@ -40,12 +40,12 @@ class AuthUseCase: AuthUseCaseProtocol {
     }
     
     /// 카카오 계정 삭제
-    func executeDeleteKakaoAccount() -> AnyPublisher<ResponseData<String>, Moya.MoyaError> {
-        return service.deleteKakaoAccount()
+    func executeDeleteKakaoAccount(kakaoDelete: DeleteRequest) -> AnyPublisher<ResponseData<String>, MoyaError> {
+        return service.deleteKakaoAccount(kakaoDelete: kakaoDelete)
     }
     
     /// 애플 계정 삭제
-    func executeDeleteAppleAccount(authorizationCode: String) -> AnyPublisher<ResponseData<String>, Moya.MoyaError> {
-        return service.deleteAppleAccount(authorizationCode: authorizationCode)
+    func executeDeleteAppleAccount(appleDelete: DeleteRequest, code: String) -> AnyPublisher<ResponseData<String>, MoyaError> {
+        return service.deleteAppleAccount(appleDelete: appleDelete, code: code)
     }
 }

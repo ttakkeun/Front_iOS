@@ -19,6 +19,6 @@ protocol AuthUseCaseProtocol {
     func executeAppleLogin(appleLoginRequest: AppleLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError>
     func executeSignUpApple(appleLoginRequest: AppleLoginRequest) -> AnyPublisher<ResponseData<TokenResponse>, MoyaError>
     
-    func executeDeleteKakaoAccount() -> AnyPublisher<ResponseData<String>, MoyaError>
-    func executeDeleteAppleAccount(authorizationCode: String) -> AnyPublisher<ResponseData<String>, MoyaError>
+    func executeDeleteKakaoAccount(kakaoDelete: DeleteRequest) -> AnyPublisher<ResponseData<String>, MoyaError>
+    func executeDeleteAppleAccount(appleDelete: DeleteRequest, code: String) -> AnyPublisher<ResponseData<String>, MoyaError>
 }

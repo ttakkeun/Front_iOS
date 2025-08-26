@@ -21,12 +21,14 @@ class DeleteAccountViewModel {
     
     // MARK: - Dependency
     var container: DIContainer
+    var appFlowViewModel: AppFlowViewModel
     let appleLoginManager: AppleLoginManager = .init()
     var cancellalbes = Set<AnyCancellable>()
     
     // MARK: - Init
-    init(container: DIContainer) {
+    init(container: DIContainer, appFlowViewModel: AppFlowViewModel) {
         self.container = container
+        self.appFlowViewModel = appFlowViewModel
     }
     
     // MARK: - Common
@@ -35,6 +37,12 @@ class DeleteAccountViewModel {
         AppStorageKey.allKeys.forEach {
             UserDefaults.standard.removeObject(forKey: $0)
         }
+    }
+    
+    private func deleteUser() {
+        KeyChainManager.standard.deleteSession(for: KeyChainManager.keyChainSession)
+        appFlowViewModel.deleteAccount()
+        container.navigationRouter.popToRootView()
     }
     
     /// 프로필 삭제 삭제
@@ -59,7 +67,7 @@ class DeleteAccountViewModel {
     // MARK: DeleteAccount
     /// 카카오 계정 삭제
     private func deleteKakaoAccount() {
-        container.useCaseProvider.authUseCase.executeDeleteKakaoAccount()
+        container.useCaseProvider.authUseCase.executeDeleteKakaoAccount(kakaoDelete: convertDeleteRequest())
             .validateResult()
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -70,7 +78,7 @@ class DeleteAccountViewModel {
                 }
             }, receiveValue: { [weak self] responseData in
                 self?.clearUserInfo()
-                KeyChainManager.standard.deleteSession(for: KeyChainManager.keyChainSession)
+                self?.deleteUser()
                 #if DEBUG
                 print("카카오 회원 탈퇴 완료 :\(responseData)")
                 #endif
@@ -81,7 +89,7 @@ class DeleteAccountViewModel {
     /// 애플 계정 삭제
     /// - Parameter code: 계정 코드
     private func deleteAppleAccount(code: String) {
-        container.useCaseProvider.authUseCase.executeDeleteAppleAccount(authorizationCode: code)
+        container.useCaseProvider.authUseCase.executeDeleteAppleAccount(appleDelete: convertDeleteRequest(), code: code)
             .validateResult()
             .sink(receiveCompletion: { completion in
                 switch completion {
@@ -92,11 +100,21 @@ class DeleteAccountViewModel {
                 }
             }, receiveValue: { [weak self] responseData in
                 self?.clearUserInfo()
-                KeyChainManager.standard.deleteSession(for: KeyChainManager.keyChainSession)
+                self?.deleteUser()
                 #if DEBUG
                 print("애플 회원 탈퇴 완료 :\(responseData)")
                 #endif
             })
             .store(in: &cancellalbes)
+    }
+    
+    /// 삭제 Request 변환 함수
+    /// - Returns: 삭제 값 반환
+    private func convertDeleteRequest() -> DeleteRequest {
+        if let firstReason = selectedReasons.first {
+            return .init(reasonType: firstReason, customReason: etcReason, valid: true)
+        } else {
+            return .init(reasonType: .other, customReason: etcReason, valid: false)
+        }
     }
 }
