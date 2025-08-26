@@ -56,6 +56,7 @@ struct WriteFormView: View {
         static let agreementCheck: String = "개인정보 수집 및 이용 약관에 동의합니다."
         static let naviCloseImage: String = "chevron.left"
         static let scrollId: String = "bottom"
+        static let notImageText: String = "등록된 이미지가 없습니다."
     }
     
     // MARK: - Body
@@ -203,11 +204,24 @@ struct WriteFormView: View {
     @ViewBuilder
     private var readOnlyImage: some View {
         if case let .myInquireDetail(_, _, imageUrl) = type {
-            HStack(spacing: WriteFormConstants.imageHspacing, content: {
-                ForEach(imageUrl, id: \.self) { image in
-                    kingfisherImage(url: image)
-                }
-            })
+            if imageUrl.isEmpty {
+                Text(WriteFormConstants.notImageText)
+                    .font(.Body2_medium)
+                    .foregroundStyle(Color.gray900)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(WriteFormConstants.emailTextPadding)
+                    .background {
+                        RoundedRectangle(cornerRadius: WriteFormConstants.cornerRadius)
+                            .fill(Color.clear)
+                            .stroke(Color.gray200, style: .init())
+                    }
+            } else {
+                HStack(spacing: WriteFormConstants.imageHspacing, content: {
+                    ForEach(imageUrl, id: \.self) { image in
+                        kingfisherImage(url: image)
+                    }
+                })
+            }
         }
     }
     
@@ -339,13 +353,13 @@ struct WriteFormView: View {
             }()
             
             MainButton(btnText: btnType.text, height: btnType.height, action: {
-                    Task {
-                        do {
-                            try await onSubmit?()
-                        } catch {
-                            print("문의 및 신고하기 제출 실패: \(error)")
-                        }
+                Task {
+                    do {
+                        try await onSubmit?()
+                    } catch {
+                        print("문의 및 신고하기 제출 실패: \(error)")
                     }
+                }
             }, color: btnType.color)
             .padding(.horizontal, UIConstants.defaultSafeHorizon)
             .disabled(!isButtonEnabled)

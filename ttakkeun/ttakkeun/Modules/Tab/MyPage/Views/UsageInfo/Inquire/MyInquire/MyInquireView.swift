@@ -70,7 +70,7 @@ struct MyInquireView: View {
     private var inquireBtns: some View {
         VStack(alignment: .leading, spacing: MyInquireCostants.btnVspacing, content: {
             ForEach(viewModel.myInquiryData, id: \.id) { btnInfo in
-                SelectBtnBox(btnInfo: .init(name: btnInfo.contents, date: btnInfo.createdAt.convertedToKoreanTimeDateString(), action: {
+                SelectBtnBox(btnInfo: .init(name: btnInfo.contents, date: btnInfo.createdAt.formattedDateString, action: {
                     container.navigationRouter.push(to: .inquire(.myInquiryConfirm(selectedInquiryData: btnInfo)))
                 }))
             }

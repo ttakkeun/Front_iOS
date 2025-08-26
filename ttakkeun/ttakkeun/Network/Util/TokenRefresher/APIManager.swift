@@ -37,7 +37,7 @@ class APIManager: @unchecked Sendable {
     
     lazy var sharedDecoder: JSONDecoder = {
         let d = JSONDecoder()
-        d.keyDecodingStrategy = .convertFromSnakeCase
+        d.keyDecodingStrategy = .useDefaultKeys
         return d
     }()
 }

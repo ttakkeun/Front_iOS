@@ -182,6 +182,7 @@ struct MyPageView: View {
                 .logout: { alert.trigger(type: .logoutProfileAlert, showAlert: true, action: {
                     viewModel.logout()
                     appFlowViewModel.logout()
+                    container.navigationRouter.popToRootView()
                 }) },
                 .deleteProfile: { alert.trigger(type: .deleteProfileAlert, showAlert: true, action: {
                     viewModel.deleteProfile()

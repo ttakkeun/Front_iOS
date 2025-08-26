@@ -81,7 +81,7 @@ struct UserRecommendProductCard: View {
                         .controlSize(.regular)
                 }.retry(maxCount: UserRecommendProductConstants.imageMaxCount, interval: .seconds(UserRecommendProductConstants.imageInterval))
                 .onFailure { _ in
-                    print("반료동물 추천 제품 이미지 로당 실패")
+                    print("반료동물 추천 제품 이미지 로딩 실패")
                 }
                 .resizable()
                 .aspectRatio(contentMode: .fill)

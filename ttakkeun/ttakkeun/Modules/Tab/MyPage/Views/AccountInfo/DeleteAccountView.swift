@@ -300,8 +300,6 @@ struct DeleteAccountView: View {
             generateButton(DeleteAccountConstants.secondBtnCompleteText, btnCondition: true, action: {
                 alert.trigger(type: .deleteAccountAlert, showAlert: true, action: {
                     deleteAction()
-//                    container.navigationRouter.popToRootView()
-//                    appFlowViewModel.deleteAccount()
                 })
             })
             .disabled(!viewModel.isMyAccountCheck)

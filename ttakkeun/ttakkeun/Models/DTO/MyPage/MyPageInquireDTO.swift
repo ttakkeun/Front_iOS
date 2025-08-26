@@ -14,5 +14,5 @@ struct MypageInquireRequest: Codable {
 }
 
 struct MypageInquireResponse: Codable {
-    let petId: Int
+    let inquiryId: Int
 }

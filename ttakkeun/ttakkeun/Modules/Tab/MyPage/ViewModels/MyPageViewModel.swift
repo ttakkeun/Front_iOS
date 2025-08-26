@@ -98,8 +98,7 @@ class MyPageViewModel {
                 case .failure(let error):
                     print("logout Failed: \(error)")
                 }
-            }, receiveValue: { [weak self] responseData in
-                self?.clearUserInfo()
+            }, receiveValue: { responseData in
                 KeyChainManager.standard.deleteSession(for: KeyChainManager.keyChainSession)
             })
             .store(in: &cancellalbes)

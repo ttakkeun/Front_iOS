@@ -37,7 +37,9 @@ struct InquireWriteView: View {
             await viewModel.postInquire(inquire: .init(contents: viewModel.inquireText, email: viewModel.emailText, inquiryType: type))
             await alert.trigger(type: .receivingInquiryAlert, showAlert: true, action: {
                 Task {
-                    await container.navigationRouter.popToRootView()
+                    await MainActor.run {
+                        container.navigationRouter.pop()
+                    }
                 }
             })
         }
@@ -49,3 +51,4 @@ struct InquireWriteView: View {
     InquireWriteView(container: DIContainer(), type: .PARTNERSHIP)
         .environmentObject(DIContainer())
 }
+
