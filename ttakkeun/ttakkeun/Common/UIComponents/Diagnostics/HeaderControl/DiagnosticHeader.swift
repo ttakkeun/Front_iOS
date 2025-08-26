@@ -103,8 +103,8 @@ struct DiagnosticHeader: View {
     }
 }
 
-#Preview {
-    @Previewable @State var diagnosingValue: DiagnosingValue = .init(selectedSegment: .diagnosticResults, selectedPartItem: .ear)
+#Preview(traits: .sizeThatFitsLayout) {
+    @Previewable @State var diagnosingValue: DiagnosingValue = .init(selectedSegment: .journalList, selectedPartItem: .ear)
     
     DiagnosticHeader(diagnosingValue: $diagnosingValue, journalListViewModel: .init(container: DIContainer()), diagnosticViewModel: .init(container: DIContainer()))
 }

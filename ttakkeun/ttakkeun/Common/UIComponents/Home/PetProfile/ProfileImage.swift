@@ -36,21 +36,30 @@ struct ProfileImage: View {
     
     // MARK: - Body
     var body: some View {
-        if let imageUrl = profileImageUrl,
-           let url = URL(string: imageUrl), !imageLoadFalse {
-            KFImage(url)
-                .placeholder {
-                    loadingImage
-                }.retry(maxCount: ProfileImageConstants.imageMaxCount, interval: .seconds(ProfileImageConstants.imageInterval))
-                .onFailure { _ in
-                    imageLoadFalse = true
-                }
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: imageSize, height: imageSize)
-                .clipShape(Circle())
-                .shadow05()
+        if imageLoadFalse {
+            noDataImage
+        } else {
+            if let imageUrl = profileImageUrl,
+               let url = URL(string: imageUrl) {
+                kfImage(url: url)
+            }
         }
+    }
+    
+    @ViewBuilder
+    private func kfImage(url: URL) -> some View {
+        KFImage(url)
+            .placeholder {
+                loadingImage
+            }.retry(maxCount: ProfileImageConstants.imageMaxCount, interval: .seconds(ProfileImageConstants.imageInterval))
+            .onFailure { _ in
+                imageLoadFalse = true
+            }
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: imageSize, height: imageSize)
+            .clipShape(Circle())
+            .shadow05()
     }
     
     /// 이미지 로딩

@@ -110,7 +110,6 @@ struct ProfileCardBack: View {
     }
     
     // MARK: - TopArea
-    
     private func topArea(data: PetSpacialProfileResponse) -> some View {
         HStack(alignment: .top, spacing: ProfileCardConstants.rightHspacing, content: {
             leftInfo(data: data)
