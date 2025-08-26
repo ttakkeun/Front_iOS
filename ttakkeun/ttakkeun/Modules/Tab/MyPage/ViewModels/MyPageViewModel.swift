@@ -81,7 +81,7 @@ class MyPageViewModel {
                 }
             }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                UserDefaults.standard.set(editNicknameValue, forKey: AppStorageKey.userNickname)
+                userInfo?.username = editNicknameValue
             })
             .store(in: &cancellalbes)
     }

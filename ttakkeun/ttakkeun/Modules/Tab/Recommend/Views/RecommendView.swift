@@ -234,13 +234,18 @@ struct RecommendView: View {
                     rankCardTaskAction(product: product)
                 }
             }
-            
-            if viewModel.isLoadingUserProduct || viewModel.isLoadingRankTagProduct {
-                ProgressView()
-                    .controlSize(.regular)
-            }
         })
         .fixedSize()
+        
+        
+        if viewModel.isLoadingUserProduct || viewModel.isLoadingRankTagProduct {
+            HStack {
+                Spacer()
+                ProgressView()
+                    .controlSize(.regular)
+                Spacer()
+            }
+        }
     }
     
     /// 랭크별 아이템 액션

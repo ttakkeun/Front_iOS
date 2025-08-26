@@ -134,6 +134,12 @@ struct ProfileCard: View {
         petId = data.petId
         petName = data.name
         petType = data.type
+        
+        #if DEBUG
+        print("AppStorage 저장: \(String(describing: petId))")
+        print("AppStorage 저장: \(String(describing: petName))")
+        print("AppStorage 저장: \(String(describing: petType))")
+        #endif
     }
 }
 
