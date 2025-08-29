@@ -1,11 +1,11 @@
 # 🚀 프로젝트 이름
 
-![배너 이미지 또는 로고](링크)
+![따끈](https://github.com/user-attachments/assets/3faddf2a-fd27-4f5e-a09f-62525db0b39f)
 
-> 간단한 한 줄 소개 – 프로젝트의 핵심 가치 또는 기능
+> 반려동물의 건강을 위한 작은 습관, 함께 지켜주는 관리 루틴
 
-[![Swift](https://img.shields.io/badge/Swift-6.0-orange.svg)]()
-[![Xcode](https://img.shields.io/badge/Xcode-16.0-blue.svg)]()
+[![Swift](https://img.shields.io/badge/Swift-6.1-orange.svg)]()
+[![Xcode](https://img.shields.io/badge/Xcode-16.3-blue.svg)]()
 [![License](https://img.shields.io/badge/license-MIT-green.svg)]()
 
 ---
@@ -13,33 +13,34 @@
 <br>
 
 ## 👥 멤버
-| 팀원 1 | 팀원 2 | 팀원 3 | 팀원 4 |
-|:------:|:------:|:------:|:------:|
-| 사진1 | 사진2 | 사진3 | 사진4 |
-| PL | FE | FE | FE |
-| [GitHub](깃허브 링크) | [GitHub](깃허브 링크) | [GitHub](깃허브 링크) | [GitHub](깃허브 링크) |
+| Je-Ong | 유빈 | 지강 |
+|:------:| :------: | :------: |
+| <img src="https://private-user-images.githubusercontent.com/80624315/467933809-108a8d81-af80-48f5-b56d-ccd1699e9fc4.jpg?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTY0MzU5NzQsIm5iZiI6MTc1NjQzNTY3NCwicGF0aCI6Ii84MDYyNDMxNS80Njc5MzM4MDktMTA4YThkODEtYWY4MC00OGY1LWI1NmQtY2NkMTY5OWU5ZmM0LmpwZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA4MjklMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwODI5VDAyNDc1NFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWFkOGNmMmU1NDkyMDQ1YTI2ZjBjODc0NjJlZjBmZTg2MWQ4MDNkYjJiNmE5ZTk5MzEzNDY2OWMyZDA4MWM0NjAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.-uEELGaFRHyrXBvyJPk2IMepcKJbLf1COM4xVyUzzfM" width = "200"> | <img src="https://github.com/user-attachments/assets/2b8597d0-3fb8-4d26-bd7a-7e8f14af4052" width = "200">  | <img src="https://github.com/user-attachments/assets/7cb5ace7-9641-4441-9889-74c246db9753" width = "200"> |
+| FE | FE | FE |
+| [제옹의 깃허브](https://github.com/JEONG-J) | [유빈의 깃허브](https://github.com/alice0047) | [지강의 깃허브](https://github.com/sokft) |
 
 <br>
 
 
 ## 📱 소개
 
-> 프로젝트의 주요 목적과 사용자가 얻게 될 경험을 설명해주세요.
+> 반려동물과 함께 생활하면서 반드시 챙겨야 할 일상 관리 루틴을 쉽고 체계적으로 정리하고, 반려인이 꾸준히 실천할 수 있도록 돕는 것을 목표로 합니다.
+사람에게 매일 위생 관리가 필요하듯이, 반려동물도 정기적으로 관리가 필요한 부분이 있습니다. 하지만 바쁜 일상 속에서 이를 놓치거나 간과하기 쉽습니다. 본 프로젝트는 이러한 문제를 해결하기 위해 체계적인 관리 가이드와 체크리스트를 제공합니다.
 
 <br>
 
 ## 📆 프로젝트 기간
-- 전체 기간: `YYYY.MM.DD - YYYY.MM.DD`
-- 개발 기간: `YYYY.MM.DD - YYYY.MM.DD`
+- 전체 기간: `2024.01.01 - 2025.08.29`
+- 개발 기간: `2024.01.01 - 2025.08.29`
 
 <br>
 
 ## 🤔 요구사항
 For building and running the application you need:
 
-iOS 18.2 <br>
-Xcode 16.2 <br>
-Swift 6.0
+iOS 18.5 <br>
+Xcode 16.3 <br>
+Swift 6.1
 
 <br>
 
@@ -219,4 +220,864 @@ if let user = self.veryLongFunctionNameWhichReturnsOptionalUser(),
 
 ## 🗂️ 폴더 컨벤션
 ```
+📦ttakkeun
+ ┣ 📂ttakkeun
+ ┃ ┣ 📂App
+ ┃ ┃ ┣ 📜AlertStateModel.swift
+ ┃ ┃ ┣ 📜AppDelegate.swift
+ ┃ ┃ ┣ 📜AppFlowViewModel.swift
+ ┃ ┃ ┣ 📜UserState.swift
+ ┃ ┃ ┗ 📜ttakkeunApp.swift
+ ┃ ┣ 📂Common
+ ┃ ┃ ┣ 📂Enum
+ ┃ ┃ ┃ ┣ 📂APIError
+ ┃ ┃ ┃ ┃ ┗ 📜APIError.swift
+ ┃ ┃ ┃ ┣ 📂Alert
+ ┃ ┃ ┃ ┃ ┣ 📜AlertButtonType.swift
+ ┃ ┃ ┃ ┃ ┗ 📜AlertType.swift
+ ┃ ┃ ┃ ┣ 📂Category
+ ┃ ┃ ┃ ┃ ┣ 📜ExtendPartItem.swift
+ ┃ ┃ ┃ ┃ ┗ 📜PartItem.swift
+ ┃ ┃ ┃ ┣ 📂Diagnostics
+ ┃ ┃ ┃ ┃ ┗ 📜DiagnositicSegment.swift
+ ┃ ┃ ┃ ┣ 📂ETC
+ ┃ ┃ ┃ ┃ ┣ 📜AppState.swift
+ ┃ ┃ ┃ ┃ ┣ 📜AppStorageKey.swift
+ ┃ ┃ ┃ ┃ ┗ 📜TabCase.swift
+ ┃ ┃ ┃ ┣ 📂MyPage
+ ┃ ┃ ┃ ┃ ┣ 📂AppInfo
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜AppInfoType.swift
+ ┃ ┃ ┃ ┃ ┣ 📂DeleteAccount
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜DeletePageType.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜DeleteReasonType.swift
+ ┃ ┃ ┃ ┃ ┣ 📂InquireReport
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜InquireReportBtnType.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜InquireType.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜WriteFormType.swift
+ ┃ ┃ ┃ ┃ ┣ 📂Report
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ReportItems.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜ReportType.swift
+ ┃ ┃ ┃ ┃ ┣ 📜MyPageItemType.swift
+ ┃ ┃ ┃ ┃ ┣ 📜MypageGroupType.swift
+ ┃ ┃ ┃ ┃ ┗ 📜TipsBtnType.swift
+ ┃ ┃ ┃ ┣ 📂Profile
+ ┃ ┃ ┃ ┃ ┣ 📜ProfileImageSource.swift
+ ┃ ┃ ┃ ┃ ┣ 📜ProfileMode.swift
+ ┃ ┃ ┃ ┃ ┗ 📜ProfileType.swift
+ ┃ ┃ ┃ ┣ 📂QnA
+ ┃ ┃ ┃ ┃ ┣ 📜QnASegment.swift
+ ┃ ┃ ┃ ┃ ┣ 📜TipsExpandType.swift
+ ┃ ┃ ┃ ┃ ┣ 📜TipsLikeScrapType.swift
+ ┃ ┃ ┃ ┃ ┣ 📜TipsType.swift
+ ┃ ┃ ┃ ┃ ┗ 📜WriteTipsText.swift
+ ┃ ┃ ┃ ┣ 📂Recommend
+ ┃ ┃ ┃ ┃ ┣ 📜ProductLocation.swift
+ ┃ ┃ ┃ ┃ ┣ 📜RecommendProductType.swift
+ ┃ ┃ ┃ ┃ ┗ 📜SearchType.swift
+ ┃ ┃ ┃ ┣ 📂SignUp
+ ┃ ┃ ┃ ┃ ┣ 📜SignUpTextFieldType.swift
+ ┃ ┃ ┃ ┃ ┗ 📜SocialLoginType.swift
+ ┃ ┃ ┃ ┣ 📂Todo
+ ┃ ┃ ┃ ┃ ┣ 📜TodoActionBtn.swift
+ ┃ ┃ ┃ ┃ ┗ 📜TodoOptionBtn.swift
+ ┃ ┃ ┃ ┗ 📂UIConstants
+ ┃ ┃ ┃ ┃ ┗ 📜UIConstants.swift
+ ┃ ┃ ┣ 📂JSON
+ ┃ ┃ ┃ ┣ 📜CategoryQnaJsonData.json
+ ┃ ┃ ┃ ┣ 📜Onboarding.json
+ ┃ ┃ ┃ ┗ 📜TopTenQnaJsonData.json
+ ┃ ┃ ┣ 📂Protocol
+ ┃ ┃ ┃ ┣ 📜PhotoPickerHandle.swift
+ ┃ ┃ ┃ ┣ 📜ProductUpdate.swift
+ ┃ ┃ ┃ ┣ 📜SegmentType.swift
+ ┃ ┃ ┃ ┣ 📜TapGestureProduct.swift
+ ┃ ┃ ┃ ┣ 📜TodoCheckProtocol.swift
+ ┃ ┃ ┃ ┗ 📜TokenProviding.swift
+ ┃ ┃ ┗ 📂UIComponents
+ ┃ ┃ ┃ ┣ 📂Custom
+ ┃ ┃ ┃ ┃ ┣ 📜CameraButton.swift
+ ┃ ┃ ┃ ┃ ┣ 📜CustomAlert.swift
+ ┃ ┃ ┃ ┃ ┣ 📜CustomSegment.swift
+ ┃ ┃ ┃ ┃ ┣ 📜CustomTextEditor.swift
+ ┃ ┃ ┃ ┃ ┣ 📜CustomePicker.swift
+ ┃ ┃ ┃ ┃ ┣ 📜LoadingDotsText.swift
+ ┃ ┃ ┃ ┃ ┣ 📜MainButton.swift
+ ┃ ┃ ┃ ┃ ┣ 📜NotProfileURLImage.swift
+ ┃ ┃ ┃ ┃ ┣ 📜RegistAlbumImageView.swift
+ ┃ ┃ ┃ ┃ ┗ 📜TopStatusBar.swift
+ ┃ ┃ ┃ ┣ 📂Diagnostics
+ ┃ ┃ ┃ ┃ ┣ 📂DiagnosticResult
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜DiagnosticAIProduct.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜DiagnosticTower.swift
+ ┃ ┃ ┃ ┃ ┣ 📂HeaderControl
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜DiagnosticActionBar.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜DiagnosticHeader.swift
+ ┃ ┃ ┃ ┃ ┗ 📂Journal
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜JournalAnswerButton.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜JournalAnswerResult.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜JournalListCard.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜SelectCareItemButton.swift
+ ┃ ┃ ┃ ┣ 📂Home
+ ┃ ┃ ┃ ┃ ┣ 📂Card
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜HomeProfileCard.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ProfileCardBack.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜ProfileCardFront.swift
+ ┃ ┃ ┃ ┃ ┣ 📂Not
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜NotRecommend.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜NotToDo.swift
+ ┃ ┃ ┃ ┃ ┣ 📂PetProfile
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜PetInfoTitle.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜ProfileImage.swift
+ ┃ ┃ ┃ ┃ ┗ 📂Todo
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜CompactTodo.swift
+ ┃ ┃ ┃ ┣ 📂MyPage
+ ┃ ┃ ┃ ┃ ┣ 📜MyPageInfoBox.swift
+ ┃ ┃ ┃ ┃ ┗ 📜SelectBtnBox.swift
+ ┃ ┃ ┃ ┣ 📂Profile
+ ┃ ┃ ┃ ┃ ┣ 📂Card
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜CreateProfileCard.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜ProfileCard.swift
+ ┃ ┃ ┃ ┃ ┗ 📂CreateProfile
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜BirthSelect.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜NameTag.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜ProfileTwoButton.swift
+ ┃ ┃ ┃ ┣ 📂Q&A
+ ┃ ┃ ┃ ┃ ┣ 📂FAQ
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜TopTenQuestionCard.swift
+ ┃ ┃ ┃ ┃ ┣ 📂TIPS
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂Floating
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜FloatingCategory.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜FloatingCircle.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜TipsContentsCard.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜TipsSegment.swift
+ ┃ ┃ ┃ ┃ ┗ 📜QnAHeader.swift
+ ┃ ┃ ┃ ┣ 📂Recommended
+ ┃ ┃ ┃ ┃ ┣ 📂Card
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜AIRecommendProductCard.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜RankRecommendCard.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜RecentRecommendCard.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜UserRecommendProductCard.swift
+ ┃ ┃ ┃ ┃ ┣ 📜AIRecommendTitle.swift
+ ┃ ┃ ┃ ┃ ┣ 📜InAppSearchResult.swift
+ ┃ ┃ ┃ ┃ ┗ 📜LikeButton.swift
+ ┃ ┃ ┃ ┗ 📂Schedule
+ ┃ ┃ ┃ ┃ ┣ 📂Calendar
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜CalendarCell.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜CalendarComponent.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜DateComponentsPicker.swift
+ ┃ ┃ ┃ ┃ ┗ 📂Todo
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜TodoCard.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜TodoCheckList.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜TodoCircle.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜TodoCompletionRate.swift
+ ┃ ┣ 📂Core
+ ┃ ┃ ┣ 📂DIContainer
+ ┃ ┃ ┃ ┣ 📜DIContainer.swift
+ ┃ ┃ ┃ ┗ 📜UseCaseProvider.swift
+ ┃ ┃ ┗ 📂Util
+ ┃ ┃ ┃ ┗ 📂Navigation
+ ┃ ┃ ┃ ┃ ┣ 📜NavigationDestination.swift
+ ┃ ┃ ┃ ┃ ┣ 📜NavigationRouter.swift
+ ┃ ┃ ┃ ┃ ┗ 📜NavigationRoutingView.swift
+ ┃ ┣ 📂Models
+ ┃ ┃ ┣ 📂DTO
+ ┃ ┃ ┃ ┣ 📂Diagnose
+ ┃ ┃ ┃ ┃ ┣ 📜DiagnoseAIDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜DiagnoseDeleteDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜DiagnoseDetailDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜DiagnoseListDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜DiagnoseNaverDTO.swift
+ ┃ ┃ ┃ ┃ ┗ 📜DiagnosePointDTO.swift
+ ┃ ┃ ┃ ┣ 📂MyPage
+ ┃ ┃ ┃ ┃ ┣ 📜MyPageInquireDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜MyPageMyInquireDTO.swift
+ ┃ ┃ ┃ ┃ ┗ 📜MyPageUserInfoDTO.swift
+ ┃ ┃ ┃ ┣ 📂OAuth
+ ┃ ┃ ┃ ┃ ┣ 📜AppleDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜DeleteDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜TokenDTO.swift
+ ┃ ┃ ┃ ┃ ┗ 📜kakaoDTO.swift
+ ┃ ┃ ┃ ┣ 📂Pet
+ ┃ ┃ ┃ ┃ ┣ 📜PetAddDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜PetAllDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜PetProfilePatchDTO.swift
+ ┃ ┃ ┃ ┃ ┗ 📜PetSpacialProfileDTO.swift
+ ┃ ┃ ┃ ┣ 📂Product
+ ┃ ┃ ┃ ┃ ┣ 📜ProductLikeDTO.swift
+ ┃ ┃ ┃ ┃ ┗ 📜ProductTagDTO.swift
+ ┃ ┃ ┃ ┣ 📂Record
+ ┃ ┃ ┃ ┃ ┣ 📜RecordDeleteDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜RecordGenerateDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜RecordListDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜RecordQuestionDTO.swift
+ ┃ ┃ ┃ ┃ ┗ 📜RecordResultDTO.swift
+ ┃ ┃ ┃ ┣ 📂Tips
+ ┃ ┃ ┃ ┃ ┣ 📜TipGenerateDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜TipLikeDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜TipReportDTO.swift
+ ┃ ┃ ┃ ┃ ┗ 📜TipScrapDTO.swift
+ ┃ ┃ ┃ ┣ 📂Todo
+ ┃ ┃ ┃ ┃ ┣ 📜TodoAnotherDayDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜TodoCalendarDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜TodoCompletionDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜TodoDeleteDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜TodoGenerateDTO.swift
+ ┃ ┃ ┃ ┃ ┣ 📜TodoInfoDTO.swift
+ ┃ ┃ ┃ ┃ ┗ 📜TodoPatchDTO.swift
+ ┃ ┃ ┃ ┗ 📜EmptyResponse.swift
+ ┃ ┃ ┣ 📂Domain
+ ┃ ┃ ┃ ┣ 📂Agreement
+ ┃ ┃ ┃ ┃ ┣ 📜AgreementData.swift
+ ┃ ┃ ┃ ┃ ┗ 📜AgreementDetailData.swift
+ ┃ ┃ ┃ ┣ 📂Diagnostics
+ ┃ ┃ ┃ ┃ ┣ 📜DiagnosticValue.swift
+ ┃ ┃ ┃ ┃ ┗ 📜JournalListCardData.swift
+ ┃ ┃ ┃ ┣ 📂MyPage
+ ┃ ┃ ┃ ┃ ┣ 📜MyPageInfoData.swift
+ ┃ ┃ ┃ ┃ ┗ 📜WriteFormConfig.swift
+ ┃ ┃ ┃ ┣ 📂OAuth
+ ┃ ┃ ┃ ┃ ┣ 📜AppleUserData.swift
+ ┃ ┃ ┃ ┃ ┗ 📜SignUpData.swift
+ ┃ ┃ ┃ ┣ 📂Profile
+ ┃ ┃ ┃ ┃ ┣ 📜ButtonOption.swift
+ ┃ ┃ ┃ ┃ ┣ 📜CreateProfileFieldValue.swift
+ ┃ ┃ ┃ ┃ ┗ 📜PetVarietyData.swift
+ ┃ ┃ ┃ ┗ 📂QnA
+ ┃ ┃ ┃ ┃ ┣ 📜QnAFaqData.swift
+ ┃ ┃ ┃ ┃ ┗ 📜TipsButtonOption.swift
+ ┃ ┃ ┣ 📜ResponseData.swift
+ ┃ ┃ ┗ 📜ResponseDataProtocol.swift
+ ┃ ┣ 📂Modules
+ ┃ ┃ ┣ 📂AppFlow
+ ┃ ┃ ┃ ┣ 📂Login
+ ┃ ┃ ┃ ┃ ┣ 📂ViewModels
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜LoginViewModel.swift
+ ┃ ┃ ┃ ┃ ┗ 📂Views
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜LoginView.swift
+ ┃ ┃ ┃ ┣ 📂Onboarding
+ ┃ ┃ ┃ ┃ ┗ 📜OnboardingView.swift
+ ┃ ┃ ┃ ┣ 📂Profile
+ ┃ ┃ ┃ ┃ ┣ 📂ViewModel
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ProfileFormViewModel.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜ProfileViewModel.swift
+ ┃ ┃ ┃ ┃ ┗ 📂Views
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ProfileFormView.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ProfileView.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜VarietySearchView.swift
+ ┃ ┃ ┃ ┗ 📂SignUp
+ ┃ ┃ ┃ ┃ ┣ 📂ViewModels
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜SignUpViewModel.swift
+ ┃ ┃ ┃ ┃ ┗ 📂Views
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜AgreementSheeetView.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜SignUpView.swift
+ ┃ ┃ ┗ 📂Tab
+ ┃ ┃ ┃ ┣ 📂Diagnostics
+ ┃ ┃ ┃ ┃ ┣ 📂VIews
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂DiagnosticList
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜DiagnosticLoadingView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜DiagnosticResultView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜DiagnosticTowerListView.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂JournalList
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜JournalListView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜JournalResultCheckView.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂JournalRegist
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜JournalQuestionView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜JournalRegistContents.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜JournalRegistView.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜DiagnosticsView.swift
+ ┃ ┃ ┃ ┃ ┗ 📂ViewModel
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜DiagnosticResultViewModel.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜JournalListViewModel.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜JournalRegistViewModel.swift
+ ┃ ┃ ┃ ┣ 📂Home
+ ┃ ┃ ┃ ┃ ┣ 📂ViewModel
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜HomeProfileCardViewModel.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜HomeRecommendViewModel.swift
+ ┃ ┃ ┃ ┃ ┗ 📂Views
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂DragView
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜HomeAIProductView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜HomeDragView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜HomeTodoView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜HomeTopView.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜HomeView.swift
+ ┃ ┃ ┃ ┣ 📂MyPage
+ ┃ ┃ ┃ ┃ ┣ 📂ViewModels
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜DeleteAccountViewModel.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜InquireViewModel.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜MyPageViewModel.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜MyScrapTipsViewModel.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜MyTipsViewModel.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜ReportViewModel.swift
+ ┃ ┃ ┃ ┃ ┗ 📂Views
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂AccountInfo
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜DeleteAccountView.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂AppInfo
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜PrivacyAndPoliciesView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜PrivacyDetailView.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂TipsScrapViews
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜MyScrapTipsView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜MyTipsView.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂UsageInfo
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂Form
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AgreementSheetView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜WriteFormView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂Inquire
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂MyInquire
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜MyInquireDetailView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜MyInquireView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜InquireView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂Report
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ReportDetailView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ReportView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂WriteView
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜InquireWriteView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ReportWriteView.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜MyPageView.swift
+ ┃ ┃ ┃ ┣ 📂Q&A
+ ┃ ┃ ┃ ┃ ┣ 📂ViewModel
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜FAQViewModel.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜TipsViewModel.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜TipsWriteViewModel.swift
+ ┃ ┃ ┃ ┃ ┗ 📂Views
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂FAQ
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜FAQItemView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜FAQView.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂TIPS
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜TipsView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜WriteTipsView.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜QnAView.swift
+ ┃ ┃ ┃ ┣ 📂Recommend
+ ┃ ┃ ┃ ┃ ┣ 📂ViewModel
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜RecommendationProductViewModel.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜SerchViewModel.swift
+ ┃ ┃ ┃ ┃ ┗ 📂Views
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂Search
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RealTiemSearchView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜RecentSearchView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜SearchResultView.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ProductSheetView.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜RecommendSearchView.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜RecommendView.swift
+ ┃ ┃ ┃ ┣ 📂Schedule
+ ┃ ┃ ┃ ┃ ┣ 📂ViewModel
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜CalendarViewViewModel.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜HomeTodoViewModel.swift
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ScheduleViewModel.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜TodoCheckViewModel.swift
+ ┃ ┃ ┃ ┃ ┗ 📂Views
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂SheetView
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜DatePickerSheetView.swift
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜TodoOptionSheetView.swift
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜ScheduleView.swift
+ ┃ ┃ ┃ ┗ 📜TtakeunTab.swift
+ ┃ ┣ 📂Network
+ ┃ ┃ ┣ 📂Protocol
+ ┃ ┃ ┃ ┣ 📂Auth
+ ┃ ┃ ┃ ┃ ┣ 📜AuthServiceProtocol.swift
+ ┃ ┃ ┃ ┃ ┗ 📜AuthUseCaseProtocol.swift
+ ┃ ┃ ┃ ┣ 📂Common
+ ┃ ┃ ┃ ┃ ┣ 📜APITargetType.swift
+ ┃ ┃ ┃ ┃ ┗ 📜BaseAPIService.swift
+ ┃ ┃ ┃ ┣ 📂Diagnose
+ ┃ ┃ ┃ ┃ ┣ 📜DiagnoseServiceProtocol.swift
+ ┃ ┃ ┃ ┃ ┗ 📜DiagnoseUseCaseProtocol.swift
+ ┃ ┃ ┃ ┣ 📂MyPage
+ ┃ ┃ ┃ ┃ ┣ 📜MyPageServiceProtocol.swift
+ ┃ ┃ ┃ ┃ ┗ 📜MyPageUseCaseProtocol.swift
+ ┃ ┃ ┃ ┣ 📂PetProfile
+ ┃ ┃ ┃ ┃ ┣ 📜PetProfileServiceProtocol.swift
+ ┃ ┃ ┃ ┃ ┗ 📜PetProfileUseCaseProtocol.swift
+ ┃ ┃ ┃ ┣ 📂Product
+ ┃ ┃ ┃ ┃ ┣ 📜ProductServiceProtocol.swift
+ ┃ ┃ ┃ ┃ ┗ 📜ProductUseCaseProtocol.swift
+ ┃ ┃ ┃ ┣ 📂Record
+ ┃ ┃ ┃ ┃ ┣ 📜RecordServiceProtocol.swift
+ ┃ ┃ ┃ ┃ ┗ 📜RecordUseCaseProtocol.swift
+ ┃ ┃ ┃ ┣ 📂Tips
+ ┃ ┃ ┃ ┃ ┣ 📜TipServiceProtocol.swift
+ ┃ ┃ ┃ ┃ ┗ 📜TipUseCaseProtocol.swift
+ ┃ ┃ ┃ ┗ 📂Todo
+ ┃ ┃ ┃ ┃ ┣ 📜TodoServiceProtocol.swift
+ ┃ ┃ ┃ ┃ ┗ 📜TodoUseCaseProtocol.swift
+ ┃ ┃ ┣ 📂Router
+ ┃ ┃ ┃ ┣ 📜AuthRouter.swift
+ ┃ ┃ ┃ ┣ 📜DiagnoseRouter.swift
+ ┃ ┃ ┃ ┣ 📜MyPageRouter.swift
+ ┃ ┃ ┃ ┣ 📜PetRouter.swift
+ ┃ ┃ ┃ ┣ 📜ProductRouter.swift
+ ┃ ┃ ┃ ┣ 📜RecordRouter.swift
+ ┃ ┃ ┃ ┣ 📜TipRouter.swift
+ ┃ ┃ ┃ ┗ 📜TodoRouter.swift
+ ┃ ┃ ┣ 📂Service
+ ┃ ┃ ┃ ┣ 📜AuthService.swift
+ ┃ ┃ ┃ ┣ 📜DiagnoseService.swift
+ ┃ ┃ ┃ ┣ 📜MyPageService.swift
+ ┃ ┃ ┃ ┣ 📜PetProfileService.swift
+ ┃ ┃ ┃ ┣ 📜ProductService.swift
+ ┃ ┃ ┃ ┣ 📜RecordService.swift
+ ┃ ┃ ┃ ┣ 📜TipService.swift
+ ┃ ┃ ┃ ┗ 📜TodoService.swift
+ ┃ ┃ ┣ 📂Social
+ ┃ ┃ ┃ ┣ 📜AppleLoginManager.swift
+ ┃ ┃ ┃ ┗ 📜KakaoLoginManager.swift
+ ┃ ┃ ┣ 📂Usecase
+ ┃ ┃ ┃ ┣ 📜AuthUseCase.swift
+ ┃ ┃ ┃ ┣ 📜DiagnoseUseCase.swift
+ ┃ ┃ ┃ ┣ 📜MyPageUseCase.swift
+ ┃ ┃ ┃ ┣ 📜PetProfileUseCase.swift
+ ┃ ┃ ┃ ┣ 📜ProductUseCase.swift
+ ┃ ┃ ┃ ┣ 📜RecordUseCase.swift
+ ┃ ┃ ┃ ┣ 📜TipUseCase.swift
+ ┃ ┃ ┃ ┗ 📜TodoUseCase.swift
+ ┃ ┃ ┗ 📂Util
+ ┃ ┃ ┃ ┣ 📂TokenRefresher
+ ┃ ┃ ┃ ┃ ┣ 📜APIManager.swift
+ ┃ ┃ ┃ ┃ ┣ 📜AccessTokenRefresher.swift
+ ┃ ┃ ┃ ┃ ┣ 📜RedirectTraceHandler.swift
+ ┃ ┃ ┃ ┃ ┗ 📜TokenProvider.swift
+ ┃ ┃ ┃ ┣ 📜Config.swift
+ ┃ ┃ ┃ ┗ 📜Secret.xcconfig
+ ┃ ┣ 📂Preview Content
+ ┃ ┃ ┗ 📂Preview Assets.xcassets
+ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┣ 📂Resources
+ ┃ ┃ ┣ 📂Assets
+ ┃ ┃ ┃ ┣ 📂Assets.xcassets
+ ┃ ┃ ┃ ┃ ┣ 📂AccentColor.colorset
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂AppIcon.appiconset
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜1024.png
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜114.png
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜120 1.png
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜120.png
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜180.png
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜40.png
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜58.png
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜60.png
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜80.png
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜87.png
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Diag
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂aiPen.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜aiPen.png
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂answerCheck.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜answerCheck.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂answerNotCheck.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜answerNotCheck.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂bonesFifth.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜bones5.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂bonesFirst.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜bones1.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂bonesFourth.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜bones4.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂bonesSecond.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜bones2.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂bonesThird.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜bones3.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂bubbleLogo.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜bubbleLogo.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂buttonClaw.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜buttonClaw.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂buttonEar.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜buttonEar.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂buttonEye.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜buttonEye.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂buttonHair.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜buttonHair.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂buttonTeeth.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜buttonTeeth.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂diagnosingBg.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜diagnosingBg.png
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂diagnosisTopBg.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜diagnosisTopBg.png
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂imageRemove.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜imageRemove.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂leftCat.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜leftCat.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂noJournal.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜noJournal.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂pen.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜pen.png
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂rightDog.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜rightDog.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂trash.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜trash.pdf
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂ETC
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂alarm.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜alarm.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂camera.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜petCamera.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂deleteText.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜deleteText.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂glass.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜glass.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂setting.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜setting.pdf
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Home
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂changeCard.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜change.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂pencil.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Group 7114.pdf
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Login
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂Logo.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Logo.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂appleLogin.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜appleLogin.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂bottomArrow.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜bottomArrow.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂kakaoButton.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜kakaoButton.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂logoBackground.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜logoBackground.pdf
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Mypage
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂scrap.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Vector2.png
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂tips.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Vector.png
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Profile
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂profileCat.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ProfileCat.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂profileDog.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ProfileDog.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂togetherPet.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜togetherPet.pdf
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂ProfileMake
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂check.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Frame 7405.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂uncheck.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Group 7136.pdf
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂QnA
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂DotsY.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜DotsY.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂bottomRightTag.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜bottomRightTag.pdf
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Recommend
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂bottomRank.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜bottomRank.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂recommendDog.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜image 125.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂topRank.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜topRank.pdf
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Schedule
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂againIcon.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜againIcon.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂anotherIcon.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜anotherIcon.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂downArrow.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Icon.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂heart.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜heart.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂hinghing.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜hinghing.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂minus.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Frame 7642.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂neutral.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜neutral.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂plus.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜plus.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂replaceIcon.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜replace.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂sad.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜sad.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂smile.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜smile.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂soso.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜soso.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂todoPlus.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜todoPlus.pdf
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Tab
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂diagnosis.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜diagnosis.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂home.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜home.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂qna.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜qna.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂schedule.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜schedule.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂suggestion.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜suggestion.pdf
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Todo
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂checkBox.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜checkBox.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂checkV.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜checkV.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂homeClaw.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜image 97.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂homeEar.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜image 96.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂homeEye.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜image 99.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂homeHair.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜image 98.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂homeTeeth.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜image 100.pdf
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂unCheckBox.imageset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜unCheckBox.pdf
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┗ 📂Color.xcassets
+ ┃ ┃ ┃ ┃ ┣ 📂Border
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂grayBorder.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Diagnosis
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂answerBg.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂checkBg.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂modal.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂postBg.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂ETC
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂alertNo.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂customAlert.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂onBoarding.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Gray
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂gray200.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂gray300.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂gray400.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂gray500.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂gray600.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂gray700.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂gray800.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂gray900.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Primary
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂mainPrimary.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂primarycolor100.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂primarycolor200.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂primarycolor300.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂primarycolor400.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂primarycolor500.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂primarycolor600.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂primarycolor700.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Profile
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂card001.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂card002.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂card003.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂card004.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂card005.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂redStar.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂subProfileColor.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Q&A
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂btnBg.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂floatingBtn.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂listDivde.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Recommend
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂searchBg.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Schedule
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂completionFront.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂removeBtn.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂scheduleBg.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┣ 📂Todo
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂afterClaw.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂afterEar.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂afterEye.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂afterHair.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂afterTeeth.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂beforeClaw.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂beforeEar.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂beforeEye.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂beforeHair.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂beforeTeeth.colorset
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┣ 📂EnvironmentKey
+ ┃ ┃ ┃ ┣ 📜AlertEnvironmentKey.swift
+ ┃ ┃ ┃ ┗ 📜AppFlowEnvironmentKey.swift
+ ┃ ┃ ┣ 📂Extension
+ ┃ ┃ ┃ ┣ 📜DataFormatter+month.swift
+ ┃ ┃ ┃ ┣ 📜Date+Format.swift
+ ┃ ┃ ┃ ┣ 📜Encodable+Moya.swift
+ ┃ ┃ ┃ ┣ 📜Encodable+Multipart.swift
+ ┃ ┃ ┃ ┣ 📜Navigation+Swipe.swift
+ ┃ ┃ ┃ ┣ 📜Pulisher+Moya.swift
+ ┃ ┃ ┃ ┣ 📜String+Format.swift
+ ┃ ┃ ┃ ┣ 📜String+HTML.swift
+ ┃ ┃ ┃ ┣ 📜UITabBar+shadow.swift
+ ┃ ┃ ┃ ┣ 📜View+Keyboard.swift
+ ┃ ┃ ┃ ┣ 📜View+ScreenSize.swift
+ ┃ ┃ ┃ ┗ 📜View+TapGesture.swift
+ ┃ ┃ ┣ 📂Fonts
+ ┃ ┃ ┃ ┣ 📜Font.swift
+ ┃ ┃ ┃ ┣ 📜HSSanTokki.ttf
+ ┃ ┃ ┃ ┣ 📜SUIT-Bold.otf
+ ┃ ┃ ┃ ┣ 📜SUIT-ExtraBold.otf
+ ┃ ┃ ┃ ┣ 📜SUIT-ExtraLight.otf
+ ┃ ┃ ┃ ┣ 📜SUIT-Heavy.otf
+ ┃ ┃ ┃ ┣ 📜SUIT-Light.otf
+ ┃ ┃ ┃ ┣ 📜SUIT-Medium.otf
+ ┃ ┃ ┃ ┣ 📜SUIT-Regular.otf
+ ┃ ┃ ┃ ┣ 📜SUIT-SemiBold.otf
+ ┃ ┃ ┃ ┗ 📜SUIT-Thin.otf
+ ┃ ┃ ┣ 📂KeyChain
+ ┃ ┃ ┃ ┣ 📜KeyChainManager.swift
+ ┃ ┃ ┃ ┗ 📜UserInfo.swift
+ ┃ ┃ ┣ 📂Modifier
+ ┃ ┃ ┃ ┣ 📜AlertModifier.swift
+ ┃ ┃ ┃ ┣ 📜CapsuleModifier.swift
+ ┃ ┃ ┃ ┣ 📜CustomCardModifier.swift
+ ┃ ┃ ┃ ┣ 📜CustomTextFieldModifier.swift
+ ┃ ┃ ┃ ┣ 📜CustomToolBarModifier.swift
+ ┃ ┃ ┃ ┣ 📜JournalResultBoxModifier.swift
+ ┃ ┃ ┃ ┣ 📜LoadingOverlayModifier.swift
+ ┃ ┃ ┃ ┗ 📜SearchViewModifier.swift
+ ┃ ┃ ┗ 📂Shadow
+ ┃ ┃ ┃ ┗ 📜ShadowReuse.swift
+ ┃ ┣ 📜Info.plist
+ ┃ ┗ 📜ttakkeun.entitlements
+ ┗ 📂ttakkeun.xcodeproj
+ ┃ ┣ 📂project.xcworkspace
+ ┃ ┃ ┣ 📂xcshareddata
+ ┃ ┃ ┃ ┗ 📂swiftpm
+ ┃ ┃ ┃ ┃ ┣ 📂configuration
+ ┃ ┃ ┃ ┃ ┗ 📜Package.resolved
+ ┃ ┃ ┣ 📂xcuserdata
+ ┃ ┃ ┃ ┣ 📂apple.xcuserdatad
+ ┃ ┃ ┃ ┃ ┗ 📜UserInterfaceState.xcuserstate
+ ┃ ┃ ┃ ┗ 📂euijjang97.xcuserdatad
+ ┃ ┃ ┃ ┃ ┗ 📜UserInterfaceState.xcuserstate
+ ┃ ┃ ┗ 📜contents.xcworkspacedata
+ ┃ ┣ 📂xcshareddata
+ ┃ ┃ ┗ 📂xcschemes
+ ┃ ┃ ┃ ┗ 📜ttakkeun.xcscheme
+ ┃ ┣ 📂xcuserdata
+ ┃ ┃ ┗ 📂euijjang97.xcuserdatad
+ ┃ ┃ ┃ ┗ 📂xcdebugger
+ ┃ ┃ ┃ ┃ ┗ 📜Breakpoints_v2.xcbkptlist
+ ┃ ┗ 📜project.pbxproj
 ```

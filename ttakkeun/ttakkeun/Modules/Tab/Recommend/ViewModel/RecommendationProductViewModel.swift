@@ -27,7 +27,9 @@ class RecommendationProductViewModel: TapGestureProduct, ProductUpdate {
     
     // MARK: - Property
     var aiProducts: [ProductResponse] = []
-    var recommendProducts: [ProductResponse] = []
+    var recommendProducts: [ProductResponse] = [
+        .init(productId: 1, title: "asdhasldhsaldjhdjhkjahdksjhdakjhdsakhdsjdhskdhjhdakjhdaksjhdaskjdhakjsdhaksjhdkjadhh", image: "s", price: 0, brand: nil, purchaseLink: "1", category1: "1", category2: "1", category3: "2", category4: "3", totalLike: 1, likeStatus: true)
+    ]
     var selectedData: ProductResponse? = nil
     var selectedCategory: ExtendPartItem = .all
     var selectedSource: RecommendProductType = .none

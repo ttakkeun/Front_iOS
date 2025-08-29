@@ -78,8 +78,8 @@ struct RecommendView: View {
             .presentationCornerRadius(UIConstants.sheetCornerRadius)
         })
         .task {
-//            loadInitialData()
-//            viewModel.getAIProucts()
+            loadInitialData()
+            viewModel.getAIProucts()
         }
         .onChange(of: viewModel.selectedCategory, {
             loadInitialData()
@@ -231,12 +231,10 @@ struct RecommendView: View {
                 })
                 .handleTapGesture(with: viewModel, data: viewModel.recommendProducts[index], source: .userProduct)
                 .onAppear {
-//                    rankCardTaskAction(product: product)
+                    rankCardTaskAction(product: product)
                 }
             }
         })
-        .fixedSize()
-        
         
         if viewModel.isLoadingUserProduct || viewModel.isLoadingRankTagProduct {
             HStack {
