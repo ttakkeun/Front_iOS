@@ -13,6 +13,7 @@ import Kingfisher
 struct AIRecommendProductCard: View {
     
     // MARK: - Property
+    @State private var loadFailed = false
     let data: ProductResponse
     
     // MARK: - Constants
@@ -57,22 +58,32 @@ struct AIRecommendProductCard: View {
     /// 추천 상품 이미지
     @ViewBuilder
     private var productImage: some View {
-        if let url = URL(string: data.image) {
+        if let url = URL(string: data.image), !loadFailed {
             KFImage(url)
                 .placeholder {
-                    Image(systemName: AIRecommendConstants.imagePlacholder)
-                        .resizable()
-                        .frame(width: AIRecommendConstants.imageSize, height: AIRecommendConstants.imageSize)
+                    notConnectUrlImage
                 }.retry(maxCount: AIRecommendConstants.maxCount, interval: .seconds(AIRecommendConstants.retryInterval))
-                .onFailure{ _ in
-                    print("AI 추천 상품 이미지 로딩 실패")
+                .onFailure { _ in
+                    loadFailed = true
                 }
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(maxWidth: AIRecommendConstants.imageWidth, maxHeight: AIRecommendConstants.imageHeight)
                 .clipShape(RoundedRectangle(cornerRadius: AIRecommendConstants.cornerRadius))
                 .padding(AIRecommendConstants.defaultPadding)
+        } else {
+            notConnectUrlImage
         }
+    }
+    
+    /// URL 접속 실패 시 보이는 이미지
+    private var notConnectUrlImage: some View {
+        Image(systemName: AIRecommendConstants.imagePlacholder)
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(maxWidth: AIRecommendConstants.imageWidth, maxHeight: AIRecommendConstants.imageHeight)
+            .clipShape(RoundedRectangle(cornerRadius: AIRecommendConstants.cornerRadius))
+            .padding(AIRecommendConstants.defaultPadding)
     }
     
     /// 상품 설명
@@ -94,6 +105,6 @@ struct AIRecommendProductCard: View {
 
 struct AIRecommendedProductCard_Preview: PreviewProvider {
     static var previews: some View {
-        AIRecommendProductCard(data: ProductResponse(productId: 1, title: "샤이닝펫 실키<b>헤어</b> 디탱글러 <b>강아지</b> 미스트 엉킨털 정리 정전기 윤기 보습 200ml, 1개", image: "https://shopping-phinf.pstatic.net/main_2099178/20991784508.20191001111748.jpg", price: 8780, brand: "아모스", purchaseLink: "https://search.shopping.naver.com/catalog/20991784508", category1: "화장품/미용", category2: "헤어케어", category3: "샴푸", category4: "", totalLike: nil, likeStatus: false))
+        AIRecommendProductCard(data: ProductResponse(productId: 1, title: "샤이닝펫 실키<b>헤어</b> 디탱글러 <b>강아지</b> 미스트 엉킨털 정리 정전기 윤기 보습 200ml, 1개", image: "xx", price: 8780, brand: "아모스", purchaseLink: "https://search.shopping.naver.com/catalog/20991784508", category1: "화장품/미용", category2: "헤어케어", category3: "샴푸", category4: "", totalLike: nil, likeStatus: false))
     }
 }

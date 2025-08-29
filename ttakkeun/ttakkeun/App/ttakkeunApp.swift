@@ -22,28 +22,30 @@ struct ttakkeunApp: App {
     
     var body: some Scene {
         WindowGroup {
-            switch appFlowViewModel.appState {
-            case .onBoarding:
-                OnboardingView()
-                    .environment(\.appFlow, appFlowViewModel)
-            case .login:
-                LoginView(container: container, appFlowViewModel: appFlowViewModel)
-                    .environmentObject(container)
-                    .environment(\.appFlow, appFlowViewModel)
-                    .onOpenURL(perform: { url in
-                        if (AuthApi.isKakaoTalkLoginUrl(url)) {
-                            _ = AuthController.handleOpenUrl(url: url)
-                        }
-                    })
-            case .profile:
-                ProfileView(container: container)
-                    .environmentObject(container)
-                    .environment(\.appFlow, appFlowViewModel)
-            case .tabView:
-                TtakeunTab()
-                    .environmentObject(container)
-                    .environment(\.appFlow, appFlowViewModel)
-            }
+            RecommendView(container: DIContainer())
+                .environmentObject(DIContainer())
+//            switch appFlowViewModel.appState {
+//            case .onBoarding:
+//                OnboardingView()
+//                    .environment(\.appFlow, appFlowViewModel)
+//            case .login:
+//                LoginView(container: container, appFlowViewModel: appFlowViewModel)
+//                    .environmentObject(container)
+//                    .environment(\.appFlow, appFlowViewModel)
+//                    .onOpenURL(perform: { url in
+//                        if (AuthApi.isKakaoTalkLoginUrl(url)) {
+//                            _ = AuthController.handleOpenUrl(url: url)
+//                        }
+//                    })
+//            case .profile:
+//                ProfileView(container: container)
+//                    .environmentObject(container)
+//                    .environment(\.appFlow, appFlowViewModel)
+//            case .tabView:
+//                TtakeunTab()
+//                    .environmentObject(container)
+//                    .environment(\.appFlow, appFlowViewModel)
+//            }
         }
     }
 }

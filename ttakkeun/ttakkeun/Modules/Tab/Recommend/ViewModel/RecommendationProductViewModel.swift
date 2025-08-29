@@ -203,3 +203,4 @@ class RecommendationProductViewModel: TapGestureProduct, ProductUpdate {
             .store(in: &cancellables)
     }
 }
+

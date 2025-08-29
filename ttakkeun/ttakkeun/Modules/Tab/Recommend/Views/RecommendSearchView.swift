@@ -14,6 +14,7 @@ struct RecommendSearchView: View {
     @EnvironmentObject var container: DIContainer
     @State var viewModel: SearchViewModel
     @FocusState var isSearch: Bool
+    
     // MARK: - Constant
     fileprivate enum RecommendSearchConstants {
         static let cornerRadius: CGFloat = 20

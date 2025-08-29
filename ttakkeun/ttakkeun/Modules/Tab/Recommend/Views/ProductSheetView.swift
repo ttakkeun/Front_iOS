@@ -13,6 +13,7 @@ import UIKit
 struct ProductSheetView: View {
     
     // MARK: - Property
+    @State var isFailed: Bool = false
     @Binding var data: ProductResponse
     let action: () -> Void
     
@@ -67,20 +68,33 @@ struct ProductSheetView: View {
     /// 상품 이미지
     @ViewBuilder
     private var productImage: some View {
-        if let url = URL(string: data.image) {
+        if let url = URL(string: data.image), !isFailed {
             KFImage(url)
                 .placeholder {
-                    Image(systemName: ProductSheetConstants.loadImage)
-                        .resizable()
-                        .frame(width: ProductSheetConstants.imageSize, height: ProductSheetConstants.imageSize)
+                    notConnectedImage
                 }.retry(maxCount: ProductSheetConstants.imageMaxCount, interval: .seconds(ProductSheetConstants.imageTime))
+                .onFailure { _ in
+                    isFailed = true
+                }
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .padding(.vertical, ProductSheetConstants.imageVerticalPadding)
                 .frame(maxWidth: .infinity)
                 .frame(height: ProductSheetConstants.imageHeight)
                 .border(Color.gray200)
+        } else {
+            notConnectedImage
         }
+    }
+    
+    private var notConnectedImage: some View {
+        Image(systemName: ProductSheetConstants.loadImage)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .padding(.vertical, ProductSheetConstants.imageVerticalPadding)
+            .frame(maxWidth: .infinity)
+            .frame(height: ProductSheetConstants.imageHeight)
+            .border(Color.gray200)
     }
     
     // MARK: - MiddleContents

@@ -12,6 +12,7 @@ import Kingfisher
 struct RankRecommendCard: View {
     
     // MARK: - Property
+    @State var loadFailed: Bool = false
     @Binding var data: ProductResponse
     let rank: Int
     let action: () -> Void
@@ -62,13 +63,14 @@ struct RankRecommendCard: View {
     /// 상품 이미지
     @ViewBuilder
     private var productImage: some View {
-        if let url = URL(string: data.image) {
+        if let url = URL(string: data.image), !loadFailed {
             KFImage(url)
                 .placeholder {
-                    Image(systemName: RankRecommendCardConstants.loadingImage)
-                        .resizable()
-                        .frame(width: RankRecommendCardConstants.loadingImageSize, height: RankRecommendCardConstants.loadingImageSize)
+                    notConnectUrlImaeg
                 }.retry(maxCount: RankRecommendCardConstants.imageMaxCount, interval: .seconds(RankRecommendCardConstants.imageTime))
+                .onFailure { _ in
+                    loadFailed = true
+                }
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: RankRecommendCardConstants.imageSize, height: RankRecommendCardConstants.imageSize)
@@ -79,7 +81,22 @@ struct RankRecommendCard: View {
                         .fill(Color.clear)
                         .stroke(Color.gray200)
                 )
+        } else {
+            notConnectUrlImaeg
         }
+    }
+    
+    private var notConnectUrlImaeg: some View {
+        Image(systemName: RankRecommendCardConstants.loadingImage)
+            .resizable()
+            .frame(width: RankRecommendCardConstants.imageSize, height: RankRecommendCardConstants.imageSize)
+            .clipShape(RoundedRectangle(cornerRadius: RankRecommendCardConstants.cornerRadius))
+            .padding(RankRecommendCardConstants.imagePadding)
+            .overlay(
+                RoundedRectangle(cornerRadius: RankRecommendCardConstants.cornerRadius)
+                    .fill(Color.clear)
+                    .stroke(Color.gray200)
+            )
     }
     
     /// 랭크 태그
@@ -124,7 +141,7 @@ struct RankRecommendCard: View {
 
 #Preview {
     RankRecommendCard(data: .constant(
-        .init(productId: 0, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 1000, brand: "쿠핑", purchaseLink: "쿠핑", category1: "쿠핑", category2: "쿠핑", category3: "쿠핑", category4: "쿠핑", likeStatus: true)
+        .init(productId: 0, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>", image: "s", price: 1000, brand: "쿠핑", purchaseLink: "쿠핑", category1: "쿠핑", category2: "쿠핑", category3: "쿠핑", category4: "쿠핑", likeStatus: true)
     ), rank: 2, action: {
         print("hello")
     })

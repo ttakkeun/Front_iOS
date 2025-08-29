@@ -78,8 +78,8 @@ struct RecommendView: View {
             .presentationCornerRadius(UIConstants.sheetCornerRadius)
         })
         .task {
-            loadInitialData()
-            viewModel.getAIProucts()
+//            loadInitialData()
+//            viewModel.getAIProucts()
         }
         .onChange(of: viewModel.selectedCategory, {
             loadInitialData()
@@ -220,7 +220,7 @@ struct RecommendView: View {
         let array = Array($viewModel.recommendProducts.enumerated())
         
         LazyVStack(spacing: RecommendConstants.contentsVspacing, content: {
-            ForEach(array, id: \.offset) { index, product in
+            ForEach(array, id: \.offset) { index, $product in
                 RankRecommendCard(data: $viewModel.recommendProducts[index],
                                   rank: index,
                                   action: {
@@ -230,8 +230,8 @@ struct RecommendView: View {
                     )
                 })
                 .handleTapGesture(with: viewModel, data: viewModel.recommendProducts[index], source: .userProduct)
-                .task(id: viewModel.selectedCategory) {
-                    rankCardTaskAction(product: product)
+                .onAppear {
+//                    rankCardTaskAction(product: product)
                 }
             }
         })
@@ -250,13 +250,14 @@ struct RecommendView: View {
     
     /// 랭크별 아이템 액션
     /// - Parameter product: 랭크별 개별 아이템
-    private func rankCardTaskAction(product: Binding<ProductResponse>) {
-        if product.wrappedValue.id == viewModel.recommendProducts.last?.id && viewModel.canLoadMoarUserProduct {
-            if viewModel.selectedCategory == .all {
-                viewModel.getUserRecommendAll(page: viewModel.userProductPage)
-            } else {
-                viewModel.getUserRecommendTag(tag: viewModel.selectedCategory.toPartItemRawValue() ?? "EAR", page: viewModel.userProductPage)
-            }
+    private func rankCardTaskAction(product: ProductResponse) {
+        guard product.id == viewModel.recommendProducts.last?.id,
+              viewModel.canLoadMoarUserProduct
+        else { return }
+        if viewModel.selectedCategory == .all {
+            viewModel.getUserRecommendAll(page: viewModel.userProductPage)
+        } else {
+            viewModel.getUserRecommendTag(tag: viewModel.selectedCategory.toPartItemRawValue() ?? "EAR", page: viewModel.userProductPage)
         }
     }
 }
