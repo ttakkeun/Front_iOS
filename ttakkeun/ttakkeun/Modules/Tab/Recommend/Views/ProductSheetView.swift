@@ -151,7 +151,7 @@ struct ProductSheetView: View {
     /// 좋아요 및 가격 정보
     private var productPriceInfo: some View {
         HStack(content: {
-            LikeButton(data: $data, action: action )
+            LikeButton(data: $data, action: action)
             
             Spacer()
             

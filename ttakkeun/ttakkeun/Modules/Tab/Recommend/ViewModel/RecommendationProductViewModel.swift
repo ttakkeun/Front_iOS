@@ -27,9 +27,7 @@ class RecommendationProductViewModel: TapGestureProduct, ProductUpdate {
     
     // MARK: - Property
     var aiProducts: [ProductResponse] = []
-    var recommendProducts: [ProductResponse] = [
-        .init(productId: 1, title: "asdhasldhsaldjhdjhkjahdksjhdakjhdsakhdsjdhskdhjhdakjhdaksjhdaskjdhakjsdhaksjhdkjadhh", image: "s", price: 0, brand: nil, purchaseLink: "1", category1: "1", category2: "1", category3: "2", category4: "3", totalLike: 1, likeStatus: true)
-    ]
+    var recommendProducts: [ProductResponse] = []
     var selectedData: ProductResponse? = nil
     var selectedCategory: ExtendPartItem = .all
     var selectedSource: RecommendProductType = .none
@@ -56,16 +54,29 @@ class RecommendationProductViewModel: TapGestureProduct, ProductUpdate {
         case .aiProduct:
             if let index = aiProducts.firstIndex(where: { $0.id == updateProduct.id }) {
                 aiProducts[index] = updateProduct
+                selectedData?.likeStatus.toggle()
             }
         case .userProduct:
             if let index = recommendProducts.firstIndex(where: { $0.id == updateProduct.id }) {
                 recommendProducts[index] = updateProduct
+                selectedData?.likeStatus.toggle()
             }
         default:
             break
         }
     }
     
+    func getProduct(_ data: ProductResponse) -> ProductResponse {
+        switch self.selectedSource {
+        case .aiProduct:
+            return self.aiProducts.first(where: { $0.id == data.id }) ?? data
+        case .userProduct:
+            return self.recommendProducts.first(where: { $0.id == data.id }) ?? data
+        default:
+            return data
+        }
+    }
+   
     func startNewUserProductAll() {
         self.userProductPage = 0
         self.canLoadMoarUserProduct = true

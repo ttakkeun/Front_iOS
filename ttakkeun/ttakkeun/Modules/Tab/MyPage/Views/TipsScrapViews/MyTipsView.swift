@@ -28,17 +28,10 @@ struct MyTipsView: View {
     var body: some View {
         ScrollView(.vertical, content: {
             LazyVStack(spacing: MyTipsContents.contentsVspacing, content: {
-                ForEach($viewModel.myWriteTips, id: \.id) { $tip in
-                    TipsContentsCard(data: $tip, tipsType: .writeMyTips, deleteTipsAction: {
-                        viewModel.deleteTips(tipId: tip.tipId)
-                    }, reportActoin: { })
-                    .task(id: tip.id) {
-                        guard !viewModel.myWriteTips.isEmpty else { return }
-                        
-                        if tip == viewModel.myWriteTips.last && viewModel.canLoadMore {
-                            viewModel.getMyTips(page: viewModel.currentPage)
-                        }
-                    }
+                if viewModel.myWriteTips.isEmpty {
+                    NotRecommend(recommendType: .noMyWriteTip)
+                } else {
+                    myWriteTips
                 }
             })
         })
@@ -51,6 +44,21 @@ struct MyTipsView: View {
         .contentMargins(.horizontal, UIConstants.defaultSafeHorizon, for: .scrollContent)
         .task {
             viewModel.getMyTips(page: .zero)
+        }
+    }
+    
+    private var myWriteTips: some View {
+        ForEach($viewModel.myWriteTips, id: \.id) { $tip in
+            TipsContentsCard(data: $tip, tipsType: .writeMyTips, deleteTipsAction: {
+                viewModel.deleteTips(tipId: tip.tipId)
+            }, reportActoin: { })
+            .task(id: tip.id) {
+                guard !viewModel.myWriteTips.isEmpty else { return }
+                
+                if tip == viewModel.myWriteTips.last && viewModel.canLoadMore {
+                    viewModel.getMyTips(page: viewModel.currentPage)
+                }
+            }
         }
     }
 }

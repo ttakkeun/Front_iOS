@@ -69,7 +69,13 @@ class MyTipsViewModel {
                 case .failure(let failure):
                     print("GetMyScrapTips Failed: \(failure)")
                 }
-            }, receiveValue: { responseData in
+            }, receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                
+                if let index = myWriteTips.firstIndex(where: { $0.tipId == tipId }) {
+                    myWriteTips.remove(at: index)
+                }
+                
                 #if DEBUG
                 print("팁 삭제: \(responseData)")
                 #endif

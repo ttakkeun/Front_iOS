@@ -88,7 +88,7 @@ struct TipsView: View {
                 reportActoin: {
                     container.navigationRouter.push(to: .tips(.tipsReport(tipId: data.tipId)))
             })
-            .task {
+            .onAppear {
                 cardTaskActoin(data: data)
             }
         }
@@ -126,10 +126,8 @@ extension TipsView {
     /// 꿀팁카드 조회 시 무한 스크롤 액션
     /// - Parameter data: 꿀팁 카드 조회
     func cardTaskActoin(data: TipGenerateResponse) {
-        guard !viewModel.tipsResponse.isEmpty else { return }
-        if data == viewModel.tipsResponse.last && viewModel.canLoadMoreTips {
-            categoryAction()
-        }
+        guard data.id == viewModel.tipsResponse.last?.id, viewModel.canLoadMoreTips else { return }
+        categoryAction()
     }
     
     /// 꿀팁 카드 카테고리 별 액션 정리

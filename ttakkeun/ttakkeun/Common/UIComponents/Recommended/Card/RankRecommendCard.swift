@@ -135,13 +135,14 @@ struct RankRecommendCard: View {
             
             LikeButton(data: $data, action: action)
         })
+        .frame(maxWidth: .infinity, alignment: .leading)
         .frame(height: RankRecommendCardConstants.imageSize, alignment: .leading)
     }
 }
 
 #Preview {
     RankRecommendCard(data: .constant(
-        .init(productId: 0, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>asdlajdlkjlklsjljdlkjdlkasjdlajdlajdks", image: "s", price: 1000, brand: "쿠핑", purchaseLink: "쿠핑", category1: "쿠핑", category2: "쿠핑", category3: "쿠핑", category4: "쿠핑", likeStatus: true)
+        .init(productId: 0, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은", image: "s", price: 1000, brand: "쿠핑", purchaseLink: "쿠핑", category1: "쿠핑", category2: "쿠핑", category3: "쿠핑", category4: "쿠핑", likeStatus: true)
     ), rank: 2, action: {
         print("hello")
     })

@@ -100,7 +100,6 @@ class TipsViewModel {
     
     private func sendLikeStatusToServer(tipID: Int) {
         container.useCaseProvider.tipUseCase.executePatchLikeTip(tipId: tipID)
-            .validateResult()
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -190,7 +189,7 @@ class TipsViewModel {
                 }
             }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                getTipsData(responseData)
+                tipsResponse = responseData
             })
             .store(in: &cancellables)
     }

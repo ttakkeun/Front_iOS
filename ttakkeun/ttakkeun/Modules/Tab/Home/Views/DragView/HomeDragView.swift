@@ -31,6 +31,7 @@ struct HomeDragView: View {
         static let compactComponentVspacing: CGFloat = 24
         static let cornerRadius: CGFloat = 30
         static let threshold: CGFloat = 5
+        static let topSafeBottom: CGFloat = 40
         static let safeTopPadding: CGFloat = 8
         
         static let indicatorUpText: String = "chevron.up"
@@ -60,7 +61,7 @@ struct HomeDragView: View {
                     HomeTop(viewModel: homeRecommendViewModel, petType: petType)
                 })
             })
-            .contentMargins(.bottom, UIConstants.safeBottom, for: .scrollContent)
+            .contentMargins(.bottom, HomeDragConstants.topSafeBottom, for: .scrollContent)
         })
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .safeAreaPadding(.top, HomeDragConstants.safeTopPadding)

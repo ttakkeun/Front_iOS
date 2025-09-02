@@ -15,6 +15,7 @@ extension UITabBarController {
         tabBar.layer.shadowOffset = CGSize(width: 0, height: -2)
         tabBar.layer.shadowRadius = 6
         tabBar.layer.shadowOpacity = 0.2
+        tabBar.layer.borderColor = UIColor.clear.cgColor
     }
 
     open override func viewDidLoad() {

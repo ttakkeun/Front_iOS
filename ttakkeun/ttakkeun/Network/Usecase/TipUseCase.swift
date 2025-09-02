@@ -59,7 +59,7 @@ class TipUseCase: TipUseCaseProtocol {
         return service.deleteMyTipsData(tipId: tipId)
     }
     /// 팁 좋아요/취소 토글
-    func executePatchLikeTip(tipId: Int) -> AnyPublisher<ResponseData<TipLikeResponse>, Moya.MoyaError> {
+    func executePatchLikeTip(tipId: Int) -> AnyPublisher<TipLikeResponse, Moya.MoyaError> {
         return service.patchLikeTip(tipId: tipId)
     }
 }

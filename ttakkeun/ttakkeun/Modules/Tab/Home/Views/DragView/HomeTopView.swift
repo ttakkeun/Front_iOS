@@ -17,7 +17,6 @@ struct HomeTop: View {
     // MARK: - Constants
     fileprivate enum HomeTopConstants {
         static let gridSpacing: CGFloat = 11
-        static let columnSpacing: CGFloat = 6
         static let columnsCount: Int = 4
         static let prefixCount: Int = 8
     }
@@ -44,7 +43,7 @@ struct HomeTop: View {
     // MARK: - BottomContents
     @ViewBuilder
     private var bottomContents: some View {
-        let columns = Array(repeating: GridItem(.flexible(), spacing: HomeTopConstants.columnSpacing), count: HomeTopConstants.columnsCount)
+        let columns = Array(repeating: GridItem(.flexible()), count: HomeTopConstants.columnsCount)
         
         LazyVGrid(columns: columns, spacing: HomeTopConstants.gridSpacing, content: {
             ForEach(Array(viewModel.userProduct.prefix(HomeTopConstants.prefixCount).enumerated()), id: \.element) { index, data in

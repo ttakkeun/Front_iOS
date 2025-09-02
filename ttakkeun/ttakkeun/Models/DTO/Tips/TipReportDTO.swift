@@ -9,7 +9,7 @@ import Foundation
 
 struct TipReportRequest: Codable {
     let tip_id: Int
-    let report_category: ReportType
+    let report_category: String
     let report_detail: String
 }
 

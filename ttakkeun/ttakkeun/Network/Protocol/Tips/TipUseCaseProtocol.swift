@@ -21,5 +21,5 @@ protocol TipUseCaseProtocol {
     func executeGetTipsBestData() -> AnyPublisher<ResponseData<[TipGenerateResponse]>, MoyaError>
     func executeGetTipsAllData(page: Int) -> AnyPublisher<ResponseData<[TipGenerateResponse]>, MoyaError>
     func executeDeleteMyTipsData(tipId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
-    func executePatchLikeTip(tipId: Int) -> AnyPublisher<ResponseData<TipLikeResponse>, MoyaError>
+    func executePatchLikeTip(tipId: Int) -> AnyPublisher<TipLikeResponse, MoyaError>
 }

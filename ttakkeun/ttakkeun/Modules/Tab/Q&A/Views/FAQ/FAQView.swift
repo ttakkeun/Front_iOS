@@ -87,6 +87,7 @@ struct FAQView: View {
         })
         .contentMargins(.horizontal, UIConstants.defaultSafeHorizon, for: .scrollContent)
         .contentMargins(.bottom, UIConstants.horizonScrollBottomPadding, for: .scrollContent)
+        .scrollIndicators(.hidden)
     }
     
     // MARK: - MiddleContents

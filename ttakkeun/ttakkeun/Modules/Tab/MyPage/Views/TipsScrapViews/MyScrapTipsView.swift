@@ -27,27 +27,10 @@ struct MyScrapTipsView: View {
     var body: some View {
         ScrollView(.vertical, content: {
             LazyVStack(spacing: MyScrapTipsConstants.contentsVspacing, content: {
-                ForEach($viewModel.myScrapTips, id: \.id) { $tip in
-                    TipsContentsCard(
-                        data: $tip,
-                        tipsType: .scrapTips,
-                        tipsButtonOption: .init(
-                            heartAction: {
-                                viewModel.toggleLike(for: tip.tipId)
-                            },
-                            scrapAction: {
-                                viewModel.toggleBookMark(for: tip.tipId)
-                            }),
-                        reportActoin: {
-                        container.navigationRouter.push(to: .tips(.tipsReport(tipId: tip.tipId)))
-                    })
-                    .task(id: tip.id) {
-                        guard !viewModel.myScrapTips.isEmpty else { return}
-                        
-                        if tip == viewModel.myScrapTips.last && viewModel.canLoadMore {
-                            viewModel.getMyScrapTis(page: viewModel.currentPage)
-                        }
-                    }
+                if viewModel.myScrapTips.isEmpty {
+                    NotRecommend(recommendType: .noMyScrapTip)
+                } else {
+                    myScrapTips
                 }
             })
         })
@@ -60,6 +43,28 @@ struct MyScrapTipsView: View {
         .contentMargins(.horizontal, UIConstants.defaultSafeHorizon, for: .scrollContent)
         .task {
             viewModel.getMyScrapTis(page: .zero)
+        }
+    }
+    
+    private var myScrapTips: some View {
+        ForEach($viewModel.myScrapTips, id: \.id) { $tip in
+            TipsContentsCard(
+                data: $tip,
+                tipsType: .scrapTips,
+                tipsButtonOption: .init(
+                    heartAction: {
+                        viewModel.toggleLike(for: tip.tipId)
+                    },
+                    scrapAction: {
+                        viewModel.toggleBookMark(for: tip.tipId)
+                    }),
+                reportActoin: {
+                container.navigationRouter.push(to: .tips(.tipsReport(tipId: tip.tipId)))
+            })
+            .task {
+                guard tip == viewModel.myScrapTips.last && viewModel.canLoadMore else { return }
+                viewModel.getMyScrapTis(page: viewModel.currentPage)
+            }
         }
     }
 }

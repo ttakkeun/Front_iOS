@@ -77,7 +77,7 @@ class TipService: TipServiceProtocol, BaseAPIService {
     }
     
     /// 팁 좋아요/취소 토글
-    func patchLikeTip(tipId: Int) -> AnyPublisher<ResponseData<TipLikeResponse>, Moya.MoyaError> {
-        request(.patchLikeTip(tipId: tipId))
+    func patchLikeTip(tipId: Int) -> AnyPublisher<TipLikeResponse, Moya.MoyaError> {
+        requestNoDTO(.patchLikeTip(tipId: tipId))
     }
 }

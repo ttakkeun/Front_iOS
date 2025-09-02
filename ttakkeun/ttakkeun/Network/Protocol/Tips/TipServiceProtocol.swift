@@ -21,5 +21,5 @@ protocol TipServiceProtocol {
     func getTipsBestData() -> AnyPublisher<ResponseData<[TipGenerateResponse]>, MoyaError>
     func getTipsAllData(page: Int) -> AnyPublisher<ResponseData<[TipGenerateResponse]>, MoyaError>
     func deleteMyTipsData(tipId: Int) -> AnyPublisher<ResponseData<EmptyResponse>, MoyaError>
-    func patchLikeTip(tipId: Int) -> AnyPublisher<ResponseData<TipLikeResponse>, MoyaError>
+    func patchLikeTip(tipId: Int) -> AnyPublisher<TipLikeResponse, MoyaError>
 }

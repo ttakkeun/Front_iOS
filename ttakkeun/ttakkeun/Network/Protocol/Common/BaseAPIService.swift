@@ -26,4 +26,12 @@ extension BaseAPIService {
             .receive(on: callbackQueue)
             .eraseToAnyPublisher()
     }
+    
+    func requestNoDTO<T: Decodable>(_ target: Target) -> AnyPublisher<T, MoyaError> {
+        provider.requestPublisher(target)
+            .filterSuccessfulStatusCodes()
+            .map(T.self, using: decoder)
+            .receive(on: callbackQueue)
+            .eraseToAnyPublisher()
+    }
 }

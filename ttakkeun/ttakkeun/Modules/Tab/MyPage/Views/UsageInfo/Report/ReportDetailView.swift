@@ -42,8 +42,8 @@ struct ReportDetailView: View {
                 btnText: ReportDetailConstants.naviTitle,
                 height: ReportDetailConstants.btnHeight,
                 action: {
-                    viewModel.report(report: .init(tip_id: tipId, report_category: selectedCategory, report_detail: viewModel.contentsText))
-                    container.navigationRouter.popToRootView()
+                    viewModel.report(report: .init(tip_id: tipId, report_category: selectedCategory.text, report_detail: viewModel.contentsText))
+                    container.navigationRouter.pop()
                 },
                 color: selectedBtnName == nil ? Color.checkBg : Color.mainPrimary
             )

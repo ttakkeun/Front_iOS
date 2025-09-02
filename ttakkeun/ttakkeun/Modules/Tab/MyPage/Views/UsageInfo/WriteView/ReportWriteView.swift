@@ -30,7 +30,7 @@ struct ReportWriteView: View {
             images: $viewModel.selectedImage,
             type: .writeReport
         ) {
-            await viewModel.report(report: .init(tip_id: tipId, report_category: reportType, report_detail: viewModel.contentsText))
+            await viewModel.report(report: .init(tip_id: tipId, report_category: reportType.text, report_detail: viewModel.contentsText))
             await alert.trigger(type: .receivingReportAlert, showAlert: true, action: {
                 Task {
                     await container.navigationRouter.pop()

@@ -37,15 +37,24 @@ class MyScrapTipsViewModel {
     /// - Parameter tipID: 팁 아이디
     func toggleBookMark(for tipID: Int) {
         if let index = myScrapTips.firstIndex(where: { $0.tipId == tipID }) {
-            myScrapTips[index].isScrap.toggle()
-         
+            myScrapTips.remove(at: index)
+            
             sendBookMarkStatusToServer(tipID: tipID)
         }
     }
     
-    public func getMyScrapTis(page: Int) {
-        guard !isFetching, canLoadMore else { return }
+    private func refreshAction(refresh: Bool) {
+        if refresh {
+            currentPage = 0
+            myScrapTips.removeAll()
+            canLoadMore = true
+        }
+    }
+    
+    public func getMyScrapTis(page: Int, refresh: Bool = false) {
+        guard !isFetching, canLoadMore  || refresh else { return }
         isFetching = true
+        refreshAction(refresh: refresh)
         
         container.useCaseProvider.tipUseCase.executeGetMyScrapTipsData(page: page)
             .validateResult()
@@ -75,7 +84,6 @@ class MyScrapTipsViewModel {
     
     private func sendLikeStatusToServer(tipID: Int) {
         container.useCaseProvider.tipUseCase.executePatchLikeTip(tipId: tipID)
-            .validateResult()
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:

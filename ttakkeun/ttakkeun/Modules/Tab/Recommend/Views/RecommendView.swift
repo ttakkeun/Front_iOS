@@ -219,7 +219,7 @@ struct RecommendView: View {
     private var existRankRecommend: some View {
         let array = Array($viewModel.recommendProducts.enumerated())
         
-        LazyVStack(spacing: RecommendConstants.contentsVspacing, content: {
+        LazyVStack(alignment: .leading, spacing: RecommendConstants.contentsVspacing, content: {
             ForEach(array, id: \.offset) { index, $product in
                 RankRecommendCard(data: $viewModel.recommendProducts[index],
                                   rank: index,
@@ -295,9 +295,11 @@ extension RecommendView {
     /// - Returns: 상품 정보 반환
     func sheetBinding(product: ProductResponse) -> Binding<ProductResponse> {
         return Binding(
-            get: { product },
+            get: {
+                viewModel.getProduct(product)
+            },
             set: { updateProduct in
-                viewModel.updateProduct(product)
+                viewModel.updateProduct(updateProduct)
             }
         )
     }
@@ -309,4 +311,3 @@ struct RecommendView_Preview: PreviewProvider {
             .environmentObject(DIContainer())
     }
 }
-

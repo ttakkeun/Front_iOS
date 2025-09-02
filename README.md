@@ -1,4 +1,4 @@
-# 🚀 프로젝트 이름
+# 🚀 따끈
 
 ![따끈](https://github.com/user-attachments/assets/3faddf2a-fd27-4f5e-a09f-62525db0b39f)
 
