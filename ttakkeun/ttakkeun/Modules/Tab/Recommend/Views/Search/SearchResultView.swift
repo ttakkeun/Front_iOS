@@ -130,12 +130,9 @@ struct SearchResultView: View {
                         })
                     .handleTapGesture(with: viewModel, data: data, source: .searchLocalProduct)
                     
-                    .task(id: data.id) {
-                        guard !viewModel.localDbData.isEmpty else { return }
-                        
-                        if data == viewModel.localDbData.last && viewModel.canLoadMore {
-                            viewModel.searchLocalDb(keyword: viewModel.searchText, page: viewModel.localPage)
-                        }
+                    .task {
+                        guard data == viewModel.localDbData.last && viewModel.canLoadMore else { return }
+                        viewModel.searchLocalDb(keyword: viewModel.searchText, page: viewModel.localPage)
                     }
                 }
             })
@@ -181,7 +178,7 @@ struct SearchResultView: View {
     }
     
     private func sheetBinding(data: ProductResponse) -> Binding<ProductResponse> {
-        return  Binding(get: { data },
+        return  Binding(get: { viewModel.getProduct(data) },
                         set: { updateProduct in
             viewModel.updateProduct(updateProduct)
         })

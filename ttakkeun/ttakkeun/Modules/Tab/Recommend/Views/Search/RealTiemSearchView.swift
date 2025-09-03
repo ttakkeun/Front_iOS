@@ -37,18 +37,20 @@ struct RealTiemSearchView: View {
     // MARK: - Body
     var body: some View {
         if !viewModel.realTimeSearchResult.isEmpty {
-            List(content: {
-                ForEach(viewModel.realTimeSearchResult, id: \.id) { data in
-                    makeSearchingResultButton(data: data)
-                }
-                .listRowSeparator(.hidden)
-                .listRowInsets(EdgeInsets())
-            })
-            .listStyle(.plain)
-            .listRowSpacing(RealTiemSearchConstants.listRowSpacing)
+            searchResult
         } else {
             notRealtTimeSearchResult
         }
+    }
+    
+    private var searchResult: some View {
+        ScrollView(.vertical, content: {
+            LazyVStack(alignment: .leading, spacing: RealTiemSearchConstants.listRowSpacing, content: {
+                ForEach(viewModel.realTimeSearchResult, id: \.id) { data in
+                    makeSearchingResultButton(data: data)
+                }
+            })
+        })
     }
     
     /// 검색 데이터 존재하지 않을 시
@@ -114,6 +116,7 @@ struct RealTiemSearchView: View {
                 .multilineTextAlignment(.leading)
                 .lineSpacing(RealTiemSearchConstants.lineSpacing)
                 .foregroundStyle(Color.gray900)
+                .frame(maxWidth: .infinity, alignment: .leading)
             
             Text("\(infoText.1)원")
                 .font(.Body5_medium)

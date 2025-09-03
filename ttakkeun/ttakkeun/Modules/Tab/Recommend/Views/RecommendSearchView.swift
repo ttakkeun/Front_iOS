@@ -58,8 +58,14 @@ struct RecommendSearchView: View {
             self.isSearch.toggle()
         }
         .onChange(of: viewModel.searchText, { old, new in
-            viewModel.handleSearchTextChange(old, new)
+            if !viewModel.isManualSearch {
+                viewModel.handleSearchTextChange(old, new)
+            }
+            viewModel.isManualSearch = false
         })
+        .onSubmit {
+            viewModel.fetchRealTimeResults(for: viewModel.searchText)
+        }
     }
     
     // MARK: - TopContents
@@ -76,8 +82,10 @@ struct RecommendSearchView: View {
     
     private func performSearch(with text: String) {
         guard !text.isEmpty else { return }
+        isSearch = false
+        viewModel.isShowingRealTimeResults = false
+        viewModel.isManualSearch = true
         viewModel.fetchSearchResults(for: text)
-        viewModel.isShowingSearchResult = true
         viewModel.saveSearchTerm(text)
     }
     

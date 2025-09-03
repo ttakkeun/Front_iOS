@@ -24,21 +24,16 @@ struct LikeButton: View {
             }
         }, label: {
             HStack(spacing: 4, content: {
-                Group {
-                    Image(systemName: data.likeStatus ? "suit.heart.fill" : "suit.heart")
-                        .resizable()
-                        .renderingMode(.template)
-                        .frame(width: 18, height: 17)
-                    
-                    Text(countText(count: data.totalLike ?? 0))
-                        .frame(alignment: .leading)
-                        .multilineTextAlignment(.leading)
-                        .font(.Body3_medium)
-                }
-                .foregroundStyle(data.likeStatus ? Color.removeBtn : Color.gray600)
+                Image(systemName: data.likeStatus ? "suit.heart.fill" : "suit.heart")
+                    .resizable()
+                    .renderingMode(.template)
+                    .frame(width: 18, height: 17)
+                
+                Text(countText(count: data.totalLike ?? 0))
+                    .frame(width: 30, alignment: .leading)
+                    .font(.Body3_medium)
             })
-            .frame(alignment: .trailing)
-            .padding(.trailing, 10)
+            .foregroundStyle(data.likeStatus ? Color.removeBtn : Color.gray600)
         })
     }
     

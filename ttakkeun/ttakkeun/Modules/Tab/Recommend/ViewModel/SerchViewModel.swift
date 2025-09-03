@@ -11,7 +11,7 @@ import Combine
 @Observable
 class SearchViewModel: TapGestureProduct, ProductUpdate {
     // MARK: - StateProperty
-    var isShowingSearchResult: Bool = true
+    var isShowingSearchResult: Bool = false
     var isShowingRealTimeResults: Bool = false
     var isManualSearch: Bool = false
     var isFirstAppear: Bool = false
@@ -100,8 +100,18 @@ class SearchViewModel: TapGestureProduct, ProductUpdate {
         }
     }
     
+    func getProduct(_ data: ProductResponse) -> ProductResponse {
+        switch self.selectedSource {
+        case .searchNaverProduct:
+            return self.naverData.first(where: { $0.id == data.id }) ?? data
+        case .searchLocalProduct:
+            return self.localDbData.first(where: { $0.id == data.id }) ?? data
+        default:
+            return data
+        }
+    }
+    
     func fetchRealTimeResults(for query: String) {
-        isShowingRealTimeResults = true
         searchNaver(isRealTime: true, keyword: query)
         
 #if DEBUG
@@ -173,6 +183,7 @@ class SearchViewModel: TapGestureProduct, ProductUpdate {
             .validateResult()
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
+                defer { naverDataIsLoading = false }
                 switch completion {
                 case .finished:
                     print("SearchNaver Product Server Completed")
@@ -202,7 +213,7 @@ class SearchViewModel: TapGestureProduct, ProductUpdate {
                         naverDataIsLoading = false
                     }
                 }
-                print("SearchNaver Product Data: \(responseData)")
+                print("NaverData Product: \(self.naverData)")
             })
             .store(in: &cancellables)
     }

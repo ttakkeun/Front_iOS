@@ -27,7 +27,7 @@ struct RecentSearchView: View {
         
         static let noRecentSearch: String = "최근 검색어 내역이 없습니다."
         static let recentSearch: String = "최근 검색"
-        static let deleteSearchImage: String = "chevron.left"
+        static let deleteSearchImage: String = "xmark"
     }
     
     // MARK: - Body
