@@ -13,7 +13,7 @@ import Moya
 protocol TipServiceProtocol {
     func postTipReportData(report: TipReportRequest, images: [Data]?) -> AnyPublisher<ResponseData<TipReportResponse>, MoyaError>
     func postGenerateTipData(tip: TipGenerateRequest) -> AnyPublisher<ResponseData<TipGenerateResponse>, MoyaError>
-    func patchTipsImageData(tipId: Int, images: [Data]) -> AnyPublisher<ResponseData<String>, MoyaError>
+    func patchTipsImageData(tipId: Int, images: [Data]) -> AnyPublisher<ResponseData<[String]>, MoyaError>
     func patchTouchScrapData(tipId: Int) -> AnyPublisher<ResponseData<TipScrapResponse>, MoyaError>
     func getTipsPartData(cateogry: PartItem.RawValue, page: Int) -> AnyPublisher<ResponseData<[TipGenerateResponse]>, MoyaError>
     func getMyWriteTipsData(page: Int) -> AnyPublisher<ResponseData<[TipGenerateResponse]>, MoyaError>

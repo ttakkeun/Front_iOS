@@ -52,12 +52,9 @@ struct MyTipsView: View {
             TipsContentsCard(data: $tip, tipsType: .writeMyTips, deleteTipsAction: {
                 viewModel.deleteTips(tipId: tip.tipId)
             }, reportActoin: { })
-            .task(id: tip.id) {
-                guard !viewModel.myWriteTips.isEmpty else { return }
-                
-                if tip == viewModel.myWriteTips.last && viewModel.canLoadMore {
-                    viewModel.getMyTips(page: viewModel.currentPage)
-                }
+            .task {
+                guard tip == viewModel.myWriteTips.last && viewModel.canLoadMore else { return }
+                viewModel.getMyTips(page: viewModel.currentPage)
             }
         }
     }

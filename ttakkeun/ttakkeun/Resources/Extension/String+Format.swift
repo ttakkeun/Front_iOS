@@ -41,6 +41,22 @@ extension String {
         return dateFormatter.string(from: serverDate)
     }
     
+    func convertTipsToDate() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSS"
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        
+        guard let date = formatter.date(from: self) else {
+            return "알 수 없음"
+        }
+        
+        let koreanFormatter = DateFormatter()
+        koreanFormatter.dateFormat = "yyyy.MM.dd"
+        koreanFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        
+        return koreanFormatter.string(from: date)
+    }
+    
     func toHourMinuteString() -> String {
         let isoFormatter = ISO8601DateFormatter()
         isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
@@ -92,18 +108,30 @@ extension String {
     }
     
     var formattedDateString: String {
-            let inputFormatter = DateFormatter()
-            inputFormatter.locale = Locale(identifier: "en_US_POSIX")
-            inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-
-            let outputFormatter = DateFormatter()
-            outputFormatter.locale = Locale(identifier: "ko_KR")
-            outputFormatter.dateFormat = "yyyy.MM.dd"
-
-            guard let date = inputFormatter.date(from: self) else {
-                return self // 실패 시 원본 반환
-            }
-
-            return outputFormatter.string(from: date)
+        let inputFormatter = DateFormatter()
+        inputFormatter.locale = Locale(identifier: "en_US_POSIX")
+        inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        
+        let outputFormatter = DateFormatter()
+        outputFormatter.locale = Locale(identifier: "ko_KR")
+        outputFormatter.dateFormat = "yyyy.MM.dd"
+        
+        guard let date = inputFormatter.date(from: self) else {
+            return self // 실패 시 원본 반환
         }
+        
+        return outputFormatter.string(from: date)
+    }
+    
+    func middleCharacter() -> String {
+        let count = self.count
+        guard count >= 2 else { return self}
+        
+        var characters = Array(self)
+        let middleIndex = count / 2
+        
+        characters[middleIndex] = "*"
+        
+        return String(characters)
+    }
 }

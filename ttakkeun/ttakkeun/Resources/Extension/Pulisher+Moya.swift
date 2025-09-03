@@ -17,6 +17,11 @@ extension Publisher where Failure == MoyaError {
             guard response.isSuccess else {
                 throw MoyaError.underlying(APIError.serverError(message: response.message, code: response.code), nil)
             }
+            
+            if T.self == EmptyResponse.self {
+                return EmptyResponse() as! T
+            }
+            
             guard let result = response.result else {
                 throw MoyaError.underlying(APIError.emptyResult, nil)
             }

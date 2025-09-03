@@ -290,7 +290,7 @@ struct TipsContentsCard: View {
     /// 본인 작성 시 상태 표시
     private var myWriteTipsInfo: some View {
         HStack(spacing: TipsContentsConstants.myWriteHspacing, content: {
-            Text(data.createdAt.convertedToKoreanTimeDateString())
+            Text(data.createdAt.convertTipsToDate())
                 .font(.Body4_medium)
                 .foregroundStyle(Color.gray400)
             heartInfo
@@ -317,7 +317,7 @@ struct TipsContentsCard: View {
     private var scrapTipsInfo: some View {
         HStack(spacing: TipsContentsConstants.scrapHspacing, content: {
             Group {
-                Text(data.authorName)
+                Text(data.authorName.middleCharacter())
                 Text(data.createdAt.timeAgoFromServerTime())
             }
             .font(.Body4_medium)

@@ -21,7 +21,7 @@ struct FloatingCircle: View {
         static let floatingBgSize: CGSize = .init(width: 50, height: 50)
         static let floatingImageSize: CGSize = .init(width: 18, height: 18)
         
-        static let floatingPosition: CGSize = .init(width: 0.85, height: 0.8)
+        static let floatingPosition: CGSize = .init(width: 0.85, height: 0.7)
         static let rotationEffectDegree: Double = 45
         static let rotationAnimation: TimeInterval = 0.3
         static let floatingDelayTime: Double = 0.1

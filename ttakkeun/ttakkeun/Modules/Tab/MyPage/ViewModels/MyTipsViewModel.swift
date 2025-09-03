@@ -29,6 +29,13 @@ class MyTipsViewModel {
         self.container = container
     }
     
+    // MARK: - Common
+    public func initialFetch() {
+        self.currentPage = .zero
+        self.getMyTips(page: .zero)
+        self.canLoadMore = true
+    }
+    
     // MARK: - TipAPI
     public func getMyTips(page: Int) {
         guard !isFetching, canLoadMore else { return }
@@ -74,6 +81,7 @@ class MyTipsViewModel {
                 
                 if let index = myWriteTips.firstIndex(where: { $0.tipId == tipId }) {
                     myWriteTips.remove(at: index)
+                    self.initialFetch()
                 }
                 
                 #if DEBUG

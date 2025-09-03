@@ -82,7 +82,7 @@ extension TipRouter: APITargetType {
             return .uploadMultipart(parts)
         case .postGenerateTip(let tip):
             let params = try? tip.asDictionary()
-            return .requestParameters(parameters: params ?? [:], encoding: URLEncoding.default)
+            return .requestParameters(parameters: params ?? [:], encoding: URLEncoding.queryString)
         case .patchTipsImage(_, let imageData):
             let formData: [MultipartFormData] = imageData.enumerated().map { index, data in
                 MultipartFormData(

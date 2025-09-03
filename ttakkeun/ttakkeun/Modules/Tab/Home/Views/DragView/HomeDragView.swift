@@ -93,7 +93,22 @@ struct HomeDragView: View {
             .fill(Color.gray)
             .frame(width: HomeDragConstants.indicatorWidth, height: HomeDragConstants.indicatorHeight)
             .contentShape(Rectangle())
+            .onTapGesture {
+                toggleOffset(minOffset: minOffset, maxOffset: maxOffset, midPoint: midPoint)
+            }
             .gesture(dragGesture(minOffset: minOffset, maxOffset: maxOffset, midPoint: midPoint))
+            .accessibilityAddTraits(.isButton)
+    }
+    
+    private func toggleOffset(minOffset: CGFloat, maxOffset: CGFloat, midPoint: CGFloat) {
+        withAnimation(.easeInOut) {
+            if offset <= midPoint {
+                offset = minOffset
+            } else {
+                offset = maxOffset
+            }
+            lastOffset = offset
+        }
     }
     
     // MARK: - BottomContents

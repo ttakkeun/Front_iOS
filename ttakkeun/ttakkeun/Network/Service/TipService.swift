@@ -38,7 +38,7 @@ class TipService: TipServiceProtocol, BaseAPIService {
     }
     
     /// 팁 이미지 업로드
-    func patchTipsImageData(tipId: Int, images: [Data]) -> AnyPublisher<ResponseData<String>, Moya.MoyaError> {
+    func patchTipsImageData(tipId: Int, images: [Data]) -> AnyPublisher<ResponseData<[String]>, Moya.MoyaError> {
         request(.patchTipsImage(tipId: tipId, images: images))
     }
     

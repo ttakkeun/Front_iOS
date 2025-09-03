@@ -86,12 +86,14 @@ class TipsWriteViewModel {
         
         container.useCaseProvider.tipUseCase.executePostGenerateTipData(tip: makeWriteTipsRequest())
             .validateResult()
-            .sink(receiveCompletion: { completion in
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
                 switch completion {
                 case .finished:
                     print("WriteTips Server Completed")
                 case .failure(let failure):
                     print("WriteTips Server failure: \(failure)")
+                    self.registTipsLoading = false
                 }
             }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
@@ -99,9 +101,9 @@ class TipsWriteViewModel {
                         patchTipsImage(tipId: responseData.tipId)
                     } else {
                         print("WriteTipsResponse: \(String(describing: responseData))")
+                        self.registTipsLoading = false
+                        self.goToBeforePage()
                     }
-                
-                self.goToBeforePage()
             })
             .store(in: &cancellables)
     }
@@ -114,14 +116,16 @@ class TipsWriteViewModel {
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 guard let self = self else { return }
-                registTipsLoading = false
+                defer { registTipsLoading = false }
                 switch completion {
                 case .finished:
                     print("PatchTIps Image Completed")
                 case .failure(let failure):
                     print("PatchTIps Image Failure: \(failure)")
                 }
-            }, receiveValue: { responseData in
+            }, receiveValue: { [weak self] responseData in
+                guard let self = self else { return }
+                self.goToBeforePage()
                 #if DEBUG
                 print("PatchTips Image Response: \(responseData)")
                 #endif

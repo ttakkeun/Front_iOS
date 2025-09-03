@@ -27,7 +27,7 @@ class TipUseCase: TipUseCaseProtocol {
         return service.postGenerateTipData(tip: tip)
     }
     /// 팁 이미지 업로드
-    func executePatchTipsImageData(tipId: Int, images: [Data]) -> AnyPublisher<ResponseData<String>, Moya.MoyaError> {
+    func executePatchTipsImageData(tipId: Int, images: [Data]) -> AnyPublisher<ResponseData<[String]>, Moya.MoyaError> {
         return service.patchTipsImageData(tipId: tipId, images: images)
     }
     /// 팁 스크랩/취소 토글 기능
