@@ -40,11 +40,12 @@ struct TodoOptionSheetView: View {
             middleContents
             bottomContents
         })
+        .frame(maxHeight: .infinity, alignment: .top)
         .safeAreaInset(edge: .top, spacing: UIConstants.capsuleSpacing, content: {
             Capsule()
                 .modifier(CapsuleModifier())
         })
-        .safeAreaPadding(.top, UIConstants.safeTop)
+        .safeAreaPadding(.top, UIConstants.defaultSafeTop)
         .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
         .popover(isPresented: $showCalendar, content: {
             CalendarPickerView(selectedDate: $selectedDate) { date in
@@ -60,17 +61,26 @@ struct TodoOptionSheetView: View {
     /// - Parameter date: 선택한 날짜
     private func dateSelection(_ date: Date) {
         guard let type = actionType else { return }
-        let formattedDate = date.formattedForAPI()
         
+        var adjustedDate = date
+        if type == .replaceTheDate {
+            if let plusOneDay = Calendar.current.date(byAdding: .day, value: 1, to: date) {
+                adjustedDate = plusOneDay
+            }
+        }
+        
+        let formattedDate = adjustedDate.formattedForAPI()
+
         switch type {
         case .anotherDay:
             viewModel.postAnotherDay(todoId: selectedTodo.todoID, newDate: formattedDate)
         case .replaceTheDate:
+            print("선택한 날짜 (보정 후): \(formattedDate)")
             viewModel.patchTodoTransferAnotherDay(todoId: selectedTodo.todoID, newDate: formattedDate)
         default:
             break
         }
-        
+
         isShowSheet = false
     }
     

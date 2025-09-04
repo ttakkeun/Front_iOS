@@ -57,21 +57,21 @@ extension String {
         return koreanFormatter.string(from: date)
     }
     
-    func toHourMinuteString() -> String {
-        let isoFormatter = ISO8601DateFormatter()
-        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        isoFormatter.timeZone = TimeZone(secondsFromGMT: 0) // 서버가 UTC 기준이면 이렇게 설정
-        
-        guard let date = isoFormatter.date(from: self) else {
-            return "Invalid Time"
+    func toHourMinuteFormat() -> String {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "HH:mm:ss.SSSSS"
+            formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+
+            guard let date = formatter.date(from: self) else {
+                return "알 수 없음"
+            }
+
+            let outputFormatter = DateFormatter()
+            outputFormatter.dateFormat = "HH:mm"
+            outputFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+
+            return outputFormatter.string(from: date)
         }
-        
-        let outputFormatter = DateFormatter()
-        outputFormatter.dateFormat = "HH:mm"
-        outputFormatter.timeZone = TimeZone(identifier: "Asia/Seoul") // KST 기준으로 보기 위해 설정
-        
-        return outputFormatter.string(from: date)
-    }
     
     /// 서버 시간 문자열을 현재 시간과 비교하여 "n분 전", "n시간 전" 등의 차이 문자열을 반환
     /// - Returns: 시간 차이를 나타내는 문자열

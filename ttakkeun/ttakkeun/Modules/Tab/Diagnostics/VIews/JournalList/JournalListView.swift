@@ -44,6 +44,7 @@ struct JournalListView: View {
         .task {
             guard viewModel.recordList.isEmpty else { return }
             viewModel.getJournalList(category: selectedPartItem.rawValue, page: .zero)
+            viewModel.getUserPoint()
         }
         .sheet(item: $viewModel.journalResultData, content: { journalResultData in
             JournalResultCheckView(recordResultResponse: journalResultData)
@@ -167,7 +168,6 @@ struct JournalListView: View {
             container.navigationRouter.push(to: .diagnostic(.makeJournalist))
         } else {
             if viewModel.selectedCnt >= 1 {
-                viewModel.getUserPoint()
                 showAletAction()
             }
         }

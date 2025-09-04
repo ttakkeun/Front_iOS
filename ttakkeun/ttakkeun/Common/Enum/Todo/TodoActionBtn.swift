@@ -26,7 +26,7 @@ enum TodoActionBtn: String, CaseIterable {
     }
     
     static func checkedTask() -> [TodoActionBtn] {
-        return [.againTomorrow, .anotherDay, .replaceTheDate]
+        return [.againTomorrow, .anotherDay]
     }
     
     static func uncheckTask() -> [TodoActionBtn] {

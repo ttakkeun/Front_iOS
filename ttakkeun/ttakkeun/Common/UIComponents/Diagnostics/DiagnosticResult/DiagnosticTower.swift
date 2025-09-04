@@ -53,7 +53,7 @@ struct DiagnosticTower: View {
         HStack {
             contentsText(data.createdAt.convertedToKoreanTimeDateString())
             Spacer().frame(maxWidth: DiagnosisTowerConstants.imageSpacer)
-            contentsText(data.createdAt.toHourMinuteString())
+            contentsText(data.createdAt.toHourMinuteFormat())
         }
     }
     

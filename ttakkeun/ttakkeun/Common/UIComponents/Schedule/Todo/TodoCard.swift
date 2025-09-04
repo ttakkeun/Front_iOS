@@ -48,6 +48,9 @@ struct TodoCard: View {
         .overlay(content: {
             mainBackground
         })
+        .task {
+            viewModel.getTodoData(date: .now)
+        }
         .onChange(of: calendarViewModel.selectedDate, { old, new in
             viewModel.getTodoData(date: new)
         })

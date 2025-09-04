@@ -252,7 +252,7 @@ class JournalListViewModel {
                 }
             }, receiveValue: { [weak self] responseData in
                 guard let self = self else { return }
-                self.aiPoint = responseData.point + 1
+                self.aiPoint = responseData.point
                 UserDefaults.standard.setValue(self.aiPoint, forKey: AppStorageKey.aiCount)
             })
             .store(in: &cancellables)

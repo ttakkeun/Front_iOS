@@ -54,7 +54,7 @@ extension DiagnoseRouter: APITargetType {
         case .deleteDiag:
             return .delete
         default:
-            return .delete
+            return .get
         }
     }
     

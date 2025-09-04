@@ -89,7 +89,7 @@ struct JournalListCard: View {
         HStack {
             Spacer()
             
-            Text(cardData.data.recordTime.formattedDate())
+            Text(cardData.data.recordTime.toHourMinuteFormat())
                 .font(.Body5_medium)
                 .foregroundStyle(isSelected ? Color.gray200 : Color.gray900)
         }
