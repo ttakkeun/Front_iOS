@@ -4,8 +4,6 @@
 <dict>
 	<key>BASE_URL</key>
 	<string>$(BASE_URL)</string>
-	<key>KAKAO_KEY</key>
-	<string>$(KAKAO_KEY)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -17,6 +15,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>KAKAO_KEY</key>
+	<string>$(KAKAO_KEY)</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -35,5 +35,7 @@
 		<string>SUIT-Thin.otf</string>
 		<string>HSSanTokki.ttf</string>
 	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 </dict>
 </plist>
