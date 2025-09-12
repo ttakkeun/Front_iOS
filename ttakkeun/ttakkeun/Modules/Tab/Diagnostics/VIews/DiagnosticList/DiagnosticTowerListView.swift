@@ -24,7 +24,7 @@ struct DiagnosticTowerListView: View {
         static let topCatWidth: CGFloat = 114
         static let topCatHeigt: CGFloat = 102
             
-        static let catTowerOffset: CGFloat = 10
+        static let catTowerOffset: CGFloat = 20
         static let zIndex: Double = 1
         
         static let emptyDiagListTitle: String = "아직 생성된 진단 기록이 없어요!! \n 일지 작성 후, 진단을 해보세요!"
@@ -43,27 +43,28 @@ struct DiagnosticTowerListView: View {
     /// 진단결과 리스트 뷰
     private var diagnosticList: some View {
         ScrollViewReader { scrollProxy in
-            ScrollView(.vertical, content: {
-                ZStack(alignment: .top, content: {
-                    topCatDogImage
+            VStack(spacing: .zero) {
+                topCatDogImage
+                ScrollView(.vertical, content: {
                     diagTower
                 })
-            })
-            .task {
-                guard viewModel.diagResultListResponse.isEmpty else { return }
-                viewModel.getDiagResultList(category: selectedPartItem.rawValue, page: .zero)
-                
-                if let lastID = viewModel.diagResultListResponse.last?.id {
-                    scrollProxy.scrollTo(lastID, anchor: .bottom)
+                .contentMargins(.horizontal, DiagnosListConstants.horizonPadding, for: .scrollContent)
+                .fullScreenCover(isPresented: $viewModel.isShowDetailDiag, content: {
+                    if let id = viewModel.selectedDiagId {
+                        DiagnosticResultView(viewModel: viewModel, showFullScreenAI: $viewModel.isShowDetailDiag, diagId: id)
+                            .presentationCornerRadius(UIConstants.sheetCornerRadius)
+                    }
+                })
+                .task {
+                    guard viewModel.diagResultListResponse.isEmpty else { return }
+                    viewModel.getDiagResultList(category: selectedPartItem.rawValue, page: .zero)
+                    
+                    if let lastID = viewModel.diagResultListResponse.last?.id {
+                        scrollProxy.scrollTo(lastID, anchor: .bottom)
+                    }
                 }
+                .offset(y: -DiagnosListConstants.catTowerOffset)
             }
-            .fullScreenCover(isPresented: $viewModel.isShowDetailDiag, content: {
-                if let id = viewModel.selectedDiagId {
-                    DiagnosticResultView(viewModel: viewModel, showFullScreenAI: $viewModel.isShowDetailDiag, diagId: id)
-                        .presentationCornerRadius(UIConstants.sheetCornerRadius)
-                }
-            })
-            .contentMargins(.horizontal, DiagnosListConstants.horizonPadding, for: .scrollContent)
         }
     }
     
@@ -74,7 +75,6 @@ struct DiagnosticTowerListView: View {
             .aspectRatio(contentMode: .fit)
             .frame(width: DiagnosListConstants.topCatWidth, height: DiagnosListConstants.topCatHeigt)
             .zIndex(DiagnosListConstants.zIndex)
-            .offset(y: DiagnosListConstants.catTowerOffset)
     }
     
     /// 상단 고양이 또는 강아지 사진
@@ -89,9 +89,8 @@ struct DiagnosticTowerListView: View {
             towerForEach
             diagLoading
         })
-        .frame(alignment: .bottom)
+        .frame(alignment: .top)
         .padding(.bottom, UIConstants.safeBottom)
-        .padding(.top, DiagnosListConstants.topPadding)
         .zIndex(.zero)
     }
     

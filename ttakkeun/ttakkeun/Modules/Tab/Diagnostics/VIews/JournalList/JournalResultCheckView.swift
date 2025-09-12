@@ -117,7 +117,9 @@ extension JournalResultCheckView {
                 }
                 
                 if let text = data.etcString {
-                    makeJournalEtcTextBox(text: text)
+                    if !text.isEmpty {
+                        makeJournalEtcTextBox(text: text)
+                    }
                 }
             })
         })

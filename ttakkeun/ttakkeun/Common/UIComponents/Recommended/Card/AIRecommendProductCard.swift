@@ -46,7 +46,6 @@ struct AIRecommendProductCard: View {
             productImage
             productInfo
         })
-        .frame(width: AIRecommendConstants.cardWidth)
         .padding(AIRecommendConstants.mainPadding)
         .background {
             RoundedRectangle(cornerRadius: AIRecommendConstants.cornerRadius)
@@ -70,7 +69,6 @@ struct AIRecommendProductCard: View {
                 .aspectRatio(contentMode: .fill)
                 .frame(maxWidth: AIRecommendConstants.imageWidth, maxHeight: AIRecommendConstants.imageHeight)
                 .clipShape(RoundedRectangle(cornerRadius: AIRecommendConstants.cornerRadius))
-                .padding(AIRecommendConstants.defaultPadding)
         } else {
             notConnectUrlImage
         }
@@ -88,13 +86,14 @@ struct AIRecommendProductCard: View {
     
     /// 상품 설명
     private var productInfo: some View {
-        VStack(alignment: .leading, spacing: AIRecommendConstants.productVspacing, content: {
+        VStack(alignment: .leading, spacing: .zero, content: {
             Text(data.title.removingHTMLTags())
-                .frame(height: AIRecommendConstants.textHeight, alignment: .top)
                 .font(.Body3_semibold)
                 .foregroundStyle(Color.gray900)
                 .lineLimit(AIRecommendConstants.textLineLimit)
                 .lineSpacing(AIRecommendConstants.lineSpacing)
+            
+            Spacer()
             
             Text("\(data.price)원")
                 .font(.Body2_bold)

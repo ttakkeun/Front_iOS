@@ -42,8 +42,7 @@ struct JournalListView: View {
             bottomContentsBtn
         }
         .task {
-            guard viewModel.recordList.isEmpty else { return }
-            viewModel.getJournalList(category: selectedPartItem.rawValue, page: .zero)
+            viewModel.getJournalList(category: selectedPartItem.rawValue, page: .zero, refresh: true)
             viewModel.getUserPoint()
         }
         .sheet(item: $viewModel.journalResultData, content: { journalResultData in

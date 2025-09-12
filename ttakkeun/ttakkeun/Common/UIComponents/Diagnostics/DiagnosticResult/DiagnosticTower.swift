@@ -51,9 +51,9 @@ struct DiagnosticTower: View {
     /// 일지 날짜 시간 데이터
     private var diagInfoText: some View {
         HStack {
-            contentsText(data.createdAt.convertedToKoreanTimeDateString())
+            contentsText(data.createdAt.convertTipsToDate())
             Spacer().frame(maxWidth: DiagnosisTowerConstants.imageSpacer)
-            contentsText(data.createdAt.toHourMinuteFormat())
+            contentsText(data.createdAt.convertToTime())
         }
     }
     

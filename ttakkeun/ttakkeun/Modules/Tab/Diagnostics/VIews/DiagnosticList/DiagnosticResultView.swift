@@ -50,7 +50,7 @@ struct DiagnosticResultView: View {
         static let followManageText: String = "추후 관리법"
         static let recommendProduct: String = "추천 제품"
         static let btnText: String = "확인"
-        static let loadingText: String = "조금만 기다려주세요! \n진단 결과를 준비하고 있어요 😊"
+        static let loadingText: String = "조금만 기다려주세요! \n진단 결과를 준비하고 있어요"
     }
     
     // MARK: - Init
@@ -69,19 +69,26 @@ struct DiagnosticResultView: View {
                     Group {
                         middleContents(data: data)
                         Spacer(minLength: DiagnosingResultConstants.spacerMin)
-                        MainButton(btnText: DiagnosingResultConstants.btnText, height: DiagnosingResultConstants.btnHeight, action: {
-                            showFullScreenAI = false
-                        }, color: Color.mainPrimary)
                     }
                     .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
                 })
             })
+            .safeAreaInset(edge: .bottom, content: {
+                mainBtn
+            })
             .ignoresSafeArea()
         } else {
-            LoadingProgress(text: DiagnosingResultConstants.loadingText)
+            LoadingProgress(text: DiagnosingResultConstants.loadingText, color: .gray900)
         }
     }
     
+    /// 메인 버튼
+    private var mainBtn: some View {
+        MainButton(btnText: DiagnosingResultConstants.btnText, height: DiagnosingResultConstants.btnHeight, action: {
+            showFullScreenAI = false
+        }, color: Color.mainPrimary)
+        .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+    }
     // MARK: - TopContents
     /// 상단 백그라운드 모양
     /// - Parameter data: 진단 데이터

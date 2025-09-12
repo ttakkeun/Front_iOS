@@ -29,5 +29,12 @@ struct AIProducts: Codable, Hashable, Identifiable {
     let image: String
     let lprice: Int
     let brand: String
+    
+    enum CodingKeys: CodingKey {
+        case title
+        case image
+        case lprice
+        case brand
+    }
 }
 

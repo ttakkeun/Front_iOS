@@ -81,7 +81,7 @@ struct FAQItemView: View {
             
             Spacer()
             
-            Image(systemName: isExpanded ? FAQItemConstants.beforeBtnIcon : FAQItemConstants.afterBtnIcon)
+            Image(systemName: isExpanded ? FAQItemConstants.afterBtnIcon : FAQItemConstants.beforeBtnIcon)
                 .matchedGeometryEffect(id: FAQItemConstants.nameEffect, in: animationNamespace)
                 .foregroundStyle(Color.gray500)
         })

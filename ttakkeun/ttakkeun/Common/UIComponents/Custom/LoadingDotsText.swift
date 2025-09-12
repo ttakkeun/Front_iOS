@@ -41,7 +41,13 @@ struct LoadingDotsText: View {
 
 
 struct LoadingProgress: View {
-    let text: String
+    var text: String
+    var color: Color
+    
+    init(text: String, color: Color = .white) {
+        self.text = text
+        self.color = color
+    }
     
     var body: some View {
         VStack {
@@ -52,7 +58,7 @@ struct LoadingProgress: View {
                     .multilineTextAlignment(.center)
                     .lineSpacing(2.5)
                     .font(.Body3_medium)
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(color)
             })
             .controlSize(.large)
             

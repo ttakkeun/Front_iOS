@@ -136,6 +136,7 @@ extension DatePickerSheetView {
     private func formattedYear(from year: Int) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
+        formatter.usesGroupingSeparator = false
         if let formatted = formatter.string(from: NSNumber(value: year)) {
             return "\(formatted)년"
         } else {

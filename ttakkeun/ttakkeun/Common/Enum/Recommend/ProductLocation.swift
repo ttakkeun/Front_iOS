@@ -35,7 +35,7 @@ enum ProductLocation {
         case .naver:
             return (10, 10, 10, 10)
         case .localDB:
-            return (21, 23, 19, 23)
+            return (21, 21, 19, 19)
         }
     }
 }

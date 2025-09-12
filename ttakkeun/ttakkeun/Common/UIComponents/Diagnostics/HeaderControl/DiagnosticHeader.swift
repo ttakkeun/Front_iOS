@@ -38,6 +38,9 @@ struct DiagnosticHeader: View {
             itemsButton
         })
         .safeAreaPadding(.horizontal, UIConstants.defaultSafeHorizon)
+        .onChange(of: diagnosingValue.selectedSegment) { _, _ in
+            swithAction(item: .ear)
+        }
     }
     
     /// 파트별 아이템 버튼
@@ -60,12 +63,18 @@ struct DiagnosticHeader: View {
     private func buttonAction(item: PartItem) {
         withAnimation(.easeInOut(duration: DiagnosticHeaderConstants.animationTimeInterval)) {
             diagnosingValue.selectedPartItem = item
-            switch diagnosingValue.selectedSegment {
-            case .journalList:
-                journalListAction(item)
-            case .diagnosticResults:
-                diagnosticAction(item)
-            }
+            swithAction(item: item)
+        }
+    }
+    
+    /// Switch에 따른 Action
+    /// - Parameter item: Part Item
+    private func swithAction(item: PartItem) {
+        switch diagnosingValue.selectedSegment {
+        case .journalList:
+            journalListAction(item)
+        case .diagnosticResults:
+            diagnosticAction(item)
         }
     }
     
