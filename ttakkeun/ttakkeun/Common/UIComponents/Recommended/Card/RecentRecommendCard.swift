@@ -22,7 +22,7 @@ struct RecentRecommendCard: View {
         static let imagePadding: CGFloat = 5
         static let productInfoVspacing: CGFloat = 6
         static let titleHeight: CGFloat = 37
-        static let contentsHeight: CGFloat = 100
+        static let contentsHeight: CGFloat = 64
         
         static let cornerRadius: CGFloat = 10
         static let imageMaxCount: Int = 2
@@ -43,7 +43,6 @@ struct RecentRecommendCard: View {
             productImage
             productInfo
         })
-        .frame(height: RecentRecommendConstants.contentsHeight)
         .padding(.top, type.backgroundPadding.0)
         .padding(.bottom, type.backgroundPadding.1)
         .padding(.leading, type.backgroundPadding.2)
@@ -59,7 +58,6 @@ struct RecentRecommendCard: View {
     private var productInfo: some View {
         VStack(alignment: .leading, spacing: RecentRecommendConstants.productInfoVspacing, content: {
             Text(data.title.removingHTMLTags())
-                .frame(height: RecentRecommendConstants.titleHeight)
                 .font(.Body3_semibold)
                 .foregroundStyle(Color.gray900)
                 .lineLimit(nil)
@@ -67,11 +65,11 @@ struct RecentRecommendCard: View {
                 .multilineTextAlignment(.leading)
                 .truncationMode(.tail)
             
+            Spacer()
+            
             Text("\(data.price)원")
                 .font(.Body2_semibold)
                 .foregroundStyle(Color.gray900)
-            
-            Spacer()
             
             if type == .naver {
                 likeIcon
@@ -92,7 +90,6 @@ struct RecentRecommendCard: View {
                 .aspectRatio(contentMode: .fill)
                 .frame(width: type.productSize.0, height: type.productSize.1)
                 .clipShape(RoundedRectangle(cornerRadius: RecentRecommendConstants.cornerRadius))
-                .padding(RecentRecommendConstants.imagePadding)
         }
     }
     
@@ -106,7 +103,7 @@ struct RecentRecommendCard: View {
 }
 
 #Preview {
-    @Previewable @State var data: ProductResponse = .init(productId: 2, title: "잘먹잘싸 <b>강아지</b>사료 기호성좋은 연어, 2kg, 1<b>개</b>asjldaklsdjkasdlakjdsjdlkajdlkjdaljlksjdalkjlskjdalskdl", image: "https://shopping-phinf.pstatic.net/main_5219069/52190692641.20241230162939.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true)
+    @Previewable @State var data: ProductResponse = .init(productId: 2, title: "트리스 이디티에이 120ml, 1개", image: "https://shopping-phinf.pstatic.net/main_5192947/51929474258.20241213220325.jpg", price: 12000, brand: "쿠팡", purchaseLink: "111", category1: "11", category2: "!1", category3: "11", category4: "11", likeStatus: true)
     RecentRecommendCard(data: $data, type: .naver, action: {
         print("1")
     })
