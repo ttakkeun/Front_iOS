@@ -44,7 +44,7 @@ extension String {
     func convertTipsToDate() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSS"
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
         
         guard let date = formatter.date(from: self) else {
             return "알 수 없음"
@@ -52,6 +52,22 @@ extension String {
         
         let koreanFormatter = DateFormatter()
         koreanFormatter.dateFormat = "yyyy.MM.dd"
+        koreanFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        
+        return koreanFormatter.string(from: date)
+    }
+    
+    func convertToTime() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSS"
+        formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        
+        guard let date = formatter.date(from: self) else {
+            return "알 수 없음"
+        }
+        
+        let koreanFormatter = DateFormatter()
+        koreanFormatter.dateFormat = "HH:mm"
         koreanFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
         
         return koreanFormatter.string(from: date)

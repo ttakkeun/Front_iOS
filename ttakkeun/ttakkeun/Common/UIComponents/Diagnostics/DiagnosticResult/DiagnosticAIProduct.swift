@@ -27,6 +27,8 @@ struct DiagnosticAIProduct: View {
         static let lineLimit: Int = 2
         static let second: TimeInterval = 2
         static let cornerRadius: CGFloat = 10
+        
+        static let emptyBrandText: String = "정보 없음"
     }
     
     // MARK: - Init
@@ -56,7 +58,7 @@ struct DiagnosticAIProduct: View {
                 .font(.Body2_semibold)
                 .foregroundStyle(Color.gray900)
             
-            Text(data.brand)
+            Text(data.brand.isEmpty ? DiagnosticConstants.emptyBrandText : data.brand)
                 .font(.Body5_medium)
                 .foregroundStyle(Color.gray600)
         })
@@ -89,3 +91,4 @@ struct DiagnosticAIProfile_Preview: PreviewProvider {
             .previewLayout(.sizeThatFits)
     }
 }
+
