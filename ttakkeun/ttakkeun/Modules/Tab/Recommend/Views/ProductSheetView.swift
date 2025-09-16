@@ -94,7 +94,6 @@ struct ProductSheetView: View {
             .padding(.vertical, ProductSheetConstants.imageVerticalPadding)
             .frame(maxWidth: .infinity)
             .frame(height: ProductSheetConstants.imageHeight)
-            .border(Color.gray200)
     }
     
     // MARK: - MiddleContents

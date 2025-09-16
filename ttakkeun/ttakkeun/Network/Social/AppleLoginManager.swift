@@ -92,9 +92,13 @@ extension AppleLoginManager: ASAuthorizationControllerDelegate {
 
 extension AppleLoginManager: ASAuthorizationControllerPresentationContextProviding {
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        UIApplication.shared.connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .flatMap { $0.windows }
-            .first { $0.isKeyWindow } ?? ASPresentationAnchor()
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
+            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                return UIWindow(windowScene: scene)
+            }
+            fatalError("No UIWindowScene available to create a presentation anchor.")
+        }
+        return window
     }
 }

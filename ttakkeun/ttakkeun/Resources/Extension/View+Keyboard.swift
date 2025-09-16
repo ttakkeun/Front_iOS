@@ -10,17 +10,19 @@ import SwiftUI
 extension View {
     func keyboardToolbar(downAction: @escaping () -> Void) -> some View {
         self.toolbar {
-            ToolbarItem(placement: .keyboard) {
-                HStack {
+            ToolbarItemGroup(placement: .keyboard, content: {
+                HStack(content: {
                     Spacer()
-                    Button(action: {
-                        downAction()
-                    }, label: {
-                        Image(systemName: "chevron.down")
-                            .renderingMode(.template)
-                            .foregroundStyle(Color.gray900)
-                    })
-                }
+                })
+            })
+            ToolbarItem(placement: .keyboard) {
+                Button(action: {
+                    downAction()
+                }, label: {
+                    Image(systemName: "chevron.down")
+                        .renderingMode(.template)
+                        .foregroundStyle(Color.gray900)
+                })
             }
         }
     }

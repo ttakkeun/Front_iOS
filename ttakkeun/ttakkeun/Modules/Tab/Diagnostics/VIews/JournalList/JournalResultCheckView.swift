@@ -77,17 +77,15 @@ extension JournalResultCheckView {
     ///   - time: 시간 데이터
     /// - Returns: 뷰 반환
     func makeTimeAndData(_ date: String, _ time: String) -> some View {
-        (
+        HStack(alignment: .firstTextBaseline, spacing: .zero, content: {
             Text(date.formattedDate())
                 .font(.Body3_bold)
                 .foregroundStyle(Color.gray400)
             
-            +
-            
             Text(date.formattedDate())
                 .font(.Body4_medium)
                 .foregroundStyle(Color.gray400)
-        )
+        })
     }
     
     /// 기타 특이사항 박스

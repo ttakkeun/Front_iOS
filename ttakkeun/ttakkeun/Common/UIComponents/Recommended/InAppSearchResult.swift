@@ -72,7 +72,7 @@ struct InAppSearchResult: View {
             Text(data.title.cleanedAndLineBroken())
                 .font(.Body3_semibold)
                 .foregroundStyle(Color.gray900)
-                .lineLimit(nil)
+                .lineLimit(2)
                 .multilineTextAlignment(.leading)
                 .lineSpacing(InAppSearchResultConstant.textLineSpacing)
                 .frame(minHeight: InAppSearchResultConstant.textMinHegiht, alignment: .topLeading)

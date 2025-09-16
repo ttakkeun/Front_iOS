@@ -215,17 +215,15 @@ struct DeleteAccountView: View {
     
     /// 중간 컨텐츠 탈퇴사유 타이틀
     private var secondMiddleTitle: some View {
-        (
+        HStack(alignment: .firstTextBaseline, spacing: .zero, content: {
             Text(DeleteAccountConstants.secondTitle)
                 .font(.Body3_medium)
                 .foregroundStyle(Color.gray900)
             
-            +
-            
             Text(DeleteAccountConstants.secondSubTitle)
                 .font(.Body4_medium)
                 .foregroundStyle(Color.gray400)
-        )
+        })
     }
     
     /// 기타 사유 입려

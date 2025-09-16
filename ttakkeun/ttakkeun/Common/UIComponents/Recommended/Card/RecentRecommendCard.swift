@@ -21,6 +21,8 @@ struct RecentRecommendCard: View {
         static let contentsHspacing: CGFloat = 14
         static let imagePadding: CGFloat = 5
         static let productInfoVspacing: CGFloat = 6
+        
+        static let productWidth: CGFloat = 230
         static let titleHeight: CGFloat = 37
         static let contentsHeight: CGFloat = 64
         
@@ -39,7 +41,7 @@ struct RecentRecommendCard: View {
     
     // MARK: - Body
     var body: some View {
-        HStack(spacing: RecentRecommendConstants.contentsHspacing, content: {
+        HStack(alignment: .top, spacing: RecentRecommendConstants.contentsHspacing, content: {
             productImage
             productInfo
         })
@@ -75,6 +77,7 @@ struct RecentRecommendCard: View {
                 likeIcon
             }
         })
+        .frame(width: RecentRecommendConstants.productWidth)
     }
     
     /// 최근 상품 이미지
