@@ -90,7 +90,7 @@ struct LoginView: View {
     private var bottomContents: some View {
         VStack(spacing: LoginConstants.loginBtnVspacing, content: {
             appleLoginButton
-            kakaoLoginButton
+//            kakaoLoginButton
         })
     }
     /// 애플 로그인 버튼
@@ -102,16 +102,16 @@ struct LoginView: View {
                 .fixedSize()
         })
     }
-    
-    /// 카카오 로그인 버튼
-    private var kakaoLoginButton: some View {
-        Button(action: {
-            viewModel.kakaoLogin()
-        }, label: {
-            Image(.kakaoButton)
-                .fixedSize()
-        })
-    }
+//    
+//    /// 카카오 로그인 버튼
+//    private var kakaoLoginButton: some View {
+//        Button(action: {
+//            viewModel.kakaoLogin()
+//        }, label: {
+//            Image(.kakaoButton)
+//                .fixedSize()
+//        })
+//    }
 }
 
 #Preview {

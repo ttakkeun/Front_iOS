@@ -95,6 +95,7 @@ class ProfileFormViewModel {
             if let data = try await item.loadTransferable(type: Data.self),
                let uiImage = UIImage(data: data) {
                 self.selectedImage = uiImage
+                self.selectedItem = nil
             }
         } catch {
             print("이미지 로드 실패", error.localizedDescription)

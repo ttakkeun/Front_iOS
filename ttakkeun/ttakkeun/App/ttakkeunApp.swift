@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-import KakaoSDKCommon
-import KakaoSDKAuth
+//import KakaoSDKCommon
+//import KakaoSDKAuth
 
 @main
 struct ttakkeunApp: App {
@@ -17,7 +17,7 @@ struct ttakkeunApp: App {
     @State var appFlowViewModel: AppFlowViewModel = .init()
     
     init() {
-        KakaoSDK.initSDK(appKey: Config.kakaoAppKey)
+//        KakaoSDK.initSDK(appKey: Config.kakaoAppKey)
     }
     
     var body: some Scene {
@@ -30,11 +30,11 @@ struct ttakkeunApp: App {
                 LoginView(container: container, appFlowViewModel: appFlowViewModel)
                     .environmentObject(container)
                     .environment(\.appFlow, appFlowViewModel)
-                    .onOpenURL(perform: { url in
-                        if (AuthApi.isKakaoTalkLoginUrl(url)) {
-                            _ = AuthController.handleOpenUrl(url: url)
-                        }
-                    })
+//                    .onOpenURL(perform: { url in
+//                        if (AuthApi.isKakaoTalkLoginUrl(url)) {
+//                            _ = AuthController.handleOpenUrl(url: url)
+//                        }
+//                    })
             case .profile:
                 ProfileView(container: container)
                     .environmentObject(container)

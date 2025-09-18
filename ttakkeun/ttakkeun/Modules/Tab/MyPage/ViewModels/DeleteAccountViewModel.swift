@@ -91,11 +91,13 @@ class DeleteAccountViewModel {
     private func deleteAppleAccount(code: String) {
         container.useCaseProvider.authUseCase.executeDeleteAppleAccount(appleDelete: convertDeleteRequest(), code: code)
             .validateResult()
-            .sink(receiveCompletion: { completion in
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self = self else { return }
                 switch completion {
                 case .finished:
                     print("apple Delete Account Completed")
                 case .failure(let failure):
+                    print("deleteRequest 출력 : \(convertDeleteRequest())")
                     print("apple Delete Account Failed: \(failure)")
                 }
             }, receiveValue: { [weak self] responseData in
@@ -114,7 +116,7 @@ class DeleteAccountViewModel {
         if let firstReason = selectedReasons.first {
             return .init(reasonType: firstReason, customReason: etcReason, valid: true)
         } else {
-            return .init(reasonType: .other, customReason: etcReason, valid: false)
+            return .init(reasonType: .other, customReason: etcReason, valid: true)
         }
     }
 }

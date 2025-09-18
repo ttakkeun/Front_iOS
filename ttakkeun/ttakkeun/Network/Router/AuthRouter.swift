@@ -38,7 +38,7 @@ extension AuthRouter: APITargetType {
         case .deleteKakaoAccount:
             return "/api/auth/delete/kakao"
         case .deleteAppleAccount:
-            return "/api/auth/apple/delete"
+            return "/api/auth/delete/apple"
         }
     }
     
