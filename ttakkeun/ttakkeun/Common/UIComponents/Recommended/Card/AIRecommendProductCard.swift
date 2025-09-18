@@ -31,6 +31,7 @@ struct AIRecommendProductCard: View {
         static let cardWidth: CGFloat = 280
         static let cardHeight: CGFloat = 92
         static let textHeight: CGFloat = 60
+        static let textWidth: CGFloat = 200
         
         static let maxCount: Int = 2
         static let retryInterval: TimeInterval = 2
@@ -92,6 +93,7 @@ struct AIRecommendProductCard: View {
                 .foregroundStyle(Color.gray900)
                 .lineLimit(AIRecommendConstants.textLineLimit)
                 .lineSpacing(AIRecommendConstants.lineSpacing)
+                .multilineTextAlignment(.leading)
             
             Spacer()
             
@@ -99,6 +101,7 @@ struct AIRecommendProductCard: View {
                 .font(.Body2_bold)
                 .foregroundStyle(Color.gray900)
         })
+        .frame(width: AIRecommendConstants.textWidth, alignment: .leading)
     }
 }
 

@@ -42,7 +42,6 @@ struct NotToDo: View {
                 .fill(Color.clear)
                 .stroke(Color.gray200, style: .init())
         }
-        .safeAreaPadding(.horizontal, NotToDoConstants.safePadding)
     }
     
     /// 카테고리 순서 보여주기
