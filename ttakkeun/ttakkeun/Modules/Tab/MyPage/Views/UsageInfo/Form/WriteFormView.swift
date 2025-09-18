@@ -360,7 +360,7 @@ struct WriteFormView: View {
                         print("문의 및 신고하기 제출 실패: \(error)")
                     }
                 }
-            }, color: btnType.color)
+            }, color: isButtonEnabled ? btnType.color : Color.gray200)
             .padding(.horizontal, UIConstants.defaultSafeHorizon)
             .disabled(!isButtonEnabled)
         }

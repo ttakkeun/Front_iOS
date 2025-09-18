@@ -123,11 +123,16 @@ struct WriteTipsView: View {
     /// 하단 공유하기 버튼
     private var bottomContents: some View {
         MainButton(btnText: WriteTipsConstants.mainBtnText, height: WriteTipsConstants.mainBtnHeight, action: {
-            if !viewModel.title.isEmpty && !viewModel.textContents.isEmpty {
+            if writeContentsCheck() {
                 viewModel.writeTips()
             }
-        }, color: Color.mainPrimary)
+        }, color: writeContentsCheck() ? Color.mainPrimary : Color.gray200)
         .ignoresSafeArea(.keyboard)
+        .disabled(!writeContentsCheck())
+    }
+    
+    private func writeContentsCheck() -> Bool {
+        return !viewModel.title.isEmpty && !viewModel.textContents.isEmpty
     }
 }
 
