@@ -100,10 +100,11 @@ class SignUpViewModel: ObservableObject {
     private func saveUserInfo(email: String, _ loginType: SocialLoginType) {
         UserDefaults.standard.set(self.userNickname, forKey: AppStorageKey.userNickname)
         UserDefaults.standard.set(email, forKey: AppStorageKey.userEmail)
-        UserDefaults.standard.setValue(loginType, forKey: AppStorageKey.userLoginType)
+        UserDefaults.standard.setValue(loginType.rawValue, forKey: AppStorageKey.userLoginType)
     }
     
     // MARK: - Apple Signup
+    // FIXME: - 팅김 현상 발생 부분
     public func signUpApple(apple: AppleLoginRequest) {
         container.useCaseProvider.authUseCase.executeSignUpApple(appleLoginRequest: apple)
             .validateResult()

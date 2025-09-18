@@ -133,13 +133,18 @@ extension String {
         outputFormatter.dateFormat = "yyyy.MM.dd"
         
         guard let date = inputFormatter.date(from: self) else {
-            return self // 실패 시 원본 반환
+            return self
         }
         
         return outputFormatter.string(from: date)
     }
     
     func middleCharacter() -> String {
+        
+        if self == "알수없음" {
+            return "탈퇴유저"
+        }
+        
         let count = self.count
         guard count >= 2 else { return self}
         

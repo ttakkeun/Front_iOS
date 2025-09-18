@@ -298,6 +298,7 @@ struct DeleteAccountView: View {
             generateButton(DeleteAccountConstants.secondBtnCompleteText, btnCondition: true, action: {
                 alert.trigger(type: .deleteAccountAlert, showAlert: true, action: {
                     deleteAction()
+                    print(loginType)
                 })
             })
             .disabled(!viewModel.isMyAccountCheck)

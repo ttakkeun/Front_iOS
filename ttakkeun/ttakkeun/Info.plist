@@ -17,6 +17,12 @@
 	</array>
 	<key>KAKAO_KEY</key>
 	<string>$(KAKAO_KEY)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kakaokompassauth</string>
+		<string>kakaolink</string>
+		<string>kakaoplus</string>
+	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -35,7 +41,5 @@
 		<string>SUIT-Thin.otf</string>
 		<string>HSSanTokki.ttf</string>
 	</array>
-	<key>UIUserInterfaceStyle</key>
-	<string>Light</string>
 </dict>
 </plist>
