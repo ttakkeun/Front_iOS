@@ -69,7 +69,8 @@ struct JournalRegistContents: View {
                     viewModel.currentPage += 1
                     viewModel.getAnswerList()
                 }
-            }, color: Color.mainPrimary)
+            }, color: (viewModel.selectedPart != nil) ? Color.mainPrimary : Color.gray200)
+            .disabled(!(viewModel.selectedPart != nil))
         })
     }
     

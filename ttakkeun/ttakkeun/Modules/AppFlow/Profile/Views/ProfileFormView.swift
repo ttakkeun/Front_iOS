@@ -29,16 +29,19 @@ struct ProfileFormView: View {
         static let varietyLeadingPadding: CGFloat = 22
         static let varietyTrailingPadding: CGFloat = 16
         
-        static let profileImageSize: CGFloat = 120
+        static let profileImageSize: CGFloat = 40
         static let checkImageSize: CGFloat = 18
         static let varietyIconSize: CGFloat = 16
         static let varietyHeight: CGFloat = 44
+        static let personCircleSize: CGSize = .init(width: 100, height: 100)
+        static let imageAddBtn: CGSize = .init(width: 30, height: 30)
         
         static let cornerRadius: CGFloat = 10
         static let xmarkWidth: CGFloat = 18
         static let xmarkHeight: CGFloat = 18
         
-        static let profileImage: String = "questionmark.circle.fill"
+        static let profileAddImage: String = "camera.circle.fill"
+        static let profileImage: String = "person.fill"
         static let namePlaceholder: String = "반려동물의 이름을 입력해주세요."
         
         static let nameText: String = "이름"
@@ -75,7 +78,7 @@ struct ProfileFormView: View {
             profileImageSection
             inputFieldGroup
             Spacer()
-            bottomContents
+            registerBtn
         })
         .navigationBarBackButtonHidden(true)
         .safeAreaPadding(.horizontal, ProfileFormConstants.safeHorizonPadding)
@@ -196,31 +199,58 @@ struct ProfileFormView: View {
                 kingfisherProfile(url: url)
             } else {
                 makeProfileImage(image: Image(systemName: ProfileFormConstants.profileImage))
-                    .tint(Color.gray300)
             }
         })
     }
     
     private func kingfisherProfile(url: URL) -> some View {
-        KFImage(url)
-            .placeholder {
-                ProgressView()
-                    .controlSize(.regular)
-            }.retry(maxCount: 2, interval: .seconds(2))
-            .resizable()
-            .frame(width: 120, height: 120)
-            .aspectRatio(contentMode: .fill)
-            .clipShape(Circle())
+        ZStack(alignment: .bottomTrailing, content: {
+            KFImage(url)
+                .placeholder {
+                    ProgressView()
+                        .controlSize(.regular)
+                }.retry(maxCount: 2, interval: .seconds(2))
+                .resizable()
+                .frame(width: 120, height: 120)
+                .aspectRatio(contentMode: .fill)
+                .clipShape(Circle())
+            
+            imageAddBtn
+        })
     }
     
     /// 프로파일 이미지 생성 함수
     /// - Parameter image: 이미지 값
     /// - Returns: 이미지 반환
     private func makeProfileImage(image: Image) -> some View {
-        image
+        ZStack(alignment: .bottomTrailing, content: {
+            personCircleImage(image: image)
+            imageAddBtn
+        })
+        .symbolEffect(.bounce, isActive: !registerCheck())
+    }
+    
+    private func personCircleImage(image: Image) -> some View {
+        ZStack(alignment: .center, content: {
+            Circle()
+                .fill(Color.gray400)
+                .frame(width: ProfileFormConstants.personCircleSize.width, height: ProfileFormConstants.personCircleSize.height)
+            
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: ProfileFormConstants.profileImageSize, height: ProfileFormConstants.profileImageSize)
+                .tint(Color.white)
+        })
+    }
+    
+    private var imageAddBtn: some View {
+        Image(systemName: ProfileFormConstants.profileAddImage)
+            .renderingMode(.original)
             .resizable()
-            .aspectRatio(contentMode: .fill)
-            .frame(width: ProfileFormConstants.profileImageSize, height: ProfileFormConstants.profileImageSize)
+            .aspectRatio(contentMode: .fit)
+            .frame(width: ProfileFormConstants.imageAddBtn.width, height: ProfileFormConstants.imageAddBtn.height)
+            .tint(Color.black)
     }
     
     // MARK: - NameTextField
@@ -342,27 +372,22 @@ struct ProfileFormView: View {
     
     // MARK: - RegistButton
     
-    private var bottomContents: some View {
-        VStack(spacing: ProfileFormConstants.bottomVspacing, content: {
-            if (viewModel.selectedImage == nil) && viewModel.isProfileCompleted {
-                Text(ProfileFormConstants.registerWarningText)
-                    .font(.Body3_regular)
-                    .foregroundStyle(Color.redStar)
-            }
-            registerBtn
-        })
-    }
     /// 등록 버튼
     private var registerBtn: some View {
         MainButton(
             btnText: ProfileFormConstants.registerBtnText,
             action: {
-                guard viewModel.isProfileCompleted && (viewModel.selectedImage != nil) else { return }
+                guard registerCheck() else { return }
                 viewModel.submit {
                     dismiss()
                 }
             },
-            color: viewModel.isProfileCompleted && (viewModel.selectedImage != nil) ? Color.mainPrimary : Color.gray200)
+            color: registerCheck() ? Color.mainPrimary : Color.gray200)
+        .disabled(!registerCheck())
+    }
+    
+    private func registerCheck() -> Bool {
+        return viewModel.isProfileCompleted && (viewModel.selectedImage != nil)
     }
 }
 
