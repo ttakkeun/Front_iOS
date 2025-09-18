@@ -22,6 +22,7 @@ struct ProfileFormView: View {
     fileprivate enum ProfileFormConstants {
         static let fieldVspacing: CGFloat = 10
         static let mainVspacing: CGFloat = 25
+        static let bottomVspacing: CGFloat = 5
         
         static let safeHorizonPadding: CGFloat = 31
         static let safeTopPadding: CGFloat = 5
@@ -52,6 +53,7 @@ struct ProfileFormView: View {
         static let neutralYesText: String = "예"
         static let neutralNoText: String = "아니오"
         static let registerBtnText: String = "등록하기"
+        static let registerWarningText: String =  "프로필 사진을 추가해주세요!"
         static let closeButtonString: String = "xmark"
         
         static let profileMakeTitle: String = "프로필 등록"
@@ -73,7 +75,7 @@ struct ProfileFormView: View {
             profileImageSection
             inputFieldGroup
             Spacer()
-            registerBtn
+            bottomContents
         })
         .navigationBarBackButtonHidden(true)
         .safeAreaPadding(.horizontal, ProfileFormConstants.safeHorizonPadding)
@@ -339,17 +341,28 @@ struct ProfileFormView: View {
     }
     
     // MARK: - RegistButton
+    
+    private var bottomContents: some View {
+        VStack(spacing: ProfileFormConstants.bottomVspacing, content: {
+            if (viewModel.selectedImage == nil) && viewModel.isProfileCompleted {
+                Text(ProfileFormConstants.registerWarningText)
+                    .font(.Body3_regular)
+                    .foregroundStyle(Color.redStar)
+            }
+            registerBtn
+        })
+    }
     /// 등록 버튼
     private var registerBtn: some View {
         MainButton(
             btnText: ProfileFormConstants.registerBtnText,
             action: {
-                guard viewModel.isProfileCompleted else { return }
+                guard viewModel.isProfileCompleted && (viewModel.selectedImage != nil) else { return }
                 viewModel.submit {
                     dismiss()
                 }
             },
-            color: viewModel.isProfileCompleted ? Color.mainPrimary : Color.gray200)
+            color: viewModel.isProfileCompleted && (viewModel.selectedImage != nil) ? Color.mainPrimary : Color.gray200)
     }
 }
 

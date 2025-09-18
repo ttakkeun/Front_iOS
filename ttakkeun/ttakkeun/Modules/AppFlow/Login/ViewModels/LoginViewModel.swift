@@ -25,7 +25,7 @@ class LoginViewModel {
     
     // MARK: - Manager
     let appleLoginManager = AppleLoginManager()
-    let kakaoLoginManager = KakaoLoginManager()
+//    let kakaoLoginManager = KakaoLoginManager()
     
     // MARK: - Dependency
     let appFlowViewModel: AppFlowViewModel
@@ -142,44 +142,44 @@ class LoginViewModel {
     }
 
     // MARK: - KakaoLogin
-    /// 뷰에서 실행하는 카카오 로그인 시도
-    public func kakaoLogin() {
-        kakaoLoginManager.fetchAccessToken { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let oauth):
-                self.getKakaoUserInfo(accessToken: oauth)
-            case .failure(let error):
-                print("카카오 토큰 획득 실패: \(error)")
-            }
-        }
-    }
-    
-    /// 카카오 토큰 조회 성공 시, 카카오 유저 정보 획득
-    /// - Parameter accessToken: 획득한 카카오 토큰 값
-    private func getKakaoUserInfo(accessToken: String) {
-        kakaoLoginManager.getUserEmail(accessToken: accessToken) { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let email):
-                self.kakaoLoginManager.getUserName { [weak self] result in
-                    guard let self = self else { return }
-                    
-                    switch result {
-                    case .success(let nickname):
-                        let request = KakaoLoginRequest(accessToken: accessToken, email: email, name: nickname)
-                        self.loginKakao(kakaoRequest: request)
-                    case .failure(let error):
-                        print("카카오 닉네임 획득 실패: \(error)")
-                    }
-                }
-            case .failure(let error):
-                print("카카오 이메일 획득 실패: \(error)")
-            }
-        }
-    }
+//    /// 뷰에서 실행하는 카카오 로그인 시도
+//    public func kakaoLogin() {
+//        kakaoLoginManager.fetchAccessToken { [weak self] result in
+//            guard let self = self else { return }
+//            
+//            switch result {
+//            case .success(let oauth):
+//                self.getKakaoUserInfo(accessToken: oauth)
+//            case .failure(let error):
+//                print("카카오 토큰 획득 실패: \(error)")
+//            }
+//        }
+//    }
+//    
+//    /// 카카오 토큰 조회 성공 시, 카카오 유저 정보 획득
+//    /// - Parameter accessToken: 획득한 카카오 토큰 값
+//    private func getKakaoUserInfo(accessToken: String) {
+//        kakaoLoginManager.getUserEmail(accessToken: accessToken) { [weak self] result in
+//            guard let self = self else { return }
+//            
+//            switch result {
+//            case .success(let email):
+//                self.kakaoLoginManager.getUserName { [weak self] result in
+//                    guard let self = self else { return }
+//                    
+//                    switch result {
+//                    case .success(let nickname):
+//                        let request = KakaoLoginRequest(accessToken: accessToken, email: email, name: nickname)
+//                        self.loginKakao(kakaoRequest: request)
+//                    case .failure(let error):
+//                        print("카카오 닉네임 획득 실패: \(error)")
+//                    }
+//                }
+//            case .failure(let error):
+//                print("카카오 이메일 획득 실패: \(error)")
+//            }
+//        }
+//    }
     
     /// 카카오 서버 API
     /// - Parameter kakaoRequest: 카카오로부터 받은 값 전달
